@@ -10,12 +10,13 @@ import SignUpScreen from "./src/signinFlowScreens/SignUpScreen";
 import ForgotPasswordScreen from "./src/signinFlowScreens/ForgotPasswordScreen";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
+import { RouteNames } from "./src/utils/RoutesNames";
 
 const Stack = createNativeStackNavigator();
 
 const App: React.FC = () => {
   SplashScreen.preventAutoHideAsync();
-  
+
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
@@ -43,34 +44,34 @@ const App: React.FC = () => {
   if (!appIsReady) {
     return null;
   }
- 
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Welcome">
+          <Stack.Navigator initialRouteName={RouteNames.welcome}>
             <Stack.Screen
-              name="Welcome"
+              name={RouteNames.welcome}
               component={WelcomeScreen}
               options={{ headerShown: false }}
             ></Stack.Screen>
             <Stack.Screen
-              name="Login"
+              name={RouteNames.login}
               component={LoginScreen}
               options={{ headerShown: false }}
             ></Stack.Screen>
             <Stack.Screen
-              name="Signup"
+              name={RouteNames.signup}
               component={SignUpScreen}
               options={{ headerShown: false }}
             ></Stack.Screen>
             <Stack.Screen
-              name="Main"
+              name={RouteNames.main}
               component={MainScreen}
               options={{ headerShown: false }}
             ></Stack.Screen>
             <Stack.Screen
-              name="ForgotPassword"
+              name={RouteNames.forgotPassword}
               component={ForgotPasswordScreen}
               options={{ headerShown: false }}
             ></Stack.Screen>

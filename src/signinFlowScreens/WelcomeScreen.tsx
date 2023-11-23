@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import RootStackParamList from "../utils/navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RouteNames } from "../utils/RoutesNames";
 // import { RouteProp } from "@react-navigation/native-stack";
 type WelcomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -17,7 +18,7 @@ const logo = require("../../assets/logo.png");
 const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace("Signup");
+      navigation.replace(RouteNames.login);
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
