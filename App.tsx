@@ -11,6 +11,7 @@ import ForgotPasswordScreen from "./src/signinFlowScreens/ForgotPasswordScreen";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import { RouteNames } from "./src/utils/RoutesNames";
+import { SettingScreen } from "./src/screens/Setting";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,8 +49,8 @@ const App: React.FC = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName={RouteNames.welcome}>
+        <NavigationContainer >
+          <Stack.Navigator initialRouteName={RouteNames.welcome} screenOptions={{  headerTitleAlign: 'center' }}>
             <Stack.Screen
               name={RouteNames.welcome}
               component={WelcomeScreen}
@@ -74,6 +75,10 @@ const App: React.FC = () => {
               name={RouteNames.forgotPassword}
               component={ForgotPasswordScreen}
               options={{ headerShown: false }}
+            ></Stack.Screen>
+            <Stack.Screen
+              name={RouteNames.setting}
+              component={SettingScreen}
             ></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>

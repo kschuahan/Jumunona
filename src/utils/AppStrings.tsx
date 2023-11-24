@@ -18,5 +18,15 @@ export const AppString = {
     reviews: 'Отзывы',
     help: 'Помощь',
     write: 'Написать',
-    status_of_order: '#Status of the order'
+    status_of_order: '#Status of the order',
+    left: 'осталось',
+    my_addresses: 'Мои адреса',
+    notifications: 'Уведомления',
+    city: 'Город',
+    feedback_and_help: 'Обратная связь и помощь',
+    trem_and_privacy: 'Условия и конфиденциальность',
+    about_us: 'О нас',
+    clear_catch: 'Очистить кэш',
+    catch_for_update: 'Проверьте наличие обновлений',
+    go_out: "Выйти"
 }
