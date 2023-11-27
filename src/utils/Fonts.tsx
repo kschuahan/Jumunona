@@ -1,7 +1,7 @@
 
 export const fontFamilty = {
-    regular: "",
-    bold: "",
+    regular: "SegoeUI",
+    bold: "SegoeUIBold",
     semibold: "",
     medium: "",
 

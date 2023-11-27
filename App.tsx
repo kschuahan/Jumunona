@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import MainScreen from "./src/screens/MainScreen";
@@ -12,6 +12,7 @@ import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import { RouteNames } from "./src/utils/RoutesNames";
 import { SettingScreen } from "./src/screens/Setting";
+import { fontFamilty } from "./src/utils/Fonts";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,43 +48,57 @@ const App: React.FC = () => {
   }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-        <NavigationContainer >
-          <Stack.Navigator initialRouteName={RouteNames.welcome} screenOptions={{  headerTitleAlign: 'center' }}>
-            <Stack.Screen
-              name={RouteNames.welcome}
-              component={WelcomeScreen}
-              options={{ headerShown: false }}
-            ></Stack.Screen>
-            <Stack.Screen
-              name={RouteNames.login}
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            ></Stack.Screen>
-            <Stack.Screen
-              name={RouteNames.signup}
-              component={SignUpScreen}
-              options={{ headerShown: false }}
-            ></Stack.Screen>
-            <Stack.Screen
-              name={RouteNames.main}
-              component={MainScreen}
-              options={{ headerShown: false }}
-            ></Stack.Screen>
-            <Stack.Screen
-              name={RouteNames.forgotPassword}
-              component={ForgotPasswordScreen}
-              options={{ headerShown: false }}
-            ></Stack.Screen>
-            <Stack.Screen
-              name={RouteNames.setting}
-              component={SettingScreen}
-            ></Stack.Screen>
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+      <StatusBar backgroundColor={"#0000000D"} barStyle={'dark-content'}
+      />
+      <NavigationContainer >
+        <Stack.Navigator initialRouteName={RouteNames.welcome} screenOptions={{
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontFamily: fontFamilty.bold,
+            fontSize: 21
+          },
+          headerStyle: {
+            backgroundColor: '#0000000D',
+
+          },
+
+          headerShadowVisible: false,
+        }}
+
+        >
+          <Stack.Screen
+            name={RouteNames.welcome}
+            component={WelcomeScreen}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name={RouteNames.login}
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name={RouteNames.signup}
+            component={SignUpScreen}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name={RouteNames.main}
+            component={MainScreen}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name={RouteNames.forgotPassword}
+            component={ForgotPasswordScreen}
+            options={{ headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name={RouteNames.setting}
+            component={SettingScreen}
+          ></Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 };
 
