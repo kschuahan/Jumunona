@@ -10,5 +10,7 @@ export const colors = {
     endOrange: '#FC4A1A',
     startOrange: '#FE8C00',
     darkWhite: '#EDEDED',
-    extraGrey: '#9F9F9F'
+    extraGrey: '#9F9F9F',
+    greyCCCCCC: "#CCCCCC",
+    grey888888: "#888888"
 }

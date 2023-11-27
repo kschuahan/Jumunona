@@ -7,7 +7,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon-512x512.png",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.abhineh.jumunona"
@@ -25,7 +27,11 @@
     "androidStatusBar": {
       "networkActivityIndicatorVisible": true,
       "backgroundColor": "#ffffff"
-      
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b90f0786-a76e-45d8-b6dc-3d730c791e8e"
+      }
     }
   }
 }

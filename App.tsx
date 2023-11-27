@@ -13,6 +13,7 @@ import * as Font from "expo-font";
 import { RouteNames } from "./src/utils/RoutesNames";
 import { SettingScreen } from "./src/screens/Setting";
 import { fontFamilty } from "./src/utils/Fonts";
+import ProfileDetailScreen from "./src/screens/ProfileDetailScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -49,7 +50,7 @@ const App: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-      <StatusBar backgroundColor={"#0000000D"} barStyle={'dark-content'}
+      <StatusBar backgroundColor={"#ffffff"} barStyle={'dark-content'}
       />
       <NavigationContainer >
         <Stack.Navigator initialRouteName={RouteNames.welcome} screenOptions={{
@@ -59,11 +60,11 @@ const App: React.FC = () => {
             fontSize: 21
           },
           headerStyle: {
-            backgroundColor: '#0000000D',
+            backgroundColor: '#ffffff',
 
           },
 
-          headerShadowVisible: false,
+          headerShadowVisible: true,
         }}
 
         >
@@ -95,6 +96,10 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.setting}
             component={SettingScreen}
+          ></Stack.Screen>
+           <Stack.Screen
+            name={RouteNames.profileDetail}
+            component={ProfileDetailScreen}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
