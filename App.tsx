@@ -14,6 +14,7 @@ import { RouteNames } from "./src/utils/RoutesNames";
 import { SettingScreen } from "./src/screens/Setting";
 import { fontFamilty } from "./src/utils/Fonts";
 import ProfileDetailScreen from "./src/screens/ProfileDetailScreen";
+import DeleteAccount from "./src/screens/DeleteAccountScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -100,6 +101,10 @@ const App: React.FC = () => {
            <Stack.Screen
             name={RouteNames.profileDetail}
             component={ProfileDetailScreen}
+          ></Stack.Screen>
+          <Stack.Screen
+            name={RouteNames.deleteAccount}
+            component={DeleteAccount}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

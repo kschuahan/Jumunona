@@ -35,5 +35,14 @@ export const AppString = {
     number: "Номер",
     mail: "Почта",
     change_password: "Изменить пароль",
-    delete_account: "Удалить аккаунт"
+    delete_account: "Удалить аккаунт",
+    please_select_a_reason : "Пожалуйста, выберите причину",
+    need_to_turn_off_your_phone: "Нужно отключить телефон",
+    need_to_turn_off_email: "Нужно отключить почту",
+    security_privacy: "Безопасность/Конфиденциальность",
+    addition_account: "Дополнительный аккаунт",
+    difficulty_with_shopping: "Трудности с покупками",
+    other: "Другой",
+    please_provide_a_reason: "Пожалуйста, укажите причину",
+    next_step: "Следующий шаг"
 }

@@ -62,7 +62,7 @@ const ProfileDetailScreen = ({ navigation }) => {
 
         <View style={{ backgroundColor: colors.white, padding: 10, marginTop: 10, borderRadius: 13 }}>
           <TouchableOpacity onPress={() => {
-
+            navigation.navigate(RouteNames.deleteAccount)
           }} style={[styles.profile, { marginTop: undefined, alignItems: 'center', justifyContent: 'center', padding: 4 }]}>
             <Text style={[styles.textStyle, { fontSize: 16, fontFamily: fontFamilty.semibold }]}>{AppString.delete_account}</Text>
 

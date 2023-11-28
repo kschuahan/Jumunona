@@ -7,5 +7,6 @@ export const RouteNames = {
     main: 'Main',
     forgotPassword: 'ForgotPassword',
     setting: 'Настройки',
-    profileDetail: 'Профиль'
+    profileDetail: 'Профиль',
+    deleteAccount: 'Удаление аккаунта'
 }
