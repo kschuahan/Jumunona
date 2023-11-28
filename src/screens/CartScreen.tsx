@@ -6,6 +6,7 @@ import {
   View,
   Image,
 } from "react-native";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 import { ScrollView } from "react-native-virtualized-view";
 import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -117,7 +118,10 @@ const CartScreen = () => {
           />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <FlatList
           style={styles.addItemCard}
           data={cartItemData}
@@ -135,7 +139,7 @@ const CartScreen = () => {
                   backgroundColor: "#ffffff",
                   borderRadius: 13,
                   marginVertical: 4,
-                  elevation:3
+                  elevation: 3,
                 }}
               >
                 <View
@@ -236,9 +240,7 @@ const CartScreen = () => {
           }}
         />
       </ScrollView>
-      <View style={styles.main2}></View>
-      <View style={styles.main3}></View>
-      <View style={styles.main4}></View>
+      <View style={{position:'absolute', bottom:0, height: 64, width:'99%', backgroundColor:"#ffffff", borderTopEndRadius:13, borderTopStartRadius:13,}}></View>
     </View>
   );
 };
@@ -269,9 +271,4 @@ const styles = StyleSheet.create({
   addItemCard: {
     paddingLeft: 2,
   },
-
-  main1: {},
-  main2: {},
-  main3: {},
-  main4: {},
 });

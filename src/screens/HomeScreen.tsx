@@ -2,13 +2,14 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   TextInput,
   TouchableOpacity,
   Dimensions,
   Image,
   FlatList,
+  Pressable,
 } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 import { LinearGradient } from "expo-linear-gradient";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import RootStackParamList from "../utils/navigation";
@@ -103,93 +104,96 @@ const categoryData: Category[] = [
   // { id: 12, desc: "Make-Up" },
 ];
 const china = require("../../assets/china.png");
+
+const HeaderItem = () => (
+  <View style={styles.header}>
+    <TextInput
+      style={styles.searchBox}
+      placeholder="Спортивная обувь"
+      placeholderTextColor="#9D9D9D"
+    ></TextInput>
+    <TouchableOpacity style={styles.button}>
+      <LinearGradient
+        colors={["#FF7600", "#FF7600"]}
+        start={{ x: 0.4, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.linearGradient}
+      >
+        <Text style={styles.searchButtonText}>Поиск</Text>
+      </LinearGradient>
+    </TouchableOpacity>
+  </View>
+);
+
+const MainCategoriesItem = () => (
+  <View style={{ width: "100%" }}>
+    <FlatList
+      style={styles.categories}
+      scrollEnabled={false}
+      data={categoryData}
+      keyExtractor={(item) => {
+        return item.id.toString();
+      }}
+      numColumns={5}
+      renderItem={({ item }) => {
+        return (
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            {item.id === 10 ? (
+              <TouchableOpacity style={{ alignItems: "center" }}>
+                <Ionicons name="ellipsis-horizontal-outline" size={50} />
+                <Text style={{ fontSize: 13, fontFamily: "SegoeUI" }}>
+                  More...
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={{ alignItems: "center" }}>
+                <Ionicons name="image-outline" size={50} />
+                <Text style={{ fontSize: 13, fontFamily: "SegoeUI" }}>
+                  {item.desc}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        );
+      }}
+    />
+  </View>
+);
+
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TextInput
-          style={styles.searchBox}
-          placeholder="Спортивная обувь"
-          placeholderTextColor="#9D9D9D"
-        ></TextInput>
-        <TouchableOpacity style={styles.button}>
-          <LinearGradient
-            colors={["#FF7600", "#FF7600"]}
-            start={{ x: 0.4, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.linearGradient}
-          >
-            <Text style={styles.searchButtonText}>Поиск</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
-        <View style={{ width: '100%' }}>
-          <FlatList style={styles.categories}
-            scrollEnabled={false}
-            showsVerticalScrollIndicator={false}
-            data={categoryData}
-            keyExtractor={(item) => {
-              return item.id.toString();
-            }}
-            numColumns={5}
-            renderItem={({ item }) => {
-              return (
-                <View
-                  style={{
-                    flex: 1,
-                  }}
-                >
-                  {item.id === 10 ? (
-                    <TouchableOpacity style={{ alignItems: "center" }}>
-                      <Ionicons name="ellipsis-horizontal-outline" size={50} />
-                      <Text style={{ fontSize: 13, fontFamily: "SegoeUI" }}>
-                        More...
-                      </Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity style={{ alignItems: "center" }}>
-                      <Ionicons name="image-outline" size={50} />
-                      <Text style={{ fontSize: 13, fontFamily: "SegoeUI" }}>
-                        {item.desc}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              );
-            }}
-          />
-        </View>
+      <HeaderItem />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
+        <MainCategoriesItem />
         <View style={styles.grid}>
           <MasonryList
             data={data}
             keyExtractor={(item) => {
               return item.id;
             }}
-
             numColumns={2}
             renderItem={({ item }) => {
               return (
-                <View
-                  style={{
-                    borderRadius: 10,
-                    backgroundColor: "#ffffff",
-                    marginHorizontal: 4,
-                    marginVertical: 4,
-                    elevation: 10,
-                    width: "auto",
-                    height: item.id === 1 ? 277 : 311,
-                  }}
+                <Pressable
+                  style={[
+                    styles.gridViewItemStyle,
+                    { height: item.id === 1 ? 277 : 311 },
+                  ]}
                 >
                   <Image
                     source={item.imageURL}
-                    style={{
-                      height: item.id === 1 ? 220 : 255,
-                      paddingHorizontal: 1,
-                      width: "auto",
-                      borderRadius: 10,
-                      marginBottom:8
-                    }}
+                    style={[
+                      styles.gridViewItemImage,
+                      { height: item.id === 1 ? 220 : 255 },
+                    ]}
                   />
                   <View
                     style={{
@@ -249,7 +253,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                       {item.desc}
                     </Text>
                   </View>
-                </View>
+                </Pressable>
               );
             }}
           />
@@ -265,6 +269,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FDFDFD",
+    alignSelf: "center",
   },
   header: {
     flexDirection: "row",
@@ -305,7 +310,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: "SegoeUI",
   },
-
   scrollView: {
     flex: 9 / 10,
     paddingTop: 4,
@@ -338,6 +342,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#FDFDFD",
     marginBottom: 8,
     alignSelf: "stretch",
+  },
+  gridViewItemStyle: {
+    borderRadius: 10,
+    backgroundColor: "#ffffff",
+    marginHorizontal: 4,
+    marginVertical: 4,
+    elevation: 10,
+    width: "auto",
+  },
+  gridViewItemImage: {
+    paddingHorizontal: 1,
+    width: "auto",
+    borderRadius: 10,
+    marginBottom: 8,
   },
 });
 

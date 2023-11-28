@@ -45,6 +45,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
             fontFamily: "SegoeUIBold",
             color: "#FF7600",
             paddingTop: 8,
+            textAlign:'center'
           }}
         >
           Jumunona
@@ -210,6 +211,7 @@ export default ForgotPasswordScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignSelf:'center'
   },
   top: {
     alignItems: "center",
@@ -233,7 +235,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 201,
     width: 359,
-    marginLeft: 12,
   },
   bottom: {
     flexDirection: "row",
@@ -289,6 +290,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingRight: 10,
+    
   },
   passwordText: {
     color: "#fff",

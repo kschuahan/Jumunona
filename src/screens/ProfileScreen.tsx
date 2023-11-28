@@ -11,13 +11,13 @@ import { dimensions } from '../utils/sizes';
 import { RouteNames } from '../utils/RoutesNames';
 
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ( props: any ) => {
   return (
     <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
 
         <Profile onClick={() => {
-          navigation.navigate(RouteNames.setting)
+          props.navigation.navigate(RouteNames.setting)
         }} />
         <View style={{ flexDirection: 'row', marginTop: 20, marginHorizontal: 20, justifyContent: 'space-between' }}>
           <IconWithText title={AppString.want_to} icon='heart-outline' onClick={() => {
