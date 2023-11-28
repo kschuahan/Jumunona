@@ -28,5 +28,12 @@ export const AppString = {
     about_us: 'О нас',
     clear_catch: 'Очистить кэш',
     catch_for_update: 'Проверьте наличие обновлений',
-    go_out: "Выйти"
+    go_out: "Выйти",
+    name: "Имя",
+    gender: "Пол",
+    age: "Возраст",
+    number: "Номер",
+    mail: "Почта",
+    change_password: "Изменить пароль",
+    delete_account: "Удалить аккаунт"
 }

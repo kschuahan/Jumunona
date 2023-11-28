@@ -6,5 +6,6 @@ export const RouteNames = {
     signup: 'Signup',
     main: 'Main',
     forgotPassword: 'ForgotPassword',
-    setting: 'Настройки'
+    setting: 'Настройки',
+    profileDetail: 'Профиль'
 }

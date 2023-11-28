@@ -12,76 +12,80 @@ import { useCallback, useEffect, useState } from "react";
 import { HeaderBackButton } from '@react-navigation/elements';
 import { RouteNames } from '../utils/RoutesNames';
 import { StatusBar } from 'expo-status-bar';
+import { fontFamilty } from '../utils/Fonts';
 
 
 
 export const SettingScreen = ({ navigation }) => {
 
-    useEffect(() => {
+  useEffect(() => {
 
-        navigation.setOptions({
-            headerTitle: RouteNames.setting,
-            headerRight: (() => <TouchableOpacity style={{ alignItems: "center" }}>
-                <Ionicons name="ellipsis-horizontal-outline" size={24} />
-            </TouchableOpacity>),
+    navigation.setOptions({
+      headerTitle: RouteNames.setting,
 
-            headerLeft: () => (
-                <TouchableOpacity onPress={() => {
-                    navigation.goBack()
-                }} style={{ alignItems: "center" }}>
-                    <Ionicons name="chevron-back-outline" size={24} />
-                </TouchableOpacity>
-            )
+      headerRight: (() => <TouchableOpacity style={{ alignItems: "center" }}>
+        <Ionicons name="ellipsis-horizontal-outline" size={24} />
+      </TouchableOpacity>),
 
-        })
-    }, [])
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => {
+          navigation.goBack()
+        }} style={{ alignItems: "center" }}>
+          <Ionicons name="chevron-back-outline" size={24} />
+        </TouchableOpacity>
+      )
 
-    return (
-        <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
-                <Profile onClick={() => {
+    })
+  }, [])
 
-                }} />
-                <Card style={{ backgroundColor: colors.white, padding: 10, marginTop: 20 }}>
-                    <TextWithIcon title={AppString.notifications} onClick={() => { }} />
-                    <TextWithIcon title={AppString.city} onClick={() => { }} />
-                    <TextWithIcon title={AppString.feedback_and_help} onClick={() => { }} />
+  return (
+    <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
+        <Profile onClick={() => {
+          navigation.navigate(RouteNames.profileDetail)
+        }} />
+        <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 9, borderRadius: 13 }}>
+          <TextWithIcon title={AppString.notifications} onClick={() => { }} />
+          <TextWithIcon title={AppString.city} onClick={() => { }} />
+          <TextWithIcon title={AppString.feedback_and_help} onClick={() => { }} />
 
-                </Card>
+        </View>
 
-                <Card style={{ backgroundColor: colors.white, padding: 10, marginTop: 20 }}>
-                    <TextWithIcon title={AppString.trem_and_privacy} onClick={() => { }} />
-                    <TextWithIcon title={AppString.about_us} onClick={() => { }} />
-                    <TextWithIcon title={AppString.clear_catch} onClick={() => { }} />
-                    <TextWithIcon title={AppString.catch_for_update} onClick={() => { }} />
+        <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 9, borderRadius: 13 }}>
+          <TextWithIcon title={AppString.trem_and_privacy} onClick={() => { }} />
+          <TextWithIcon title={AppString.about_us} onClick={() => { }} />
+          <TextWithIcon title={AppString.clear_catch} onClick={() => { }} />
+          <TextWithIcon title={AppString.catch_for_update} onClick={() => { }} />
 
-                </Card>
+        </View>
 
-                <Card style={{ backgroundColor: colors.white, padding: 10, marginTop: 20 }}>
-                    <TouchableOpacity onPress={() => {
+        <View style={{ backgroundColor: colors.white, padding: 10, marginTop: 9, borderRadius: 13 }}>
+          <TouchableOpacity onPress={() => {
 
-                    }} style={[styles.profile, { marginTop: undefined, alignItems: 'center', justifyContent: 'center', padding: 4 }]}>
-                        <Text style={[styles.textStyle, { fontSize: 16, fontWeight: '500' }]}>{AppString.go_out}</Text>
+          }} style={[styles.profile, { marginTop: undefined, alignItems: 'center', justifyContent: 'center', padding: 4 }]}>
+            <Text style={[styles.textStyle, { fontSize: 16, fontWeight: '500' }]}>{AppString.go_out}</Text>
 
-                    </TouchableOpacity>
+          </TouchableOpacity>
 
-                </Card>
-            </View></ScrollView>
-    )
+        </View>
+      </View></ScrollView>
+  )
 }
 
 
 const Profile = ({ onClick }) => {
 
-    return (
-      <Card style={{ backgroundColor: colors.white }}>
-        <View>
+  return (
+    <View style={{ backgroundColor: colors.white, borderRadius: 13, marginTop:4 }}>
+      <View>
+        <TouchableOpacity onPress={onClick}>
           <View
             style={[
               styles.profile,
               { alignItems: "center", marginTop: undefined, padding: 10 },
             ]}
           >
+
             <View
               style={{
                 flexDirection: "row",
@@ -91,13 +95,13 @@ const Profile = ({ onClick }) => {
             >
               <Image
                 source={{ uri: imagesUrl.profile }}
-                style={{ height: 70, width: 70, borderRadius: 35 }}
+                style={{ height: 60, width: 60, borderRadius: 35 }}
               />
-              <View style={{ paddingHorizontal: 10 }}>
+              <View style={{ paddingHorizontal: 10, gap: 4 }}>
                 <Text
                   style={[
                     styles.textStyle,
-                    { fontSize: 21, fontWeight: "bold", fontFamily: "SegoeUI" },
+                    { fontSize: 16, fontFamily: fontFamilty.bold },
                   ]}
                 >
                   User name
@@ -107,7 +111,7 @@ const Profile = ({ onClick }) => {
                     styles.textStyle,
                     {
                       color: colors.grey,
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: "500",
                       fontFamily: "SegoeUI",
                     },
@@ -117,50 +121,51 @@ const Profile = ({ onClick }) => {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity onPress={onClick}>
-              <Ionicons
-                name={"chevron-forward-outline"}
-                color={colors.black}
-                size={18}
-              />
-            </TouchableOpacity>
-          </View>
 
-          <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
+            <Ionicons
+              name={"chevron-forward-outline"}
+              color={colors.extraGrey}
+              size={15}
+            />
+
+          </View>
+        </TouchableOpacity>
+        <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
+        <View style={{ paddingHorizontal: 10, paddingBottom:6 }}>
           <TextWithIcon
             title={AppString.my_addresses}
             padding={10}
-            onClick={() => {}}
+            onClick={() => { }}
           />
-        </View>
-      </Card>
-    );
+        </View></View>
+    </View>
+  );
 }
 
 
-const TextWithIcon = ({ title = AppString.address, padding = 8, onClick }) => {
+const TextWithIcon = ({ title = AppString.address, padding = 10, onClick }) => {
 
-    return (
-      <TouchableOpacity
-        onPress={onClick}
+  return (
+    <TouchableOpacity
+      onPress={onClick}
+      style={[
+        styles.profile,
+        { marginTop: undefined, alignItems: "center", paddingVertical: padding },
+      ]}
+    >
+      <Text
         style={[
-          styles.profile,
-          { marginTop: undefined, alignItems: "center", padding: padding },
+          styles.textStyle,
+          { fontSize: 16, fontWeight: "400", fontFamily: fontFamilty.regular },
         ]}
       >
-        <Text
-          style={[
-            styles.textStyle,
-            { fontSize: 16, fontWeight: "600", fontFamily: "SegoeUI" },
-          ]}
-        >
-          {title}
-        </Text>
-        <Ionicons
-          name={"chevron-forward-outline"}
-          color={colors.extraGrey}
-          size={20}
-        />
-      </TouchableOpacity>
-    );
+        {title}
+      </Text>
+      <Ionicons
+        name={"chevron-forward-outline"}
+        color={colors.extraGrey}
+        size={15}
+      />
+    </TouchableOpacity>
+  );
 }
