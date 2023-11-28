@@ -40,7 +40,7 @@ export const AppString = {
     current_phone_number: 'Текущий номер телефона',
     change: 'Изменить',
     back: 'Назад',
-    please_select_a_reason : "Пожалуйста, выберите причину",
+    please_select_a_reason: "Пожалуйста, выберите причину",
     need_to_turn_off_your_phone: "Нужно отключить телефон",
     need_to_turn_off_email: "Нужно отключить почту",
     security_privacy: "Безопасность/Конфиденциальность",
@@ -55,5 +55,6 @@ export const AppString = {
     the_following_conditions_must_be_met_Title: "Должны быть выполнены следующие условия:",
     the_following_conditions_must_be_met_Desc: "1. На аккаунте не было недавних транзакций. В аккаунте отсутствуют невыполненные заказы, а также завершенные заказы, сделанные менее 15 дней назад. \n2. На аккаунте нет возвратов. Ваш аккаунт не имеет неразрешенных споров или жалоб. \n3. Аккаунт не нарушал правила. На аккаунте отсутствует история нарушений правил или ограничений.",
     i_have_read_and_agree_to_the_cancellation_terms: "Я прочитал(а) и согласен(а) с условиями отмены.",
-    confirm_delete: "Подтвердить удаление"
+    confirm_delete: "Подтвердить удаление",
+    current_mail: 'Текущая почта'
 }

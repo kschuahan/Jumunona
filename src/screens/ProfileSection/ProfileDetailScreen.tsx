@@ -40,7 +40,7 @@ const ProfileDetailScreen = ({ navigation }) => {
         <UserAvatar onClick={() => {
 
         }} />
-        <View style={{ backgroundColor: colors.white, paddingHorizontal:3, marginTop: 10, borderRadius: 13 }}>
+        <View style={{ backgroundColor: colors.white, paddingHorizontal: 3, marginTop: 10, borderRadius: 13 }}>
           <TextWithIcon title={AppString.name} value={"Valijon"} onClick={() => { }} />
           <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
 
@@ -51,12 +51,14 @@ const ProfileDetailScreen = ({ navigation }) => {
 
         </View>
 
-        <View style={{ backgroundColor: colors.white, paddingVertical: 10, paddingHorizontal:3, marginTop: 10, borderRadius: 13 }}>
-          <TextWithIcon title={AppString.number} value={"150******50"} onClick={() => { 
-            navigation.navigate(RouteNames.viewPhoneNumber)
+        <View style={{ backgroundColor: colors.white, paddingVertical: 10, paddingHorizontal: 3, marginTop: 10, borderRadius: 13 }}>
+          <TextWithIcon title={AppString.number} value={"150******50"} onClick={() => {
+            navigation.navigate(RouteNames.viewPhoneNumber, { isMobile: true })
           }} />
           <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
-          <TextWithIcon title={AppString.mail} value={"Valijon@gmail.com"} onClick={() => { }} />
+          <TextWithIcon title={AppString.mail} value={"Valijon@gmail.com"} onClick={() => {
+            navigation.navigate(RouteNames.viewPhoneNumber, { isMobile: false })
+          }} />
           <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
           <TextWithIcon title={AppString.change_password} onClick={() => { }} />
 
@@ -106,40 +108,40 @@ const UserAvatar = ({ onClick }) => {
 const TextWithIcon = ({ title = AppString.address, value = "", onClick }) => {
 
   return (
-      <TouchableOpacity
-        onPress={onClick}
+    <TouchableOpacity
+      onPress={onClick}
+      style={[
+        styles.profile,
+        { marginTop: undefined, alignItems: "center", paddingHorizontal: 14, paddingBottom: 11, paddingTop: 15 },
+      ]}
+    >
+
+      <Text
         style={[
-          styles.profile,
-          { marginTop: undefined, alignItems: "center", paddingHorizontal: 14, paddingBottom: 11, paddingTop: 15 },
+          styles.textStyle,
+          { fontSize: 14, fontFamily: fontFamilty.semibold },
         ]}
       >
+        {title}
+      </Text>
 
+      <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "flex-start" }}>
         <Text
           style={[
             styles.textStyle,
-            { fontSize: 14, fontFamily: fontFamilty.semibold },
+            { fontSize: 14, fontFamily: fontFamilty.semibold, color: colors.grey888888, paddingEnd: 15 },
           ]}
         >
-          {title}
+          {value}
         </Text>
+        <Ionicons
+          name={"chevron-forward-outline"}
+          color={colors.greyCCCCCC}
+          size={20}
+        />
+      </View>
 
-        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "flex-start" }}>
-          <Text
-            style={[
-              styles.textStyle,
-              { fontSize: 14, fontFamily: fontFamilty.semibold, color: colors.grey888888, paddingEnd: 15 },
-            ]}
-          >
-            {value}
-          </Text>
-          <Ionicons
-            name={"chevron-forward-outline"}
-            color={colors.greyCCCCCC}
-            size={20}
-          />
-        </View>
-
-      </TouchableOpacity>
+    </TouchableOpacity>
   );
 }
 

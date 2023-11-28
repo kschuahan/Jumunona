@@ -16,12 +16,13 @@ import { fontFamilty } from '../utils/Fonts';
 
 
 
-export const ViewMobileNumberScreen = ({ navigation }) => {
+export const ViewMobileNumberScreen = ({ navigation, route }) => {
 
+    const isMobile = route.params.isMobile
     useEffect(() => {
 
         navigation.setOptions({
-            headerTitle: RouteNames.phoneNumber,
+            headerTitle: isMobile ? RouteNames.viewPhoneNumber : AppString.mail,
 
             headerRight: (() => <TouchableOpacity style={{ alignItems: "center" }}>
                 <Ionicons name="ellipsis-horizontal-outline" size={24} />
@@ -48,7 +49,7 @@ export const ViewMobileNumberScreen = ({ navigation }) => {
                         { fontSize: 17, fontFamily: fontFamilty.regular, alignSelf: 'center', marginTop: 68 },
                     ]}
                 >
-                    {AppString.current_phone_number}
+                    {isMobile ? AppString.current_phone_number : AppString.current_mail}
                 </Text>
 
                 <Text
@@ -57,7 +58,7 @@ export const ViewMobileNumberScreen = ({ navigation }) => {
                         { fontSize: 24, fontFamily: fontFamilty.bold, alignSelf: 'center', marginTop: 21 },
                     ]}
                 >
-                    150******50
+                    {isMobile ? "150******50" : "Valijon@gmail.com"}
                 </Text>
 
 
