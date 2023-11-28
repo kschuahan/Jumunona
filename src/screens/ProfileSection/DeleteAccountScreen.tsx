@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { StyleSheet, FlatList, KeyboardAvoidingView, TouchableOpacity, View, Text, TextInput, Pressable, Platform } from "react-native"
-import { RouteNames } from "../utils/RoutesNames"
+import { RouteNames } from "../../utils/RoutesNames"
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { styles } from "../utils/AppStyles";
-import { AppString } from "../utils/AppStrings";
-import { fontFamilty } from "../utils/Fonts";
-import { colors } from "../utils/AppColors";
+import { styles } from "../../utils/AppStyles";
+import { AppString } from "../../utils/AppStrings";
+import { fontFamilty } from "../../utils/Fonts";
+import { colors } from "../../utils/AppColors";
 import { LinearGradient } from "expo-linear-gradient";
 import { refresh } from "@react-native-community/netinfo";
 
@@ -81,6 +81,9 @@ const DeleteAccount = ({ navigation }) => {
             onChangeText={(text: string) => {
               setReasonString(text)
             }}
+            onDelete={ () => {
+              navigation.navigate(RouteNames.confirmDeleteAccount)
+            }}
           />
         }
       />
@@ -139,7 +142,7 @@ const separator = () => {
   return <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
 }
 
-const FooterView = ({ value, onChangeText }) => {
+const FooterView = ({ value, onChangeText, onDelete }) => {
   return (
     <View style={{}}>
       <TextInput
@@ -165,7 +168,7 @@ const FooterView = ({ value, onChangeText }) => {
       />
       <TouchableOpacity
         onPress={() => {
-
+          onDelete()
         }}
         style={{ paddingTop: 14 }}
       >
@@ -183,7 +186,7 @@ const FooterView = ({ value, onChangeText }) => {
           }}
         >
           <Text
-            style={{ fontSize: 18, color: "#fff", fontFamily: fontFamilty.bold }}
+            style={{ fontSize: 18, color: "#ffffff", fontFamily: fontFamilty.bold }}
           >
             {AppString.next_step}
           </Text>

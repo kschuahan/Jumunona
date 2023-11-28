@@ -1,15 +1,15 @@
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { styles } from '../utils/AppStyles'
-import { imagesUrl } from '../utils/AppIcons'
+import { styles } from '../../utils/AppStyles'
+import { imagesUrl } from '../../utils/AppIcons'
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { colors } from '../utils/AppColors';
-import { AppString } from '../utils/AppStrings';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
 import { Card } from 'react-native-paper'
 import { LinearGradient } from "expo-linear-gradient";
-import { dimensions } from '../utils/sizes';
-import { RouteNames } from '../utils/RoutesNames';
-import { fontFamilty } from '../utils/Fonts';
+import { dimensions } from '../../utils/sizes';
+import { RouteNames } from '../../utils/RoutesNames';
+import { fontFamilty } from '../../utils/Fonts';
 
 
 const ProfileScreen = ( props: any ) => {

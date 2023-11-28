@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 import { colors } from './AppColors';
 import { fontFamilty } from './Fonts';
 
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     },
     profile: {
         flexDirection: 'row',
-        marginTop: 50,
+        marginTop: Platform.OS == 'ios' ? undefined : 25,
         justifyContent: 'space-between'
     },
     textStyle: {

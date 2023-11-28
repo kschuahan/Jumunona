@@ -8,5 +8,6 @@ export const RouteNames = {
     forgotPassword: 'ForgotPassword',
     setting: 'Настройки',
     profileDetail: 'Профиль',
-    deleteAccount: 'Удаление аккаунта'
+    deleteAccount: 'Удаление аккаунта',
+    confirmDeleteAccount: "Confirm Delete Account"
 }

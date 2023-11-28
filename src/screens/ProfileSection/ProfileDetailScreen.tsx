@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
-import { styles } from '../utils/AppStyles'
-import { imagesUrl } from '../utils/AppIcons'
+import { styles } from '../../utils/AppStyles'
+import { imagesUrl } from '../../utils/AppIcons'
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { colors } from '../utils/AppColors';
-import { AppString } from '../utils/AppStrings';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
 import { Card } from 'react-native-paper'
 import { LinearGradient } from "expo-linear-gradient";
-import { dimensions } from '../utils/sizes';
-import { RouteNames } from '../utils/RoutesNames';
+import { dimensions } from '../../utils/sizes';
+import { RouteNames } from '../../utils/RoutesNames';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { fontFamilty } from '../utils/Fonts';
+import { fontFamilty } from '../../utils/Fonts';
 
 
 const ProfileDetailScreen = ({ navigation }) => {
