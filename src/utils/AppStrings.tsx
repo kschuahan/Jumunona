@@ -35,5 +35,9 @@ export const AppString = {
     number: "Номер",
     mail: "Почта",
     change_password: "Изменить пароль",
-    delete_account: "Удалить аккаунт"
+    delete_account: "Удалить аккаунт",
+    phone_number: 'Номер телефона',
+    current_phone_number: 'Текущий номер телефона',
+    change: 'Изменить',
+    back: 'Назад'
 }

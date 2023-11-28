@@ -52,7 +52,9 @@ const ProfileDetailScreen = ({ navigation }) => {
         </View>
 
         <View style={{ backgroundColor: colors.white, paddingVertical: 10, paddingHorizontal:3, marginTop: 10, borderRadius: 13 }}>
-          <TextWithIcon title={AppString.number} value={"150******50"} onClick={() => { }} />
+          <TextWithIcon title={AppString.number} value={"150******50"} onClick={() => { 
+            navigation.navigate(RouteNames.viewPhoneNumber)
+          }} />
           <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
           <TextWithIcon title={AppString.mail} value={"Valijon@gmail.com"} onClick={() => { }} />
           <View style={{ height: 1, backgroundColor: colors.darkWhite }} />

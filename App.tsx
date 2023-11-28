@@ -15,6 +15,7 @@ import { RouteNames } from "./src/utils/RoutesNames";
 import { SettingScreen } from "./src/screens/Setting";
 import { fontFamilty } from "./src/utils/Fonts";
 import ProfileDetailScreen from "./src/screens/ProfileDetailScreen";
+import { ViewMobileNumberScreen } from "./src/screens/ViewMobileNumber";
 
 const Stack = createNativeStackNavigator();
 
@@ -101,6 +102,10 @@ const App: React.FC = () => {
            <Stack.Screen
             name={RouteNames.profileDetail}
             component={ProfileDetailScreen}
+          ></Stack.Screen>
+            <Stack.Screen
+            name={RouteNames.viewPhoneNumber}
+            component={ViewMobileNumberScreen}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

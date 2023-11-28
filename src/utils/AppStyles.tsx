@@ -21,6 +21,21 @@ export const styles = StyleSheet.create({
     textStyle: {
         color: colors.black,
         fontSize: 12,
-        fontFamily:fontFamilty.regular
+        fontFamily: fontFamilty.regular
+    },
+    loginButton: {
+        marginHorizontal: 30,
+
+    },
+    buttonGradient: {
+        height: 45,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 100,
+    },
+    greyButton: {
+        marginTop: 15,
+        backgroundColor: colors.whiteF2F2F2, height: 45, borderRadius: 100, alignItems: "center",
+        justifyContent: "center",
     }
 });

@@ -1,3 +1,4 @@
+import { AppString } from "./AppStrings";
 
 
 export const RouteNames = {
@@ -7,5 +8,7 @@ export const RouteNames = {
     main: 'Main',
     forgotPassword: 'ForgotPassword',
     setting: 'Настройки',
-    profileDetail: 'Профиль'
+    profileDetail: 'Профиль',
+    viewPhoneNumber: AppString.phone_number,
+
 }
