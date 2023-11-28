@@ -1,15 +1,15 @@
-import { Modal, TouchableOpacity, StyleSheet, View, Text, TextInput } from "react-native";
+import { Modal, TouchableOpacity, StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
 import { styles } from "../utils/AppStyles";
 import { AppString } from "../utils/AppStrings";
 import { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors } from "../utils/AppColors";
-
+import { fontFamilty } from "../utils/Fonts";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel }) => {
 
-   
     const [number, setNumber] = useState("")
     const [otp, setOtp] = useState("")
 
@@ -63,46 +63,48 @@ export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel 
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: "row", justifyContent: "space-between",  }}>
-                <TouchableOpacity
-                    onPress={onCancel}
-                    style={{ marginVertical: 16,  width: "45%"  }}
-                >
-                    <LinearGradient
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={["#FE8C00", "#FC4A1A"]}
+                <View style={{ flexDirection: "row", justifyContent: "space-between", }}>
+                    <TouchableOpacity
+                        onPress={onCancel}
+                        style={{ marginVertical: 16, width: "45%" }}
+                    >
+                        <LinearGradient
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            colors={["#FE8C00", "#FC4A1A"]}
+                            style={{
+                                elevation: 4,
+                                height: 46,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderRadius: 23,
+
+                            }}
+                        >
+                            <Text
+                                style={{ fontSize: 16, color: colors.white, paddingHorizontal: 20, fontFamily: "SegoeUIBold" }}
+                            >
+                                {AppString.cancel}
+                            </Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={onConfirm}
                         style={{
-                            elevation: 4,
+                            marginVertical: 16, elevation: 4,
                             height: 46,
                             alignItems: "center",
                             justifyContent: "center",
-                            borderRadius: 23,
-
+                            borderRadius: 23, borderWidth: 1, borderColor: colors.endOrange, width: "45%"
                         }}
                     >
-                        <Text
-                            style={{ fontSize: 16, color: colors.white, paddingHorizontal: 20, fontFamily: "SegoeUIBold" }}
-                        >
-                            {AppString.cancel}
-                        </Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={onConfirm}
-                    style={{ marginVertical: 16,  elevation: 4,
-                        height: 46,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderRadius: 23, borderWidth: 1, borderColor: colors.endOrange, width: "45%" }}
-                >
                         <Text
                             style={{ fontSize: 16, color: colors.endOrange, paddingHorizontal: 20, fontFamily: "SegoeUIBold" }}
                         >
                             {AppString.confirm}
                         </Text>
-                    
-                </TouchableOpacity>
+
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -110,6 +112,31 @@ export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel 
 }
 
 
+
+export const FailAccDeletePopu = ({ isShow = false, onConfirm, onCancel }) => {
+
+    const [number, setNumber] = useState("")
+    const [otp, setOtp] = useState("")
+
+    return <Modal transparent={true} animationType={'slide'} visible={isShow} onRequestClose={onCancel} >
+        <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
+            <View style={[styles.bottom_sheet, { paddingHorizontal: 10, justifyContent: "center", alignContent: "center" }]}>
+                <Text style={[styles.textStyle, { paddingVertical: 10, fontFamily: fontFamilty.semibold, fontSize: 20, textAlign: "center" }]}>{AppString.failed_to_delete_acc}</Text>
+                <Text style={[styles.textStyle, { paddingBottom: 10, fontFamily: fontFamilty.regular, fontSize: 14 }]}>{AppString.failed_acc_delete_reason}</Text>
+            </View>
+            <Pressable onPress={onCancel} >
+            <Ionicons
+                name={"close-circle-outline"}
+                size={40}
+                color={colors.white}
+                style={{paddingTop: 20}}
+            />
+            </Pressable>
+
+
+        </View>
+    </Modal>
+}
 const style = StyleSheet.create({
     textInput: {
         width: "100%",

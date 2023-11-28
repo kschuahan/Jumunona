@@ -8,7 +8,7 @@ import { fontFamilty } from "../../utils/Fonts";
 import { AppString } from "../../utils/AppStrings";
 import { ScrollView } from "react-native-virtualized-view";
 import { LinearGradient } from "expo-linear-gradient";
-import { VerifyDeleteAccountDialog } from "../../components/Dialogs";
+import { FailAccDeletePopu, VerifyDeleteAccountDialog } from "../../components/Dialogs";
 
 const ConfirmDeleteAccount = ({ navigation }) => {
 
@@ -32,7 +32,7 @@ const ConfirmDeleteAccount = ({ navigation }) => {
 
   const [agreeToTnC, setAgreeToTnC] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
-
+  const [showFailurePop, setShowFailurePop] = useState(false)
   return (
     <ScrollView style={[styles.container]} showsVerticalScrollIndicator={false}>
       <TitleDesciptionView title={AppString.by_deleting_you_waive_rights_Title} desc={AppString.by_deleting_you_waive_rights_Desc} />
@@ -71,8 +71,17 @@ const ConfirmDeleteAccount = ({ navigation }) => {
         isShow={showConfirm}
         onConfirm={() => {
           setShowConfirm(false)
+          setShowFailurePop(true)
         }} onCancel={() => {
           setShowConfirm(false)
+        }} />
+
+      <FailAccDeletePopu
+        isShow={showFailurePop}
+        onConfirm={() => {
+          setShowFailurePop(false)
+        }} onCancel={() => {
+          setShowFailurePop(false)
         }} />
     </ScrollView>
   )
