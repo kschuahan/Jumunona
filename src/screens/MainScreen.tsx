@@ -12,12 +12,6 @@ import { useIsFocused } from "@react-navigation/native";
 const Tab = createMaterialBottomTabNavigator();
 const home = require("../../assets/icon-36x36.png");
 
-{
-  /* <Image source={home} style={{ width: 25, height: 25 }} /> */
-}
-{
-  /* <Ionicons name="home" color={color} size={26} /> */
-}
 const MainScreen: React.FC = () => {
   return (
     <Tab.Navigator
@@ -26,7 +20,7 @@ const MainScreen: React.FC = () => {
         backgroundColor: "#ffffff", height: 90, elevation: 40, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderColor: 'transparent',
         overflow: 'hidden'
       }}
-      initialRouteName="Home"
+      initialRouteName="Cart"
       inactiveColor="#ff7600"
       activeColor="#ff7600"
 

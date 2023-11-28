@@ -28,6 +28,18 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
         <Image source={logo} style={styles.logo} />
       </View>
       <Text style={styles.text}>Jumunona</Text>
+      <Text
+        style={{
+          textAlign: "center",
+          color: "#BBBBBB",
+          marginBottom: 64,
+          fontFamily: "SegoeUI",
+          position: "absolute",
+          bottom: 0,
+        }}
+      >
+        Jumunona e-Commerce Co. Ltd.
+      </Text>
     </View>
   );
 };

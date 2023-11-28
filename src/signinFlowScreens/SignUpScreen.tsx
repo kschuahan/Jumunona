@@ -226,20 +226,20 @@ export default SignUpScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignSelf: "center",
   },
   top: {
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 23.5,
     paddingBottom: 48,
+    alignSelf: "center",
   },
   registerText: {
     fontSize: 21,
     fontFamily: "SegoeUIBold",
     width: 160,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingLeft: 27,
+    textAlign: "center",
   },
   middle: {
     paddingHorizontal: 12,
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 248,
     width: 359,
-    marginLeft: 12,
+    alignSelf: "center",
   },
   bottom: {
     flexDirection: "row",
@@ -257,6 +257,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingTop: 32,
     marginHorizontal: 32,
+    alignSelf: "center",
   },
   _992: {
     color: "#fff",
@@ -305,6 +306,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingRight: 10,
+    textAlign: "center",
   },
   passwordText: {
     color: "#fff",
@@ -359,6 +361,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
     fontFamily: "SegoeUIBold",
+    textAlign: "center",
   },
   loginButtonGradient: {
     elevation: 4,

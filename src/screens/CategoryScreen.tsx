@@ -1,13 +1,14 @@
 import {
   FlatList,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   TextInput,
   View,
   Text,
   Image,
+  Pressable,
 } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MasonryList from "@react-native-seoul/masonry-list";
@@ -103,25 +104,25 @@ const data: Product[] = [
   },
 ];
 
+const HeaderCategoryScreen = () => (
+  <View style={styles.headerContainer}>
+    <View style={styles.searchBarBG}>
+      <Ionicons name="search-outline" size={17} style={styles.searchIcon} />
+      <TextInput style={styles.searchInput} placeholder="Suggested Category" />
+    </View>
+  </View>
+);
+
 const CategoryScreen = () => {
   const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] = useState(1);
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.searchBarBG}>
-          <Ionicons name="search-outline" size={17} style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Suggested Category"
-          />
-        </View>
-      </View>
+      <HeaderCategoryScreen />
       <View style={styles.primaryCategories}>
         <FlatList
           style={styles.primaryCategoriesContent}
           data={categoryData}
           horizontal
-          showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => {
             return item.id.toString();
           }}
@@ -150,22 +151,16 @@ const CategoryScreen = () => {
         />
         <View style={styles.downArrowButton}>
           {/* <View style={{ height: 20, width: 3, backgroundColor: '#E2E2E2', borderRadius: 100 }} /> */}
-          <Ionicons
-            name="chevron-down-outline"
-            size={24}
-            style={
-              {
-                // color: isA ? "#ff7600" : "black",
-              }
-            }
-          />
+          <Ionicons name="chevron-down-outline" size={24} />
         </View>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollable}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollable}
+      >
         <View style={styles.secondaryCategoriesBG}>
           <FlatList
             scrollEnabled={false}
-            showsVerticalScrollIndicator={false}
             data={mensCategoryData}
             keyExtractor={(item) => {
               return item.id.toString();
@@ -208,7 +203,7 @@ const CategoryScreen = () => {
             numColumns={2}
             renderItem={({ item }) => {
               return (
-                <View
+                <Pressable
                   style={{
                     borderRadius: 12,
                     backgroundColor: "#ffffff",
@@ -289,7 +284,7 @@ const CategoryScreen = () => {
                       {item.desc}
                     </Text>
                   </View>
-                </View>
+                </Pressable>
               );
             }}
           />
@@ -307,6 +302,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F6F6F6",
+    alignSelf:'center'
   },
   headerContainer: {
     borderBottomLeftRadius: 24,

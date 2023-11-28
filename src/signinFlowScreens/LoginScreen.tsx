@@ -131,10 +131,12 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignSelf: "center",
   },
   top: {
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
     paddingTop: 23.5,
     paddingBottom: 48,
   },
@@ -145,9 +147,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "hsl(0, 0%, 98%)",
     borderRadius: 20,
-    marginLeft: 12,
     width: 359,
     height: 107,
+    alignSelf: "center",
   },
   bottom: {
     flexDirection: "row",

@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WelcomeScreen from "./src/signinFlowScreens/WelcomeScreen";
 import LoginScreen from "./src/signinFlowScreens/LoginScreen";
 import SignUpScreen from "./src/signinFlowScreens/SignUpScreen";
+import "react-native-gesture-handler";
 import ForgotPasswordScreen from "./src/signinFlowScreens/ForgotPasswordScreen";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
