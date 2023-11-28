@@ -182,7 +182,6 @@ const FooterView = ({ value, onChangeText, onDelete }) => {
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 23,
-
           }}
         >
           <Text

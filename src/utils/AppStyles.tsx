@@ -37,5 +37,17 @@ export const styles = StyleSheet.create({
         marginTop: 15,
         backgroundColor: colors.whiteF2F2F2, height: 45, borderRadius: 100, alignItems: "center",
         justifyContent: "center",
-    }
+    },
+    bottom_sheet: {
+        backgroundColor: 'white',
+        width: "90%",
+        elevation: 10,
+        borderRadius: 13
+    },
+    botton_view: {
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1,
+        backgroundColor: 'rgba(0, 0,0, .6 )'
+    },
 });

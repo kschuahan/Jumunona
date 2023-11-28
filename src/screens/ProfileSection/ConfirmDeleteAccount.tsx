@@ -8,6 +8,7 @@ import { fontFamilty } from "../../utils/Fonts";
 import { AppString } from "../../utils/AppStrings";
 import { ScrollView } from "react-native-virtualized-view";
 import { LinearGradient } from "expo-linear-gradient";
+import { VerifyDeleteAccountDialog } from "../../components/Dialogs";
 
 const ConfirmDeleteAccount = ({ navigation }) => {
 
@@ -26,11 +27,12 @@ const ConfirmDeleteAccount = ({ navigation }) => {
           <Ionicons name="chevron-back-outline" size={24} />
         </TouchableOpacity>
       )
-
     })
   }, [])
 
   const [agreeToTnC, setAgreeToTnC] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+
   return (
     <ScrollView style={[styles.container]} showsVerticalScrollIndicator={false}>
       <TitleDesciptionView title={AppString.by_deleting_you_waive_rights_Title} desc={AppString.by_deleting_you_waive_rights_Desc} />
@@ -41,9 +43,9 @@ const ConfirmDeleteAccount = ({ navigation }) => {
 
       <TouchableOpacity
         onPress={() => {
-         
+          setShowConfirm(true)
         }}
-        style={{ paddingBottom: 100}}
+        style={{ paddingBottom: 100 }}
       >
         <LinearGradient
           start={{ x: 0, y: 0 }}
@@ -65,6 +67,13 @@ const ConfirmDeleteAccount = ({ navigation }) => {
           </Text>
         </LinearGradient>
       </TouchableOpacity>
+      <VerifyDeleteAccountDialog
+        isShow={showConfirm}
+        onConfirm={() => {
+          setShowConfirm(false)
+        }} onCancel={() => {
+          setShowConfirm(false)
+        }} />
     </ScrollView>
   )
 }
@@ -72,7 +81,7 @@ const ConfirmDeleteAccount = ({ navigation }) => {
 const TitleDesciptionView = ({ title, desc }) => {
   return (
     <View style={{ paddingVertical: 12 }}>
-      <Text style={{ fontSize: 16, color: colors.endOrange, fontFamily: fontFamilty.semibold, paddingBottom:10 }}>
+      <Text style={{ fontSize: 16, color: colors.endOrange, fontFamily: fontFamilty.semibold, paddingBottom: 10 }}>
         {title}
       </Text>
       <View style={{ backgroundColor: colors.white, borderRadius: 13, padding: 10 }}>
