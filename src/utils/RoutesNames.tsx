@@ -11,4 +11,6 @@ export const RouteNames = {
     profileDetail: 'Профиль',
     viewPhoneNumber: AppString.phone_number,
 
+    deleteAccount: 'Удаление аккаунта',
+    confirmDeleteAccount: "Confirm Delete Account"
 }

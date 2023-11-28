@@ -16,6 +16,7 @@ import RootStackParamList from "../utils/navigation";
 import MasonryList from "@react-native-seoul/masonry-list";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { dimensions } from "../utils/sizes";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,

@@ -12,10 +12,12 @@ import ForgotPasswordScreen from "./src/signinFlowScreens/ForgotPasswordScreen";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import { RouteNames } from "./src/utils/RoutesNames";
-import { SettingScreen } from "./src/screens/Setting";
+import { SettingScreen } from "./src/screens/ProfileSection/Setting";
 import { fontFamilty } from "./src/utils/Fonts";
-import ProfileDetailScreen from "./src/screens/ProfileDetailScreen";
 import { ViewMobileNumberScreen } from "./src/screens/ViewMobileNumber";
+import ProfileDetailScreen from "./src/screens/ProfileSection/ProfileDetailScreen";
+import DeleteAccount from "./src/screens/ProfileSection/DeleteAccountScreen";
+import ConfirmDeleteAccount from "./src/screens/ProfileSection/ConfirmDeleteAccount";
 
 const Stack = createNativeStackNavigator();
 
@@ -105,7 +107,14 @@ const App: React.FC = () => {
           ></Stack.Screen>
             <Stack.Screen
             name={RouteNames.viewPhoneNumber}
-            component={ViewMobileNumberScreen}
+            component={ViewMobileNumberScreen}/>
+          <Stack.Screen
+            name={RouteNames.deleteAccount}
+            component={DeleteAccount}
+          ></Stack.Screen>
+            <Stack.Screen
+            name={RouteNames.confirmDeleteAccount}
+            component={ConfirmDeleteAccount}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
