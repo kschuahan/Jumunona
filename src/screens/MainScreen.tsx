@@ -22,7 +22,7 @@ const MainScreen: React.FC = () => {
         backgroundColor: "#ffffff", height: 70, elevation: 40, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderColor: 'transparent',
         overflow: 'hidden'
       }}
-      initialRouteName="Cart"
+      initialRouteName="Home"
       inactiveColor="#ff7600"
       activeColor="#ff7600"
 

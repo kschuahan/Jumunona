@@ -75,5 +75,8 @@ export const AppString = {
     new_password: "Новый пароль",
     create_new_password: "Придумайте новый пароль",
     confrim_new_password: "Подтвердите пароль",
-    enter_your_pass_again: "Введите пароль ещё раз"
+    enter_your_pass_again: "Введите пароль ещё раз",
+    sucessfully_changed: 'Успешно изменено',
+    go_back_to_the_main_page: 'Вернуться на главную(05)'
+
 }

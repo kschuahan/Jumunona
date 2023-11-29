@@ -15,5 +15,7 @@ export const RouteNames = {
     confirmDeleteAccount: "Confirm Delete Account",
     changePhone: "ChangePhone",
     changeEmail: "ChangeEmail",
-    changePassword: "ChangePassword"
+    changePassword: "ChangePassword",
+    sucessfulChangePassword: "Sucessful Change Password"
+
 }
