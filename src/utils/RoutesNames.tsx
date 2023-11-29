@@ -12,5 +12,8 @@ export const RouteNames = {
     viewPhoneNumber: AppString.phone_number,
 
     deleteAccount: 'Удаление аккаунта',
-    confirmDeleteAccount: "Confirm Delete Account"
+    confirmDeleteAccount: "Confirm Delete Account",
+    changePhone: "ChangePhone",
+    changeEmail: "ChangeEmail",
+    changePassword: "ChangePassword"
 }

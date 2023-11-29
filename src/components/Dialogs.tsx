@@ -13,7 +13,7 @@ export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel 
     const [number, setNumber] = useState("")
     const [otp, setOtp] = useState("")
 
-    return <Modal transparent={true} animationType={'slide'} visible={isShow} onRequestClose={onCancel} >
+    return <Modal transparent={true} animationType={"fade"} visible={isShow} onRequestClose={onCancel} >
         <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
             <View style={[styles.bottom_sheet, { paddingHorizontal: 10 }]}>
                 <Text style={[styles.textStyle, { marginTop: 10, fontFamily: "SegoeUIBold", fontSize: 17 }]}>{AppString.verify_phone_no}</Text>
@@ -95,6 +95,7 @@ export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel 
                             height: 46,
                             alignItems: "center",
                             justifyContent: "center",
+                            backgroundColor: colors.white,
                             borderRadius: 23, borderWidth: 1, borderColor: colors.endOrange, width: "45%"
                         }}
                     >
@@ -113,12 +114,12 @@ export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel 
 
 
 
-export const FailAccDeletePopu = ({ isShow = false, onConfirm, onCancel }) => {
+export const FailAccDeletePopup = ({ isShow = false, onConfirm, onCancel }) => {
 
     const [number, setNumber] = useState("")
     const [otp, setOtp] = useState("")
 
-    return <Modal transparent={true} animationType={'slide'} visible={isShow} onRequestClose={onCancel} >
+    return <Modal transparent={true} animationType={'fade'} visible={isShow} onRequestClose={onCancel} >
         <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
             <View style={[styles.bottom_sheet, { paddingHorizontal: 10, justifyContent: "center", alignContent: "center" }]}>
                 <Text style={[styles.textStyle, { paddingVertical: 10, fontFamily: fontFamilty.semibold, fontSize: 20, textAlign: "center" }]}>{AppString.failed_to_delete_acc}</Text>
@@ -132,8 +133,6 @@ export const FailAccDeletePopu = ({ isShow = false, onConfirm, onCancel }) => {
                 style={{paddingTop: 20}}
             />
             </Pressable>
-
-
         </View>
     </Modal>
 }

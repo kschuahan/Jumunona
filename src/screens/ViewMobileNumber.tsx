@@ -64,7 +64,7 @@ export const ViewMobileNumberScreen = ({ navigation, route }) => {
 
                 <TouchableOpacity
                     onPress={() => {
-                        //navigation.replace("Main");
+                        isMobile ? navigation.navigate(RouteNames.changePhone) : navigation.navigate(RouteNames.changeEmail)
                     }}
                     style={[styles.loginButton, { marginTop: 63 }]}
                 >

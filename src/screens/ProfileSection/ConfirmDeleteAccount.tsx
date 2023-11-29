@@ -8,7 +8,7 @@ import { fontFamilty } from "../../utils/Fonts";
 import { AppString } from "../../utils/AppStrings";
 import { ScrollView } from "react-native-virtualized-view";
 import { LinearGradient } from "expo-linear-gradient";
-import { FailAccDeletePopu, VerifyDeleteAccountDialog } from "../../components/Dialogs";
+import { FailAccDeletePopup, VerifyDeleteAccountDialog } from "../../components/Dialogs";
 
 const ConfirmDeleteAccount = ({ navigation }) => {
 
@@ -76,7 +76,7 @@ const ConfirmDeleteAccount = ({ navigation }) => {
           setShowConfirm(false)
         }} />
 
-      <FailAccDeletePopu
+      <FailAccDeletePopup
         isShow={showFailurePop}
         onConfirm={() => {
           setShowFailurePop(false)
