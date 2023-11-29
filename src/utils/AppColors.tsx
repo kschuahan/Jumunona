@@ -13,5 +13,7 @@ export const colors = {
     extraGrey: '#9F9F9F',
     greyCCCCCC: "#CCCCCC",
     grey888888: "#888888",
-    whiteF2F2F2:'#F2F2F2'
+    whiteF2F2F2:'#F2F2F2',
+    greyCECECE:'#CECECE',
+    black666666:'#666666'
 }

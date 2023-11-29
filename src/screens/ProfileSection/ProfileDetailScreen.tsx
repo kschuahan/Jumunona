@@ -60,7 +60,9 @@ const ProfileDetailScreen = ({ navigation }) => {
             navigation.navigate(RouteNames.viewPhoneNumber, { isMobile: false })
           }} />
           <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
-          <TextWithIcon title={AppString.change_password} onClick={() => { }} />
+          <TextWithIcon title={AppString.change_password} onClick={() => {
+            navigation.navigate(RouteNames.sucessfulChangePassword)
+          }} />
 
         </View>
 
