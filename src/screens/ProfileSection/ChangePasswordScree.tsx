@@ -5,6 +5,7 @@ import { colors } from "../../utils/AppColors"
 import { AppString } from "../../utils/AppStrings"
 import { styles } from "../../utils/AppStyles"
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { RouteNames } from "../../utils/RoutesNames"
 
 const ChangePassswordScreen = ({navigation}) => {
 
@@ -26,8 +27,8 @@ const ChangePassswordScreen = ({navigation}) => {
             )
         })
     }, [])
-    const [email, setEmail] = useState("")
-    const [otp, setOtp] = useState("")
+    const [newPass, setNewPass] = useState("")
+    const [confirmNewPass, setConfirmNewPass] = useState("")
 
     return (
         <ScrollView>
@@ -47,9 +48,9 @@ const ChangePassswordScreen = ({navigation}) => {
                     <TextInput
                         placeholder={AppString.create_new_password}
                         style={style.passwordTextInput}
-                        value={email}
+                        value={newPass}
                         onChangeText={ (text) => {
-                            setEmail(text)
+                            setNewPass(text)
                         }}
                     ></TextInput>
                 </View>
@@ -66,9 +67,9 @@ const ChangePassswordScreen = ({navigation}) => {
                     <TextInput
                         placeholder={AppString.enter_your_pass_again}
                         style={style.passwordTextInput}
-                        value={email}
+                        value={confirmNewPass}
                         onChangeText={ (text) => {
-                            setEmail(text)
+                            setNewPass(text)
                         }}
                     ></TextInput>
                 </View>
@@ -76,7 +77,7 @@ const ChangePassswordScreen = ({navigation}) => {
 
             <TouchableOpacity
                 onPress={() => {
-
+                    navigation.navigate(RouteNames.sucessfulChangePassword)
                 }}
                 style={style.confirmButton}
             >
