@@ -39,7 +39,7 @@ export const SelectCity = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: "",
 
-            headerRight: (() => <TouchableOpacity style={{ alignItems: "center" }}>
+            headerRight: (() => <TouchableOpacity style={{ alignItems: "center",  marginStart: -20  }}>
                 <Ionicons name="ellipsis-horizontal-outline" size={24} />
             </TouchableOpacity>),
 
@@ -133,7 +133,7 @@ const SearchView = () => {
         <TextInput
             value={search}
             placeholder={AppString.city_name}
-            style={styles.mobileTextInput}
+            style={style.searchTextInput}
             placeholderTextColor={colors.grey}
             onChangeText={(text) => {
                 setSearch(text)
@@ -141,3 +141,13 @@ const SearchView = () => {
         />
     </View>
 }
+
+const style = StyleSheet.create ({
+    searchTextInput: {
+        height: 33,
+        width: '80%',
+        marginStart: 11,
+        fontFamily: "SegoeUI",
+        fontSize: 15,
+    }
+});
