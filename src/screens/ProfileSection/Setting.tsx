@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
 import { styles } from '../../utils/AppStyles'
 import { imagesUrl } from '../../utils/AppIcons'
@@ -46,7 +46,11 @@ export const SettingScreen = ({ navigation }) => {
         }} />
         <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 9, borderRadius: 13 }}>
           <TextWithIcon title={AppString.notifications} onClick={() => { navigation.navigate(RouteNames.notificationSetting)}} />
-          <TextWithIcon title={AppString.city} onClick={() => { }} />
+          <TextWithIcon title={AppString.city} onClick={() => {
+
+            navigation.navigate(RouteNames.selectCity)
+
+          }} />
           <TextWithIcon title={AppString.feedback_and_help} onClick={() => { }} />
 
         </View>
@@ -76,7 +80,7 @@ export const SettingScreen = ({ navigation }) => {
 const Profile = ({ onClick }) => {
 
   return (
-    <View style={{ backgroundColor: colors.white, borderRadius: 13, marginTop:4 }}>
+    <View style={{ backgroundColor: colors.white, borderRadius: 13, marginTop: 4 }}>
       <View>
         <TouchableOpacity onPress={onClick}>
           <View
@@ -131,7 +135,7 @@ const Profile = ({ onClick }) => {
           </View>
         </TouchableOpacity>
         <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
-        <View style={{ paddingHorizontal: 10, paddingBottom:6 }}>
+        <View style={{ paddingHorizontal: 10, paddingBottom: 6 }}>
           <TextWithIcon
             title={AppString.my_addresses}
             padding={10}

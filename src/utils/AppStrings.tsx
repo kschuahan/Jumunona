@@ -86,6 +86,8 @@ export const AppString = {
     receive_msg_notification: "Получать уведомления о сообщениях",
     including_responses_from_support_and_chat: "Включая ответы от службы поддержки и чата",
     Receive_notifications_from_the_platform: "Получать уведомления от платформы",
-    Including_logistics_updates_promotional_offers_interactive_messages_etc: "Включая обновления логистики, рекламные предложения, интерактивные сообщения и т. д."
+    Including_logistics_updates_promotional_offers_interactive_messages_etc: "Включая обновления логистики, рекламные предложения, интерактивные сообщения и т. д.",
+    city_name: 'Название города',
+    tajakistan: 'Таджикистан'
 
 }

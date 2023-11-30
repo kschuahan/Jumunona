@@ -24,6 +24,7 @@ import ChangePassswordScreen from "./src/screens/ProfileSection/ChangePasswordSc
 import { SucessfulChangePasswordScreen } from "./src/screens/ProfileSection/SucessfulChangePassword";
 import MyReviewsScreen from "./src/screens/Reviews/MyReviewsScreen";
 import NotificationSettingScreen from "./src/screens/Notification/NotificationSettingScreen";
+import { SelectCity } from "./src/screens/ProfileSection/SelectCity";
 
 const Stack = createNativeStackNavigator();
 
@@ -130,11 +131,11 @@ const App: React.FC = () => {
             name={RouteNames.changeEmail}
             component={ChangeEmailScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={RouteNames.changePassword}
             component={ChangePassswordScreen}
           />
-            <Stack.Screen
+          <Stack.Screen
             name={RouteNames.sucessfulChangePassword}
             component={SucessfulChangePasswordScreen}
           />
@@ -145,6 +146,10 @@ const App: React.FC = () => {
            <Stack.Screen
             name={RouteNames.notificationSetting}
             component={NotificationSettingScreen}
+          />
+          <Stack.Screen
+            name={RouteNames.selectCity}
+            component={SelectCity}
           />
         </Stack.Navigator>
       </NavigationContainer>

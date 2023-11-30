@@ -18,5 +18,7 @@ export const RouteNames = {
     changePassword: "ChangePassword",
     sucessfulChangePassword: "Sucessful Change Password",
     myReviews: "My Reviews",
-    notificationSetting: "Notification Settings"
+    notificationSetting: "Notification Settings",
+    selectCity: "Select City"
+
 }

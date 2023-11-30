@@ -52,7 +52,7 @@ export const SucessfulChangePasswordScreen = ({ navigation }) => {
         <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
             <View style={[styles.container, { backgroundColor: '#F6F6F6' }]}>
 
-                <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 27, borderRadius: 17 }}>
+                <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, borderRadius: 17 }}>
                     <View
                         style={
                             { alignSelf: 'center', marginTop: 21, marginBottom: 14 }

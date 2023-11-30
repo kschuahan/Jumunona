@@ -50,4 +50,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgba(0, 0,0, .6 )'
     },
+    mobileTextInput: {
+        height: 33,
+        width: '82.5%',
+        marginStart: 11,
+        fontFamily: "SegoeUI",
+        fontSize: 15,
+    }
 });
