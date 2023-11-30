@@ -77,6 +77,8 @@ export const AppString = {
     confrim_new_password: "Подтвердите пароль",
     enter_your_pass_again: "Введите пароль ещё раз",
     sucessfully_changed: 'Успешно изменено',
-    go_back_to_the_main_page: 'Вернуться на главную(05)'
+    go_back_to_the_main_page: 'Вернуться на главную(05)',
+    city_name: 'Название города',
+    tajakistan: 'Таджикистан'
 
 }

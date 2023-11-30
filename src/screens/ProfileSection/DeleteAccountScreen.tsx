@@ -8,6 +8,7 @@ import { fontFamilty } from "../../utils/Fonts";
 import { colors } from "../../utils/AppColors";
 import { LinearGradient } from "expo-linear-gradient";
 import { refresh } from "@react-native-community/netinfo";
+import { ScrollView } from "react-native-virtualized-view";
 
 const DeleteAccount = ({ navigation }) => {
 
@@ -43,55 +44,61 @@ const DeleteAccount = ({ navigation }) => {
   const [selectedIndex, setSelectedIndex] = useState<Number>()
   const [isRefreshing, setIsRefreshing] = useState(false)
   return (
-    <KeyboardAvoidingView
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container} keyboardVerticalOffset={100}>
-      <FlatList
-        contentContainerStyle={{justifyContent: "flex-end"}}
-        data={reasonItems}
-        showsVerticalScrollIndicator = {false}
-        renderItem={({ item, index }) => {
-          return <ReasonCell
-            item={item}
-            index={index}
-            onSelect={(index) => {
-              reasonItems[index].isSelected = !reasonItems[index].isSelected
+    <ScrollView showsVerticalScrollIndicator={false}
+      style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Header />
+        {
+          reasonItems.map((item, index) =>
+            <View><ReasonCell
+              item={item}
+              index={index}
+              onSelect={(index: number) => {
+                reasonItems[index].isSelected = !reasonItems[index].isSelected
 
-              if (selectedIndex != undefined) {
-                if (selectedIndex == index) {
-                  setSelectedIndex(undefined)
+                if (selectedIndex != undefined) {
+                  if (selectedIndex == index) {
+                    setSelectedIndex(undefined)
+                  } else {
+                    reasonItems[selectedIndex].isSelected = false
+                    setSelectedIndex(index)
+                  }
                 } else {
-                  reasonItems[selectedIndex].isSelected = false
                   setSelectedIndex(index)
                 }
-              } else {
-                setSelectedIndex(index)
-              }
-              setReasonItems(reasonItems)
-              setIsRefreshing(!isRefreshing)
-              
-            }}
-          
-          />
-        }}
-        ItemSeparatorComponent={separator}
-        ListHeaderComponent={header}
-        ListFooterComponent={
-          <FooterView
-            value={reasonString}
-            onChangeText={(text: string) => {
-              setReasonString(text)
-            }}
-            onDelete={ () => {
-              navigation.navigate(RouteNames.confirmDeleteAccount)
-            }}
-          />
+                setReasonItems(reasonItems)
+                setIsRefreshing(!isRefreshing)
+
+              }}
+
+            />
+              <Separator />
+
+
+            </View>
+
+          )
         }
-      />
-    </KeyboardAvoidingView>
+
+        <FooterView
+          value={reasonString}
+          onChangeText={(text: string) => {
+            setReasonString(text)
+          }}
+          onDelete={() => {
+            navigation.navigate(RouteNames.confirmDeleteAccount)
+          }}
+        />
+
+
+      </View>
+    </ScrollView>
+
+
   )
 
 }
-const header = ({ }) => {
+const Header = ({ }) => {
   return (
     <View style={{ backgroundColor: colors.white, borderTopLeftRadius: 13, borderTopRightRadius: 13 }}>
       <Text
@@ -120,25 +127,25 @@ const ReasonCell = ({ item, index, onSelect }) => {
 
         <Text
           style={[styles.textStyle,
-                {
-                  fontFamily: fontFamilty.regular,
-                  fontSize: 16
-                }]}
+          {
+            fontFamily: fontFamilty.regular,
+            fontSize: 16
+          }]}
         >
           {item.title}
         </Text>
-        <Ionicons 
-          name={item.isSelected ? "checkmark-circle" : "ellipse-outline"} 
-          size={25} 
+        <Ionicons
+          name={item.isSelected ? "checkmark-circle" : "ellipse-outline"}
+          size={25}
           color={item.isSelected ? colors.endOrange : "#CECECE"}
-         />
+        />
 
       </View>
     </Pressable>
   )
 }
 
-const separator = () => {
+const Separator = () => {
   return <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
 }
 
@@ -152,7 +159,7 @@ const FooterView = ({ value, onChangeText, onDelete }) => {
           padding: 8,
           fontFamily: fontFamilty.regular,
           fontSize: 16,
-          backgroundColor: colors.white, 
+          backgroundColor: colors.white,
           borderBottomLeftRadius: 13,
           borderBottomRightRadius: 13,
           borderWidth: 1,

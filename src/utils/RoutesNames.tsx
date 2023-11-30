@@ -16,6 +16,7 @@ export const RouteNames = {
     changePhone: "ChangePhone",
     changeEmail: "ChangeEmail",
     changePassword: "ChangePassword",
-    sucessfulChangePassword: "Sucessful Change Password"
+    sucessfulChangePassword: "Sucessful Change Password",
+    selectCity: "Select City"
 
 }
