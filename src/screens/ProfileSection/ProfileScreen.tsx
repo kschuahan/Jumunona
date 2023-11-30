@@ -53,7 +53,7 @@ const ProfileScreen = ( props: any ) => {
 
             }} />
             <IconWithText size={21} iconColor={colors.lightRed} title={AppString.reviews} icon='chatbubble-outline' onClick={() => {
-
+              props.navigation.navigate(RouteNames.myReviews)
             }} />
             <IconWithText size={21} iconColor={colors.lightRed} title={AppString.help} icon='help-circle-outline' onClick={() => {
 
@@ -94,7 +94,7 @@ const MyOrder = () => {
 
         }} />
         <IconWithText end={-2} isVisible={true} title={AppString.review} icon='chatbubble-outline' onClick={() => {
-
+          
         }} />
         <IconWithText title={AppString.return} icon='arrow-undo-outline' onClick={() => {
 

@@ -77,6 +77,15 @@ export const AppString = {
     confrim_new_password: "Подтвердите пароль",
     enter_your_pass_again: "Введите пароль ещё раз",
     sucessfully_changed: 'Успешно изменено',
-    go_back_to_the_main_page: 'Вернуться на главную(05)'
+    go_back_to_the_main_page: 'Вернуться на главную(05)',
+    review_example: "Впечатление: Вполне соответствует ожиданиям \nКачество: Подошва достаточно мягкая \nОпыт: Подошва с антискользящим покрытием \nВ целом, вполне удовлетворительно.",
+    my_reviews: "Мои отзывы",
+    reviews_for_last_180_days: "Отзывы за последние 180 дней",
+    notification_Settings: "Настройки уведомлений",
+    receive_notification: "Получение уведомлений",
+    receive_msg_notification: "Получать уведомления о сообщениях",
+    including_responses_from_support_and_chat: "Включая ответы от службы поддержки и чата",
+    Receive_notifications_from_the_platform: "Получать уведомления от платформы",
+    Including_logistics_updates_promotional_offers_interactive_messages_etc: "Включая обновления логистики, рекламные предложения, интерактивные сообщения и т. д."
 
 }

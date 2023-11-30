@@ -22,6 +22,8 @@ import ChangePhoneScreen from "./src/screens/ProfileSection/ChangePhoneScreen";
 import ChangeEmailScreen from "./src/screens/ProfileSection/ChangeEmailScreen";
 import ChangePassswordScreen from "./src/screens/ProfileSection/ChangePasswordScree";
 import { SucessfulChangePasswordScreen } from "./src/screens/ProfileSection/SucessfulChangePassword";
+import MyReviewsScreen from "./src/screens/Reviews/MyReviewsScreen";
+import NotificationSettingScreen from "./src/screens/Notification/NotificationSettingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -135,6 +137,14 @@ const App: React.FC = () => {
             <Stack.Screen
             name={RouteNames.sucessfulChangePassword}
             component={SucessfulChangePasswordScreen}
+          />
+           <Stack.Screen
+            name={RouteNames.myReviews}
+            component={MyReviewsScreen}
+          />
+           <Stack.Screen
+            name={RouteNames.notificationSetting}
+            component={NotificationSettingScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

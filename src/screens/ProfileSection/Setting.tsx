@@ -45,7 +45,7 @@ export const SettingScreen = ({ navigation }) => {
           navigation.navigate(RouteNames.profileDetail)
         }} />
         <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 9, borderRadius: 13 }}>
-          <TextWithIcon title={AppString.notifications} onClick={() => { }} />
+          <TextWithIcon title={AppString.notifications} onClick={() => { navigation.navigate(RouteNames.notificationSetting)}} />
           <TextWithIcon title={AppString.city} onClick={() => { }} />
           <TextWithIcon title={AppString.feedback_and_help} onClick={() => { }} />
 
