@@ -1,18 +1,18 @@
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
-import { styles } from '../../utils/AppStyles'
-import { imagesUrl } from '../../utils/AppIcons'
+import { styles } from '../../../utils/AppStyles'
+import { imagesUrl } from '../../../utils/AppIcons'
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { colors } from '../../utils/AppColors';
-import { AppString } from '../../utils/AppStrings';
+import { colors } from '../../../utils/AppColors';
+import { AppString } from '../../../utils/AppStrings';
 import { Card } from 'react-native-paper'
 import { LinearGradient } from "expo-linear-gradient";
-import { dimensions } from '../../utils/sizes';
+import { dimensions } from '../../../utils/sizes';
 import { useCallback, useEffect, useState } from "react";
 import { HeaderBackButton } from '@react-navigation/elements';
-import { RouteNames } from '../../utils/RoutesNames';
+import { RouteNames } from '../../../utils/RoutesNames';
 import { StatusBar } from 'expo-status-bar';
-import { fontFamilty } from '../../utils/Fonts';
+import { fontFamilty } from '../../../utils/Fonts';
 
 
 
@@ -56,21 +56,17 @@ export const SettingScreen = ({ navigation }) => {
         </View>
 
         <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 9, borderRadius: 13 }}>
-          <TextWithIcon title={AppString.trem_and_privacy} onClick={() => { }} />
+          <TextWithIcon title={AppString.trem_and_privacy} onClick={() => { navigation.navigate(RouteNames.personal_info)}} />
           <TextWithIcon title={AppString.about_us} onClick={() => { }} />
           <TextWithIcon title={AppString.clear_catch} onClick={() => { }} />
           <TextWithIcon title={AppString.catch_for_update} onClick={() => { }} />
-
         </View>
 
         <View style={{ backgroundColor: colors.white, padding: 10, marginTop: 9, borderRadius: 13 }}>
           <TouchableOpacity onPress={() => {
-
           }} style={[styles.profile, { marginTop: undefined, alignItems: 'center', justifyContent: 'center', padding: 4 }]}>
             <Text style={[styles.textStyle, { fontSize: 16, fontWeight: '500' }]}>{AppString.go_out}</Text>
-
           </TouchableOpacity>
-
         </View>
       </View></ScrollView>
   )

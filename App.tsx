@@ -12,7 +12,7 @@ import ForgotPasswordScreen from "./src/signinFlowScreens/ForgotPasswordScreen";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import { RouteNames } from "./src/utils/RoutesNames";
-import { SettingScreen } from "./src/screens/ProfileSection/Setting";
+import { SettingScreen } from "./src/screens/ProfileSection/Settings/Setting";
 import { fontFamilty } from "./src/utils/Fonts";
 import { ViewMobileNumberScreen } from "./src/screens/ViewMobileNumber";
 import ProfileDetailScreen from "./src/screens/ProfileSection/ProfileDetailScreen";
@@ -25,6 +25,9 @@ import { SucessfulChangePasswordScreen } from "./src/screens/ProfileSection/Suce
 import MyReviewsScreen from "./src/screens/Reviews/MyReviewsScreen";
 import NotificationSettingScreen from "./src/screens/Notification/NotificationSettingScreen";
 import { SelectCity } from "./src/screens/ProfileSection/SelectCity";
+import TermOfUseScreen from "./src/screens/ProfileSection/Settings/TermOfUseScreen";
+import PrivacyPolicyScreen from "./src/screens/ProfileSection/Settings/PrivacyPolicyScreen";
+import PersonalInfoPolicy from "./src/screens/ProfileSection/Settings/PersonalInfoPolicy";
 
 const Stack = createNativeStackNavigator();
 
@@ -150,6 +153,18 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.selectCity}
             component={SelectCity}
+          />
+           <Stack.Screen
+            name={RouteNames.term_of_use}
+            component={TermOfUseScreen}
+          />
+           <Stack.Screen
+            name={RouteNames.privacy_policy}
+            component={PrivacyPolicyScreen}
+          />
+          <Stack.Screen
+            name={RouteNames.personal_info}
+            component={PersonalInfoPolicy}
           />
         </Stack.Navigator>
       </NavigationContainer>
