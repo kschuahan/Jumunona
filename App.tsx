@@ -25,6 +25,8 @@ import { SucessfulChangePasswordScreen } from "./src/screens/ProfileSection/Suce
 import MyReviewsScreen from "./src/screens/Reviews/MyReviewsScreen";
 import NotificationSettingScreen from "./src/screens/Notification/NotificationSettingScreen";
 import { SelectCity } from "./src/screens/ProfileSection/SelectCity";
+import { ConditionsScreen } from "./src/screens/ProfileSection/Conditions";
+import SystemPermissionsScreen from "./src/screens/ProfileSection/SystemPermisions";
 
 const Stack = createNativeStackNavigator();
 
@@ -139,11 +141,11 @@ const App: React.FC = () => {
             name={RouteNames.sucessfulChangePassword}
             component={SucessfulChangePasswordScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={RouteNames.myReviews}
             component={MyReviewsScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={RouteNames.notificationSetting}
             component={NotificationSettingScreen}
           />
@@ -151,6 +153,17 @@ const App: React.FC = () => {
             name={RouteNames.selectCity}
             component={SelectCity}
           />
+
+          <Stack.Screen
+            name={RouteNames.conditions}
+            component={ConditionsScreen}
+          />
+
+          <Stack.Screen
+            name={RouteNames.system_permission}
+            component={SystemPermissionsScreen}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

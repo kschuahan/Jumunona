@@ -19,6 +19,8 @@ export const RouteNames = {
     sucessfulChangePassword: "Sucessful Change Password",
     myReviews: "My Reviews",
     notificationSetting: "Notification Settings",
-    selectCity: "Select City"
+    selectCity: "Select City",
+    conditions: AppString.conditions,
+    system_permission: AppString.system_permissions
 
 }

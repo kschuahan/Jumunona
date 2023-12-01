@@ -88,6 +88,17 @@ export const AppString = {
     Receive_notifications_from_the_platform: "Получать уведомления от платформы",
     Including_logistics_updates_promotional_offers_interactive_messages_etc: "Включая обновления логистики, рекламные предложения, интерактивные сообщения и т. д.",
     city_name: 'Название города',
-    tajakistan: 'Таджикистан'
+    tajakistan: 'Таджикистан',
+    conditions: 'Условия',
+    trem_of_use: 'Условия использования',
+    system_permissions: 'Системные полномочия',
+    privacy_policy: 'Политика конфиденциальности',
+    pertional_information: 'Персональные данные',
+    camera_and_alblum: 'Камера & Альбом',
+    take_photo_select_photo_upload_photo: 'Фотографируйте, выбирайте и загружайте фотографии и т. д.',
+    location: 'Локация',
+    using_your_locations_currect_curriencies_and_privacies_will_beProvided: 'Используя ваше местоположение, будут предоставлены корректные валюты и цены',
+    photo_and_contacts: "Телефон & контакты",
+    implement_function_telephone: 'Реализация функций, таких как консультации по телефону, быстрое заполнение адреса и т. д.'
 
 }
