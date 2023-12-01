@@ -22,5 +22,8 @@ export const RouteNames = {
     selectCity: "Select City",
     term_of_use: "Term Of Use",
     privacy_policy: "Privacy Policy",
-    personal_info: "Personal Information"
+    personal_info: "Personal Information",
+    conditions: AppString.conditions,
+    system_permission: AppString.system_permissions
+
 }

@@ -45,7 +45,7 @@ export const SettingScreen = ({ navigation }) => {
           navigation.navigate(RouteNames.profileDetail)
         }} />
         <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 9, borderRadius: 13 }}>
-          <TextWithIcon title={AppString.notifications} onClick={() => { navigation.navigate(RouteNames.notificationSetting)}} />
+          <TextWithIcon title={AppString.notifications} onClick={() => { navigation.navigate(RouteNames.notificationSetting) }} />
           <TextWithIcon title={AppString.city} onClick={() => {
 
             navigation.navigate(RouteNames.selectCity)
@@ -56,7 +56,9 @@ export const SettingScreen = ({ navigation }) => {
         </View>
 
         <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 9, borderRadius: 13 }}>
-          <TextWithIcon title={AppString.trem_and_privacy} onClick={() => { navigation.navigate(RouteNames.personal_info)}} />
+          <TextWithIcon title={AppString.trem_and_privacy} onClick={() => {
+            navigation.navigate(RouteNames.conditions)
+          }} />
           <TextWithIcon title={AppString.about_us} onClick={() => { }} />
           <TextWithIcon title={AppString.clear_catch} onClick={() => { }} />
           <TextWithIcon title={AppString.catch_for_update} onClick={() => { }} />
