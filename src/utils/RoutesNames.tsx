@@ -27,6 +27,7 @@ export const RouteNames = {
     system_permission: AppString.system_permissions,
     aboutUs: "About Us",
     copyright: "Copyright",
-    licenseAgreement: "License Agreement"
+    licenseAgreement: "License Agreement",
+    favorite: AppString.want_to
 
 }

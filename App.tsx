@@ -33,6 +33,7 @@ import SystemPermissionsScreen from "./src/screens/ProfileSection/SystemPermisio
 import AboutUsScreen from "./src/screens/ProfileSection/Settings/AboutUsScreen";
 import CopyrightScreen from "./src/screens/ProfileSection/Settings/CopyrightScreen";
 import LicenseAgreementScreen from "./src/screens/ProfileSection/Settings/LicenseAgreementScreen";
+import { FavoriteScreen } from "./src/screens/ProfileSection/FavoriteScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -82,7 +83,6 @@ const App: React.FC = () => {
             backgroundColor: '#ffffff',
 
           },
-
           headerShadowVisible: true,
         }}
 
@@ -193,6 +193,15 @@ const App: React.FC = () => {
             name={RouteNames.licenseAgreement}
             component={LicenseAgreementScreen}
           />
+
+
+          <Stack.Screen
+            name={RouteNames.favorite}
+            component={FavoriteScreen}
+            options={{ headerShown: false }}
+
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

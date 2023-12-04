@@ -106,5 +106,7 @@ export const AppString = {
     estimate: "Оценить",
     license_agreement: "Лицензионное соглашение",
     copyright: "Авторские права",
-    copyringt_information: "Информация об авторских правах"
+    copyringt_information: "Информация об авторских правах",
+    product_name: 'Название товара'
+
 }
