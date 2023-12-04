@@ -1,7 +1,9 @@
 
 
 export const appIcons = {
-    logo: require('../../assets/logo.png')
+    logo: require('../../assets/logo.png'),
+    imgLogo: require('../..//assets/icon-512x512.png')
+
 }
 
 export const imagesUrl = {

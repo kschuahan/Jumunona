@@ -59,7 +59,7 @@ export const SettingScreen = ({ navigation }) => {
           <TextWithIcon title={AppString.trem_and_privacy} onClick={() => {
             navigation.navigate(RouteNames.conditions)
           }} />
-          <TextWithIcon title={AppString.about_us} onClick={() => { }} />
+          <TextWithIcon title={AppString.about_us} onClick={() => {navigation.navigate(RouteNames.aboutUs) }} />
           <TextWithIcon title={AppString.clear_catch} onClick={() => { }} />
           <TextWithIcon title={AppString.catch_for_update} onClick={() => { }} />
         </View>

@@ -30,6 +30,9 @@ import PrivacyPolicyScreen from "./src/screens/ProfileSection/Settings/PrivacyPo
 import PersonalInfoPolicy from "./src/screens/ProfileSection/Settings/PersonalInfoPolicy";
 import { ConditionsScreen } from "./src/screens/ProfileSection/Conditions";
 import SystemPermissionsScreen from "./src/screens/ProfileSection/SystemPermisions";
+import AboutUsScreen from "./src/screens/ProfileSection/Settings/AboutUsScreen";
+import CopyrightScreen from "./src/screens/ProfileSection/Settings/CopyrightScreen";
+import LicenseAgreementScreen from "./src/screens/ProfileSection/Settings/LicenseAgreementScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -156,11 +159,11 @@ const App: React.FC = () => {
             name={RouteNames.selectCity}
             component={SelectCity}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={RouteNames.term_of_use}
             component={TermOfUseScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={RouteNames.privacy_policy}
             component={PrivacyPolicyScreen}
           />
@@ -178,7 +181,18 @@ const App: React.FC = () => {
             name={RouteNames.system_permission}
             component={SystemPermissionsScreen}
           />
-
+          <Stack.Screen
+            name={RouteNames.aboutUs}
+            component={AboutUsScreen}
+          />
+          <Stack.Screen
+            name={RouteNames.copyright}
+            component={CopyrightScreen}
+          />
+          <Stack.Screen
+            name={RouteNames.licenseAgreement}
+            component={LicenseAgreementScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
