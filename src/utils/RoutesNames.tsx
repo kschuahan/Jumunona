@@ -24,6 +24,7 @@ export const RouteNames = {
     privacy_policy: "Privacy Policy",
     personal_info: "Personal Information",
     conditions: AppString.conditions,
-    system_permission: AppString.system_permissions
+    system_permission: AppString.system_permissions,
+    favorite: AppString.want_to
 
 }

@@ -30,6 +30,7 @@ import PrivacyPolicyScreen from "./src/screens/ProfileSection/Settings/PrivacyPo
 import PersonalInfoPolicy from "./src/screens/ProfileSection/Settings/PersonalInfoPolicy";
 import { ConditionsScreen } from "./src/screens/ProfileSection/Conditions";
 import SystemPermissionsScreen from "./src/screens/ProfileSection/SystemPermisions";
+import { FavoriteScreen } from "./src/screens/ProfileSection/FavoriteScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -79,7 +80,6 @@ const App: React.FC = () => {
             backgroundColor: '#ffffff',
 
           },
-
           headerShadowVisible: true,
         }}
 
@@ -156,11 +156,11 @@ const App: React.FC = () => {
             name={RouteNames.selectCity}
             component={SelectCity}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={RouteNames.term_of_use}
             component={TermOfUseScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={RouteNames.privacy_policy}
             component={PrivacyPolicyScreen}
           />
@@ -177,6 +177,14 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.system_permission}
             component={SystemPermissionsScreen}
+          />
+
+
+          <Stack.Screen
+            name={RouteNames.favorite}
+            component={FavoriteScreen}
+            options={{ headerShown: false }}
+
           />
 
         </Stack.Navigator>

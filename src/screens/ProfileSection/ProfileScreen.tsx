@@ -12,7 +12,7 @@ import { RouteNames } from '../../utils/RoutesNames';
 import { fontFamilty } from '../../utils/Fonts';
 
 
-const ProfileScreen = ( props: any ) => {
+const ProfileScreen = (props: any) => {
   return (
     <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -22,6 +22,7 @@ const ProfileScreen = ( props: any ) => {
         }} />
         <View style={{ flexDirection: 'row', marginTop: 20, marginHorizontal: 30, justifyContent: 'space-between' }}>
           <IconWithText title={AppString.want_to} icon='heart-outline' onClick={() => {
+            props.navigation.navigate(RouteNames.favorite)
 
           }} />
           <IconWithText title={AppString.subscription} icon='checkmark-circle-outline' onClick={() => {
@@ -94,7 +95,7 @@ const MyOrder = () => {
 
         }} />
         <IconWithText end={-2} isVisible={true} title={AppString.review} icon='chatbubble-outline' onClick={() => {
-          
+
         }} />
         <IconWithText title={AppString.return} icon='arrow-undo-outline' onClick={() => {
 

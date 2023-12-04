@@ -101,6 +101,7 @@ export const AppString = {
     location: 'Локация',
     using_your_locations_currect_curriencies_and_privacies_will_beProvided: 'Используя ваше местоположение, будут предоставлены корректные валюты и цены',
     photo_and_contacts: "Телефон & контакты",
-    implement_function_telephone: 'Реализация функций, таких как консультации по телефону, быстрое заполнение адреса и т. д.'
+    implement_function_telephone: 'Реализация функций, таких как консультации по телефону, быстрое заполнение адреса и т. д.',
+    product_name: 'Название товара'
 
 }
