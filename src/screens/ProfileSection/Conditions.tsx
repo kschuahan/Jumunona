@@ -45,16 +45,16 @@ export const ConditionsScreen = ({ navigation }) => {
 
                 <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, paddingTop: 5, paddingBottom: 5, borderRadius: 13 }}>
                     <TextWithIcon title={AppString.trem_of_use} onClick={() => {
-
+                        navigation.navigate(RouteNames.term_of_use)
                     }} />
                     <TextWithIcon title={AppString.system_permissions} onClick={() => {
                         navigation.navigate(RouteNames.system_permission)
                     }} />
                     <TextWithIcon title={AppString.privacy_policy} onClick={() => {
-
+                        navigation.navigate(RouteNames.privacy_policy)
                     }} />
                     <TextWithIcon title={AppString.pertional_information} onClick={() => {
-
+                        navigation.navigate(RouteNames.personal_info)
                     }} />
 
                 </View>
