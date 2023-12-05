@@ -1,12 +1,14 @@
 import { styles } from "../../utils/AppStyles"
-import { TouchableOpacity, ScrollView, View, Text, FlatList, Image, StyleSheet, Pressable } from "react-native"
+import { TouchableOpacity, ScrollView, View, Text, FlatList, Image, StyleSheet, Pressable, TextInput } from "react-native"
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AppString } from "../../utils/AppStrings";
 import { fontFamilty } from "../../utils/Fonts";
 import { colors } from "../../utils/AppColors";
-import { appIcons, imagesUrl } from "../../utils/AppIcons";
+import { appIcons, imagesUrl, productImages } from "../../utils/AppIcons";
 import MasonryList from "@react-native-seoul/masonry-list";
+import { dimensions } from "../../utils/sizes";
+import { LinearGradient } from "expo-linear-gradient";
 const shoeImageURL = appIcons.shoeImageURL
 const china = appIcons.china
 const reviewFilter = [
@@ -57,6 +59,14 @@ const imagesArray = [1, 2, 3, 4, 5]
 
 export const ProductDetailScreen = ({ navigation }) => {
 
+    const [activeIndex, setActiveIndex] = useState(0);
+    const handleViewableItemsChanged = useRef(({ viewableItems, changed }) => {
+        if (changed && changed.length > 0) {
+            console.log("Visible items are", viewableItems[0].index);
+            console.log("Changed in this iteration", changed[0]);
+            setActiveIndex(changed[0].index);
+        }
+    });
     useEffect(() => {
 
         navigation.setOptions({
@@ -139,7 +149,10 @@ return (<View style={{ flex: 1 }}>
 
             <ProductDetails />
             <ProductDesclamenation />
-
+           <ReviewsSection />
+            <ShopView />
+            <ProductImages />
+            <RelatedProducts />
         </View>
 
     </ScrollView >
@@ -184,7 +197,7 @@ return (<View style={{ flex: 1 }}>
 // MARK: - Review Section
 const ReviewsSection = ({ }) => {
     return (
-        <View style={{ borderRadius: 13, backgroundColor: colors.white, paddingHorizontal: 10, paddingBottom: 10 }}>
+        <View style={{ borderRadius: 13, backgroundColor: colors.white, paddingHorizontal: 10, paddingVertical: 10 }}>
             <TextWithIcon title={AppString.review} onClick={() => { }} />
             <FlatList
                 data={reviewFilter}
@@ -299,7 +312,7 @@ const ProductDesclamenation = () => {
 
     return <View style={{
         marginTop: 12, marginHorizontal: 9, backgroundColor: colors.white, borderRadius: 12,
-        paddingTop: 7, paddingEnd: 6, paddingStart: 12, marginBottom: 100
+        paddingTop: 7, paddingEnd: 6, paddingStart: 12, marginBottom: 10
     }}>
         <Text style={[styles.textStyle, {
             fontSize: 14, alignSelf: 'flex-end',
@@ -661,16 +674,6 @@ const RelatedProducts = () => {
     )
 }
 
-const style = StyleSheet.create({
-    primaryCategoriesContent: {
-        paddingTop: 8,
-        paddingLeft: 16,
-        flex: 0.9,
-        backgroundColor: "#ffffff",
-        borderTopLeftRadius: 12,
-    },
-
-})
 const ProductDetails = () => {
 
     return <View style={{
@@ -721,6 +724,13 @@ const style = StyleSheet.create({
         marginStart: 11,
         fontFamily: "SegoeUI",
         fontSize: 15,
+    },
+    primaryCategoriesContent: {
+        paddingTop: 8,
+        paddingLeft: 16,
+        flex: 0.9,
+        backgroundColor: "#ffffff",
+        borderTopLeftRadius: 12,
     },
 
 });
