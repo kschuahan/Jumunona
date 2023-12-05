@@ -108,6 +108,8 @@ export const AppString = {
     copyright: "Авторские права",
     copyringt_information: "Информация об авторских правах",
     product_name: 'Название товара',
-    featured: "Рекомендуемые"
+    featured: "Рекомендуемые",
+    add_to_cart: 'В корзину',
+    buy: 'Купить'
 
 }
