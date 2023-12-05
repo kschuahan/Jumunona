@@ -34,6 +34,7 @@ import AboutUsScreen from "./src/screens/ProfileSection/Settings/AboutUsScreen";
 import CopyrightScreen from "./src/screens/ProfileSection/Settings/CopyrightScreen";
 import LicenseAgreementScreen from "./src/screens/ProfileSection/Settings/LicenseAgreementScreen";
 import { FavoriteScreen } from "./src/screens/ProfileSection/FavoriteScreen";
+import ProductDetailScreen from "./src/screens/Product/ProductDetailScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -193,15 +194,15 @@ const App: React.FC = () => {
             name={RouteNames.licenseAgreement}
             component={LicenseAgreementScreen}
           />
-
-
           <Stack.Screen
             name={RouteNames.favorite}
             component={FavoriteScreen}
             options={{ headerShown: false }}
-
           />
-
+          <Stack.Screen
+            name={RouteNames.product_detail}
+            component={ProductDetailScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

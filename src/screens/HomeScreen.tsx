@@ -17,6 +17,8 @@ import MasonryList from "@react-native-seoul/masonry-list";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { dimensions } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
+import ProductDetailScreen from "./Product/ProductDetailScreen";
+import { RouteNames } from "../utils/RoutesNames";
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -188,6 +190,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                     styles.gridViewItemStyle,
                     { height: item.id === 1 ? 277 : 311 },
                   ]}
+                  onPress={ () => {
+                    navigation.navigate(RouteNames.product_detail)
+                  }}
                 >
                   <Image
                     source={item.imageURL}

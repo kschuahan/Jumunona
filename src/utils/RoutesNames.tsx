@@ -28,6 +28,6 @@ export const RouteNames = {
     aboutUs: "About Us",
     copyright: "Copyright",
     licenseAgreement: "License Agreement",
-    favorite: AppString.want_to
-
+    favorite: AppString.want_to,
+    product_detail: "Product Detail"
 }
