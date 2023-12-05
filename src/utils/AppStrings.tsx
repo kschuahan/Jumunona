@@ -107,6 +107,7 @@ export const AppString = {
     license_agreement: "Лицензионное соглашение",
     copyright: "Авторские права",
     copyringt_information: "Информация об авторских правах",
-    product_name: 'Название товара'
+    product_name: 'Название товара',
+    featured: "Рекомендуемые"
 
 }
