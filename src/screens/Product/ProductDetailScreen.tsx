@@ -9,6 +9,7 @@ import { appIcons, imagesUrl, productImages } from "../../utils/AppIcons";
 import MasonryList from "@react-native-seoul/masonry-list";
 import { dimensions } from "../../utils/sizes";
 import { LinearGradient } from "expo-linear-gradient";
+import SelectProductSizeColorScreen from "./SelectProductSizeColorScreen";
 const shoeImageURL = appIcons.shoeImageURL
 const china = appIcons.china
 const reviewFilter = [
@@ -61,20 +62,20 @@ const data: Product[] = [
 ];
 
 const imagesArray = [1, 2, 3, 4, 5]
-const postionsArray: Position[] = [ {
+const postionsArray: Position[] = [{
     y: 0,
     name: "Продукт"
 },
 {
-    y: 520,
+    y: 550,
     name: "Отзывы"
 },
 {
-    y: 1000,
+    y: 1050,
     name: "Детали"
 },
 {
-    y: 2000,
+    y: 1700,
     name: "Еще"
 }]
 
@@ -134,54 +135,25 @@ export const ProductDetailScreen = ({ navigation }) => {
 
     const handleScroll = (event: Object) => {
         console.log(event.nativeEvent.contentOffset.y);
-        if (event.nativeEvent.contentOffset.y >= 0 && event.nativeEvent.contentOffset.y < 520) {
+        if (event.nativeEvent.contentOffset.y >= 0 && event.nativeEvent.contentOffset.y < 550) {
             setCurrentPosition("0")
-        } else if (event.nativeEvent.contentOffset.y >= 520 && event.nativeEvent.contentOffset.y < 1000) {
-            setCurrentPosition("520")
-        } else if(event.nativeEvent.contentOffset.y >= 1000 && event.nativeEvent.contentOffset.y < 2000) {
-            setCurrentPosition("1000")
-        } else if (event.nativeEvent.contentOffset.y > 2000) {
-            setCurrentPosition("2000")
-        } 
+        } else if (event.nativeEvent.contentOffset.y >= 550 && event.nativeEvent.contentOffset.y < 1050) {
+            setCurrentPosition("550")
+        } else if (event.nativeEvent.contentOffset.y >= 1050 && event.nativeEvent.contentOffset.y < 1400) {
+            setCurrentPosition("1050")
+        } else if (event.nativeEvent.contentOffset.y > 1400) {
+            setCurrentPosition("1700")
+        }
     }
 
 
 
     return (<View style={{ flex: 1 }}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 12, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, shadowOpacity: colors.grey, shadowRadius: 5, paddingHorizontal: 4, elevation: 4 }}>
-            <FlatList
-            style = {{backgroundColor: colors.white, borderBottomLeftRadius: 30, borderBottomRightRadius: 30,}}
-                data={postionsArray}
-                horizontal
-                keyExtractor={(item) => {
-                    return item.y.toString();
-                }}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => {
-                  return ( 
-                     <View style={{ flexDirection: "column",  width: dimensions.width/postionsArray.length, alignItems: "center" }}>
-                        <Text
-                            style={{
-                                fontSize: 16,
-                                color: currentPosition == item.y.toString() ? colors.endOrange : colors.black,
-                                fontFamily: "SegoeUI",
-                                paddingBottom: 3,                                
-                            }}
-                        >
-                            {item.name}
-                        </Text>
-                        {
-                             currentPosition == item.y.toString() ? <View style={{ backgroundColor: colors.endOrange, height: 2, width: 26 }} /> : null
-                        }
-
-                    </View>
-                  )
-                }} />
-        </View>
         <ScrollView
             showsVerticalScrollIndicator={false}
             onScroll={handleScroll}
             scrollEventThrottle={16}
+            style = {{paddingTop: -10}}
         >
             <View style={[styles.container, { padding: undefined }]}>
                 <View>
@@ -228,6 +200,36 @@ export const ProductDetailScreen = ({ navigation }) => {
             </View>
 
         </ScrollView >
+
+        <View style={{ flexDirection: "row", backgroundColor: colors.white, justifyContent: "space-between" , paddingVertical: 8, borderBottomLeftRadius: 30, borderBottomRightRadius: 30,  shadowOpacity: 0.4, shadowRadius: 5, shadowOffset: {width: 5, height: 5}, paddingHorizontal: 4, elevation: 4, position: "absolute" }}>
+            <FlatList
+                data={postionsArray}
+                horizontal
+                keyExtractor={(item) => {
+                    return item.y.toString();
+                }}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) => {
+                    return (
+                        <View style={{ flexDirection: "column", width: dimensions.width / postionsArray.length, alignItems: "center" }}>
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    color: currentPosition == item.y.toString() ? colors.endOrange : colors.black,
+                                    fontFamily: "SegoeUI",
+                                    paddingBottom: 3,
+                                }}
+                            >
+                                {item.name}
+                            </Text>
+                            {
+                                currentPosition == item.y.toString() ? <View style={{ backgroundColor: colors.endOrange, height: 2, width: 26 }} /> : null
+                            }
+
+                        </View>
+                    )
+                }} />
+        </View>
 
         <View style={{
             backgroundColor: colors.white, position: 'absolute',
@@ -307,41 +309,64 @@ const ReviewsSection = ({ }) => {
 const ReviewUser = ({ }) => {
     return (
         <View>
-            <View style={{ flexDirection: "row" }}>
-                <Image
-                    style={{ width: 40, height: 40, borderRadius: 20 }}
-                    source={{ uri: imagesUrl.profile }}
-                />
-                <View style={{ flex: 1, alignContent: "flex-start", flexDirection: "column", paddingStart: 8 }}>
+            <FlatList
+                data={[1, 2]}
+                scrollEnabled={false}
+                renderItem={({ item, index }) =>
+                    <View style={{ paddingVertical: 10 }}>
 
-                    <Text
-                        style={[
-                            styles.textStyle,
-                            { fontSize: 14, fontFamily: fontFamilty.regular },
-                        ]}
-                    >
-                        user****ame
-                    </Text>
+                        <View style={{ flexDirection: "row" }}>
+                            <Image
+                                style={{ width: 40, height: 40, borderRadius: 20 }}
+                                source={{ uri: imagesUrl.profile }}
+                            />
+                            <View style={{ flex: 1, alignContent: "flex-start", flexDirection: "column", paddingStart: 8 }}>
 
-                    <Text
-                        style={[
-                            styles.textStyle,
-                            { fontSize: 14, fontFamily: fontFamilty.regular, color: "#999999" },
-                        ]}
-                    >
-                        26.10.2022
-                    </Text>
-                </View>
-                <RatingView rating={4} />
-            </View>
-            <Text
-                style={[
-                    styles.textStyle,
-                    { fontSize: 14, fontFamily: fontFamilty.regular, paddingTop: 8 },
-                ]}
-            >
-                Very good quality
-            </Text>
+                                <Text
+                                    style={[
+                                        styles.textStyle,
+                                        { fontSize: 14, fontFamily: fontFamilty.regular },
+                                    ]}
+                                >
+                                    user****ame
+                                </Text>
+
+                                <Text
+                                    style={[
+                                        styles.textStyle,
+                                        { fontSize: 14, fontFamily: fontFamilty.regular, color: "#999999" },
+                                    ]}
+                                >
+                                    26.10.2022
+                                </Text>
+                            </View>
+                            <RatingView rating={4} />
+                        </View>
+                        <Text
+                            style={[
+                                styles.textStyle,
+                                { fontSize: 14, fontFamily: fontFamilty.regular, paddingTop: 8 },
+                            ]}
+                        >
+                            Very good quality多能显示2行------------------------ 第二行------------------------------------------------ ...
+                        </Text>
+
+                        {index != 0 ? <FlatList
+                            data={[1, 2, 3, 4, 5]}
+                            renderItem={({ item }) =>
+                                <View style={{ marginHorizontal: 1 }}>
+                                    <Image source={{ uri: imagesUrl.shoes }} style={{ width: 81, height: 81, borderRadius: 6 }} />
+                                </View>
+                            }
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                        /> : null}
+                    </View>
+                }
+            />
+
+
+
         </View>
     )
 }
@@ -382,7 +407,9 @@ const CommonButton = ({ text = AppString.add_to_cart, endColor = colors.endOrang
 
 const ProductDesclamenation = () => {
 
-    return <View style={{
+    const [showColorSize, setShowColorSize] = useState(false)
+    return (
+         <View style={{
         marginTop: 12, marginHorizontal: 9, backgroundColor: colors.white, borderRadius: 12,
         paddingTop: 7, paddingEnd: 6, paddingStart: 12, marginBottom: 10
     }}>
@@ -393,7 +420,7 @@ const ProductDesclamenation = () => {
             {"Выбран: 7 дюймовый"}
         </Text>
         <TextWithIcon icon="qr-code-outline" title="6 цветов на выбор" onClick={() => {
-
+            setShowColorSize( true)
         }} />
         <TextWithIcon icon="checkmark-circle-outline" title="Доставка • Возврат • Цена" onClick={() => {
 
@@ -404,7 +431,9 @@ const ProductDesclamenation = () => {
         <TextWithIcon icon="triangle-outline" title="Ширина плеч • Ширина груди • Длина рукава" onClick={() => {
 
         }} />
+        <SelectProductSizeColorScreen isShow = {showColorSize} onClose={ () => {setShowColorSize(false)}}  />
     </View>
+    )
 }
 
 
@@ -627,10 +656,12 @@ const ProductImages = ({ }) => {
 
 const RelatedProducts = () => {
     return (
-        <View>
+        <View style={{ marginBottom: 100 }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                 <View style={{ height: 1, width: 50, borderRadius: 0.5, backgroundColor: colors.endOrange }} />
                 <View style={{ height: 2, width: 2, borderRadius: 1, backgroundColor: colors.endOrange }} />
+
+
                 <Text
                     style={{
                         fontSize: 14,
@@ -759,9 +790,7 @@ const ProductDetails = () => {
                     {"178с."}
                 </Text>
             </View>
-            <Text style={[styles.textStyle, { fontSize: 21, color: colors.lightOrange }]}>
-                {""}
-            </Text>
+            <RatingView />
         </View>
         <View style={{ flexDirection: "row", gap: 6, marginTop: 2, width: '100%' }}>
             <Image source={{ uri: imagesUrl.profile }}
