@@ -1,5 +1,5 @@
 import { styles } from "../../utils/AppStyles"
-import { TouchableOpacity, ScrollView, View, Text, FlatList, Image, StyleSheet, Pressable, TextInput } from "react-native"
+import { TouchableOpacity, ScrollView, View, Text, FlatList, Image, StyleSheet, Pressable, TextInput, Animated } from "react-native"
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useEffect, useRef, useState } from "react";
 import { AppString } from "../../utils/AppStrings";
@@ -21,6 +21,11 @@ interface Product {
     id: number;
     imageURL: string | any;
     desc: string;
+}
+
+interface Position {
+    y: number;
+    name: string;
 }
 const data: Product[] = [
     {
@@ -56,6 +61,22 @@ const data: Product[] = [
 ];
 
 const imagesArray = [1, 2, 3, 4, 5]
+const postionsArray: Position[] = [ {
+    y: 0,
+    name: "Продукт"
+},
+{
+    y: 520,
+    name: "Отзывы"
+},
+{
+    y: 1000,
+    name: "Детали"
+},
+{
+    y: 2000,
+    name: "Еще"
+}]
 
 export const ProductDetailScreen = ({ navigation }) => {
 
@@ -109,95 +130,146 @@ export const ProductDetailScreen = ({ navigation }) => {
         })
     }, [])
 
-return (<View style={{ flex: 1 }}>
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={[styles.container, { padding: undefined }]}>
-            <View>
-                <FlatList style={{ flexGrow: 0 }}
-                    horizontal={true}
-                    snapToAlignment='center'
-                    pagingEnabled={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={productImages}
-                    decelerationRate={'normal'}
-                    scrollEventThrottle={16}
-                    onViewableItemsChanged={handleViewableItemsChanged.current}
-                    viewabilityConfig={{
-                        viewAreaCoveragePercentThreshold: 50, waitForInteraction: true,
-                        minimumViewTime: 5
-                    }}
-                    renderItem={({ item }) => <TouchableOpacity onPress={() => {
-                        //navigation.navigate(routes.image_view, { image: item })
-                    }} style={[{ padding: 0 }]}>
-                        <Image source={{ uri: item }}
+    const [currentPosition, setCurrentPosition] = useState("")
+
+    const handleScroll = (event: Object) => {
+        console.log(event.nativeEvent.contentOffset.y);
+        if (event.nativeEvent.contentOffset.y >= 0 && event.nativeEvent.contentOffset.y < 520) {
+            setCurrentPosition("0")
+        } else if (event.nativeEvent.contentOffset.y >= 520 && event.nativeEvent.contentOffset.y < 1000) {
+            setCurrentPosition("520")
+        } else if(event.nativeEvent.contentOffset.y >= 1000 && event.nativeEvent.contentOffset.y < 2000) {
+            setCurrentPosition("1000")
+        } else if (event.nativeEvent.contentOffset.y > 2000) {
+            setCurrentPosition("2000")
+        } 
+    }
+
+
+
+    return (<View style={{ flex: 1 }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 12, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, shadowOpacity: colors.grey, shadowRadius: 5, paddingHorizontal: 4, elevation: 4 }}>
+            <FlatList
+            style = {{backgroundColor: colors.white, borderBottomLeftRadius: 30, borderBottomRightRadius: 30,}}
+                data={postionsArray}
+                horizontal
+                keyExtractor={(item) => {
+                    return item.y.toString();
+                }}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) => {
+                  return ( 
+                     <View style={{ flexDirection: "column",  width: dimensions.width/postionsArray.length, alignItems: "center" }}>
+                        <Text
                             style={{
-                                width: dimensions.width, height: 375,
+                                fontSize: 16,
+                                color: currentPosition == item.y.toString() ? colors.endOrange : colors.black,
+                                fontFamily: "SegoeUI",
+                                paddingBottom: 3,                                
+                            }}
+                        >
+                            {item.name}
+                        </Text>
+                        {
+                             currentPosition == item.y.toString() ? <View style={{ backgroundColor: colors.endOrange, height: 2, width: 26 }} /> : null
+                        }
 
-                            }} resizeMode="cover" />
+                    </View>
+                  )
+                }} />
+        </View>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+        >
+            <View style={[styles.container, { padding: undefined }]}>
+                <View>
+                    <FlatList style={{ flexGrow: 0 }}
+                        horizontal={true}
+                        snapToAlignment='center'
+                        pagingEnabled={true}
+                        showsHorizontalScrollIndicator={false}
+                        data={productImages}
+                        decelerationRate={'normal'}
+                        scrollEventThrottle={16}
+                        onViewableItemsChanged={handleViewableItemsChanged.current}
+                        viewabilityConfig={{
+                            viewAreaCoveragePercentThreshold: 50, waitForInteraction: true,
+                            minimumViewTime: 5
+                        }}
+                        renderItem={({ item }) => <TouchableOpacity onPress={() => {
+                            //navigation.navigate(routes.image_view, { image: item })
+                        }} style={[{ padding: 0 }]}>
+                            <Image source={{ uri: item }}
+                                style={{
+                                    width: dimensions.width, height: 375,
+
+                                }} resizeMode="cover" />
 
 
-                    </TouchableOpacity>} />
-                <Text style={[styles.textStyle, {
-                    position: 'absolute', bottom: 10,
-                    end: 10, color: colors.white, paddingVertical: 7, paddingHorizontal: 13
-                    , backgroundColor: 'rgba(0, 0,0, .6 )',
-                    fontSize: 10, borderRadius: 12
-                }]}>
-                    {(activeIndex + 1) + "/" + productImages.length}
-                </Text>
+                        </TouchableOpacity>} />
+                    <Text style={[styles.textStyle, {
+                        position: 'absolute', bottom: 10,
+                        end: 10, color: colors.white, paddingVertical: 7, paddingHorizontal: 13
+                        , backgroundColor: 'rgba(0, 0,0, .6 )',
+                        fontSize: 10, borderRadius: 12
+                    }]}>
+                        {(activeIndex + 1) + "/" + productImages.length}
+                    </Text>
+                </View>
+
+                <ProductDetails />
+                <ProductDesclamenation />
+                <ReviewsSection />
+                <ShopView />
+                <ProductImages />
+                <RelatedProducts />
             </View>
 
-            <ProductDetails />
-            <ProductDesclamenation />
-           <ReviewsSection />
-            <ShopView />
-            <ProductImages />
-            <RelatedProducts />
+        </ScrollView >
+
+        <View style={{
+            backgroundColor: colors.white, position: 'absolute',
+            bottom: 0, width: dimensions.width,
+            justifyContent: 'space-between', alignItems: 'center',
+            paddingBottom: 34, paddingTop: 6,
+            flexDirection: 'row',
+            borderTopStartRadius: 13, borderTopEndRadius: 13
+        }}>
+
+            <View style={{ flexDirection: 'row', marginStart: 36, gap: 40 }}>
+
+                <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
+                    <Ionicons name="archive-outline" size={24} color={colors.startOrange} />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
+                    <Ionicons name="chatbubble-ellipses-outline" size={24} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
+                    <Ionicons name="heart-outline" size={24} />
+                </TouchableOpacity>
+
+            </View>
+
+            <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap' }}>
+                <CommonButton startorange={colors.yellowStart} endColor={colors.yellowEnd} onClick={() => {
+
+                }} />
+                <CommonButton text={AppString.buy} onClick={() => {
+
+                }} />
+            </View>
+
         </View>
-
-    </ScrollView >
-
-    <View style={{
-        backgroundColor: colors.white, position: 'absolute',
-        bottom: 0, width: dimensions.width,
-        justifyContent: 'space-between', alignItems: 'center',
-        paddingBottom: 34, paddingTop: 6,
-        flexDirection: 'row',
-        borderTopStartRadius: 13, borderTopEndRadius: 13
-    }}>
-
-        <View style={{ flexDirection: 'row', marginStart: 36, gap: 40 }}>
-
-            <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
-                <Ionicons name="archive-outline" size={24} color={colors.startOrange} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
-                <Ionicons name="chatbubble-ellipses-outline" size={24} />
-            </TouchableOpacity>
-            <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
-                <Ionicons name="heart-outline" size={24} />
-            </TouchableOpacity>
-
-        </View>
-
-        <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap' }}>
-            <CommonButton startorange={colors.yellowStart} endColor={colors.yellowEnd} onClick={() => {
-
-            }} />
-            <CommonButton text={AppString.buy} onClick={() => {
-
-            }} />
-        </View>
-
-    </View>
-</View>
-)
+    </View >
+    )
 }
 // MARK: - Review Section
 const ReviewsSection = ({ }) => {
     return (
-        <View style={{ borderRadius: 13, backgroundColor: colors.white, paddingHorizontal: 10, paddingVertical: 10 }}>
+        <View id={"reviewSection"} style={{ borderRadius: 13, backgroundColor: colors.white, paddingHorizontal: 10, paddingVertical: 10 }}>
             <TextWithIcon title={AppString.review} onClick={() => { }} />
             <FlatList
                 data={reviewFilter}
@@ -268,13 +340,13 @@ const ReviewUser = ({ }) => {
                     { fontSize: 14, fontFamily: fontFamilty.regular, paddingTop: 8 },
                 ]}
             >
-                Very good quality多能显示2行------------------------ 第二行------------------------------------------------ ...
+                Very good quality
             </Text>
         </View>
     )
 }
 
-   
+
 
 
 const CommonButton = ({ text = AppString.add_to_cart, endColor = colors.endOrange,
@@ -556,26 +628,24 @@ const ProductImages = ({ }) => {
 const RelatedProducts = () => {
     return (
         <View>
-        <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-            <View style={{height: 1, width: 50, borderRadius: 0.5, backgroundColor: colors.endOrange}} />
-           <View style={{height: 2, width: 2, borderRadius: 1, backgroundColor: colors.endOrange}} />
-
-         
-            <Text
-                style={{
-                    fontSize: 14,
-                    color: colors.lightOrange,
-                    fontFamily: "SegoeUI",
-                    paddingVertical: 15,
-                    paddingHorizontal: 5,
-                    alignSelf: "center"
-                }}
-            >
-                Детали
-            </Text>
-            <View style={{height: 2, width: 2, borderRadius: 1, backgroundColor: colors.endOrange}} />
-            <View style={{height: 1, width: 50, borderRadius: 0.5, backgroundColor: colors.endOrange}} />
-                </View>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                <View style={{ height: 1, width: 50, borderRadius: 0.5, backgroundColor: colors.endOrange }} />
+                <View style={{ height: 2, width: 2, borderRadius: 1, backgroundColor: colors.endOrange }} />
+                <Text
+                    style={{
+                        fontSize: 14,
+                        color: colors.lightOrange,
+                        fontFamily: "SegoeUI",
+                        paddingVertical: 15,
+                        paddingHorizontal: 5,
+                        alignSelf: "center"
+                    }}
+                >
+                    Детали
+                </Text>
+                <View style={{ height: 2, width: 2, borderRadius: 1, backgroundColor: colors.endOrange }} />
+                <View style={{ height: 1, width: 50, borderRadius: 0.5, backgroundColor: colors.endOrange }} />
+            </View>
             <FlatList
                 data={data}
                 keyExtractor={(item) => {
