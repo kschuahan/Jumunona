@@ -29,5 +29,6 @@ export const RouteNames = {
     copyright: "Copyright",
     licenseAgreement: "License Agreement",
     favorite: AppString.want_to,
-    product_detail: "Product Detail"
+    product_detail: "Product Detail",
+    select_product_color_size: "Select product color size"
 }
