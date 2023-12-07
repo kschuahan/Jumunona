@@ -5,7 +5,9 @@ export const appIcons = {
     imgLogo: require('../..//assets/icon-512x512.png'),
     china: require("../../assets/china.png"),
     shoeImageURL: require("../../assets/shoe.jpg"),
-    ruler: require("../../assets/ruler.svg")
+    ruler: require("../../assets/ruler.svg"),
+    check: require("../../assets/check.png"),
+    checked: require("../../assets/checked.png")
 
 }
 

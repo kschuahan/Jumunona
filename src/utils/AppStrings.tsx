@@ -110,6 +110,7 @@ export const AppString = {
     product_name: 'Название товара',
     featured: "Рекомендуемые",
     add_to_cart: 'В корзину',
-    buy: 'Купить'
+    buy: 'Купить',
+    gurantee_jumunona: "Гарантии Jumunona"
 
 }
