@@ -204,10 +204,10 @@ const App: React.FC = () => {
             name={RouteNames.product_detail}
             component={ProductDetailScreen}
           />
-           <Stack.Screen
+           {/* <Stack.Screen
             name={RouteNames.select_product_color_size}
             component={SelectProductSizeColorScreen}
-          />
+          /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

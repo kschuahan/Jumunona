@@ -13,7 +13,7 @@ import { onShare } from "../../utils/Common";
 import SelectProductSizeColorScreen from "./SelectProductSizeColorScreen";
 import ProuductGuanteeScreen from "./ProductGuarnteeScreen";
 import ProductImageScreeen from "./ProductImageScreeen";
-import { ImageZoom } from "@likashefqet/react-native-image-zoom";
+import CharacterSticsScreen from "./CharactersticsScreen";
 const shoeImageURL = appIcons.shoeImageURL
 const china = appIcons.china
 const reviewFilter = [
@@ -88,8 +88,8 @@ export const ProductDetailScreen = ({ navigation }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const handleViewableItemsChanged = useRef(({ viewableItems, changed }) => {
         if (changed && changed.length > 0) {
-            console.log("Visible items are", viewableItems[0].index);
-            console.log("Changed in this iteration", changed[0]);
+            // console.log("Visible items are", viewableItems[0].index);
+            // console.log("Changed in this iteration", changed[0]);
             setActiveIndex(changed[0].index);
         }
     });
@@ -140,7 +140,7 @@ export const ProductDetailScreen = ({ navigation }) => {
     const [currentPosition, setCurrentPosition] = useState(0)
 
     const handleScroll = (event: Object) => {
-        console.log(event.nativeEvent.contentOffset.y);
+        //  console.log(event.nativeEvent.contentOffset.y);
         if (event.nativeEvent.contentOffset.y < 50) {
             setCurrentPosition(0)
         }
@@ -155,170 +155,136 @@ export const ProductDetailScreen = ({ navigation }) => {
         }
     }
 
-    const [showImages, setShowImages] = useState(false)
-    
+    const [showImages, setShowImages] = useState(-1)
 
 
-    return (<View style={[styles.botton_view, { backgroundColor: colors.black, justifyContent: "center", flex: 1,}]}>
-    {/* <FlatList style={{ flexGrow: 0 }}
-                horizontal={true}
-                snapToAlignment='center'
-                pagingEnabled={true}
-                showsHorizontalScrollIndicator={false}
-                data={productImages}
-                decelerationRate={'normal'}
-                scrollEventThrottle={16}
-                onViewableItemsChanged={handleViewableItemsChanged.current}
-                viewabilityConfig={{
-                    viewAreaCoveragePercentThreshold: 50, waitForInteraction: true,
-                    minimumViewTime: 5
-                }}
-                renderItem={({ item }) => 
-                  }/> */}
-                   <ImageZoom uri={imagesUrl.shoes} 
-                    minScale={1}
-                    minPanPointers={1}
-                    onInteractionStart={() => console.log('onInteractionStart')}
-                    onInteractionEnd={() => console.log('onInteractionEnd')}
-                    onPanStart={() => console.log('onPanStart')}
-                    onPanEnd={() => console.log('onPanEnd')}
-                    onPinchStart={() => console.log('onPinchStart')}
-                    onPinchEnd={() => console.log('onPinchEnd')}
-                    style={{
-                        overflow: 'hidden',
-                        height: dimensions.height,
-                        width: dimensions.width
-                    }}
-        
-                    resizeMode="contain"
-                   />
-    </View>
+
+
+    return (<View style={{ flex: 1 }}>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+            style={{ paddingTop: -10 }}
+        >
+            <View style={[styles.container, { padding: undefined }]}>
+                <View>
+                    <FlatList style={{ flexGrow: 0 }}
+                        horizontal={true}
+                        snapToAlignment='center'
+                        pagingEnabled={true}
+                        showsHorizontalScrollIndicator={false}
+                        data={productImages}
+                        decelerationRate={'normal'}
+                        scrollEventThrottle={16}
+                        onViewableItemsChanged={handleViewableItemsChanged.current}
+                        viewabilityConfig={{
+                            viewAreaCoveragePercentThreshold: 50, waitForInteraction: true,
+                            minimumViewTime: 5
+                        }}
+                        renderItem={({ item, index }) => <TouchableOpacity onPress={() => {
+                            setShowImages(index)
+                        }} style={[{ padding: 0 }]}>
+                            <Image source={{ uri: item }}
+                                style={{
+                                    width: dimensions.width, height: 375,
+
+                                }} resizeMode="cover" />
+
+
+                        </TouchableOpacity>} />
+                    <Text style={[styles.textStyle, {
+                        position: 'absolute', bottom: 10,
+                        end: 10, color: colors.white, paddingVertical: 7, paddingHorizontal: 13
+                        , backgroundColor: 'rgba(0, 0,0, .6 )',
+                        fontSize: 10, borderRadius: 12
+                    }]}>
+                        {(activeIndex + 1) + "/" + productImages.length}
+                    </Text>
+                </View>
+
+                <ProductDetails />
+                <ProductDesclamenation />
+                <ReviewsSection />
+                <ShopView />
+                <ProductImages />
+                <RelatedProducts />
+            </View>
+
+        </ScrollView >
+        {
+            currentPosition > 0 ?
+
+                <View style={{ flexDirection: "row", backgroundColor: colors.white, justifyContent: "space-between", paddingVertical: 8, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, shadowOpacity: 0.4, shadowRadius: 5, shadowOffset: { width: 5, height: 5 }, paddingHorizontal: 4, elevation: 4, position: "absolute" }}>
+                    <FlatList
+                        data={postionsArray}
+                        horizontal
+                        keyExtractor={(item) => {
+                            return item.y.toString();
+                        }}
+                        scrollEnabled={false}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                <View style={{ flexDirection: "column", width: dimensions.width / postionsArray.length, alignItems: "center" }}>
+                                    <Text
+                                        style={{
+                                            fontSize: 16,
+                                            color: currentPosition == item.y ? colors.endOrange : colors.black,
+                                            fontFamily: "SegoeUI",
+                                            paddingBottom: 3,
+                                        }}
+                                    >
+                                        {item.name}
+                                    </Text>
+                                    {
+                                        currentPosition == item.y ? <View style={{ backgroundColor: colors.endOrange, height: 2, width: 26 }} /> : null
+                                    }
+
+                                </View>
+                            )
+                        }} />
+                </View> : null
+        }
+        <View style={{
+            backgroundColor: colors.white, position: 'absolute',
+            bottom: 0, width: dimensions.width,
+            justifyContent: 'space-between', alignItems: 'center',
+            paddingBottom: 34, paddingTop: 6,
+            flexDirection: 'row',
+            borderTopStartRadius: 13, borderTopEndRadius: 13
+        }}>
+
+            <View style={{ flexDirection: 'row', marginStart: 36, gap: 40 }}>
+
+                <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
+                    <Ionicons name="archive-outline" size={24} color={colors.startOrange} />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
+                    <Ionicons name="chatbubble-ellipses-outline" size={24} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
+                    <Ionicons name="heart-outline" size={24} />
+                </TouchableOpacity>
+
+            </View>
+
+            <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap' }}>
+                <CommonButton startorange={colors.yellowStart} endColor={colors.yellowEnd} onClick={() => {
+
+                }} />
+                <CommonButton text={AppString.buy} onClick={() => {
+
+                }} />
+            </View>
+
+        </View>
+        <ProductImageScreeen isShow={showImages != -1} pos={showImages != -1 ? showImages : 0} onClose={() => {
+            setShowImages(-1)
+        }} />
+    </View >
     )
-    // return (<View style={{ flex: 1 }}>
-    //     <ScrollView
-    //         showsVerticalScrollIndicator={false}
-    //         onScroll={handleScroll}
-    //         scrollEventThrottle={16}
-    //         style={{ paddingTop: -10 }}
-    //     >
-    //         <View style={[styles.container, { padding: undefined }]}>
-    //             <View>
-    //                 <FlatList style={{ flexGrow: 0 }}
-    //                     horizontal={true}
-    //                     snapToAlignment='center'
-    //                     pagingEnabled={true}
-    //                     showsHorizontalScrollIndicator={false}
-    //                     data={productImages}
-    //                     decelerationRate={'normal'}
-    //                     scrollEventThrottle={16}
-    //                     onViewableItemsChanged={handleViewableItemsChanged.current}
-    //                     viewabilityConfig={{
-    //                         viewAreaCoveragePercentThreshold: 50, waitForInteraction: true,
-    //                         minimumViewTime: 5
-    //                     }}
-    //                     renderItem={({ item }) => <TouchableOpacity onPress={() => {
-    //                         setShowImages(true)
-    //                     }} style={[{ padding: 0 }]}>
-    //                         <Image source={{ uri: item }}
-    //                             style={{
-    //                                 width: dimensions.width, height: 375,
-
-    //                             }} resizeMode="cover" />
-
-
-    //                     </TouchableOpacity>} />
-    //                 <Text style={[styles.textStyle, {
-    //                     position: 'absolute', bottom: 10,
-    //                     end: 10, color: colors.white, paddingVertical: 7, paddingHorizontal: 13
-    //                     , backgroundColor: 'rgba(0, 0,0, .6 )',
-    //                     fontSize: 10, borderRadius: 12
-    //                 }]}>
-    //                     {(activeIndex + 1) + "/" + productImages.length}
-    //                 </Text>
-    //             </View>
-
-    //             <ProductDetails />
-    //             <ProductDesclamenation />
-    //             <ReviewsSection />
-    //             <ShopView />
-    //             <ProductImages />
-    //             <RelatedProducts />
-    //         </View>
-
-    //     </ScrollView >
-    //     {
-    //         currentPosition > 0 ?
-
-    //             <View style={{ flexDirection: "row", backgroundColor: colors.white, justifyContent: "space-between", paddingVertical: 8, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, shadowOpacity: 0.4, shadowRadius: 5, shadowOffset: { width: 5, height: 5 }, paddingHorizontal: 4, elevation: 4, position: "absolute" }}>
-    //                 <FlatList
-    //                     data={postionsArray}
-    //                     horizontal
-    //                     keyExtractor={(item) => {
-    //                         return item.y.toString();
-    //                     }}
-    //                     scrollEnabled={false}
-    //                     showsHorizontalScrollIndicator={false}
-    //                     renderItem={({ item }) => {
-    //                         return (
-    //                             <View style={{ flexDirection: "column", width: dimensions.width / postionsArray.length, alignItems: "center" }}>
-    //                                 <Text
-    //                                     style={{
-    //                                         fontSize: 16,
-    //                                         color: currentPosition == item.y ? colors.endOrange : colors.black,
-    //                                         fontFamily: "SegoeUI",
-    //                                         paddingBottom: 3,
-    //                                     }}
-    //                                 >
-    //                                     {item.name}
-    //                                 </Text>
-    //                                 {
-    //                                     currentPosition == item.y ? <View style={{ backgroundColor: colors.endOrange, height: 2, width: 26 }} /> : null
-    //                                 }
-
-    //                             </View>
-    //                         )
-    //                     }} />
-    //             </View> : null
-    //     }
-    //     <View style={{
-    //         backgroundColor: colors.white, position: 'absolute',
-    //         bottom: 0, width: dimensions.width,
-    //         justifyContent: 'space-between', alignItems: 'center',
-    //         paddingBottom: 34, paddingTop: 6,
-    //         flexDirection: 'row',
-    //         borderTopStartRadius: 13, borderTopEndRadius: 13
-    //     }}>
-
-    //         <View style={{ flexDirection: 'row', marginStart: 36, gap: 40 }}>
-
-    //             <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
-    //                 <Ionicons name="archive-outline" size={24} color={colors.startOrange} />
-    //             </TouchableOpacity>
-
-    //             <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
-    //                 <Ionicons name="chatbubble-ellipses-outline" size={24} />
-    //             </TouchableOpacity>
-    //             <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
-    //                 <Ionicons name="heart-outline" size={24} />
-    //             </TouchableOpacity>
-
-    //         </View>
-
-    //         <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap' }}>
-    //             <CommonButton startorange={colors.yellowStart} endColor={colors.yellowEnd} onClick={() => {
-
-    //             }} />
-    //             <CommonButton text={AppString.buy} onClick={() => {
-
-    //             }} />
-    //         </View>
-
-    //     </View>
-    //     <ProductImageScreeen isShow= {showImages} onClose={ () => {
-    //             setShowImages(flase)
-    //     }} />
-    // </View >
-    // )
 }
 // MARK: - Review Section
 const ReviewsSection = ({ }) => {
@@ -461,7 +427,9 @@ const ProductDesclamenation = () => {
 
     const [showColorSize, setShowColorSize] = useState(false)
     const [showGurantees, setShowGurantees] = useState(false)
-    
+
+    const [showCharacterstics, setShowCharacterstics] = useState(false)
+
     return (
         <View style={{
             marginTop: 12, marginHorizontal: 9, backgroundColor: colors.white, borderRadius: 12,
@@ -480,13 +448,14 @@ const ProductDesclamenation = () => {
                 setShowGurantees(true)
             }} />
             <TextWithIcon icon="triangle-outline" title="Бренд • Материал • Метод обработки" onClick={() => {
-
+                setShowCharacterstics(true)
             }} />
             <TextWithIcon icon="triangle-outline" title="Ширина плеч • Ширина груди • Длина рукава" onClick={() => {
 
             }} />
             <SelectProductSizeColorScreen isShow={showColorSize} onClose={() => { setShowColorSize(false) }} />
             <ProuductGuanteeScreen isShow={showGurantees} onClose={() => { setShowGurantees(false) }} />
+            <CharacterSticsScreen isShow={showCharacterstics} onClose={() => { setShowCharacterstics(false) }} />
 
         </View>
     )
@@ -495,7 +464,7 @@ const ProductDesclamenation = () => {
 
 
 const TextWithIcon = ({ title = AppString.address, padding = 4,
-    icon = undefined, onClick }) => {
+    icon = "", onClick }) => {
 
     return (
         <TouchableOpacity

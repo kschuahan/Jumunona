@@ -111,6 +111,8 @@ export const AppString = {
     featured: "Рекомендуемые",
     add_to_cart: 'В корзину',
     buy: 'Купить',
-    gurantee_jumunona: "Гарантии Jumunona"
+    gurantee_jumunona: "Гарантии Jumunona",
+    charachterStics: 'Характеристики',
+    ok: 'OK'
 
 }

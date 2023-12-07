@@ -22,5 +22,8 @@ export const colors = {
     whiteF6F6F6: "#F6F6F6",
     greyCCCCCCE3: "#CCCCCCE3",
     yellowStart: '#FFE259',
-    yellowEnd: '#F7B733'
+    yellowEnd: '#F7B733',
+    grey9D9D9D: '#9D9D9D',
+    blacl5B5B5B: '#5B5B5B',
+    black333333: '#333333'
 }

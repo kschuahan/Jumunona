@@ -9,56 +9,51 @@ import { appIcons, imagesUrl, productImages } from "../../utils/AppIcons";
 import { colors } from "../../utils/AppColors";
 import { fontFamilty } from "../../utils/Fonts";
 import { dimensions } from "../../utils/sizes";
-import { ImageZoom } from "@likashefqet/react-native-image-zoom";
+import ImageViewer from "react-native-image-zoom-viewer";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 
-const ProductImageScreeen = ({isShow = false, onClose }) => {
+const ProductImageScreeen = ({ isShow = false, onClose, pos = 1 }) => {
 
     const [activeIndex, setActiveIndex] = useState(0);
+    const images = [{
+        // Simplest usage.
+        url: imagesUrl.shoes,
 
-    const handleViewableItemsChanged = useRef(({ viewableItems, changed }) => {
-        if (changed && changed.length > 0) {
-            console.log("Visible items are", viewableItems[0].index);
-            console.log("Changed in this iteration", changed[0]);
-            setActiveIndex(changed[0].index);
-        }
-    });
+    }, {
+        url: imagesUrl.shoes,
+
+    }
+        , {
+        url: imagesUrl.shoes,
+
+    }
+        , {
+        url: imagesUrl.shoes,
+
+    }
+        , {
+        url: imagesUrl.shoes,
+
+    }
+    ]
+
     return (
-       
-            <View style={[styles.botton_view, { backgroundColor: colors.black, justifyContent: "center", flex: 1,}]}>
-            {/* <FlatList style={{ flexGrow: 0 }}
-                        horizontal={true}
-                        snapToAlignment='center'
-                        pagingEnabled={true}
-                        showsHorizontalScrollIndicator={false}
-                        data={productImages}
-                        decelerationRate={'normal'}
-                        scrollEventThrottle={16}
-                        onViewableItemsChanged={handleViewableItemsChanged.current}
-                        viewabilityConfig={{
-                            viewAreaCoveragePercentThreshold: 50, waitForInteraction: true,
-                            minimumViewTime: 5
-                        }}
-                        renderItem={({ item }) => 
-                          }/> */}
-                           <ImageZoom uri={imagesUrl.shoes} 
-                            minScale={1}
-                            minPanPointers={1}
-                            onInteractionStart={() => console.log('onInteractionStart')}
-                            onInteractionEnd={() => console.log('onInteractionEnd')}
-                            onPanStart={() => console.log('onPanStart')}
-                            onPanEnd={() => console.log('onPanEnd')}
-                            onPinchStart={() => console.log('onPinchStart')}
-                            onPinchEnd={() => console.log('onPinchEnd')}
-                            style={{
-                                overflow: 'hidden',
-                                height: diamentions.height,
-                                width: diamentions.width
-                            }}
-                
-                            resizeMode="contain"
-                           />
-            </View>
+
+        <Modal visible={isShow} transparent={true} animationType="slide" onRequestClose={onClose}>
+            <ImageViewer imageUrls={images} index={pos} />
+            <TouchableOpacity style={{
+                position: 'absolute', top: 30, start: 16,
+                backgroundColor: colors.black333333, borderRadius: 20, height: 29, width: 29, 
+                alignItems: 'center', justifyContent:'center'
+            }} onPress={onClose}>
+                <Ionicons
+                    name={"close"}
+                    color={colors.white}
+                    size={18}
+
+                /></TouchableOpacity>
+        </Modal>
     )
 }
 
