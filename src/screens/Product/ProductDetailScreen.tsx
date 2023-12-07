@@ -9,6 +9,7 @@ import { appIcons, imagesUrl, productImages } from "../../utils/AppIcons";
 import MasonryList from "@react-native-seoul/masonry-list";
 import { dimensions } from "../../utils/sizes";
 import { LinearGradient } from "expo-linear-gradient";
+import { onShare } from "../../utils/Common";
 const shoeImageURL = appIcons.shoeImageURL
 const china = appIcons.china
 const reviewFilter = [
@@ -75,7 +76,9 @@ export const ProductDetailScreen = ({ navigation }) => {
             headerRight: (() =>
                 <View style={{ flexDirection: 'row', gap: 30, }}>
 
-                    <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
+                    <TouchableOpacity onPress={() => {
+                        onShare()
+                    }} style={{ alignItems: "center", marginStart: -20 }}>
                         <Ionicons name="arrow-redo-outline" size={24} />
                     </TouchableOpacity>
 
