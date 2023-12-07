@@ -63,7 +63,7 @@ const data: Product[] = [
 
 const imagesArray = [1, 2, 3, 4, 5]
 const postionsArray: Position[] = [{
-    y: 0,
+    y: 50,
     name: "Продукт"
 },
 {
@@ -131,18 +131,21 @@ export const ProductDetailScreen = ({ navigation }) => {
         })
     }, [])
 
-    const [currentPosition, setCurrentPosition] = useState("")
+    const [currentPosition, setCurrentPosition] = useState(0)
 
     const handleScroll = (event: Object) => {
         console.log(event.nativeEvent.contentOffset.y);
-        if (event.nativeEvent.contentOffset.y >= 0 && event.nativeEvent.contentOffset.y < 550) {
-            setCurrentPosition("0")
+        if (event.nativeEvent.contentOffset.y < 50) {
+            setCurrentPosition(0)
+        }
+        else if (event.nativeEvent.contentOffset.y >= 50 && event.nativeEvent.contentOffset.y < 550) {
+            setCurrentPosition(50)
         } else if (event.nativeEvent.contentOffset.y >= 550 && event.nativeEvent.contentOffset.y < 1050) {
-            setCurrentPosition("550")
+            setCurrentPosition(550)
         } else if (event.nativeEvent.contentOffset.y >= 1050 && event.nativeEvent.contentOffset.y < 1400) {
-            setCurrentPosition("1050")
+            setCurrentPosition(1050)
         } else if (event.nativeEvent.contentOffset.y > 1400) {
-            setCurrentPosition("1700")
+            setCurrentPosition(1700)
         }
     }
 
@@ -153,7 +156,7 @@ export const ProductDetailScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             onScroll={handleScroll}
             scrollEventThrottle={16}
-            style = {{paddingTop: -10}}
+            style={{ paddingTop: -10 }}
         >
             <View style={[styles.container, { padding: undefined }]}>
                 <View>
@@ -200,37 +203,40 @@ export const ProductDetailScreen = ({ navigation }) => {
             </View>
 
         </ScrollView >
+        {
+            currentPosition > "49" ?
 
-        <View style={{ flexDirection: "row", backgroundColor: colors.white, justifyContent: "space-between" , paddingVertical: 8, borderBottomLeftRadius: 30, borderBottomRightRadius: 30,  shadowOpacity: 0.4, shadowRadius: 5, shadowOffset: {width: 5, height: 5}, paddingHorizontal: 4, elevation: 4, position: "absolute" }}>
-            <FlatList
-                data={postionsArray}
-                horizontal
-                keyExtractor={(item) => {
-                    return item.y.toString();
-                }}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => {
-                    return (
-                        <View style={{ flexDirection: "column", width: dimensions.width / postionsArray.length, alignItems: "center" }}>
-                            <Text
-                                style={{
-                                    fontSize: 16,
-                                    color: currentPosition == item.y.toString() ? colors.endOrange : colors.black,
-                                    fontFamily: "SegoeUI",
-                                    paddingBottom: 3,
-                                }}
-                            >
-                                {item.name}
-                            </Text>
-                            {
-                                currentPosition == item.y.toString() ? <View style={{ backgroundColor: colors.endOrange, height: 2, width: 26 }} /> : null
-                            }
+                <View style={{ flexDirection: "row", backgroundColor: colors.white, justifyContent: "space-between", paddingVertical: 8, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, shadowOpacity: 0.4, shadowRadius: 5, shadowOffset: { width: 5, height: 5 }, paddingHorizontal: 4, elevation: 4, position: "absolute" }}>
+                    <FlatList
+                        data={postionsArray}
+                        horizontal
+                        keyExtractor={(item) => {
+                            return item.y.toString();
+                        }}
+                        scrollEnabled={false}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                <View style={{ flexDirection: "column", width: dimensions.width / postionsArray.length, alignItems: "center" }}>
+                                    <Text
+                                        style={{
+                                            fontSize: 16,
+                                            color: currentPosition == item.y ? colors.endOrange : colors.black,
+                                            fontFamily: "SegoeUI",
+                                            paddingBottom: 3,
+                                        }}
+                                    >
+                                        {item.name}
+                                    </Text>
+                                    {
+                                        currentPosition == item.y ? <View style={{ backgroundColor: colors.endOrange, height: 2, width: 26 }} /> : null
+                                    }
 
-                        </View>
-                    )
-                }} />
-        </View>
-
+                                </View>
+                            )
+                        }} />
+                </View> : null
+        }
         <View style={{
             backgroundColor: colors.white, position: 'absolute',
             bottom: 0, width: dimensions.width,
@@ -409,37 +415,37 @@ const ProductDesclamenation = () => {
 
     const [showColorSize, setShowColorSize] = useState(false)
     return (
-         <View style={{
-        marginTop: 12, marginHorizontal: 9, backgroundColor: colors.white, borderRadius: 12,
-        paddingTop: 7, paddingEnd: 6, paddingStart: 12, marginBottom: 10
-    }}>
-        <Text style={[styles.textStyle, {
-            fontSize: 14, alignSelf: 'flex-end',
-            marginEnd: 42, paddingBottom: 2
-        }]}>
-            {"Выбран: 7 дюймовый"}
-        </Text>
-        <TextWithIcon icon="qr-code-outline" title="6 цветов на выбор" onClick={() => {
-            setShowColorSize( true)
-        }} />
-        <TextWithIcon icon="checkmark-circle-outline" title="Доставка • Возврат • Цена" onClick={() => {
+        <View style={{
+            marginTop: 12, marginHorizontal: 9, backgroundColor: colors.white, borderRadius: 12,
+            paddingTop: 7, paddingEnd: 6, paddingStart: 12, marginBottom: 10
+        }}>
+            <Text style={[styles.textStyle, {
+                fontSize: 14, alignSelf: 'flex-end',
+                marginEnd: 42, paddingBottom: 2
+            }]}>
+                {"Выбран: 7 дюймовый"}
+            </Text>
+            <TextWithIcon icon="qr-code-outline" title="6 цветов на выбор" onClick={() => {
+                setShowColorSize(true)
+            }} />
+            <TextWithIcon icon="checkmark-circle-outline" title="Доставка • Возврат • Цена" onClick={() => {
 
-        }} />
-        <TextWithIcon icon="triangle-outline" title="Бренд • Материал • Метод обработки" onClick={() => {
+            }} />
+            <TextWithIcon icon="triangle-outline" title="Бренд • Материал • Метод обработки" onClick={() => {
 
-        }} />
-        <TextWithIcon icon="triangle-outline" title="Ширина плеч • Ширина груди • Длина рукава" onClick={() => {
+            }} />
+            <TextWithIcon icon="triangle-outline" title="Ширина плеч • Ширина груди • Длина рукава" onClick={() => {
 
-        }} />
-        <SelectProductSizeColorScreen isShow = {showColorSize} onClose={ () => {setShowColorSize(false)}}  />
-    </View>
+            }} />
+            <SelectProductSizeColorScreen isShow={showColorSize} onClose={() => { setShowColorSize(false) }} />
+        </View>
     )
 }
 
 
 
 const TextWithIcon = ({ title = AppString.address, padding = 4,
-    icon = "chevron-forward-outline", onClick }) => {
+    icon = undefined, onClick }) => {
 
     return (
         <TouchableOpacity
@@ -449,16 +455,24 @@ const TextWithIcon = ({ title = AppString.address, padding = 4,
                 { marginTop: undefined, alignItems: "center", paddingBottom: 16 },
             ]}
         >
+            {
+                icon != undefined ? <Ionicons
+                    name={icon}
+                    color={colors.extraGrey}
+                    size={15}
+                /> : null
+            }
+
             <Text
                 style={[
                     styles.textStyle,
-                    { fontSize: 14, fontWeight: "400", fontFamily: fontFamilty.regular, width: "95%" },
+                    { fontSize: 14, fontWeight: "400", fontFamily: fontFamilty.regular, width: "92%" },
                 ]}
             > {title}
 
             </Text>
             <Ionicons
-                name={icon}
+                name={"chevron-forward-outline"}
                 color={colors.extraGrey}
                 size={15}
             />
