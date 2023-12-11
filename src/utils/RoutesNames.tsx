@@ -30,5 +30,6 @@ export const RouteNames = {
     licenseAgreement: "License Agreement",
     favorite: AppString.want_to,
     product_detail: "Product Detail",
-    select_product_color_size: "Select product color size"
+    select_product_color_size: "Select product color size",
+    chat_screen: 'Chat'
 }

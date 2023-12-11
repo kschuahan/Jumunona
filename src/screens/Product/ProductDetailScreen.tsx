@@ -14,6 +14,7 @@ import SelectProductSizeColorScreen from "./SelectProductSizeColorScreen";
 import ProuductGuanteeScreen from "./ProductGuarnteeScreen";
 import ProductImageScreeen from "./ProductImageScreeen";
 import CharacterSticsScreen from "./CharactersticsScreen";
+import { RouteNames } from "../../utils/RoutesNames";
 const shoeImageURL = appIcons.shoeImageURL
 const china = appIcons.china
 const reviewFilter = [
@@ -215,7 +216,7 @@ export const ProductDetailScreen = ({ navigation }) => {
         {
             currentPosition > 0 ?
 
-                <View style={{ flexDirection: "row", backgroundColor: colors.white, justifyContent: "space-between", paddingVertical: 8, borderBottomLeftRadius: 30, borderBottomRightRadius: 30, shadowOpacity: 0.4, shadowRadius: 5, shadowOffset: { width: 5, height: 5 }, paddingHorizontal: 4, elevation: 4, position: "absolute" }}>
+                <View style={{ flexDirection: "row", backgroundColor: colors.white, justifyContent: "space-between", paddingVertical: 8, borderBottomLeftRadius: 13, borderBottomRightRadius: 13, shadowOpacity: 0.4, shadowRadius: 5, shadowOffset: { width: 5, height: 5 }, paddingHorizontal: 4, elevation: 4, position: "absolute" }}>
                     <FlatList
                         data={postionsArray}
                         horizontal
@@ -261,7 +262,9 @@ export const ProductDetailScreen = ({ navigation }) => {
                     <Ionicons name="archive-outline" size={24} color={colors.startOrange} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate(RouteNames.chat_screen)
+                }} style={{ alignItems: "center", marginStart: -20 }}>
                     <Ionicons name="chatbubble-ellipses-outline" size={24} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>

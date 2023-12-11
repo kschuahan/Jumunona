@@ -36,6 +36,7 @@ import LicenseAgreementScreen from "./src/screens/ProfileSection/Settings/Licens
 import { FavoriteScreen } from "./src/screens/ProfileSection/FavoriteScreen";
 import ProductDetailScreen from "./src/screens/Product/ProductDetailScreen";
 import SelectProductSizeColorScreen from "./src/screens/Product/SelectProductSizeColorScreen";
+import ChatScreen from "./src/screens/Chat/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -204,7 +205,12 @@ const App: React.FC = () => {
             name={RouteNames.product_detail}
             component={ProductDetailScreen}
           />
-           {/* <Stack.Screen
+
+          <Stack.Screen
+            name={RouteNames.chat_screen}
+            component={ChatScreen}
+          />
+          {/* <Stack.Screen
             name={RouteNames.select_product_color_size}
             component={SelectProductSizeColorScreen}
           /> */}
