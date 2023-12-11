@@ -36,6 +36,7 @@ import LicenseAgreementScreen from "./src/screens/ProfileSection/Settings/Licens
 import { FavoriteScreen } from "./src/screens/ProfileSection/FavoriteScreen";
 import ProductDetailScreen from "./src/screens/Product/ProductDetailScreen";
 import SelectProductSizeColorScreen from "./src/screens/Product/SelectProductSizeColorScreen";
+import { ProudctReviewsScreen } from "./src/screens/Product/ProudctReviewsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -204,10 +205,10 @@ const App: React.FC = () => {
             name={RouteNames.product_detail}
             component={ProductDetailScreen}
           />
-           {/* <Stack.Screen
-            name={RouteNames.select_product_color_size}
-            component={SelectProductSizeColorScreen}
-          /> */}
+           <Stack.Screen
+            name={RouteNames.product_review_screen}
+            component={ProudctReviewsScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

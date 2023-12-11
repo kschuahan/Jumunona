@@ -14,6 +14,8 @@ import SelectProductSizeColorScreen from "./SelectProductSizeColorScreen";
 import ProuductGuanteeScreen from "./ProductGuarnteeScreen";
 import ProductImageScreeen from "./ProductImageScreeen";
 import CharacterSticsScreen from "./CharactersticsScreen";
+import { ProductSizeChartSceen } from "./ProductSizeChartSceen";
+import { RouteNames } from "../../utils/RoutesNames";
 const shoeImageURL = appIcons.shoeImageURL
 const china = appIcons.china
 const reviewFilter = [
@@ -205,7 +207,11 @@ export const ProductDetailScreen = ({ navigation }) => {
 
                 <ProductDetails />
                 <ProductDesclamenation />
-                <ReviewsSection />
+                <ReviewsSection 
+                viewAllReviews = {() => {
+                    navigation.navigate(RouteNames.product_review_screen)
+                }}
+                />
                 <ShopView />
                 <ProductImages />
                 <RelatedProducts />
@@ -287,10 +293,10 @@ export const ProductDetailScreen = ({ navigation }) => {
     )
 }
 // MARK: - Review Section
-const ReviewsSection = ({ }) => {
+const ReviewsSection = ({ viewAllReviews }) => {
     return (
         <View id={"reviewSection"} style={{ borderRadius: 13, backgroundColor: colors.white, paddingHorizontal: 10, paddingVertical: 10 }}>
-            <TextWithIcon title={AppString.review} onClick={() => { }} />
+            <TextWithIcon title={AppString.review} onClick={viewAllReviews} />
             <FlatList
                 data={reviewFilter}
                 horizontal
@@ -324,7 +330,7 @@ const ReviewsSection = ({ }) => {
     )
 }
 
-const ReviewUser = ({ }) => {
+export const ReviewUser = ({ }) => {
     return (
         <View>
             <FlatList
@@ -366,7 +372,7 @@ const ReviewUser = ({ }) => {
                                 { fontSize: 14, fontFamily: fontFamilty.regular, paddingTop: 8 },
                             ]}
                         >
-                            Very good quality多能显示2行------------------------ 第二行------------------------------------------------ ...
+                            Very good quality多能显示2行-----------
                         </Text>
 
                         {index != 0 ? <FlatList
@@ -429,6 +435,7 @@ const ProductDesclamenation = () => {
     const [showGurantees, setShowGurantees] = useState(false)
 
     const [showCharacterstics, setShowCharacterstics] = useState(false)
+    const [showSizeChart, setShowSizeChart] = useState(false)
 
     return (
         <View style={{
@@ -451,12 +458,12 @@ const ProductDesclamenation = () => {
                 setShowCharacterstics(true)
             }} />
             <TextWithIcon icon="triangle-outline" title="Ширина плеч • Ширина груди • Длина рукава" onClick={() => {
-
+                setShowSizeChart(true)
             }} />
             <SelectProductSizeColorScreen isShow={showColorSize} onClose={() => { setShowColorSize(false) }} />
             <ProuductGuanteeScreen isShow={showGurantees} onClose={() => { setShowGurantees(false) }} />
             <CharacterSticsScreen isShow={showCharacterstics} onClose={() => { setShowCharacterstics(false) }} />
-
+            <ProductSizeChartSceen isShow={showSizeChart} onClose={() => { setShowSizeChart(false); } } />
         </View>
     )
 }
