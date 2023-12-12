@@ -534,7 +534,7 @@ export const RatingView = ({ rating = 3 }) => {
                 }}
                 renderItem={({ item }) => {
                     return (
-                        <Ionicons name={"star"} size={20} color={rating >= item ? colors.lightOrange : colors.extraGrey} />
+                        <Ionicons name={"star"} size={12} color={rating >= item ? colors.lightOrange : colors.extraGrey} />
                     )
                 }}
             />
