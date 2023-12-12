@@ -161,7 +161,7 @@ export const ProductSizeChartSceen = ({ isShow, onClose }) => {
     return (
         <Modal transparent={true} animationType={"fade"} visible={isShow} onRequestClose={onClose} >
             <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
-                <View style={[styles.bottom_sheet, { width: "95%", }]}>
+                <View style={[styles.bottom_sheet, { width: "95%", borderRadius: 13}]}>
 
                     <View style={{ flexDirection: "row" }}>
                         <View style={{ elevation: 10, shadowColor: colors.grey, shadowOpacity: 0.3, shadowOffset: { width: 5, height: 0 }, paddingRight: 5 }}>
