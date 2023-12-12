@@ -205,7 +205,7 @@ const App: React.FC = () => {
           />
           <Stack.Screen
             name={RouteNames.product_detail}
-            component={ProductSearchResultScreen}
+            component={ProductDetailScreen}
           />
            <Stack.Screen
             name={RouteNames.product_review_screen}

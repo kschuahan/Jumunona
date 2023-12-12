@@ -17,7 +17,10 @@ const SelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
 
     return <Modal transparent={true} animationType={"slide"} visible={isShow} onRequestClose={onClose} >
         <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: "flex-end" }]}>
-            <View style={{ paddingHorizontal: 10, backgroundColor: colors.white, borderTopLeftRadius: 13, borderTopRightRadius: 13, width: "100%", }}>
+            <View style={{
+                paddingHorizontal: 10, backgroundColor: colors.white, borderTopLeftRadius: 13,
+                borderTopRightRadius: 13, width: "100%", flex: 0.8
+            }}>
                 <View
                     style={{ flexDirection: "row", justifyContent: "space-between", paddingTop: 5 }}
                 >
@@ -45,26 +48,27 @@ const SelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
                     </TouchableOpacity>
 
                 </View>
-                <ScrollView style = {{paddingBottom: 40}}>
-                <CancelReturnPolicyView onClick={() => { }} />
-                <PhoneDataScreen onClick={() => { }} />
-                <ColorOptions />
-                <SizeAndBuyingForView />
-                <View style={{ height: 1, marginVertical: 10, backgroundColor: colors.darkWhite }} />
-                <QuanityView />
-                
-                <View style={{ flexDirection: 'row', justifyContent: "space-between", marginTop: 35 }}>
-                <CommonButton startorange={colors.yellowStart} endColor={colors.yellowEnd} onClick={() => {
+                <ScrollView style={{ paddingBottom: 40, }} showsVerticalScrollIndicator={false}>
+                    <CancelReturnPolicyView onClick={() => { }} />
+                    <PhoneDataScreen onClick={() => { }} />
+                    <ColorOptions />
+                    <SizeAndBuyingForView />
+                    <View style={{ height: 1, marginVertical: 10, backgroundColor: colors.darkWhite }} />
+                    <QuanityView />
 
-                }} />
-                <CommonButton text={AppString.buy} onClick={() => {
-
-                }} />
-            </View>
                 </ScrollView>
+
+                <View style={{ flexDirection: 'row', justifyContent: "space-between", marginTop: 35, paddingBottom: 20 }}>
+                    <CommonButton startorange={colors.yellowStart} endColor={colors.yellowEnd} onClick={() => {
+
+                    }} />
+                    <CommonButton text={AppString.buy} onClick={() => {
+
+                    }} />
+                </View>
             </View>
         </View>
-    </Modal>
+    </Modal >
 }
 
 
@@ -75,7 +79,11 @@ const CancelReturnPolicyView = ({ onClick }) => {
 
             style={[
                 styles.profile,
-                { alignItems: "center", paddingVertical: 4, paddingHorizontal: 6, backgroundColor: "#F6F6F6", borderRadius: 8, marginVertical: 8, justifyContent: "flex-start" },
+                {
+                    marginTop: 9, alignItems: "center", paddingVertical: 4,
+                    paddingHorizontal: 6, backgroundColor: "#F6F6F6", borderRadius: 8,
+                    justifyContent: "flex-start"
+                },
             ]}
         >
             <Ionicons
@@ -103,7 +111,10 @@ const PhoneDataScreen = ({ onClick }) => {
 
             style={[
                 styles.profile,
-                { alignItems: "center", paddingVertical: 5, paddingHorizontal: 6, backgroundColor: "#FDF1EC", borderRadius: 8, marginVertical: 8 },
+                {
+                    marginTop: 13, alignItems: "center", paddingVertical: 5, paddingHorizontal: 6,
+                    backgroundColor: "#FDF1EC", borderRadius: 8,
+                },
             ]}
         >
             <Ionicons
@@ -138,18 +149,22 @@ const ColorOptions = ({ }) => {
                 data={[1, 2, 3, 4, 5]}
                 renderItem={({ item }) =>
 
-                    <View style={{ margin: 8 }}>
+                    <View style={{ marginEnd: 8 }}>
                         <TouchableOpacity onPress={() => {
                             setSelectedColor(item)
                         }} >
                             <View style={{ marginHorizontal: 1, justifyContent: "center", flexDirection: "column", alignContent: "center", }}>
-                                <Image source={{ uri: imagesUrl.shoes }} style={{ width: 110, height: 110, borderRadius: 7 }} />
-                                <View style={{ width: 110, height: 42, justifyContent: "center", backgroundColor: "#F6F6F6", borderRadius: 7 }}>
+                                <Image source={{ uri: imagesUrl.shoes }} style={{ width: 109, height: 111, borderRadius: 7 }} />
+                                <View style={{ width: 109, height: 42, justifyContent: "center", backgroundColor: "#F6F6F6", borderRadius: 7 }}>
                                     <Text style={[styles.textStyle, { textAlign: "center", alignSelf: "center" }]}> light gray</Text>
                                 </View>
                             </View>
                             {selectedColor == item ?
-                                <View style={{ position: "absolute", backgroundColor: "rgba(255, 118, 0, 0.08)", width: "100%", height: "100%", borderRadius: 7, borderColor: colors.endOrange, borderWidth: 1 }} />
+                                <View style={{
+                                    position: "absolute", backgroundColor: "rgba(255, 118, 0, 0.08)",
+                                    width: "100%", height: "100%", borderRadius: 7,
+                                    borderColor: colors.endOrange, borderWidth: 1
+                                }} />
                                 : null
                             }
                         </TouchableOpacity>
@@ -219,35 +234,35 @@ const QuanityView = ({ }) => {
     const [quantiy, setQuantity] = useState(1)
     const maxQuantity = 9
     return (
-        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 5}}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 5 }}>
             <Text style={[styles.textStyle, { textAlign: "center", fontSize: 14, alignSelf: "center" }]}> Количество</Text>
 
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <TouchableOpacity onPress={ () => {
-                     if (quantiy > 1) {
+                <TouchableOpacity onPress={() => {
+                    if (quantiy > 1) {
                         setQuantity(quantiy - 1)
                     }
                 }}
                 >
-                <Ionicons
-                    name={"remove-circle-outline"}
-                    color={quantiy > 1 ? colors.endOrange : "#F1F1F1"}
-                    size={30}
-                    
-                />
+                    <Ionicons
+                        name={"remove-circle-outline"}
+                        color={quantiy > 1 ? colors.endOrange : "#F1F1F1"}
+                        size={30}
+
+                    />
                 </TouchableOpacity>
-                <Text style={[styles.textStyle, {alignSelf: "center", fontSize: 17, paddingRight: 8 }]}> {quantiy.toString()}</Text>
-                <TouchableOpacity onPress={ () => {
+                <Text style={[styles.textStyle, { alignSelf: "center", fontSize: 17, paddingRight: 8 }]}> {quantiy.toString()}</Text>
+                <TouchableOpacity onPress={() => {
                     if (quantiy < maxQuantity) {
                         setQuantity(quantiy + 1)
                     }
                 }}
                 >
-                <Ionicons
-                    name={"add-circle"}
-                    color={quantiy < maxQuantity ? colors.endOrange : "#F1F1F1"}
-                    size={30}
-                />
+                    <Ionicons
+                        name={"add-circle"}
+                        color={quantiy < maxQuantity ? colors.endOrange : "#F1F1F1"}
+                        size={30}
+                    />
                 </TouchableOpacity>
 
 
@@ -261,7 +276,7 @@ const CommonButton = ({ text = AppString.add_to_cart, endColor = colors.endOrang
     startorange = colors.startOrange, onClick }) => {
 
     return (
-        <TouchableOpacity onPress={onClick} style={{flex: 0.5}}>
+        <TouchableOpacity onPress={onClick} style={{ flex: 0.5 }}>
             <LinearGradient
                 colors={[startorange, endColor]}
                 start={{ x: 0.4, y: 0 }}
@@ -271,7 +286,7 @@ const CommonButton = ({ text = AppString.add_to_cart, endColor = colors.endOrang
                     marginEnd: 10,
                     height: 40,
                     justifyContent: 'center',
-                   alignItems: "center"
+                    alignItems: "center"
                 }}
             >
                 <Text
