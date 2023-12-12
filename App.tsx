@@ -205,7 +205,7 @@ const App: React.FC = () => {
           />
           <Stack.Screen
             name={RouteNames.product_detail}
-            component={ProductSearchResultScreen}
+            component={ProductDetailScreen}
           />
            <Stack.Screen
             name={RouteNames.product_review_screen}
@@ -216,6 +216,10 @@ const App: React.FC = () => {
             name={RouteNames.chat_screen}
             component={ChatScreen}
           />
+          <Stack.Screen
+          name={RouteNames.product_search_screen}
+          component={ProductSearchResultScreen}
+        />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

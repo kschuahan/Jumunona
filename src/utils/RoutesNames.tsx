@@ -32,5 +32,6 @@ export const RouteNames = {
     product_detail: "Product Detail",
     product_review_screen: "ProudctReviewsScreen",
     select_product_color_size: "Select product color size",
-    chat_screen: 'Chat'
+    chat_screen: 'Chat',
+    product_search_screen: 'product_search_screen'
 }

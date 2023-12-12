@@ -112,14 +112,14 @@ const categoryData: Category[] = [
 ];
 const china = require("../../assets/china.png");
 
-const HeaderItem = () => (
+const HeaderItem = ({onSearchClick}) => (
   <View style={styles.header}>
     <TextInput
       style={styles.searchBox}
       placeholder="Спортивная обувь"
       placeholderTextColor="#727272"
     ></TextInput>
-    <TouchableOpacity style={styles.button}>
+    <TouchableOpacity style={styles.button} onPress={onSearchClick}>
       <LinearGradient
         colors={["#FF7600", "#FC4A1A"]}
         start={{ x: 0.4, y: 0 }}
@@ -177,7 +177,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
 
-      <HeaderItem />
+      <HeaderItem onSearchClick={ () => {
+        navigation.navigate(RouteNames.product_search_screen)
+      }}/>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}

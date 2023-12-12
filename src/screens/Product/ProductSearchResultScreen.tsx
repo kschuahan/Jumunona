@@ -77,10 +77,10 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                 </View>),
             headerLeft: () =>
             (
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginEnd: 110 }}>
                     <TouchableOpacity onPress={() => {
                         navigation.goBack()
-                    }} style={{ alignItems: "center", marginStart: -25 }}>
+                    }} style={{ alignItems: "center", }}>
                         <Ionicons name="chevron-back-outline" size={24} />
                     </TouchableOpacity>
 
@@ -88,11 +88,12 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                 </View>
             ),
             headerStyle: {
-                backgroundColor: colors.white,
+                backgroundColor: "#F6F6F6",
 
             },
 
-            headerShadowVisible: true,
+
+            headerShadowVisible: false,
 
         })
     }, [])
@@ -115,7 +116,7 @@ export const ProductSearchResultScreen = ({ navigation }) => {
 
     return (
         <View style={style.container}>
-            <View style={{ flexDirection: "row", backgroundColor: colors.white, alignItems: "center", paddingHorizontal: 10 }}>
+            <View style={{ flexDirection: "row", backgroundColor: colors.white, alignItems: "center", paddingHorizontal: 20, paddingTop: 14, borderRadius: 20 }}>
                 <FlatList
                     style={style.primaryCategoriesContent}
                     showsHorizontalScrollIndicator={false}
@@ -150,7 +151,7 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                 <Ionicons name="funnel-outline" size={15} />
             </View>
 
-            <View style={{ backgroundColor: colors.white, padding: 10, width: dimensions.width }}>
+            <View style={{ backgroundColor: colors.white, paddingVertical: 5, paddingHorizontal: 8, width: dimensions.width }}>
                 <FlatList
                     data={filter}
                     showsHorizontalScrollIndicator={false}
@@ -163,16 +164,13 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                         return (
                             <View style={{ marginRight: 8, padding: 10, backgroundColor: "#F6F6F6", borderRadius: 20 }}>
                                 <TouchableOpacity
-                                    onPress={() => setSortBy(item.id)}
+                                    onPress={() => {}}
                                     style={{ flexDirection: "row", alignItems: "baseline" }}
                                 >
                                     <Text
                                         style={{
                                             fontSize: 16,
-                                            color:
-                                                selectedSortBy === item.id
-                                                    ? "#ff7600"
-                                                    : "black",
+                                            color: "black",
                                             fontFamily: "SegoeUI",
                                         }}
                                     >
@@ -192,17 +190,19 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                     keyExtractor={(item) => {
                         return item.id;
                     }}
+                    showsVerticalScrollIndicator = {false}
                     numColumns={2}
-                    renderItem={({ item }) => {
+                    renderItem={({ item, index }) => {
                         return (
                             <Pressable
                                 style={{
                                     borderRadius: 12,
                                     backgroundColor: "#ffffff",
-                                    marginHorizontal: 4,
-                                    marginVertical: 4,
+                                    marginLeft: (index%2 == 0 ? 4 : 8),
+                                    marginRight: (index%2 != 0 ? 4 : 8),
+                                    marginBottom: 20,
                                     width: "auto",
-                                    height: 326,
+                                   
                                     borderColor: "#f1f1f1",
                                     marginTop: 8,
                                 }}
@@ -291,7 +291,7 @@ const SearchView = () => {
 
     return <View style={{
         flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start',
-        backgroundColor: colors.whiteF6F6F6, borderRadius: 19
+        backgroundColor: colors.white, borderRadius: 19,
     }}>
         <Ionicons name="search" size={17} style={{ marginStart: 15 }} color={colors.grey} />
         <TextInput
@@ -320,22 +320,20 @@ const style = StyleSheet.create({
     primaryCategoriesContent: {
         paddingTop: 8,
         paddingLeft: 16,
-        flex: 0.9,
+       
         backgroundColor: "#ffffff",
-        borderTopLeftRadius: 12,
+        borderTopLeftRadius: 13,
     },
     
     productsGrid: {
         width: dimensions.width,
-        borderTopLeftRadius: 12,
-        borderTopRightRadius: 12,
         flex: 1,
         marginBottom: 4,
         backgroundColor: "#FFFFFF",
     },
     searchTextInput: {
         height: 33,
-        width: '80%',
+        flex: 1,
         marginStart: 11,
         fontFamily: "SegoeUI",
         fontSize: 15,
