@@ -40,7 +40,7 @@ const ProfileDetailScreen = ({ navigation }) => {
         <UserAvatar onClick={() => {
 
         }} />
-        <View style={{ backgroundColor: colors.white, paddingHorizontal: 3, marginTop: 10, borderRadius: 13 }}>
+        <View style={{ backgroundColor: colors.white, paddingHorizontal: 3, marginTop: 10, borderRadius: 13, paddingTop: 5, paddingBottom: 1.16 }}>
           <TextWithIcon title={AppString.name} value={"Valijon"} onClick={() => { }} />
           <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
 
@@ -51,7 +51,10 @@ const ProfileDetailScreen = ({ navigation }) => {
 
         </View>
 
-        <View style={{ backgroundColor: colors.white, paddingVertical: 10, paddingHorizontal: 3, marginTop: 10, borderRadius: 13 }}>
+        <View style={{
+          backgroundColor: colors.white, paddingVertical: 10, paddingHorizontal: 3, marginTop: 10,
+          borderRadius: 13, paddingBottom: 1.16
+        }}>
           <TextWithIcon title={AppString.number} value={"150******50"} onClick={() => {
             navigation.navigate(RouteNames.viewPhoneNumber, { isMobile: true })
           }} />
@@ -60,15 +63,15 @@ const ProfileDetailScreen = ({ navigation }) => {
             navigation.navigate(RouteNames.viewPhoneNumber, { isMobile: false })
           }} />
           <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
-          <TextWithIcon title={AppString.change_password} onClick={() => {navigation.navigate(RouteNames.changePassword) }} />
+          <TextWithIcon title={AppString.change_password} onClick={() => { navigation.navigate(RouteNames.changePassword) }} />
 
         </View>
 
-        <View style={{ backgroundColor: colors.white, padding: 10, marginTop: 10, borderRadius: 13 }}>
+        <View style={{ backgroundColor: colors.white, paddingTop: 15.5, paddingBottom: 11.5, marginTop: 10, borderRadius: 13 }}>
           <TouchableOpacity onPress={() => {
             navigation.navigate(RouteNames.deleteAccount)
           }} style={[styles.profile, { marginTop: undefined, alignItems: 'center', justifyContent: 'center', padding: 4 }]}>
-            <Text style={[styles.textStyle, { fontSize: 16, fontFamily: fontFamilty.semibold }]}>{AppString.delete_account}</Text>
+            <Text style={[styles.textStyle, { fontSize: 16, fontFamily: undefined, fontWeight: '500' }]}>{AppString.delete_account}</Text>
 
           </TouchableOpacity>
 
@@ -89,12 +92,12 @@ const UserAvatar = ({ onClick }) => {
       >
         <Image
           source={{ uri: imagesUrl.profile }}
-          style={{ height: 110, width: 110, borderRadius: 55 }}
+          style={{ height: 111, width: 111, borderRadius: 56 }}
         />
         <Text
           style={[
             styles.textStyle,
-            { fontSize: 21, fontFamily: fontFamilty.regular, paddingTop: 10, paddingBottom: 14, color: colors.lightOrange },
+            { fontSize: 15, fontFamily: fontFamilty.regular, paddingTop: 10, paddingBottom: 14, color: colors.lightOrange },
           ]}
         >
           Изменить
@@ -112,7 +115,7 @@ const TextWithIcon = ({ title = AppString.address, value = "", onClick }) => {
       onPress={onClick}
       style={[
         styles.profile,
-        { marginTop: undefined, alignItems: "center", paddingHorizontal: 14, paddingBottom: 11, paddingTop: 15 },
+        { marginTop: undefined, alignItems: "center", paddingStart: 17, paddingEnd: 16.96, paddingBottom: 10.84, paddingTop: 15 },
       ]}
     >
 
@@ -129,7 +132,7 @@ const TextWithIcon = ({ title = AppString.address, value = "", onClick }) => {
         <Text
           style={[
             styles.textStyle,
-            { fontSize: 14, fontFamily: fontFamilty.semibold, color: colors.grey888888, paddingEnd: 15 },
+            { fontSize: 14, fontFamily: undefined, fontWeight: '500', color: colors.grey888888, paddingEnd: 15 },
           ]}
         >
           {value}

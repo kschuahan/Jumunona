@@ -73,7 +73,7 @@ export const ProudctReviewsScreen = ({ navigation }) => {
     }, [])
 
     return (
-        <SafeAreaView style = {{flex: 1}}>
+        <SafeAreaView style={{ flex: 1 }}>
             <View style={{ paddingHorizontal: 2 }}>
                 <FlatList
                     style={style.primaryCategoriesContent}
@@ -112,10 +112,11 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                 <FlatList
                     data={reviewFilter}
                     horizontal
+
                     keyExtractor={(item) => {
                         return item.id.toString();
                     }}
-                    style={{ flexWrap: "wrap", marginVertical: 12, }}
+                    style={{ flexWrap: "wrap", marginVertical: 12, marginStart: 9 }}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => {
                         return (
@@ -137,14 +138,14 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                     }}
                 />
             </View>
-            <View style= {{flex: 1, paddingVertical: 12,  backgroundColor: colors.white}}>
+            <View style={{ flex: 1, paddingVertical: 12, backgroundColor: colors.white, borderTopRightRadius: 13, borderTopLeftRadius: 13 }}>
                 <FlatList
                     data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
 
                     keyExtractor={(item) => {
                         return item.toString();
                     }}
-                    style={{padding: 12, borderRadius: 13, height: "100%",  }}
+                    style={{ padding: 12, borderRadius: 13, height: "100%", }}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => {
                         return (

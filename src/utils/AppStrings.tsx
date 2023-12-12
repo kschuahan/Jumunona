@@ -113,6 +113,8 @@ export const AppString = {
     buy: 'Купить',
     gurantee_jumunona: "Гарантии Jumunona",
     charachterStics: 'Характеристики',
-    ok: 'OK'
+    ok: 'OK',
+    all_goods: 'Все товары',
+    categories: 'Категории'
 
 }

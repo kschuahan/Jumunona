@@ -20,7 +20,7 @@ const ProfileScreen = (props: any) => {
         <Profile onClick={() => {
           props.navigation.navigate(RouteNames.setting)
         }} />
-        <View style={{ flexDirection: 'row', marginTop: 20, marginHorizontal: 30, justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', marginTop: 23.25, marginHorizontal: 40, justifyContent: 'space-between' }}>
           <IconWithText title={AppString.want_to} icon='heart-outline' onClick={() => {
             props.navigation.navigate(RouteNames.favorite)
 
@@ -39,7 +39,7 @@ const ProfileScreen = (props: any) => {
 
         <MyOrder />
         <View style={{
-          backgroundColor: colors.white, marginTop: 10, padding: 8,
+          backgroundColor: colors.white, marginTop: 9, padding: 8,
           paddingVertical: 20, borderRadius: 13
         }}>
           <View style={[styles.profile, { marginTop: undefined, marginHorizontal: 15 }]}>
@@ -64,9 +64,11 @@ const ProfileScreen = (props: any) => {
 
         <View style={{
           backgroundColor: colors.white, borderRadius: 13,
-          padding: 8, paddingBottom: 10, position: 'absolute', bottom: 10, width: dimensions.width - 12, marginHorizontal: 6
+          padding: 8, paddingBottom: 17, position: 'absolute', bottom: 16, width: dimensions.width - 12, marginHorizontal: 6,
+          paddingStart: 24, paddingEnd: 18,
+
         }}>
-          <Text style={[styles.textStyle, { fontSize: 13, fontWeight: '500', marginBottom: 20 }]}>{AppString.status_of_order}</Text>
+          <Text style={[styles.textStyle, { fontSize: 13, marginStart: 20, marginBottom: 20, color: colors.black141414, fontWeight: '500', fontFamily: undefined }]}>{AppString.status_of_order}</Text>
 
           <ProfileProduct title='Отзыв' time='' subTitle='Ожидает оценки' buttonText={AppString.write} />
 
@@ -77,31 +79,31 @@ const ProfileScreen = (props: any) => {
 
 const MyOrder = () => {
 
-  return <View style={{ backgroundColor: colors.white, marginTop: 10, padding: 8, borderRadius: 13, }}>
+  return <View style={{ backgroundColor: colors.white, marginTop: 10.5, padding: 8, borderRadius: 13, }}>
     <View>
-      <View style={[styles.profile, { marginTop: undefined, alignItems: 'center' }]}>
-        <Text style={[styles.textStyle, { fontSize: 16, fontWeight: '600' }]}>{AppString.my_order}</Text>
+      <View style={[styles.profile, { marginTop: 5, alignItems: 'center', marginStart: 12 }]}>
+        <Text style={[styles.textStyle, { fontSize: 15, fontWeight: '600' }]}>{AppString.my_order}</Text>
         <Ionicons name={'chevron-forward-outline'} color={colors.black} size={18} />
 
       </View>
-      <View style={[styles.profile, { marginTop: 20, marginHorizontal: 2, marginBottom: 20 }]}>
-        <IconWithText end={12} isVisible={true} title={AppString.not_paid} icon='heart-outline' onClick={() => {
+      <View style={[styles.profile, { marginTop: 18.89, marginHorizontal: 2, marginBottom: 15 }]}>
+        <IconWithText end={12} isVisible={true} iconColor={colors.balc111111} title={AppString.not_paid} icon='heart-outline' onClick={() => {
 
         }} />
-        <IconWithText end={12} isVisible={true} title={AppString.treatment} icon='checkmark-circle-outline' onClick={() => {
+        <IconWithText end={12} isVisible={true} iconColor={colors.balc111111} title={AppString.treatment} icon='checkmark-circle-outline' onClick={() => {
 
         }} />
-        <IconWithText end={12} isVisible={true} title={AppString.sent} icon='time-outline' onClick={() => {
+        <IconWithText end={12} isVisible={true} iconColor={colors.balc111111} title={AppString.sent} icon='time-outline' onClick={() => {
 
         }} />
-        <IconWithText end={-2} isVisible={true} title={AppString.review} icon='chatbubble-outline' onClick={() => {
+        <IconWithText end={-2} isVisible={true} iconColor={colors.balc111111} title={AppString.review} icon='chatbubble-outline' onClick={() => {
 
         }} />
-        <IconWithText title={AppString.return} icon='arrow-undo-outline' onClick={() => {
+        <IconWithText title={AppString.return} iconColor={colors.balc111111} icon='arrow-undo-outline' onClick={() => {
 
         }} />
       </View>
-      <View style={{ marginBottom: 10 }}>
+      <View style={{ marginBottom: 8, marginHorizontal: 9 }}>
         <ProfileProduct />
       </View>
     </View>
@@ -110,7 +112,8 @@ const MyOrder = () => {
 
 
 
-const ProfileProduct = ({ title = 'Ожидает оплаты', subTitle = AppString.left, time = "23 : 50 : 33", buttonText = AppString.pay }) => {
+const ProfileProduct = ({ title = 'Ожидает оплаты', subTitle = AppString.left, time = "23 : 50 : 33",
+  buttonText = AppString.pay }) => {
 
   return (
     <View style={styles.profileProduct}>
@@ -159,9 +162,11 @@ const CommonButton = ({ text = AppString.pay, endColor = colors.endOrange,
         start={{ x: 0.4, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={{
-          padding: 10,
+          paddingStart: 9.5,
+          paddingEnd: 5.01,
           paddingVertical: 6,
           borderRadius: 1000,
+          height: 28,
           marginEnd: 10,
         }}
       >
@@ -206,7 +211,7 @@ const Profile = ({ onClick }) => {
           <Text
             style={[
               styles.textStyle,
-              { color: colors.grey, fontSize: 13, fontFamily: fontFamilty.regular },
+              { color: colors.grey, fontSize: 14, fontFamily: fontFamilty.regular },
             ]}
           >
             Nickname92
@@ -223,7 +228,7 @@ const Profile = ({ onClick }) => {
 const IconWithText = ({ title, icon = "image-outline", isVisible = false, onClick, iconColor = colors.black, size = 22.63, end = 6 }) => {
 
   return (
-    <TouchableOpacity onPress={onClick} style={{ alignItems: "center", gap: 4 }}>
+    <TouchableOpacity onPress={onClick} style={{ alignItems: "center", gap: 9.5 }}>
       <Ionicons name={icon} color={iconColor} size={size} />
       {isVisible ? (
         <LinearGradient

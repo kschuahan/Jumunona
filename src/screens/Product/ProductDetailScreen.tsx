@@ -122,7 +122,7 @@ export const ProductDetailScreen = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
                     <TouchableOpacity onPress={() => {
                         navigation.goBack()
-                    }} style={{ alignItems: "center", marginStart: -25 }}>
+                    }} style={{ alignItems: "center", marginStart: -25, marginEnd: 15.97 }}>
                         <Ionicons name="chevron-back-outline" size={24} />
                     </TouchableOpacity>
 
@@ -207,12 +207,14 @@ export const ProductDetailScreen = ({ navigation }) => {
 
                 <ProductDetails />
                 <ProductDesclamenation />
-                <ReviewsSection 
-                viewAllReviews = {() => {
-                    navigation.navigate(RouteNames.product_review_screen)
-                }}
-                />
-                <ShopView />
+                <View style={{ paddingHorizontal: 9 }}>
+                    <ReviewsSection
+                        viewAllReviews={() => {
+                            navigation.navigate(RouteNames.product_review_screen)
+                        }}
+                    />
+                    <ShopView />
+                </View>
                 <ProductImages />
                 <RelatedProducts />
             </View>
@@ -368,16 +370,26 @@ export const ReviewUser = ({ }) => {
                             </View>
                             <RatingView rating={4} />
                         </View>
+
                         <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 14, fontFamily: fontFamilty.regular, paddingTop: 8 },
+                                { fontSize: 14, fontFamily: fontFamilty.regular, marginTop: 12, color: colors.grey },
+                            ]}
+                        >
+                            Серый XL
+                        </Text>
+                        <Text
+                            style={[
+                                styles.textStyle,
+                                { fontSize: 14, fontFamily: fontFamilty.regular, paddingTop: 2 },
                             ]}
                         >
                             Very good quality多能显示2行-----------
                         </Text>
 
                         {index != 0 ? <FlatList
+                            style={{ marginTop: 9 }}
                             data={[1, 2, 3, 4, 5]}
                             renderItem={({ item }) =>
                                 <View style={{ marginHorizontal: 1 }}>
@@ -465,14 +477,14 @@ const ProductDesclamenation = () => {
             <SelectProductSizeColorScreen isShow={showColorSize} onClose={() => { setShowColorSize(false) }} />
             <ProuductGuanteeScreen isShow={showGurantees} onClose={() => { setShowGurantees(false) }} />
             <CharacterSticsScreen isShow={showCharacterstics} onClose={() => { setShowCharacterstics(false) }} />
-            <ProductSizeChartSceen isShow={showSizeChart} onClose={() => { setShowSizeChart(false); } } />
+            <ProductSizeChartSceen isShow={showSizeChart} onClose={() => { setShowSizeChart(false); }} />
         </View>
     )
 }
 
 
 
-const TextWithIcon = ({ title = AppString.address, padding = 4,
+const TextWithIcon = ({ title = AppString.address, padding = 16,
     icon = "", onClick }) => {
 
     return (
@@ -480,7 +492,7 @@ const TextWithIcon = ({ title = AppString.address, padding = 4,
             onPress={onClick}
             style={[
                 styles.profile,
-                { marginTop: undefined, alignItems: "center", paddingBottom: 16 },
+                { marginTop: undefined, alignItems: "center", paddingBottom: padding },
             ]}
         >
             {
@@ -536,9 +548,9 @@ export const RatingView = ({ rating = 3 }) => {
 const ShopView = ({ }) => {
     return (
         <View style={{ borderRadius: 13, backgroundColor: colors.white, padding: 10, marginTop: 10 }}>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center' }}>
                 <Image
-                    style={{ width: 55, height: 55, borderRadius: 22.5 }}
+                    style={{ width: 55, height: 55, borderRadius: 27 }}
                     source={{ uri: imagesUrl.shoes }}
                 />
                 <View style={{ flex: 1, alignContent: "flex-start", flexDirection: "column", paddingStart: 8 }}>
@@ -585,9 +597,40 @@ const ShopView = ({ }) => {
                         </Text>
                     </View>
                 </View>
-                <Ionicons name={"checkmark-circle"} size={20} style={{ paddingLeft: 10, paddingRight: 3 }} color={"#F0F0F0"} />
+                <Ionicons name={"checkmark-circle"} size={20} style={{ paddingLeft: 10, paddingRight: 3 }} color={"#CCCCCC"} />
             </View>
-            <TextWithIcon title={AppString.featured} onClick={() => { }} />
+            <View style={{ justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
+                <TouchableOpacity
+                    onPress={() => {
+
+                    }}
+                    style={style.button}
+                >
+                    <Text
+                        style={{ fontSize: 16, color: colors.startOrange, paddingHorizontal: 10, }}
+                    >
+                        {AppString.all_goods}
+                    </Text>
+
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+
+                    }}
+                    style={style.button}
+                >
+                    <Text
+                        style={{ fontSize: 16, color: colors.startOrange, paddingHorizontal: 10, }}
+                    >
+                        {AppString.categories}
+                    </Text>
+
+                </TouchableOpacity>
+            </View>
+            <View style={{ height: 1, backgroundColor: colors.greyF4F4F4, marginBottom: 14 }} />
+            <View style={{ marginStart: -8, marginBottom: 4, marginEnd: 3.55 }}>
+                <TextWithIcon padding={0} title={AppString.featured} onClick={() => { }} />
+            </View>
             <ShopFeaturedProduct />
         </View>
     )
@@ -698,7 +741,7 @@ const ProductImages = ({ }) => {
 
 const RelatedProducts = () => {
     return (
-        <View style={{ marginBottom: 100 }}>
+        <View style={{ marginBottom: 100, paddingStart: 9 }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                 <View style={{ height: 1, width: 50, borderRadius: 0.5, backgroundColor: colors.endOrange }} />
                 <View style={{ height: 2, width: 2, borderRadius: 1, backgroundColor: colors.endOrange }} />
@@ -732,9 +775,9 @@ const RelatedProducts = () => {
                             style={{
                                 borderRadius: 12,
                                 backgroundColor: "#ffffff",
-                                marginHorizontal: 4,
+                                marginEnd: 9,
                                 marginVertical: 4,
-                                width: "49%",
+                                flex: 0.5,
                                 height: 326,
                                 borderColor: "#f1f1f1",
                                 marginTop: 8,
@@ -746,7 +789,9 @@ const RelatedProducts = () => {
                                     height: 265,
                                     paddingHorizontal: 1,
                                     width: "auto",
-                                    borderRadius: 12,
+                                    borderTopLeftRadius: 12,
+                                    borderTopRightRadius: 12,
+
                                     backgroundColor: "#f1f1f1",
 
                                     marginBottom: 8,
@@ -861,7 +906,7 @@ const ProductDetails = () => {
 const style = StyleSheet.create({
     searchTextInput: {
         height: 33,
-        width: '73%',
+        width: '69%',
         marginStart: 11,
         fontFamily: "SegoeUI",
         fontSize: 15,
@@ -873,6 +918,14 @@ const style = StyleSheet.create({
         backgroundColor: "#ffffff",
         borderTopLeftRadius: 12,
     },
+    button: {
+        marginVertical: 16, elevation: 4,
+        height: 27,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.white,
+        borderRadius: 100, borderWidth: 0.8, borderColor: colors.startOrange,
+    }
 
 });
 

@@ -161,7 +161,7 @@ export const ProductSizeChartSceen = ({ isShow, onClose }) => {
     return (
         <Modal transparent={true} animationType={"fade"} visible={isShow} onRequestClose={onClose} >
             <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
-                <View style={[styles.bottom_sheet, { width: "95%", }]}>
+                <View style={[styles.bottom_sheet, { width: "95%", borderTopRightRadius: 13, borderBottomRightRadius: 13 }]}>
 
                     <View style={{ flexDirection: "row" }}>
                         <View style={{ elevation: 10, shadowColor: colors.grey, shadowOpacity: 0.3, shadowOffset: { width: 5, height: 0 }, paddingRight: 5 }}>
@@ -183,7 +183,7 @@ export const ProductSizeChartSceen = ({ isShow, onClose }) => {
                                     {
                                         item.map((subItem, index) =>
                                             <View style={{ flexDirection: "row", backgroundColor: ((index % 2) == 0 ? "#F7F7F9" : colors.white), paddingVertical: 10, }}>
-                                                <View style={{ paddingHorizontal: 10, alignItems: "center", justifyContent: "center", alignSelf: "center", alignContent: "center"}}>
+                                                <View style={{ paddingHorizontal: 10, alignItems: "center", justifyContent: "center", alignSelf: "center", alignContent: "center" }}>
                                                     <Text style={{ fontFamily: fontFamilty.bold, fontSize: 12, }}> {subItem.toString()}</Text>
                                                 </View>
                                                 {index == 0 ?
