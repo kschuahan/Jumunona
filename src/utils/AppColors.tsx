@@ -27,5 +27,8 @@ export const colors = {
     blacl5B5B5B: '#5B5B5B',
     black333333: '#333333',
     grey919692: '#919692',
-    balck4F4F4D:'#4F4F4D'
+    balck4F4F4D: '#4F4F4D',
+    greyF4F4F4: '#F4F4F4',
+    balc111111: '#111111',
+    black141414: '#141414'
 }

@@ -13,6 +13,9 @@ import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MasonryList from "@react-native-seoul/masonry-list";
 import { dimensions } from "../utils/sizes";
+import { colors } from "../utils/AppColors";
+import { LinearGradient } from "expo-linear-gradient";
+import { fontFamilty } from "../utils/Fonts";
 
 interface Category {
   id: number;
@@ -139,7 +142,7 @@ const CategoryScreen = () => {
                         activeItemPrimaryCategory === item.id
                           ? "#ff7600"
                           : "black",
-                      fontFamily: "SegoeUI",
+                      fontFamily: fontFamilty.regular,
                     }}
                   >
                     {item.desc}
@@ -150,7 +153,13 @@ const CategoryScreen = () => {
           }}
         />
         <View style={styles.downArrowButton}>
-          {/* <View style={{ height: 20, width: 3, backgroundColor: '#E2E2E2', borderRadius: 100 }} /> */}
+          <LinearGradient
+            colors={[colors.whiteF2F2F2, colors.whiteF6F6F6]}
+            start={{ x: 0.4, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{ height: 20, width: 4, backgroundColor: '#7E7D7D29', borderRadius: 100 }}
+          >
+          </LinearGradient>
           <Ionicons name="chevron-down-outline" size={24} />
         </View>
       </View>
@@ -184,7 +193,7 @@ const CategoryScreen = () => {
                   ) : (
                     <TouchableOpacity style={{ alignItems: "center" }}>
                       <Ionicons name="shirt-outline" size={50} />
-                      <Text style={{ fontSize: 13, fontFamily: "SegoeUI" }}>
+                      <Text style={{ fontSize: 13, fontFamily: "SegoeUI", }}>
                         {item.desc}
                       </Text>
                     </TouchableOpacity>
@@ -207,12 +216,13 @@ const CategoryScreen = () => {
                   style={{
                     borderRadius: 12,
                     backgroundColor: "#ffffff",
-                    marginHorizontal: 4,
+                    marginHorizontal: 4.5,
                     marginVertical: 4,
                     width: "auto",
-                    height: 326,
                     borderColor: "#f1f1f1",
-                    marginTop: 8,
+                    marginTop: 9,
+                    flex: 0.5,
+                    paddingBottom: 8
                   }}
                 >
                   <Image
@@ -232,7 +242,9 @@ const CategoryScreen = () => {
                     style={{
                       flexDirection: "row",
                       justifyContent: "flex-start",
+                      alignItems: 'center',
                       paddingLeft: 7,
+                      marginTop: 2
                     }}
                   >
                     <Image
@@ -242,7 +254,7 @@ const CategoryScreen = () => {
                     <Text
                       style={{
                         marginLeft: 4,
-                        fontSize: 15,
+                        fontSize: 13,
                         fontFamily: "SegoeUI",
                       }}
                       numberOfLines={1}
@@ -250,13 +262,13 @@ const CategoryScreen = () => {
                       Футболка
                     </Text>
                   </View>
-                  <View style={{ flexDirection: "row", paddingLeft: 8 }}>
+                  <View style={{ flexDirection: "row", paddingLeft: 8, marginTop: 3 }}>
                     <View style={{ flexDirection: "row", width: "30%" }}>
                       <Text
                         style={{
                           fontSize: 17,
                           color: "#ff7600",
-                          fontFamily: "SegoeUI",
+                          fontFamily: fontFamilty.bold,
                         }}
                       >
                         999
@@ -266,7 +278,7 @@ const CategoryScreen = () => {
                           paddingTop: 6,
                           color: "#ff7600",
                           fontSize: 12,
-                          fontFamily: "SegoeUI",
+                          fontFamily: fontFamilty.bold,
                         }}
                       >
                         c.
@@ -279,6 +291,8 @@ const CategoryScreen = () => {
                         color: "#AAAAAA",
                         paddingTop: 3,
                         fontFamily: "SegoeUI",
+                        fontSize: 10.5,
+                        marginTop: 4
                       }}
                     >
                       {item.desc}
@@ -302,7 +316,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F6F6F6",
-    alignSelf:'center'
+    alignSelf: 'center'
   },
   headerContainer: {
     borderBottomLeftRadius: 24,
@@ -313,7 +327,7 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 4,
     width: dimensions.width,
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
   },
   searchBarBG: {
     flexDirection: "row",
@@ -334,32 +348,32 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     backgroundColor: "#ffffff",
     fontFamily: "SegoeUI",
+    fontSize: 15
   },
   primaryCategories: {
     flexDirection: "row",
     width: dimensions.width,
-    elevation: 2,
     height: 35,
     gap: 6,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 10,
+    backgroundColor: colors.white,
+    borderRadius: 13,
   },
   primaryCategoriesContent: {
-    paddingTop: 8,
+    paddingTop: 5,
     paddingLeft: 16,
     flex: 0.9,
     backgroundColor: "#ffffff",
-    borderTopLeftRadius: 12,
+    borderTopLeftRadius: 13,
   },
   downArrowButton: {
     flexDirection: "row",
     height: "100%",
     flex: 0.1,
-    borderTopRightRadius: 10,
+    borderTopRightRadius: 13,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#ffffff",
-    elevation: 2,
+
   },
   scrollable: {
     paddingTop: 0,
@@ -372,13 +386,13 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 12,
     paddingHorizontal: 6,
     borderBottomRightRadius: 12,
-    elevation: 3,
   },
   productsGrid: {
-    width: dimensions.width,
+    flex: 1,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
-    marginTop: 8,
+    marginTop: 9,
+    marginHorizontal: 4,
     marginBottom: 4,
     backgroundColor: "#FFFFFF",
   },

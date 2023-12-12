@@ -44,30 +44,43 @@ export const SettingScreen = ({ navigation }) => {
         <Profile onClick={() => {
           navigation.navigate(RouteNames.profileDetail)
         }} />
-        <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 9, borderRadius: 13 }}>
-          <TextWithIcon title={AppString.notifications} onClick={() => { navigation.navigate(RouteNames.notificationSetting) }} />
-          <TextWithIcon title={AppString.city} onClick={() => {
+        <View style={{
+          backgroundColor: colors.white, paddingStart: 12.5,
+          paddingEnd: 16.96,
+          paddingTop: 2.5,
+          marginTop: 9,
+          borderRadius: 13,
+          paddingBottom: 3
+        }}>
+          <TextWithIcon padding={13} title={AppString.notifications} onClick={() => { navigation.navigate(RouteNames.notificationSetting) }} />
+          <TextWithIcon padding={13} title={AppString.city} onClick={() => {
 
             navigation.navigate(RouteNames.selectCity)
 
           }} />
-          <TextWithIcon title={AppString.feedback_and_help} onClick={() => { }} />
+          <TextWithIcon padding={13} title={AppString.feedback_and_help} onClick={() => { }} />
 
         </View>
 
-        <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, marginTop: 9, borderRadius: 13 }}>
-          <TextWithIcon title={AppString.trem_and_privacy} onClick={() => {
+        <View style={{
+          backgroundColor: colors.white, paddingHorizontal: 12.5, marginTop: 9, borderRadius: 13,
+          paddingBottom: 3,
+          paddingEnd: 16.96,
+          paddingTop: 1.5,
+
+        }}>
+          <TextWithIcon padding={14.25} title={AppString.trem_and_privacy} onClick={() => {
             navigation.navigate(RouteNames.conditions)
           }} />
-          <TextWithIcon title={AppString.about_us} onClick={() => {navigation.navigate(RouteNames.aboutUs) }} />
-          <TextWithIcon title={AppString.clear_catch} onClick={() => { }} />
-          <TextWithIcon title={AppString.catch_for_update} onClick={() => { }} />
+          <TextWithIcon padding={13.75} title={AppString.about_us} onClick={() => { navigation.navigate(RouteNames.aboutUs) }} />
+          <TextWithIcon padding={14} title={AppString.clear_catch} onClick={() => { }} />
+          <TextWithIcon padding={11} title={AppString.catch_for_update} onClick={() => { }} />
         </View>
 
-        <View style={{ backgroundColor: colors.white, padding: 10, marginTop: 9, borderRadius: 13 }}>
+        <View style={{ backgroundColor: colors.white, paddingTop: 15.5, paddingBottom: 11.5, marginTop: 9, borderRadius: 13 }}>
           <TouchableOpacity onPress={() => {
           }} style={[styles.profile, { marginTop: undefined, alignItems: 'center', justifyContent: 'center', padding: 4 }]}>
-            <Text style={[styles.textStyle, { fontSize: 16, fontWeight: '500' }]}>{AppString.go_out}</Text>
+            <Text style={[styles.textStyle, { fontSize: 16, fontWeight: '500', fontFamily: undefined }]}>{AppString.go_out}</Text>
           </TouchableOpacity>
         </View>
       </View></ScrollView>
@@ -78,7 +91,7 @@ export const SettingScreen = ({ navigation }) => {
 const Profile = ({ onClick }) => {
 
   return (
-    <View style={{ backgroundColor: colors.white, borderRadius: 13, marginTop: 4 }}>
+    <View style={{ backgroundColor: colors.white, borderRadius: 13, marginTop: 9 }}>
       <View>
         <TouchableOpacity onPress={onClick}>
           <View
@@ -93,13 +106,16 @@ const Profile = ({ onClick }) => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
+                marginTop: 5,
+                marginStart: 4,
+                marginEnd: 6.96
               }}
             >
               <Image
                 source={{ uri: imagesUrl.profile }}
                 style={{ height: 60, width: 60, borderRadius: 35 }}
               />
-              <View style={{ paddingHorizontal: 10, gap: 4 }}>
+              <View style={{ paddingHorizontal: 10, gap: 9.5 }}>
                 <Text
                   style={[
                     styles.textStyle,
@@ -132,8 +148,8 @@ const Profile = ({ onClick }) => {
 
           </View>
         </TouchableOpacity>
-        <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
-        <View style={{ paddingHorizontal: 10, paddingBottom: 6 }}>
+        <View style={{ height: 1, backgroundColor: colors.darkWhite, marginTop: 4.92, marginBottom: 15.08 }} />
+        <View style={{ paddingHorizontal: 13, paddingBottom: 12 }}>
           <TextWithIcon
             title={AppString.my_addresses}
             padding={10}

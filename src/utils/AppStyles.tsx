@@ -6,7 +6,8 @@ import { fontFamilty } from './Fonts';
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10
+        padding: 10,
+        backgroundColor: colors.whiteF6F6F6
     },
     profileProduct: {
         flexDirection: 'row', justifyContent: 'space-between',
@@ -15,7 +16,7 @@ export const styles = StyleSheet.create({
     },
     profile: {
         flexDirection: 'row',
-        marginTop: Platform.OS == 'ios' ? undefined : 25,
+        marginTop: Platform.OS == 'ios' ? undefined : 49,
         justifyContent: 'space-between'
     },
     textStyle: {

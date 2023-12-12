@@ -19,6 +19,10 @@ import { dimensions } from "../utils/sizes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProductDetailScreen from "./Product/ProductDetailScreen";
 import { RouteNames } from "../utils/RoutesNames";
+import { colors } from "../utils/AppColors";
+import React from "react";
+import { Card } from 'react-native-paper'
+import { fontFamilty } from "../utils/Fonts";
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -43,52 +47,52 @@ const data: Product[] = [
   {
     id: 1,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 2,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 3,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 4,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 5,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 6,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 7,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 8,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 9,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 10,
     imageURL: shoeImageURL,
-    desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+    desc: "600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
 ];
 
@@ -113,11 +117,11 @@ const HeaderItem = () => (
     <TextInput
       style={styles.searchBox}
       placeholder="Спортивная обувь"
-      placeholderTextColor="#9D9D9D"
+      placeholderTextColor="#727272"
     ></TextInput>
     <TouchableOpacity style={styles.button}>
       <LinearGradient
-        colors={["#FF7600", "#FF7600"]}
+        colors={["#FF7600", "#FC4A1A"]}
         start={{ x: 0.4, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.linearGradient}
@@ -137,25 +141,27 @@ const MainCategoriesItem = () => (
       keyExtractor={(item) => {
         return item.id.toString();
       }}
+
       numColumns={5}
-      renderItem={({ item }) => {
+      renderItem={({ item, index }) => {
         return (
           <View
             style={{
               flex: 1,
+              justifyContent: 'center'
             }}
           >
             {item.id === 10 ? (
-              <TouchableOpacity style={{ alignItems: "center" }}>
+              <TouchableOpacity style={{ alignItems: "center", }}>
                 <Ionicons name="ellipsis-horizontal-outline" size={50} />
-                <Text style={{ fontSize: 13, fontFamily: "SegoeUI" }}>
+                <Text style={{ fontSize: 13, fontFamily: "SegoeUI", color: colors.black, paddingBottom: 10 }}>
                   More...
                 </Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={{ alignItems: "center" }}>
                 <Ionicons name="image-outline" size={50} />
-                <Text style={{ fontSize: 13, fontFamily: "SegoeUI" }}>
+                <Text style={{ fontSize: 13, fontFamily: "SegoeUI", color: colors.black, paddingBottom: 10 }}>
                   {item.desc}
                 </Text>
               </TouchableOpacity>
@@ -170,6 +176,7 @@ const MainCategoriesItem = () => (
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
+
       <HeaderItem />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -182,15 +189,16 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             keyExtractor={(item) => {
               return item.id;
             }}
+            style={{ marginHorizontal: 7 }}
             numColumns={2}
             renderItem={({ item }) => {
               return (
                 <Pressable
                   style={[
                     styles.gridViewItemStyle,
-                    { height: item.id === 1 ? 277 : 311 },
+                    { paddingBottom: 8 },
                   ]}
-                  onPress={ () => {
+                  onPress={() => {
                     navigation.navigate(RouteNames.product_detail)
                   }}
                 >
@@ -205,17 +213,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                     style={{
                       flexDirection: "row",
                       justifyContent: "flex-start",
-                      paddingLeft: 7,
+                      alignItems: 'center',
+                      paddingLeft: 7
+                      , marginTop: 2
                     }}
                   >
                     <Image
                       source={china}
-                      style={{ height: 15, width: 15, marginTop: 3 }}
+                      style={{ height: 15, width: 15 }}
                     />
                     <Text
                       style={{
                         marginLeft: 4,
-                        fontSize: 15,
+                        fontSize: 13,
                         paddingBottom: 1,
                         color: "#000000",
                         fontFamily: "SegoeUI",
@@ -225,13 +235,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                       Футболка
                     </Text>
                   </View>
-                  <View style={{ flexDirection: "row", paddingLeft: 8 }}>
+                  <View style={{ flexDirection: "row", paddingLeft: 8, marginTop: 3 }}>
                     <View style={{ flexDirection: "row", width: "30%" }}>
                       <Text
                         style={{
                           fontSize: 17,
                           color: "#ff7600",
-                          fontFamily: "SegoeUI",
+                          fontFamily: fontFamilty.bold,
                         }}
                       >
                         999
@@ -241,7 +251,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                           paddingTop: 6,
                           color: "#ff7600",
                           fontSize: 12,
-                          fontFamily: "SegoeUI",
+                          fontFamily: fontFamilty.bold,
                         }}
                       >
                         c.
@@ -253,6 +263,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                         width: "70%",
                         color: "#AAAAAA",
                         paddingTop: 3,
+                        marginTop: 4,
+                        fontSize: 10.5,
                         fontFamily: "SegoeUI",
                       }}
                     >
@@ -264,8 +276,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             }}
           />
         </View>
-      </ScrollView>
-    </View>
+      </ScrollView >
+    </View >
   );
 };
 
@@ -274,28 +286,29 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FDFDFD",
+    backgroundColor: colors.whiteF6F6F6,
     alignSelf: "center",
+
   },
   header: {
     flexDirection: "row",
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
     width: "100%",
     height: 50,
     marginBottom: 4,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 8,
-    paddingHorizontal: 10,
+    paddingTop: 20,
+    paddingHorizontal: 12,
   },
   searchBox: {
     width: "100%",
     borderWidth: 1,
     borderRadius: 24,
+    backgroundColor: colors.white,
     borderColor: "#ff7600",
-    height: 40,
+    height: 31,
     paddingEnd: 90,
+    fontSize: 15,
     paddingLeft: 12,
     fontFamily: "SegoeUI",
   },
@@ -304,7 +317,7 @@ const styles = StyleSheet.create({
   },
   linearGradient: {
     borderRadius: 24,
-    height: 35,
+    height: 27,
     width: 80,
     alignItems: "center",
     justifyContent: "center",
@@ -319,18 +332,18 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 9 / 10,
     paddingTop: 4,
-    backgroundColor: "#FDFDFD",
+    backgroundColor: colors.whiteF6F6F6,
   },
 
   categories: {
-    borderRadius: 10,
+    borderRadius: 13,
     backgroundColor: "#ffffff",
-    elevation: 10,
-    marginHorizontal: 10,
-    marginBottom: 10,
+    marginHorizontal: 12,
+    marginBottom: 8,
     marginTop: 4,
-    paddingHorizontal: 6,
-    paddingVertical: 10,
+    paddingHorizontal: 11.5,
+    paddingTop: 12,
+    paddingBottom: 4
   },
   gridItem: {
     backgroundColor: "green",
@@ -345,16 +358,14 @@ const styles = StyleSheet.create({
     width: dimensions.width,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    backgroundColor: "#FDFDFD",
     marginBottom: 8,
     alignSelf: "stretch",
   },
   gridViewItemStyle: {
     borderRadius: 10,
     backgroundColor: "#ffffff",
-    marginHorizontal: 4,
-    marginVertical: 4,
-    elevation: 10,
+    marginHorizontal: 4.5,
+    marginVertical: 4.5,
     width: "auto",
   },
   gridViewItemImage: {
