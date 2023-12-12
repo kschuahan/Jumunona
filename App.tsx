@@ -38,6 +38,7 @@ import ProductDetailScreen from "./src/screens/Product/ProductDetailScreen";
 import SelectProductSizeColorScreen from "./src/screens/Product/SelectProductSizeColorScreen";
 import { ProudctReviewsScreen } from "./src/screens/Product/ProudctReviewsScreen";
 import ChatScreen from "./src/screens/Chat/ChatScreen";
+import { ProductSearchResultScreen } from "./src/screens/Product/ProductSearchResultScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -204,7 +205,7 @@ const App: React.FC = () => {
           />
           <Stack.Screen
             name={RouteNames.product_detail}
-            component={ProductDetailScreen}
+            component={ProductSearchResultScreen}
           />
            <Stack.Screen
             name={RouteNames.product_review_screen}
