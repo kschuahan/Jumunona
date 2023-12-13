@@ -1,8 +1,9 @@
-import { Modal, View, Text, FlatList, Pressable } from "react-native"
+import { Modal, View, Text, FlatList, Pressable, Dimensions } from "react-native"
 import { styles } from "../../utils/AppStyles"
 import { colors } from "../../utils/AppColors"
 import { fontFamilty } from "../../utils/Fonts"
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { dimensions } from "../../utils/sizes";
 
 
 enum SizeOption {
@@ -161,13 +162,21 @@ export const ProductSizeChartSceen = ({ isShow, onClose }) => {
     return (
         <Modal transparent={true} animationType={"fade"} visible={isShow} onRequestClose={onClose} >
             <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
-                <View style={[styles.bottom_sheet, { width: "95%", borderTopRightRadius: 13, borderBottomRightRadius: 13 }]}>
+                <View style={[styles.bottom_sheet, { width: "95%" }]}>
 
                     <View style={{ flexDirection: "row" }}>
-                        <View style={{ elevation: 10, shadowColor: colors.grey, shadowOpacity: 0.3, shadowOffset: { width: 5, height: 0 }, paddingRight: 5 }}>
+                        <View style={{
+                            elevation: 10, shadowColor: colors.grey,
+                            shadowOpacity: 0.3, shadowOffset: { width: 5, height: 0 }, paddingRight: 5
+                        }}>
                             {
                                 header.map((subItem, index) =>
-                                    <View style={{ padding: index == 0 ? 21 : 10, backgroundColor: ((index % 2) == 0 ? "#F7F7F9" : colors.white), alignItems: "center", borderTopLeftRadius: (index == 0 ? 13 : 0), borderBottomLeftRadius: (index == header.length - 1 ? 13 : 0), }}>
+                                    <View style={{
+                                        padding: index == 0 ? 21 : 10,
+                                        backgroundColor: ((index % 2) == 0 ? "#F7F7F9" : colors.white),
+                                        alignItems: "center", borderTopLeftRadius: (index == 0 ? 13 : 0),
+                                        borderBottomLeftRadius: (index == header.length - 1 ? 13 : 0),
+                                    }}>
                                         <Text style={{ fontFamily: fontFamilty.bold, fontSize: 12 }}> {subItem.toString()}</Text>
                                     </View>
 
@@ -176,10 +185,11 @@ export const ProductSizeChartSceen = ({ isShow, onClose }) => {
                         </View>
                         <FlatList
                             data={sizesArray}
-                            style={{ borderTopRightRadius: 13, borderBottomRightRadius: 13 }}
                             horizontal
+                            style={{ borderRadius: 13 }}
                             renderItem={({ item }) =>
-                                <View>
+                                <View
+                                >
                                     {
                                         item.map((subItem, index) =>
                                             <View style={{ flexDirection: "row", backgroundColor: ((index % 2) == 0 ? "#F7F7F9" : colors.white), paddingVertical: 10, }}>

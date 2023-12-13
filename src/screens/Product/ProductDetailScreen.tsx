@@ -16,6 +16,8 @@ import ProductImageScreeen from "./ProductImageScreeen";
 import CharacterSticsScreen from "./CharactersticsScreen";
 import { ProductSizeChartSceen } from "./ProductSizeChartSceen";
 import { RouteNames } from "../../utils/RoutesNames";
+import AddSelectProductSizeColorScreen from "./AddSelectProductSizeColorScreen";
+import BuySelectProductSizeColorScreen from "./BuySelectProductSizeColorScreen";
 const shoeImageURL = appIcons.shoeImageURL
 const china = appIcons.china
 const reviewFilter = [
@@ -88,6 +90,9 @@ const postionsArray: Position[] = [{
 export const ProductDetailScreen = ({ navigation }) => {
 
     const [activeIndex, setActiveIndex] = useState(0);
+    const [butShow, setBuyShow] = useState(false);
+    const [addShow, setAddShow] = useState(false);
+
     const handleViewableItemsChanged = useRef(({ viewableItems, changed }) => {
         if (changed && changed.length > 0) {
             // console.log("Visible items are", viewableItems[0].index);
@@ -282,16 +287,23 @@ export const ProductDetailScreen = ({ navigation }) => {
 
             <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap' }}>
                 <CommonButton startorange={colors.yellowStart} endColor={colors.yellowEnd} onClick={() => {
-
+                    setAddShow(true)
                 }} />
                 <CommonButton text={AppString.buy} onClick={() => {
-
+                    setBuyShow(true)
                 }} />
             </View>
 
         </View>
         <ProductImageScreeen isShow={showImages != -1} pos={showImages != -1 ? showImages : 0} onClose={() => {
             setShowImages(-1)
+        }} />
+
+        <AddSelectProductSizeColorScreen isShow={addShow} onClose={() => {
+            setAddShow(false)
+        }} />
+        <BuySelectProductSizeColorScreen isShow={butShow} onClose={() => {
+            setBuyShow(false)
         }} />
     </View >
     )

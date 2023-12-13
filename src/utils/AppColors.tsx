@@ -30,5 +30,6 @@ export const colors = {
     balck4F4F4D: '#4F4F4D',
     greyF4F4F4: '#F4F4F4',
     balc111111: '#111111',
-    black141414: '#141414'
+    black141414: '#141414',
+    greyB3B3B38C: '#B3B3B38C'
 }

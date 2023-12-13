@@ -115,6 +115,7 @@ export const AppString = {
     charachterStics: 'Характеристики',
     ok: 'OK',
     all_goods: 'Все товары',
-    categories: 'Категории'
+    categories: 'Категории',
+    add: 'Добавить'
 
 }

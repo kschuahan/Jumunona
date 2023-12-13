@@ -47,9 +47,15 @@ const guarantees: Guarntees[] = [
 ]
 const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
     return <Modal transparent={true} animationType={"slide"} visible={isShow} onRequestClose={onClose} >
-        <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: "flex-end",  }]}>
-            <View style={{ paddingHorizontal: 10, backgroundColor: colors.white, borderTopLeftRadius: 13, borderTopRightRadius: 13, width: "100%", }}>
-                <View style={{ flexDirection: "row", alignContent: "center", alignItems: "center", alignSelf: "center", marginVertical: 23 }}>
+        <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: "flex-end", }]}>
+            <View style={{
+                paddingHorizontal: 10, backgroundColor: colors.white, borderTopLeftRadius: 13,
+                borderTopRightRadius: 13, width: "100%", flex: 0.8
+            }}>
+                <View style={{
+                    flexDirection: "row", alignContent: "center", alignItems: "center",
+                    alignSelf: "center", marginTop: 23.5, marginBottom: 12
+                }}>
                     <Image
                         source={appIcons.check}
                         style={{ width: 20, height: 20, tintColor: "#FF7600", marginTop: 4, alignSelf: "center" }}
@@ -58,7 +64,6 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
                 </View>
                 <FlatList
                     data={guarantees}
-                    style = {{paddingBottom: 20}}
                     renderItem={({ item }) =>
 
                         <View style={{ margin: 14 }}>
@@ -76,7 +81,7 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
                     }
                     showsVerticalScrollIndicator={false}
                 />
-                <CommonButton  text ={"OK"} startorange={colors.startOrange} endColor={colors.endOrange} onClick={onClose} />
+                <CommonButton text={"OK"} startorange={colors.startOrange} endColor={colors.endOrange} onClick={onClose} />
             </View>
 
         </View>
@@ -88,7 +93,7 @@ const CommonButton = ({ text, endColor = colors.endOrange,
     startorange = colors.startOrange, onClick }) => {
 
     return (
-        <TouchableOpacity onPress={onClick} style={{paddingBottom: 40}} >
+        <TouchableOpacity onPress={onClick} style={{ marginBottom: 30, marginTop: 20 }} >
             <LinearGradient
                 colors={[startorange, endColor]}
                 start={{ x: 0.4, y: 0 }}
