@@ -89,12 +89,12 @@ const ConfirmDeleteAccount = ({ navigation }) => {
 
 const TitleDesciptionView = ({ title, desc }) => {
   return (
-    <View style={{ paddingVertical: 12 }}>
-      <Text style={{ fontSize: 16, color: colors.endOrange, fontFamily: fontFamilty.semibold, paddingBottom: 10 }}>
+    <View style={{ paddingVertical: 14 }}>
+      <Text style={{ fontSize: 16, color: colors.lightOrange, fontFamily: fontFamilty.semibold, paddingBottom: 11 }}>
         {title}
       </Text>
       <View style={{ backgroundColor: colors.white, borderRadius: 13, padding: 10 }}>
-        <Text style={{ fontSize: 14, fontFamily: fontFamilty.semibold, lineHeight: 25 }} >
+        <Text style={{ fontSize: 14, lineHeight: 25, color: colors.grey6C6C6C }} >
           {desc}
         </Text>
       </View>
@@ -110,9 +110,9 @@ const AgreeTermsVew = ({ isSelected, onSelect }) => {
         <Ionicons
           name={isSelected ? "checkmark-circle" : "ellipse-outline"}
           size={25}
-          color={isSelected ? colors.endOrange : "#CECECE"}
+          color={isSelected ? colors.lightOrange : "#6C6C6C"}
         />
-        <Text style={{ fontSize: 14, color: "#6C6C6C", fontFamily: fontFamilty.regular }}>
+        <Text style={{ fontSize: 14, color: "#6C6C6C", marginStart: 5 }}>
           {AppString.i_have_read_and_agree_to_the_cancellation_terms}
         </Text>
       </View>

@@ -3,7 +3,7 @@ import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import HomeScreen from "./HomeScreen";
 import ProfileScreen from "./ProfileSection/ProfileScreen";
-import CategoryScreen from "./CategoryScreen";
+import CategoryScreen from "./categories/CategoryScreen";
 import MessagesScreen from "./MessagesScreen";
 import CartScreen from "./CartScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";

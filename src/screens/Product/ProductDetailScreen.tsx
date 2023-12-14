@@ -127,7 +127,7 @@ export const ProductDetailScreen = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
                     <TouchableOpacity onPress={() => {
                         navigation.goBack()
-                    }} style={{ alignItems: "center", marginStart: -25, marginEnd: 15.97 }}>
+                    }} style={{ alignItems: "center", marginStart: -25, marginEnd: 5 }}>
                         <Ionicons name="chevron-back-outline" size={24} />
                     </TouchableOpacity>
 
@@ -145,6 +145,7 @@ export const ProductDetailScreen = ({ navigation }) => {
     }, [])
 
     const [currentPosition, setCurrentPosition] = useState(0)
+    const [like, setLike] = useState(false)
 
     const handleScroll = (event: Object) => {
         //  console.log(event.nativeEvent.contentOffset.y);
@@ -163,8 +164,6 @@ export const ProductDetailScreen = ({ navigation }) => {
     }
 
     const [showImages, setShowImages] = useState(-1)
-
-
 
 
     return (<View style={{ flex: 1 }}>
@@ -220,8 +219,12 @@ export const ProductDetailScreen = ({ navigation }) => {
                     />
                     <ShopView />
                 </View>
-                <ProductImages />
-                <RelatedProducts />
+                <ProductImages onClick={(index: number) => {
+                    setShowImages(index)
+                }} />
+                <RelatedProducts onclick={() => {
+                    navigation.push(RouteNames.product_detail)
+                }} />
             </View>
 
         </ScrollView >
@@ -279,8 +282,13 @@ export const ProductDetailScreen = ({ navigation }) => {
                 }} style={{ alignItems: "center", marginStart: -20 }}>
                     <Ionicons name="chatbubble-ellipses-outline" size={24} />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
-                    <Ionicons name="heart-outline" size={24} />
+                <TouchableOpacity onPress={() => {
+                    setLike(!like)
+                }} style={{
+                    alignItems: "center", marginStart: -20
+                }}>
+                    <Ionicons name={like ? 'heart' : "heart-outline"} size={24}
+                        color={like ? colors.lightRed : colors.grey} />
                 </TouchableOpacity>
 
             </View>
@@ -309,9 +317,12 @@ export const ProductDetailScreen = ({ navigation }) => {
     )
 }
 // MARK: - Review Section
-const ReviewsSection = ({ viewAllReviews }) => {
+const ReviewsSection = ({ viewAllReviews, text = "" }) => {
     return (
-        <View id={"reviewSection"} style={{ borderRadius: 13, backgroundColor: colors.white, paddingHorizontal: 10, paddingVertical: 10 }}>
+        <View id={"reviewSection"} style={{
+            borderRadius: 13, backgroundColor: colors.white,
+            paddingHorizontal: 10, paddingVertical: 10
+        }}>
             <TextWithIcon title={AppString.review} onClick={viewAllReviews} />
             <FlatList
                 data={reviewFilter}
@@ -322,15 +333,18 @@ const ReviewsSection = ({ viewAllReviews }) => {
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item }) => {
                     return (
-                        <View style={{ flex: 1, paddingVertical: 8, paddingHorizontal: 12, borderRadius: 20, backgroundColor: "#FCEDE8", marginEnd: 10, marginBottom: 10 }}>
+                        <View style={{
+                            height: 30,
+                            paddingHorizontal: 12, borderRadius: 15, backgroundColor: colors.orangeFCEDE8,
+                            marginEnd: 10, marginBottom: 10, justifyContent: 'center', alignItems: 'center'
+                        }}>
                             <TouchableOpacity
                                 onPress={() => { }}
                             >
                                 <Text
                                     style={{
                                         fontSize: 15,
-                                        color: colors.lightOrange,
-                                        fontFamily: fontFamilty.regular,
+                                        color: colors.startOrange,
                                     }}
                                 >
                                     {item.desc}
@@ -340,13 +354,13 @@ const ReviewsSection = ({ viewAllReviews }) => {
                     );
                 }}
             />
-            <ReviewUser />
+            <ReviewUser text={text} />
 
         </View>
     )
 }
 
-export const ReviewUser = ({ }) => {
+export const ReviewUser = ({ text = "Серый XL" }) => {
     return (
         <View>
             <FlatList
@@ -365,7 +379,7 @@ export const ReviewUser = ({ }) => {
                                 <Text
                                     style={[
                                         styles.textStyle,
-                                        { fontSize: 14, fontFamily: fontFamilty.regular },
+                                        { fontSize: 15, },
                                     ]}
                                 >
                                     user****ame
@@ -374,7 +388,7 @@ export const ReviewUser = ({ }) => {
                                 <Text
                                     style={[
                                         styles.textStyle,
-                                        { fontSize: 14, fontFamily: fontFamilty.regular, color: "#999999" },
+                                        { fontSize: 12, color: colors.grey },
                                     ]}
                                 >
                                     26.10.2022
@@ -383,25 +397,24 @@ export const ReviewUser = ({ }) => {
                             <RatingView rating={4} />
                         </View>
 
-                        <Text
+                        {text != "" ? <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 14, fontFamily: fontFamilty.regular, marginTop: 12, color: colors.grey },
+                                { fontSize: 14, fontFamily: fontFamilty.regular, marginTop: 12.5, color: colors.grey },
                             ]}
-                        >
-                            Серый XL
-                        </Text>
+                        >{text}
+                        </Text> : null}
                         <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 14, fontFamily: fontFamilty.regular, paddingTop: 2 },
+                                { fontSize: 14, paddingTop: 2, marginTop: text == "" ? 10 : 4, color: colors.balc111111 },
                             ]}
                         >
                             Very good quality多能显示2行-----------
                         </Text>
 
                         {index != 0 ? <FlatList
-                            style={{ marginTop: 9 }}
+                            style={{ marginTop: 15 }}
                             data={[1, 2, 3, 4, 5]}
                             renderItem={({ item }) =>
                                 <View style={{ marginHorizontal: 1 }}>
@@ -466,7 +479,7 @@ const ProductDesclamenation = () => {
     return (
         <View style={{
             marginTop: 12, marginHorizontal: 9, backgroundColor: colors.white, borderRadius: 12,
-            paddingTop: 7, paddingEnd: 6, paddingStart: 12, marginBottom: 10
+            paddingTop: 8.5, paddingEnd: 13.56, paddingStart: 12.5, marginBottom: 10, paddingBottom: 8
         }}>
             <Text style={[styles.textStyle, {
                 fontSize: 14, alignSelf: 'flex-end',
@@ -546,7 +559,7 @@ export const RatingView = ({ rating = 3 }) => {
                 }}
                 renderItem={({ item }) => {
                     return (
-                        <Ionicons name={"star"} size={12} color={rating >= item ? colors.lightOrange : colors.extraGrey} />
+                        <Ionicons name={"star"} size={11} color={rating >= item ? colors.endOrange : colors.extraGrey} />
                     )
                 }}
             />
@@ -565,48 +578,44 @@ const ShopView = ({ }) => {
                     style={{ width: 55, height: 55, borderRadius: 27 }}
                     source={{ uri: imagesUrl.shoes }}
                 />
-                <View style={{ flex: 1, alignContent: "flex-start", flexDirection: "column", paddingStart: 8 }}>
+                <View style={{ flex: 1, alignContent: "flex-start", flexDirection: "column", paddingStart: 10, gap: 3 }}>
 
                     <Text
                         style={[
                             styles.textStyle,
-                            { fontSize: 14, fontFamily: fontFamilty.regular },
+                            { fontSize: 17, fontWeight: '500' },
                         ]}
-                    >
-                        Shop name name
+                    > <Image source={appIcons.china}
+                        style={{
+                            width: 15, height: 15,
+                        }} resizeMode="cover" /> Shop name name
                     </Text>
 
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", marginStart: 5 }}>
 
-                        <Ionicons name={"star"} size={10} color={colors.lightOrange} style={{ paddingHorizontal: 3 }} />
+                        <Ionicons name={"star"} size={10} color={colors.lightOrange} style={{ marginEnd: 3.5 }} />
                         <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 11, fontFamily: fontFamilty.regular },
+                                { fontSize: 11, marginEnd: 19.5 },
                             ]}
-                        >
-                            4.5
-                        </Text>
+                        >4.5</Text>
 
-                        <Ionicons name={"cube"} size={10} style={{ paddingLeft: 10, paddingRight: 3 }} />
+                        <Ionicons name={"cube"} size={10} style={{ marginEnd: 3.5 }} />
                         <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 11, fontFamily: fontFamilty.regular },
+                                { fontSize: 11, marginEnd: 19.5 },
                             ]}
-                        >
-                            2505
-                        </Text>
+                        >2505</Text>
 
-                        <Ionicons name={"person"} size={10} style={{ paddingLeft: 10, paddingRight: 3 }} />
+                        <Ionicons name={"person"} size={10} style={{ marginEnd: 3.5, }} />
                         <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 11, fontFamily: fontFamilty.regular },
+                                { fontSize: 11, marginEnd: 19.5 },
                             ]}
-                        >
-                            2505
-                        </Text>
+                        >2505</Text>
                     </View>
                 </View>
                 <Ionicons name={"checkmark-circle"} size={20} style={{ paddingLeft: 10, paddingRight: 3 }} color={"#CCCCCC"} />
@@ -640,7 +649,7 @@ const ShopView = ({ }) => {
                 </TouchableOpacity>
             </View>
             <View style={{ height: 1, backgroundColor: colors.greyF4F4F4, marginBottom: 14 }} />
-            <View style={{ marginStart: -8, marginBottom: 4, marginEnd: 3.55 }}>
+            <View style={{ marginStart: -8, marginBottom: 4, }}>
                 <TextWithIcon padding={0} title={AppString.featured} onClick={() => { }} />
             </View>
             <ShopFeaturedProduct />
@@ -657,27 +666,25 @@ const ShopFeaturedProduct = () => {
             }}
             scrollEnabled={false}
             numColumns={3}
+            style={{ marginEnd: - 2.5 }}
             renderItem={({ item }) => {
                 return (
-                    <Pressable
+                    <TouchableOpacity
                         style={{
-                            borderRadius: 12,
                             backgroundColor: "#ffffff",
-                            marginHorizontal: 4,
-                            marginVertical: 4,
-                            width: "31%",
+                            marginHorizontal: 2.5,
+                            flex: 1 / 3,
                             height: 160,
                             borderColor: "#f1f1f1",
-                            marginTop: 8,
+                            marginTop: 12,
                         }}
                     >
                         <Image
                             source={item.imageURL}
                             style={{
-                                height: 105,
-                                paddingHorizontal: 1,
+                                height: 108,
                                 width: "100%",
-                                borderRadius: 12,
+                                borderRadius: 6,
                                 backgroundColor: "#f1f1f1",
 
                                 marginBottom: 8,
@@ -688,59 +695,57 @@ const ShopFeaturedProduct = () => {
                             style={{
                                 flexDirection: "row",
                                 justifyContent: "flex-start",
-                                paddingLeft: 7,
                             }}
                         >
 
                             <Text
                                 style={{
-                                    marginLeft: 4,
-                                    fontSize: 15,
-                                    fontFamily: "SegoeUI",
+                                    fontSize: 13,
                                 }}
                                 numberOfLines={1}
                             >
                                 Название това...
                             </Text>
                         </View>
-                        <View style={{ flexDirection: "row", paddingLeft: 8 }}>
+                        <View style={{ flexDirection: "row" }}>
 
                             <Text
                                 style={{
-                                    fontSize: 17,
+                                    fontSize: 14,
                                     color: "#ff7600",
-                                    fontFamily: "SegoeUI",
                                 }}
                             >
                                 999c.
                             </Text>
                         </View>
-                    </Pressable>
+                    </TouchableOpacity>
                 );
             }}
         />
     )
 }
 
-const ProductImages = ({ }) => {
+const ProductImages = ({ onClick }) => {
     return (
         <View>
             <Text
                 style={{
-                    fontSize: 14,
+                    fontSize: 12.5,
                     color: "#666666",
-                    fontFamily: "SegoeUI",
-                    paddingVertical: 15,
+                    paddingTop: 15,
+                    paddingBottom: 12,
                     alignSelf: "center"
                 }}
             >
-                Детали
+                ---------   Детали   ----------
             </Text>
             {
                 imagesArray.map((item, index) =>
-                    <View style={{ paddingBottom: 10, marginHorizontal: -20 }}>
-                        <Image source={{ uri: imagesUrl.shoes }} style={{ width: "100%", height: 400, }} />
-                    </View>
+                    <TouchableOpacity onPress={() => {
+                        onClick(index)
+                    }} style={{ paddingBottom: 8 }}>
+                        <Image source={{ uri: imagesUrl.shoes }} style={{ width: "100%", height: 385, }} />
+                    </TouchableOpacity>
                 )
             }
 
@@ -751,7 +756,7 @@ const ProductImages = ({ }) => {
 
 
 
-const RelatedProducts = () => {
+const RelatedProducts = ({ onclick }) => {
     return (
         <View style={{ marginBottom: 100, paddingStart: 9 }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
@@ -764,7 +769,8 @@ const RelatedProducts = () => {
                         fontSize: 14,
                         color: colors.lightOrange,
                         fontFamily: "SegoeUI",
-                        paddingVertical: 15,
+                        paddingTop: 20,
+                        paddingBottom: 17,
                         paddingHorizontal: 5,
                         alignSelf: "center"
                     }}
@@ -783,7 +789,7 @@ const RelatedProducts = () => {
                 numColumns={2}
                 renderItem={({ item }) => {
                     return (
-                        <Pressable
+                        <TouchableOpacity
                             style={{
                                 borderRadius: 12,
                                 backgroundColor: "#ffffff",
@@ -793,6 +799,9 @@ const RelatedProducts = () => {
                                 height: 326,
                                 borderColor: "#f1f1f1",
                                 marginTop: 8,
+                            }}
+                            onPress={() => {
+                                onclick()
                             }}
                         >
                             <Image
@@ -815,6 +824,7 @@ const RelatedProducts = () => {
                                     flexDirection: "row",
                                     justifyContent: "flex-start",
                                     paddingLeft: 7,
+                                    gap: 2
                                 }}
                             >
                                 <Image
@@ -832,7 +842,7 @@ const RelatedProducts = () => {
                                     Футболка
                                 </Text>
                             </View>
-                            <View style={{ flexDirection: "row", paddingLeft: 8 }}>
+                            <View style={{ flexDirection: "row", paddingLeft: 8, paddingTop: 4 }}>
                                 <View style={{ flexDirection: "row", width: "30%" }}>
                                     <Text
                                         style={{
@@ -866,7 +876,7 @@ const RelatedProducts = () => {
                                     {item.desc}
                                 </Text>
                             </View>
-                        </Pressable>
+                        </TouchableOpacity>
                     );
                 }}
             />
@@ -878,10 +888,10 @@ const ProductDetails = () => {
 
     return <View style={{
         marginTop: 12, marginHorizontal: 9, backgroundColor: colors.white, borderRadius: 12,
-        paddingVertical: 7, paddingEnd: 6, paddingStart: 12
+        paddingVertical: 8.5, paddingEnd: 8, paddingStart: 12
     }}>
-        <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: 'center', width: "100%" }}>
-            <View style={{ flexDirection: "row", gap: 6 }}>
+        <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: 'center', width: "100%", paddingEnd: 4 }}>
+            <View style={{ flexDirection: "row", gap: 8.5, }}>
                 <Text style={[styles.textStyle, { fontSize: 21, color: colors.lightOrange }]}>
                     {"178с."}
                 </Text>
@@ -892,14 +902,14 @@ const ProductDetails = () => {
             <RatingView />
         </View>
         <View style={{ flexDirection: "row", gap: 6, marginTop: 2, width: '100%' }}>
-            <Image source={{ uri: imagesUrl.profile }}
-                style={{
-                    width: 15, height: 15,
-                    borderRadius: 12, marginTop: 5
-                }} resizeMode="cover" />
 
-            <Text style={[styles.textStyle, { fontSize: 16, fontFamily: fontFamilty.bold, width: "95%" }]}>
-                {"ORT Product name子子子子子子子子子子子子男 子子子子子子子子"}
+
+            <Text style={[styles.textStyle, { fontSize: 16, fontWeight: '600', width: "95%" }]}>
+                <Image source={appIcons.china}
+                    style={{
+                        width: 15, height: 15,
+                        marginTop: 5
+                    }} resizeMode="cover" /> {"ORT Product name子子子子子子子子子子子子男 子子子子子子子子"}
             </Text>
 
         </View>
@@ -918,7 +928,7 @@ const ProductDetails = () => {
 const style = StyleSheet.create({
     searchTextInput: {
         height: 33,
-        width: '69%',
+        width: '72%',
         marginStart: 11,
         fontFamily: "SegoeUI",
         fontSize: 15,
@@ -931,7 +941,8 @@ const style = StyleSheet.create({
         borderTopLeftRadius: 12,
     },
     button: {
-        marginVertical: 16, elevation: 4,
+        marginTop: 10,
+        marginBottom: 12,
         height: 27,
         alignItems: "center",
         justifyContent: "center",

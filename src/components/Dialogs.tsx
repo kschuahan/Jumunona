@@ -63,7 +63,7 @@ export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel 
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: "row", justifyContent: "space-between", }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-around", }}>
                     <TouchableOpacity
                         onPress={onCancel}
                         style={{ marginVertical: 16, width: "45%" }}
@@ -96,11 +96,11 @@ export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel 
                             alignItems: "center",
                             justifyContent: "center",
                             backgroundColor: colors.white,
-                            borderRadius: 23, borderWidth: 1, borderColor: colors.endOrange, width: "45%"
+                            borderRadius: 23, borderWidth: 1, borderColor: colors.lightOrange, width: "45%"
                         }}
                     >
                         <Text
-                            style={{ fontSize: 16, color: colors.endOrange, paddingHorizontal: 20, fontFamily: "SegoeUIBold" }}
+                            style={{ fontSize: 16, color: colors.lightOrange, paddingHorizontal: 20, fontFamily: "SegoeUIBold" }}
                         >
                             {AppString.confirm}
                         </Text>
@@ -122,8 +122,8 @@ export const FailAccDeletePopup = ({ isShow = false, onConfirm, onCancel }) => {
     return <Modal transparent={true} animationType={'fade'} visible={isShow} onRequestClose={onCancel} >
         <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
             <View style={[styles.bottom_sheet, { paddingHorizontal: 10, justifyContent: "center", alignContent: "center" }]}>
-                <Text style={[styles.textStyle, { paddingVertical: 10, fontFamily: fontFamilty.semibold, fontSize: 20, textAlign: "center" }]}>{AppString.failed_to_delete_acc}</Text>
-                <Text style={[styles.textStyle, { paddingBottom: 10, fontFamily: fontFamilty.regular, fontSize: 14 }]}>{AppString.failed_acc_delete_reason}</Text>
+                <Text style={[styles.textStyle, { paddingVertical: 9, fontWeight: '500', fontSize: 20, textAlign: "center" }]}>{AppString.failed_to_delete_acc}</Text>
+                <Text style={[styles.textStyle, { paddingBottom: 20, fontSize: 14 }]}>{AppString.failed_acc_delete_reason}</Text>
             </View>
             <Pressable onPress={onCancel} >
             <Ionicons

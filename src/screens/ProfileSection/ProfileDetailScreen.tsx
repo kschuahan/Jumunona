@@ -122,7 +122,7 @@ const TextWithIcon = ({ title = AppString.address, value = "", onClick }) => {
       <Text
         style={[
           styles.textStyle,
-          { fontSize: 14, fontFamily: fontFamilty.semibold },
+          { fontSize: 14, fontWeight: '500', color: colors.black121212 },
         ]}
       >
         {title}
@@ -132,7 +132,7 @@ const TextWithIcon = ({ title = AppString.address, value = "", onClick }) => {
         <Text
           style={[
             styles.textStyle,
-            { fontSize: 14, fontFamily: undefined, fontWeight: '500', color: colors.grey888888, paddingEnd: 15 },
+            { fontSize: 14, fontWeight: '500', color: colors.grey888888, paddingEnd: 4 },
           ]}
         >
           {value}

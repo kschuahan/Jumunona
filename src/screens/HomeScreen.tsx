@@ -112,7 +112,7 @@ const categoryData: Category[] = [
 ];
 const china = require("../../assets/china.png");
 
-const HeaderItem = ({onSearchClick}) => (
+const HeaderItem = ({ onSearchClick }) => (
   <View style={styles.header}>
     <TextInput
       style={styles.searchBox}
@@ -132,7 +132,7 @@ const HeaderItem = ({onSearchClick}) => (
   </View>
 );
 
-const MainCategoriesItem = () => (
+const MainCategoriesItem = ({ navigation }) => (
   <View style={{ width: "100%" }}>
     <FlatList
       style={styles.categories}
@@ -152,7 +152,10 @@ const MainCategoriesItem = () => (
             }}
           >
             {item.id === 10 ? (
-              <TouchableOpacity style={{ alignItems: "center", }}>
+              <TouchableOpacity onPress={() => {
+                navigation.navigate(RouteNames.categories)
+
+              }} style={{ alignItems: "center", }}>
                 <Ionicons name="ellipsis-horizontal-outline" size={50} />
                 <Text style={{ fontSize: 13, fontFamily: "SegoeUI", color: colors.black, paddingBottom: 10 }}>
                   More...
@@ -177,14 +180,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
 
-      <HeaderItem onSearchClick={ () => {
+      <HeaderItem onSearchClick={() => {
         navigation.navigate(RouteNames.product_search_screen)
-      }}/>
+      }} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}
       >
-        <MainCategoriesItem />
+        <MainCategoriesItem navigation={navigation} />
         <View style={styles.grid}>
           <MasonryList
             data={data}

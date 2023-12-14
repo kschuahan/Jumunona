@@ -40,14 +40,14 @@ const CharacterSticsScreen = ({ isShow = false, onClose }) => {
                 <Text
                     style={[
                         styles.textStyle,
-                        { fontSize: 16, alignSelf: 'center', marginVertical: 10 },
+                        { fontSize: 16, alignSelf: 'center', marginVertical: 10, color: colors.black262626 },
                     ]}
                 >
                     {AppString.charachterStics}
                 </Text>
 
                 <FlatList
-                    style={{ marginBottom: 60}}
+                    style={{ marginBottom: 60 }}
                     data={charachterList}
 
                     keyExtractor={(item) => {

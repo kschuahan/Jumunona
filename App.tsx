@@ -39,6 +39,7 @@ import SelectProductSizeColorScreen from "./src/screens/Product/SelectProductSiz
 import { ProudctReviewsScreen } from "./src/screens/Product/ProudctReviewsScreen";
 import ChatScreen from "./src/screens/Chat/ChatScreen";
 import { ProductSearchResultScreen } from "./src/screens/Product/ProductSearchResultScreen";
+import { AllCategoriesScreen } from "./src/screens/categories/AllCategoryScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -81,7 +82,7 @@ const App: React.FC = () => {
         <Stack.Navigator initialRouteName={RouteNames.welcome} screenOptions={{
           headerTitleAlign: 'center',
           headerTitleStyle: {
-            fontFamily: fontFamilty.bold,
+            fontWeight: 'bold',
             fontSize: 21
           },
           headerStyle: {
@@ -207,7 +208,7 @@ const App: React.FC = () => {
             name={RouteNames.product_detail}
             component={ProductDetailScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={RouteNames.product_review_screen}
             component={ProudctReviewsScreen}
           />
@@ -217,9 +218,14 @@ const App: React.FC = () => {
             component={ChatScreen}
           />
           <Stack.Screen
-          name={RouteNames.product_search_screen}
-          component={ProductSearchResultScreen}
-        />
+            name={RouteNames.product_search_screen}
+            component={ProductSearchResultScreen}
+          />
+
+          <Stack.Screen
+            name={RouteNames.categories}
+            component={AllCategoriesScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

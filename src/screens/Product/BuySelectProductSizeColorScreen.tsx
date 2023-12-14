@@ -19,7 +19,7 @@ const BuySelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
         <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: "flex-end" }]}>
             <View style={{
                 paddingHorizontal: 10, backgroundColor: colors.white, borderTopLeftRadius: 13,
-                borderTopRightRadius: 13, width: "100%", flex: 0.75
+                borderTopRightRadius: 13, width: "100%", flex: 0.79
             }}>
                 <View
                     style={{ flexDirection: "row", justifyContent: "space-between", paddingTop: 9 }}
@@ -51,7 +51,11 @@ const BuySelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
                 <ScrollView style={{ paddingBottom: 40, }} showsVerticalScrollIndicator={false}>
                     <CancelReturnPolicyView onClick={() => { }} />
                     <PhoneDataScreen onClick={() => { }} />
+                    <View style={{ height: 1, marginVertical: 13, backgroundColor: colors.darkWhite }} />
+
                     <ColorOptions />
+                    <View style={{ height: 1, marginVertical: 13, backgroundColor: colors.darkWhite }} />
+
                     <SizeAndBuyingForView />
                     <View style={{ height: 1, marginVertical: 10, backgroundColor: colors.darkWhite }} />
                     <QuanityView />
@@ -119,7 +123,7 @@ const PhoneDataScreen = ({ onClick }) => {
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}><Ionicons
                 name={"bandage-outline"}
                 color={colors.startOrange}
-                size={22}
+                size={20}
             />
                 <Text
                     style={[
@@ -130,7 +134,7 @@ const PhoneDataScreen = ({ onClick }) => {
             <Ionicons
                 name={"chevron-forward-outline"}
                 color={colors.startOrange}
-                size={22}
+                size={15}
             />
         </View>
     );
@@ -140,13 +144,14 @@ const ColorOptions = ({ }) => {
     const [selectedColor, setSelectedColor] = useState(1)
     return (
         <View >
-            <Text style={[styles.textStyle, { paddingVertical: 10, fontSize: 14 }]}>Color (2)</Text>
+            <Text style={[styles.textStyle, { fontSize: 14 }]}>Цвет (2)</Text>
 
             <FlatList
                 data={[1, 2]}
-                renderItem={({ item }) =>
+                renderItem={({ item, index }) =>
 
                     <View style={{ marginEnd: 8 }}>
+                        <View style={{ height: 13 }} />
                         <TouchableOpacity onPress={() => {
                             setSelectedColor(item)
                         }} >
@@ -178,6 +183,19 @@ const ColorOptions = ({ }) => {
                                 }} />
                                 : null
                             }
+
+                            {index == 1 ? <View style={{
+                                position: 'absolute',
+                                top: -10, end: -1, height: 13, width: 44,
+                                backgroundColor: colors.greyCCCCCC,
+                                borderColor: colors.whiteF2F2F2,
+                                justifyContent: 'center', alignItems: 'center',
+                                borderBottomEndRadius: 5, borderTopStartRadius: 5
+                            }}>
+                                <Text style={[styles.textStyle, {
+                                    color: colors.white, fontSize: 10
+                                }]}>sold out</Text>
+                            </View> : null}
                         </TouchableOpacity>
                     </View>
                 }
@@ -201,47 +219,51 @@ const SizeAndBuyingForView = ({ }) => {
                     setSelecteSize(false)
                 }}>
                     <View style={{ flexDirection: "column", justifyContent: "flex-start" }}>
-                        <Text style={[styles.textStyle, { paddingTop: 10, fontSize: 14, color: !selectedSize ? colors.startOrange : colors.black }]}>For</Text>
-                        {!selectedSize ? <View style={{ height: 2, backgroundColor: colors.startOrange, marginTop: 3.5, width: 30 }} /> : null}
+                        <Text style={[styles.textStyle, { fontSize: 14, color: !selectedSize ? colors.startOrange : colors.black }]}>Для</Text>
+                        {!selectedSize ? <View style={{ height: 2, backgroundColor: colors.startOrange, width: 30 }} /> : null}
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                     setSelecteSize(true)
                 }}>
                     <View style={{ flexDirection: "column", justifyContent: "flex-start", marginStart: 15 }}>
-                        <Text style={[styles.textStyle, { paddingTop: 10, fontSize: 14, color: selectedSize ? colors.startOrange : colors.black }]}>Size</Text>
-                        {selectedSize ? <View style={{ height: 2, backgroundColor: colors.startOrange, marginTop: 3.5, width: 30 }} /> : null}
+                        <Text style={[styles.textStyle, { fontSize: 14, color: selectedSize ? colors.startOrange : colors.black }]}>Размер</Text>
+                        {selectedSize ? <View style={{ height: 2, backgroundColor: colors.startOrange, width: 30 }} /> : null}
                     </View>
                 </TouchableOpacity>
             </View>
             <FlatList
                 data={selectedSize ? sizes : users}
-                horizontal
+                scrollEnabled={false}
+                numColumns={5}
                 renderItem={({ item }) =>
 
-                    <View style={{ margin: 8 }}>
+                    <View style={{ margin: 8, flex: 1 / (selectedSize ? 5 : 3.5) }}>
 
                         <TouchableOpacity onPress={() => {
                             setSelecteItem(item)
                         }} >
                             <View style={{
-                                paddingHorizontal: 16, paddingVertical: 5, justifyContent: "center",
-                                backgroundColor: "#F6F6F6", borderRadius: 15
+                                paddingHorizontal: 16, paddingVertical: 5,
+                                justifyContent: "center", backgroundColor: "#F6F6F6", borderRadius: selectedSize ? 5 : 15
                             }}>
                                 <Text style={[styles.textStyle, {
-                                    color: selectedItem == item ? colors.startOrange : colors.black,
-                                    textAlign: "center", alignSelf: "center"
+                                    color: selectedItem == item ? colors.startOrange : colors.black121212,
+                                    textAlign: "center", alignSelf: "center", fontSize: 14
                                 }]}> {item}</Text>
                             </View>
 
                         </TouchableOpacity>
                         {selectedItem == item ?
-                            <View style={{ position: "absolute", backgroundColor: "rgba(255, 118, 0, 0.08)", width: "100%", height: "100%", borderRadius: 15, borderColor: colors.startOrange, borderWidth: 1 }} />
+                            <View style={{
+                                position: "absolute", backgroundColor: "rgba(255, 118, 0, 0.08)",
+                                width: "100%", height: "100%", borderRadius: selectedSize ? 5 : 15, borderColor: colors.startOrange, borderWidth: 1
+                            }} />
                             : null
                         }
                     </View>
                 }
-                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
             />
         </View>
     )

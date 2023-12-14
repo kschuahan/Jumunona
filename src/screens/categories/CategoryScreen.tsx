@@ -12,10 +12,12 @@ import { ScrollView } from "react-native-virtualized-view";
 import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MasonryList from "@react-native-seoul/masonry-list";
-import { dimensions } from "../utils/sizes";
-import { colors } from "../utils/AppColors";
+import { dimensions } from "../../utils/sizes";
+import { colors } from "../../utils/AppColors";
 import { LinearGradient } from "expo-linear-gradient";
-import { fontFamilty } from "../utils/Fonts";
+import { fontFamilty } from "../../utils/Fonts";
+import { appIcons } from "../../utils/AppIcons";
+import { RouteNames } from "../../utils/RoutesNames";
 
 interface Category {
   id: number;
@@ -52,57 +54,56 @@ const mensCategoryData: Category[] = [
   { id: 9, desc: "西装" },
   { id: 10, desc: "More..." },
 ];
-const shoeImageURL = require("../../assets/shoe.jpg");
-const china = require("../../assets/china.png");
+
 const data: Product[] = [
   {
     id: 1,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 2,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 3,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 4,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 5,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 6,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 7,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 8,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 9,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
   {
     id: 10,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
   },
 ];
@@ -116,7 +117,7 @@ const HeaderCategoryScreen = () => (
   </View>
 );
 
-const CategoryScreen = () => {
+const CategoryScreen = ({ navigation }) => {
   const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] = useState(1);
   return (
     <View style={styles.container}>
@@ -160,7 +161,11 @@ const CategoryScreen = () => {
             style={{ height: 20, width: 4, backgroundColor: '#7E7D7D29', borderRadius: 100 }}
           >
           </LinearGradient>
-          <Ionicons name="chevron-down-outline" size={24} />
+          <TouchableOpacity onPress={() => {
+            navigation.navigate(RouteNames.categories)
+          }}>
+            <Ionicons name="chevron-down-outline" size={24} />
+          </TouchableOpacity>
         </View>
       </View>
       <ScrollView
@@ -184,7 +189,10 @@ const CategoryScreen = () => {
                   }}
                 >
                   {item.id === 10 ? (
-                    <TouchableOpacity style={{ alignItems: "center" }}>
+                    <TouchableOpacity onPress={() => {
+                      navigation.navigate(RouteNames.categories)
+
+                    }} style={{ alignItems: "center" }}>
                       <Ionicons name="ellipsis-horizontal-outline" size={50} />
                       <Text style={{ fontSize: 13, fontFamily: "SegoeUI" }}>
                         More...
@@ -212,7 +220,7 @@ const CategoryScreen = () => {
             numColumns={2}
             renderItem={({ item }) => {
               return (
-                <Pressable
+                <TouchableOpacity
                   style={{
                     borderRadius: 12,
                     backgroundColor: "#ffffff",
@@ -223,6 +231,10 @@ const CategoryScreen = () => {
                     marginTop: 9,
                     flex: 0.5,
                     paddingBottom: 8
+                  }}
+                  onPress={() => {
+                    navigation.navigate(RouteNames.product_detail)
+
                   }}
                 >
                   <Image
@@ -248,7 +260,7 @@ const CategoryScreen = () => {
                     }}
                   >
                     <Image
-                      source={china}
+                      source={appIcons.china}
                       style={{ height: 15, width: 15, marginTop: 3 }}
                     />
                     <Text
@@ -298,7 +310,7 @@ const CategoryScreen = () => {
                       {item.desc}
                     </Text>
                   </View>
-                </Pressable>
+                </TouchableOpacity>
               );
             }}
           />

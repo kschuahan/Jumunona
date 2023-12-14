@@ -102,7 +102,10 @@ const Header = ({ }) => {
   return (
     <View style={{ backgroundColor: colors.white, borderTopLeftRadius: 13, borderTopRightRadius: 13 }}>
       <Text
-        style={[styles.textStyle, { fontFamily: fontFamilty.semibold, fontSize: 20, paddingTop: 25, paddingBottom: 10, paddingHorizontal: 11 }]}
+        style={[styles.textStyle, {
+          fontWeight: '500',
+          fontSize: 20, paddingTop: 23.5, paddingBottom: 10, paddingHorizontal: 11.5, color: colors.black121212
+        }]}
       >
         {AppString.please_select_a_reason}
       </Text>
@@ -128,8 +131,8 @@ const ReasonCell = ({ item, index, onSelect }) => {
         <Text
           style={[styles.textStyle,
           {
-            fontFamily: fontFamilty.regular,
-            fontSize: 16
+            fontSize: 16,
+            color:colors.black121212
           }]}
         >
           {item.title}
@@ -137,7 +140,7 @@ const ReasonCell = ({ item, index, onSelect }) => {
         <Ionicons
           name={item.isSelected ? "checkmark-circle" : "ellipse-outline"}
           size={25}
-          color={item.isSelected ? colors.endOrange : "#CECECE"}
+          color={item.isSelected ? colors.startOrange : "#CECECE"}
         />
 
       </View>
@@ -163,10 +166,10 @@ const FooterView = ({ value, onChangeText, onDelete }) => {
           borderBottomLeftRadius: 13,
           borderBottomRightRadius: 13,
           borderWidth: 1,
-          borderColor: colors.endOrange
+          borderColor: colors.lightOrange
         }]}
         placeholder={AppString.please_provide_a_reason}
-        placeholderTextColor={'grey'}
+        placeholderTextColor={colors.grey979797}
         value={value}
         multiline={true}
         numberOfLines={5}

@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, FlatList, StyleSheet, TextInput, Image, SafeAreaView } from "react-native";
+import { View, TouchableOpacity, Text, FlatList, StyleSheet, TextInput, Image, SafeAreaView, ScrollView } from "react-native";
 import { colors } from "../../utils/AppColors";
 import { fontFamilty } from "../../utils/Fonts";
 import { AppString } from "../../utils/AppStrings";
@@ -18,10 +18,10 @@ const reviewFilter = [
 ]
 const filterOptions = [
     { id: 1, desc: "Все" },
-    { id: 2, desc: "Изображение(14)" },
-    { id: 3, desc: "Хорошие(2)" },
-    { id: 4, desc: "Средние(8)" },
-    { id: 5, desc: "Плохие(1)" }
+    { id: 2, desc: "Изображение" },
+    { id: 3, desc: "Хорошие" },
+    { id: 4, desc: "Средние" },
+    { id: 5, desc: "Плохие" }
 ];
 
 export const ProudctReviewsScreen = ({ navigation }) => {
@@ -67,7 +67,7 @@ export const ProudctReviewsScreen = ({ navigation }) => {
 
             },
 
-            headerShadowVisible: true,
+            headerShadowVisible: false,
 
         })
     }, [])
@@ -85,21 +85,30 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                     }}
                     renderItem={({ item }) => {
                         return (
-                            <View style={{ paddingHorizontal: 10 }}>
+                            <View style={{ paddingHorizontal: 4.5 }}>
                                 <TouchableOpacity
                                     onPress={() => setSelectedFactory(item.id)}
                                 >
                                     <Text
                                         style={{
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             color:
                                                 selectedFactory === item.id
                                                     ? "#ff7600"
                                                     : "black",
-                                            fontFamily: "SegoeUI",
                                         }}
                                     >
-                                        {item.desc}
+                                        {item.desc}{item.id != 1 ? '(' : ''}<Text
+                                            style={{
+                                                fontSize: 14,
+                                                color:
+                                                    selectedFactory === item.id
+                                                        ? "#ff7600"
+                                                        : colors.grey,
+                                            }}
+                                        >
+                                            {item.id != 1 ? item.id : ''}
+                                        </Text>{item.id != 1 ? ')' : ''}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -108,7 +117,7 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                 />
 
             </View>
-            <View>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <FlatList
                     data={reviewFilter}
                     horizontal
@@ -116,16 +125,15 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                     keyExtractor={(item) => {
                         return item.id.toString();
                     }}
-                    style={{ flexWrap: "wrap", marginVertical: 12, marginStart: 9 }}
+                    style={{ flexWrap: "wrap", marginVertical: 9, marginStart: 9 }}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => {
                         return (
-                            <TouchableOpacity onPress={() => { }} style={{ backgroundColor: colors.white, marginRight: 10, borderRadius: 20 }}>
+                            <TouchableOpacity onPress={() => { }} style={{ backgroundColor: colors.white, marginEnd: 13, borderRadius: 20 }}>
                                 <Text
                                     style={{
-                                        fontSize: 15,
-                                        color: colors.black,
-                                        fontFamily: fontFamilty.regular,
+                                        fontSize: 14,
+                                        color: colors.balc111111,
                                         paddingHorizontal: 12,
                                         textAlign: "center",
                                         paddingVertical: 10
@@ -137,23 +145,23 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                         );
                     }}
                 />
-            </View>
-            <View style={{ flex: 1, paddingVertical: 12, backgroundColor: colors.white, borderTopRightRadius: 13, borderTopLeftRadius: 13 }}>
-                <FlatList
-                    data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
-
-                    keyExtractor={(item) => {
-                        return item.toString();
-                    }}
-                    style={{ padding: 12, borderRadius: 13, height: "100%", }}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => {
-                        return (
-                            <ReviewUser />
-                        );
-                    }}
-                />
-            </View>
+                <View style={{ flex: 1, paddingVertical: 12, backgroundColor: colors.white, borderTopRightRadius: 13, borderTopLeftRadius: 13 }}>
+                    <FlatList
+                        data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+                        scrollEnabled={false}
+                        keyExtractor={(item) => {
+                            return item.toString();
+                        }}
+                        style={{ paddingHorizontal: 13, borderRadius: 13, height: "100%", }}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                <ReviewUser />
+                            );
+                        }}
+                    />
+                </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -188,9 +196,10 @@ const style = StyleSheet.create({
     },
     primaryCategoriesContent: {
         backgroundColor: colors.white,
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
-        padding: 10,
+        borderBottomLeftRadius: 13,
+        borderBottomRightRadius: 13,
+        paddingHorizontal: 10,
+        paddingBottom: 10,
         flexWrap: "wrap"
     },
 });

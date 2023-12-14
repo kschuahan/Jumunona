@@ -79,7 +79,7 @@ const TextWithIcon = ({ title = AppString.address, padding = 13, onClick }) => {
             <Text
                 style={[
                     styles.textStyle,
-                    { fontSize: 16, fontWeight: "400", fontFamily: fontFamilty.regular },
+                    { fontSize: 16, fontWeight: "bold" },
                 ]}
             >
                 {title}

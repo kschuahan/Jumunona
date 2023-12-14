@@ -49,8 +49,8 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
     return <Modal transparent={true} animationType={"slide"} visible={isShow} onRequestClose={onClose} >
         <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: "flex-end", }]}>
             <View style={{
-                paddingHorizontal: 10, backgroundColor: colors.white, borderTopLeftRadius: 13,
-                borderTopRightRadius: 13, width: "100%", flex: 0.8
+                paddingStart: 13, backgroundColor: colors.white, borderTopLeftRadius: 13,
+                borderTopRightRadius: 13, width: "100%", flex: 0.83
             }}>
                 <View style={{
                     flexDirection: "row", alignContent: "center", alignItems: "center",
@@ -60,21 +60,32 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
                         source={appIcons.check}
                         style={{ width: 20, height: 20, tintColor: "#FF7600", marginTop: 4, alignSelf: "center" }}
                     />
-                    <Text style={[styles.textStyle, { marginLeft: 7 }]}>{AppString.gurantee_jumunona}</Text>
+                    <Text style={[styles.textStyle, {
+                        fontSize: 16,
+                        marginLeft: 7,
+                        color: colors.black262626
+                    }]}>{AppString.gurantee_jumunona}</Text>
                 </View>
                 <FlatList
                     data={guarantees}
                     renderItem={({ item }) =>
 
-                        <View style={{ margin: 14 }}>
+                        <View style={{ marginVertical: 12, marginEnd: 22, }}>
                             <View style={{ flexDirection: "row" }}>
                                 <Image
                                     source={appIcons.checked}
                                     style={{ width: 20, height: 20, tintColor: "#FF7600", marginTop: 4 }}
                                 />
                                 <View style={{ marginLeft: 13, flexDirection: "column" }}>
-                                    <Text style={[styles.textStyle, { fontFamily: fontFamilty.bold, fontSize: 16, marginBottom: 7 }]}>{item.title}</Text>
-                                    <Text style={[styles.textStyle, { fontSize: 15 }]}> {item.desc}</Text>
+                                    <Text style={[styles.textStyle, {
+                                        fontFamily: fontFamilty.bold, fontSize: 15,
+                                        color: colors.black262626,
+                                        marginBottom: 7
+                                    }]}>{item.title}</Text>
+                                    <Text style={[styles.textStyle, {
+                                        fontSize: 15,
+                                        color: colors.black262626,
+                                    }]}> {item.desc}</Text>
                                 </View>
                             </View>
                         </View>

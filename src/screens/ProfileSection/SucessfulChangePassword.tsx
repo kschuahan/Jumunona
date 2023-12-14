@@ -69,7 +69,7 @@ export const SucessfulChangePasswordScreen = ({ navigation }) => {
                     <Text
                         style={[
                             styles.textStyle,
-                            { fontSize: 23, fontFamily: fontFamilty.bold, alignSelf: 'center' },
+                            { fontSize: 23, fontWeight: '700', alignSelf: 'center' },
                         ]}
                     >
                         {AppString.sucessfully_changed}
@@ -88,7 +88,7 @@ export const SucessfulChangePasswordScreen = ({ navigation }) => {
                             style={[
                                 styles.textStyle,
                                 {
-                                    fontSize: 13, fontFamily: fontFamilty.regular, alignSelf: 'center',
+                                    fontSize: 13,  alignSelf: 'center',
                                     color: colors.black666666
                                 },
                             ]}

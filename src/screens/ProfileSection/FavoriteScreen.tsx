@@ -69,7 +69,7 @@ export const FavoriteScreen = ({ navigation }) => {
                 />
 
                 <FlatList
-                    style={{ width: '80%', marginTop: 10, marginHorizontal: 10, }}
+                    style={{ width: '80%', marginTop: 10, marginStart: 10, }}
                     data={products}
                     keyExtractor={(item) => {
                         return item.toString();
@@ -85,7 +85,7 @@ export const FavoriteScreen = ({ navigation }) => {
                                 source={{ uri: imagesUrl.shoes }}
                                 style={{ height: 80, width: 80, borderRadius: 5 }}
                             />
-                            <Text style={[styles.textStyle, { fontSize: 12, color: colors.lightOrange, marginTop: 8 }]}>
+                            <Text style={[styles.textStyle, { fontSize: 14, color: colors.lightOrange, marginTop: 8 }]}>
                                 {item.title}
                             </Text>
                             {select ? <TouchableOpacity onPress={() => {

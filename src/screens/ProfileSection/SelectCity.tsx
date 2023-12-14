@@ -39,7 +39,7 @@ export const SelectCity = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: "",
 
-            headerRight: (() => <TouchableOpacity style={{ alignItems: "center",  marginStart: -20  }}>
+            headerRight: (() => <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
                 <Ionicons name="ellipsis-horizontal-outline" size={24} />
             </TouchableOpacity>),
 
@@ -56,11 +56,10 @@ export const SelectCity = ({ navigation }) => {
                 </View>
             ),
             headerStyle: {
-                backgroundColor: '#F6F6F6',
+                backgroundColor: colors.white,
 
             },
 
-            headerShadowVisible: false,
 
         })
     }, [])
@@ -74,7 +73,7 @@ export const SelectCity = ({ navigation }) => {
                     <Text
                         style={[
                             styles.textStyle,
-                            { fontSize: 15, fontFamily: fontFamilty.bold, paddingHorizontal: 10, marginBottom: 3 },
+                            { fontSize: 15, fontWeight: 'bold', paddingHorizontal: 10, marginBottom: 3 },
                         ]}
                     >
                         {AppString.tajakistan}
@@ -108,7 +107,7 @@ export const SelectCity = ({ navigation }) => {
                                     <Text
                                         style={[
                                             styles.textStyle,
-                                            { fontSize: 13, color: pos == index ? colors.lightOrange : colors.black },
+                                            { fontSize: 13, color: pos == index ? colors.lightOrange : colors.balck0C0C0C },
                                         ]}
                                     >
                                         {item}
@@ -128,7 +127,10 @@ export const SelectCity = ({ navigation }) => {
 const SearchView = () => {
     const [search, setSearch] = useState("")
 
-    return <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
+    return <View style={{
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start',
+        backgroundColor: colors.whiteF6F6F6, borderRadius: 20, marginStart: 10
+    }}>
         <Ionicons name="search" size={17} style={{ marginStart: 15 }} color={colors.grey} />
         <TextInput
             value={search}
@@ -142,7 +144,7 @@ const SearchView = () => {
     </View>
 }
 
-const style = StyleSheet.create ({
+const style = StyleSheet.create({
     searchTextInput: {
         height: 33,
         width: '80%',

@@ -121,7 +121,7 @@ const ProfileProduct = ({ title = 'Ожидает оплаты', subTitle = AppS
         style={{ flexDirection: "row", width: "60%", alignItems: "center" }}
       >
         <Image
-          source={{ uri: imagesUrl.profile }}
+          source={{ uri: imagesUrl.shoes }}
           style={{ height: 44, width: 44, borderRadius: 8 }}
         />
         <View style={{ marginStart: 10 }}>

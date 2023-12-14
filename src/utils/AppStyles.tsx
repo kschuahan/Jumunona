@@ -22,7 +22,8 @@ export const styles = StyleSheet.create({
     textStyle: {
         color: colors.black,
         fontSize: 12,
-        fontFamily: fontFamilty.regular
+        fontFamily: undefined,
+        fontWeight: '400'
     },
     loginButton: {
         marginHorizontal: 30,

@@ -24,7 +24,7 @@ export const ChatScreen = ({ navigation }) => {
             },
             headerRight: (() =>
 
-                <View style={{ flexDirection: 'row', gap: 30, marginTop: 6 }}>
+                <View style={{ flexDirection: 'row', gap: 30 }}>
                     <TouchableOpacity style={{ alignItems: "center", marginStart: -20 }}>
                         <Ionicons name="gift-outline" size={24} />
                     </TouchableOpacity>
@@ -38,7 +38,7 @@ export const ChatScreen = ({ navigation }) => {
             headerLeft: () => (
                 <TouchableOpacity onPress={() => {
                     navigation.goBack()
-                }} style={{ marginTop: 6, marginEnd: 8 }}>
+                }} style={{ marginStart: 8 }}>
                     <Ionicons name="chevron-back-outline" size={24} />
                 </TouchableOpacity>
             )
@@ -51,7 +51,8 @@ export const ChatScreen = ({ navigation }) => {
             style={
                 [styles.container,
                 {
-                    paddingBottom: 100
+                    paddingBottom: 100,
+                    backgroundColor: colors.whiteF2F2F2
                 }]
             }
         >
@@ -66,7 +67,7 @@ export const ChatScreen = ({ navigation }) => {
                 renderItem={({ item, index }) =>
                     <View>
                         {index == 0 ? <Text style={[styles.textStyle, {
-                            color: colors.balck4F4F4D, textAlign: 'center', marginVertical: 10
+                            color: colors.balck4F4F4D, textAlign: 'center', marginTop: 9.5, marginBottom: 6.5
                         }]}>
                             {"15:29"}
                         </Text> : null}
@@ -119,7 +120,7 @@ const LeftInflate = ({ item }) => {
             <Text
                 style={[
                     styles.textStyle,
-                    { fontSize: 16, fontWeight: "500", fontFamily: "SegoeUI" },
+                    { fontSize: 17, color: colors.black121212 },
                 ]}
             >
                 {"Welcome \n\nText"}
@@ -137,7 +138,7 @@ const RightInflate = ({ item }) => {
             <Text
                 style={[
                     styles.textStyle,
-                    { fontSize: 16, fontWeight: "500", fontFamily: "SegoeUI", },
+                    { fontSize: 17, color: colors.black121212 },
                 ]}
             >
                 {"Welcome \n\nText"}
@@ -156,29 +157,29 @@ const SendProductDetailsInflate = ({ item }) => {
                 height: 244, width: 244,
                 borderTopLeftRadius: 8, borderTopRightRadius: 8, backgroundColor: colors.white
             }} />
-            <View style={{ paddingHorizontal: 8, paddingVertical: 4, gap: 6 }}>
-                <Text style={[styles.textStyle, { fontSize: 17, color: colors.lightOrange }]}>
+            <View style={{ paddingHorizontal: 8, paddingVertical: 4}}>
+                <Text style={[styles.textStyle, { fontSize: 16, color: colors.lightOrange }]}>
                     {"178с."}
                 </Text>
                 <Text
                     style={[
                         styles.textStyle,
-                        { fontSize: 17, fontWeight: "500", fontFamily: "SegoeUI", },
+                        { fontSize: 17 },
                     ]}
                 >
                     {"MMORT儿童鞋子子子子子子 身MMORT儿童鞋子子子子..."}
                 </Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View style={{ flexDirection: 'row', gap: 2, paddingBottom: 6 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
+                    <View style={{ flexDirection: 'row', gap: 2, paddingBottom: 6, alignItems: 'center' }}>
                         <Ionicons name="happy-outline" size={15} />
                         <Text style={[styles.textStyle, {
-                            fontSize: 14, color: colors.grey,
+                            fontSize: 14, color: colors.grey9A9A9A,
                         }]}>
                             {"Shop name"}
                         </Text>
                     </View>
                     <Text style={[styles.textStyle, {
-                        fontSize: 14, color: colors.grey
+                        fontSize: 14, color: colors.grey9A9A9A
                     }]}>
                         {"продано 42"}
                     </Text>
@@ -233,7 +234,7 @@ const ProfileProduct = ({ title = 'MMORT儿童鞋子子子子...', subTitle = Ap
                     <Text
                         style={[
                             styles.textStyle,
-                            { fontSize: 16, fontWeight: "500", fontFamily: "SegoeUI" },
+                            { fontSize: 16 },
                         ]}
                     >
                         {title}
@@ -241,7 +242,7 @@ const ProfileProduct = ({ title = 'MMORT儿童鞋子子子子...', subTitle = Ap
                     <Text
                         style={[
                             styles.textStyle,
-                            { color: colors.startOrange, fontFamily: fontFamilty.regular, fontSize: 14 },
+                            { color: colors.lightOrange, fontSize: 14 },
                         ]}
                     >
                         {time}{" "}
@@ -284,7 +285,7 @@ const CommonButton = ({ text = AppString.pay, endColor = colors.endOrange,
                 <Text
                     style={[
                         styles.textStyle,
-                        { color: colors.white, fontFamily: "SegoeUI" },
+                        { color: colors.white },
                     ]}
                 >
                     {text}
@@ -320,7 +321,7 @@ const style = StyleSheet.create(({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    chatInflate: { flex: 0.7, flexDirection: 'row', gap: 10, marginVertical: 10, width: dimensions.width / 1.5 }
+    chatInflate: { flex: 0.7, flexDirection: 'row', gap: 8, marginVertical: 10, width: dimensions.width / 1.5 }
 }))
 
 

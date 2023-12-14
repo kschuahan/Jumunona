@@ -38,7 +38,7 @@ const MyReviewsScreen = ({ navigation }) => {
                 }}
                 showsVerticalScrollIndicator={false}
                 ListFooterComponent={
-                    <FooterView/>
+                    <FooterView />
                 }
             />
 
@@ -48,23 +48,26 @@ const MyReviewsScreen = ({ navigation }) => {
 
 const ReviewBox = ({ }) => {
     return (
-        <View style={[styles.container, { borderRadius: 13, backgroundColor: colors.white, marginHorizontal: 10, marginTop: 10, padding: undefined, paddingHorizontal: 10 }]}>
-            <Text style={[styles.textStyle, { fontFamily: fontFamilty.regular, paddingVertical: 13, fontSize: 14, lineHeight: 17 }]}>{AppString.review_example}</Text>
+        <View style={[styles.container, { borderRadius: 13, backgroundColor: colors.white, marginHorizontal: 10, marginTop: 9, padding: undefined, paddingHorizontal: 10 }]}>
+            <Text style={[styles.textStyle, {
+                paddingVertical: 13, fontSize: 14,
+                lineHeight: 17
+            }]}>{AppString.review_example}</Text>
             <ReviewProduct title="Ожидает оплаты" subTitle="Ожидает оплаты" />
             <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", paddingTop: 13, paddingBottom: 10 }} >
                 <Text
                     style={[
                         styles.textStyle,
-                        { fontSize: 12, fontFamily: fontFamilty.regular, color: "#959595" },
+                        { fontSize: 12, color: "#959595" },
                     ]}
                 >
-                    Light grey; XL
+                    2022-03-11
                 </Text>
 
                 <Text
                     style={[
                         styles.textStyle,
-                        { fontSize: 12, fontFamily: fontFamilty.regular, color: "#959595" },
+                        { fontSize: 12, color: "#979797" },
                     ]}
                 >
                     Просмотров 100
@@ -84,14 +87,14 @@ const ReviewProduct = ({ title = 'Product Name', subTitle = AppString.left, time
             >
                 <Image
                     source={{ uri: imagesUrl.shoes }}
-                    style={{ height: 65, width: 65, borderRadius: 10, margin: 3 }}
+                    style={{ height: 63, width: 63, borderRadius: 10, margin: 3 }}
                 />
                 <View style={{ flex: 1, alignContent: "flex-start", flexDirection: "column" }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignContent: "space-between", paddingHorizontal: 7, paddingTop: 7 }} >
                         <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 14, fontFamily: fontFamilty.regular },
+                                { fontSize: 14 },
                             ]}
                         >
                             {title}
@@ -100,7 +103,7 @@ const ReviewProduct = ({ title = 'Product Name', subTitle = AppString.left, time
                         <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 14, fontFamily: fontFamilty.regular },
+                                { fontSize: 14 },
                             ]}
                         >
                             368с.
@@ -110,7 +113,7 @@ const ReviewProduct = ({ title = 'Product Name', subTitle = AppString.left, time
                         <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 14, fontFamily: fontFamilty.regular, color: "#959595" },
+                                { fontSize: 14, color: "#959595" },
                             ]}
                         >
                             Light grey; XL
@@ -119,7 +122,7 @@ const ReviewProduct = ({ title = 'Product Name', subTitle = AppString.left, time
                         <Text
                             style={[
                                 styles.textStyle,
-                                { fontSize: 14, fontFamily: fontFamilty.regular, color: "#959595" },
+                                { fontSize: 14, fontFamily: fontFamilty.regular, color: "#999999" },
                             ]}
                         >
                             x1
@@ -134,17 +137,18 @@ const ReviewProduct = ({ title = 'Product Name', subTitle = AppString.left, time
 
 const FooterView = ({ }) => {
     return (
-        <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignContent: "center", paddingTop: 13, paddingBottom: 10 }} >
-            <View style = {{backgroundColor: "#999999", width: 20, height: 2, alignSelf: "center"}} />
+        <View style={{ flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center",
+         paddingTop: 25, paddingBottom: 35 }} >
+            <View style={{ backgroundColor: "#999999", width: 20, height: 1.5, alignSelf: "center" }} />
             <Text
                 style={[
                     styles.textStyle,
-                    { fontSize: 12, fontFamily: "SegoeUIBold", color: "#959595", alignSelf: "center", paddingHorizontal: 4 },
+                    { fontSize: 12, fontWeight:'500',  color: "#999999", alignSelf: "center", paddingHorizontal: 4 },
                 ]}
             >
                 {AppString.reviews_for_last_180_days}
             </Text>
-            <View style = {{backgroundColor: "#999999", width: 20, height: 2, alignSelf: "center"}} />
+            <View style={{ backgroundColor: "#999999", width: 20, height: 1.5, alignSelf: "center" }} />
         </View>
     )
 }

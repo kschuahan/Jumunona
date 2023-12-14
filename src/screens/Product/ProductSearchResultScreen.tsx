@@ -6,6 +6,7 @@ import { styles } from "../../utils/AppStyles";
 import { dimensions } from "../../utils/sizes";
 import MasonryList from "@react-native-seoul/masonry-list";
 import { appIcons, imagesUrl } from "../../utils/AppIcons";
+import { RouteNames } from "../../utils/RoutesNames";
 const shoeImageURL = require("../../../assets/shoe.jpg");
 
 const data = [
@@ -80,7 +81,7 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginEnd: 110 }}>
                     <TouchableOpacity onPress={() => {
                         navigation.goBack()
-                    }} style={{ alignItems: "center", marginStart: 15.85 }}>
+                    }} style={{ alignItems: "center" }}>
                         <Ionicons name="chevron-back-outline" size={24} />
                     </TouchableOpacity>
 
@@ -118,7 +119,8 @@ export const ProductSearchResultScreen = ({ navigation }) => {
         <View style={style.container}>
             <View style={{
                 flexDirection: "row", backgroundColor: colors.white, alignItems: "center",
-                paddingStart: 20, paddingEnd: 21, paddingTop: 13.5, borderRadius: 20
+                paddingStart: 20, paddingEnd: 21, paddingTop: 6,
+                borderTopStartRadius: 13, borderTopEndRadius: 13
             }}>
                 <FlatList
                     style={style.primaryCategoriesContent}
@@ -136,12 +138,11 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                                 >
                                     <Text
                                         style={{
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             color:
                                                 selectedSortBy === item.id
                                                     ? "#ff7600"
-                                                    : "black",
-                                            fontFamily: "SegoeUI",
+                                                    : "#666666",
                                         }}
                                     >
                                         {item.desc}
@@ -151,7 +152,7 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                         );
                     }}
                 />
-                <Ionicons name="funnel-outline" size={15} />
+                <Ionicons name="funnel-outline" size={15} color={colors.black666666} />
             </View>
 
             <View style={{
@@ -180,10 +181,8 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                             >
                                 <Text
                                     style={{
-                                        fontSize: 16,
-                                        color: "black",
-                                        fontFamily: "SegoeUI",
-                                        marginTop: -6
+                                        fontSize: 13,
+                                        color: colors.black666666,
                                     }}
                                 >
                                     {item.desc}
@@ -203,19 +202,22 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                     }}
                     showsVerticalScrollIndicator={false}
                     numColumns={2}
+                    style={{ marginHorizontal: 4 }}
                     renderItem={({ item, index }) => {
                         return (
-                            <Pressable
+                            <TouchableOpacity
                                 style={{
                                     borderRadius: 12,
                                     backgroundColor: "#ffffff",
-                                    marginLeft: (index % 2 == 0 ? 4 : 8),
-                                    marginRight: (index % 2 != 0 ? 4 : 8),
+                                    marginHorizontal: 4.5,
                                     marginBottom: 20,
                                     width: "auto",
 
                                     borderColor: "#f1f1f1",
                                     marginTop: 8,
+                                }}
+                                onPress={() => {
+                                    navigation.navigate(RouteNames.product_detail)
                                 }}
                             >
                                 <Image
@@ -224,7 +226,7 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                                         height: 265,
                                         paddingHorizontal: 1,
                                         width: "auto",
-                                        borderRadius: 12,
+                                        borderRadius: 13,
                                         backgroundColor: "#f1f1f1",
 
                                         marginBottom: 8,
@@ -245,21 +247,21 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                                     <Text
                                         style={{
                                             marginLeft: 4,
-                                            fontSize: 15,
-                                            fontFamily: "SegoeUI",
+                                            fontSize: 13,
+                                            fontWeight: '500'
                                         }}
                                         numberOfLines={1}
                                     >
                                         Футболка
                                     </Text>
                                 </View>
-                                <View style={{ flexDirection: "row", paddingLeft: 8 }}>
+                                <View style={{ flexDirection: "row", paddingLeft: 8, marginTop: 4 }}>
                                     <View style={{ flexDirection: "row", width: "30%" }}>
                                         <Text
                                             style={{
                                                 fontSize: 17,
                                                 color: "#ff7600",
-                                                fontFamily: "SegoeUI",
+                                                fontWeight: '500'
                                             }}
                                         >
                                             999
@@ -269,7 +271,8 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                                                 paddingTop: 6,
                                                 color: "#ff7600",
                                                 fontSize: 12,
-                                                fontFamily: "SegoeUI",
+                                                fontWeight: '500'
+
                                             }}
                                         >
                                             c.
@@ -281,13 +284,12 @@ export const ProductSearchResultScreen = ({ navigation }) => {
                                             width: "70%",
                                             color: "#AAAAAA",
                                             paddingTop: 3,
-                                            fontFamily: "SegoeUI",
                                         }}
                                     >
                                         {item.desc}
                                     </Text>
                                 </View>
-                            </Pressable>
+                            </TouchableOpacity>
                         );
                     }}
                 />
@@ -302,7 +304,7 @@ const SearchView = () => {
 
     return <View style={{
         flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start',
-        backgroundColor: colors.white, borderRadius: 19, width: '84%', marginStart: 19.85
+        backgroundColor: colors.white, borderRadius: 19, width: '93%', marginStart: 10
     }}>
         <Ionicons name="search" size={17} style={{ marginStart: 15 }} color={colors.grey} />
         <TextInput
