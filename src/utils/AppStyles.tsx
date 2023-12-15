@@ -1,6 +1,7 @@
 import { Platform, StyleSheet } from 'react-native'
 import { colors } from './AppColors';
 import { fontFamilty } from './Fonts';
+import { dimensions } from './sizes';
 
 
 export const styles = StyleSheet.create({
@@ -58,5 +59,30 @@ export const styles = StyleSheet.create({
         marginStart: 11,
         fontFamily: "SegoeUI",
         fontSize: 15,
+    },
+    primaryCategories: {
+        flexDirection: "row",
+        width: dimensions.width,
+        height: 35,
+        gap: 6,
+        backgroundColor: colors.white,
+        borderRadius: 13,
+    },
+    primaryCategoriesContent: {
+        paddingTop: 5,
+        paddingLeft: 16,
+        flex: 0.9,
+        backgroundColor: "#ffffff",
+        borderTopLeftRadius: 13,
+    },
+    downArrowButton: {
+        flexDirection: "row",
+        height: "100%",
+        flex: 0.1,
+        borderTopRightRadius: 13,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#ffffff",
+
     }
 });

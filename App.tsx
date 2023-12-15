@@ -14,7 +14,7 @@ import * as Font from "expo-font";
 import { RouteNames } from "./src/utils/RoutesNames";
 import { SettingScreen } from "./src/screens/ProfileSection/Settings/Setting";
 import { fontFamilty } from "./src/utils/Fonts";
-import { ViewMobileNumberScreen } from "./src/screens/ViewMobileNumber";
+import { ViewMobileNumberScreen } from "./src/screens/ProfileSection/ViewMobileNumber";
 import ProfileDetailScreen from "./src/screens/ProfileSection/ProfileDetailScreen";
 import DeleteAccount from "./src/screens/ProfileSection/DeleteAccountScreen";
 import ConfirmDeleteAccount from "./src/screens/ProfileSection/ConfirmDeleteAccount";

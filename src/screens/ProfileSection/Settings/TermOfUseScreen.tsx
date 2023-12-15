@@ -30,7 +30,7 @@ const TermOfUseScreen = ({ navigation }) => {
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container} >
+            <View style={[styles.container,{backgroundColor:colors.lightBlue}]} >
                 <Text style={[styles.textStyle, { fontFamily: fontFamilty.bold, color: "#2649AA", fontSize: 20, paddingBottom: 16 }]}>
                     Публичная оферта об оказании услуг по продаже товаров путём мобильной приложении Jumunona
                 </Text>

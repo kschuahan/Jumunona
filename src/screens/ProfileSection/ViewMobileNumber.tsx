@@ -1,18 +1,18 @@
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { styles } from '../utils/AppStyles'
-import { imagesUrl } from '../utils/AppIcons'
+import { styles } from '../../utils/AppStyles'
+import { imagesUrl } from '../../utils/AppIcons'
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { colors } from '../utils/AppColors';
-import { AppString } from '../utils/AppStrings';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
 import { Card } from 'react-native-paper'
 import { LinearGradient } from "expo-linear-gradient";
-import { dimensions } from '../utils/sizes';
+import { dimensions } from '../../utils/sizes';
 import { useCallback, useEffect, useState } from "react";
 import { HeaderBackButton } from '@react-navigation/elements';
-import { RouteNames } from '../utils/RoutesNames';
+import { RouteNames } from '../../utils/RoutesNames';
 import { StatusBar } from 'expo-status-bar';
-import { fontFamilty } from '../utils/Fonts';
+import { fontFamilty } from '../../utils/Fonts';
 
 
 
@@ -46,7 +46,7 @@ export const ViewMobileNumberScreen = ({ navigation, route }) => {
                 <Text
                     style={[
                         styles.textStyle,
-                        { fontSize: 17, fontFamily: fontFamilty.regular, alignSelf: 'center', marginTop: 68 },
+                        { fontSize: 17,  alignSelf: 'center', marginTop: 68 },
                     ]}
                 >
                     {isMobile ? AppString.current_phone_number : AppString.current_mail}
@@ -55,7 +55,7 @@ export const ViewMobileNumberScreen = ({ navigation, route }) => {
                 <Text
                     style={[
                         styles.textStyle,
-                        { fontSize: 24, fontFamily: fontFamilty.bold, alignSelf: 'center', marginTop: 21 },
+                        { fontSize: 24, fontWeight: 'bold', alignSelf: 'center', marginTop: 21 },
                     ]}
                 >
                     {isMobile ? "150******50" : "Valijon@gmail.com"}
@@ -66,7 +66,7 @@ export const ViewMobileNumberScreen = ({ navigation, route }) => {
                     onPress={() => {
                         isMobile ? navigation.navigate(RouteNames.changePhone) : navigation.navigate(RouteNames.changeEmail)
                     }}
-                    style={[styles.loginButton, { marginTop: 63 }]}
+                    style={[styles.loginButton, { marginTop: 59.05 }]}
                 >
                     <LinearGradient
                         start={{ x: 0, y: 0 }}

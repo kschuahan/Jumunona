@@ -143,7 +143,6 @@ const CategoryScreen = ({ navigation }) => {
                         activeItemPrimaryCategory === item.id
                           ? "#ff7600"
                           : "black",
-                      fontFamily: fontFamilty.regular,
                     }}
                   >
                     {item.desc}
@@ -194,14 +193,17 @@ const CategoryScreen = ({ navigation }) => {
 
                     }} style={{ alignItems: "center" }}>
                       <Ionicons name="ellipsis-horizontal-outline" size={50} />
-                      <Text style={{ fontSize: 13, fontFamily: "SegoeUI" }}>
+                      <Text style={{ fontSize: 13 }}>
                         More...
                       </Text>
                     </TouchableOpacity>
                   ) : (
-                    <TouchableOpacity style={{ alignItems: "center" }}>
+                    <TouchableOpacity onPress={() => {
+                      navigation.navigate(RouteNames.product_search_screen)
+
+                    }} style={{ alignItems: "center" }}>
                       <Ionicons name="shirt-outline" size={50} />
-                      <Text style={{ fontSize: 13, fontFamily: "SegoeUI", }}>
+                      <Text style={{ fontSize: 13}}>
                         {item.desc}
                       </Text>
                     </TouchableOpacity>

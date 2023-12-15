@@ -40,5 +40,6 @@ export const colors = {
     grey9A9A9A: '#9A9A9A',
     grey979797: '#979797',
     grey6C6C6C: '#6C6C6C',
-    balck0C0C0C: '#0C0C0C'
+    balck0C0C0C: '#0C0C0C',
+    lightBlue: '#F6F9FE'
 }

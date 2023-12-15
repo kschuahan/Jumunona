@@ -157,14 +157,17 @@ const MainCategoriesItem = ({ navigation }) => (
 
               }} style={{ alignItems: "center", }}>
                 <Ionicons name="ellipsis-horizontal-outline" size={50} />
-                <Text style={{ fontSize: 13, fontFamily: "SegoeUI", color: colors.black, paddingBottom: 10 }}>
+                <Text style={{ fontSize: 13, color: colors.black, paddingBottom: 10 }}>
                   More...
                 </Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={{ alignItems: "center" }}>
+              <TouchableOpacity onPress={() => {
+                navigation.navigate(RouteNames.product_search_screen)
+
+              }} style={{ alignItems: "center" }}>
                 <Ionicons name="image-outline" size={50} />
-                <Text style={{ fontSize: 13, fontFamily: "SegoeUI", color: colors.black, paddingBottom: 10 }}>
+                <Text style={{ fontSize: 13, color: colors.black, paddingBottom: 10 }}>
                   {item.desc}
                 </Text>
               </TouchableOpacity>
@@ -181,7 +184,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     <View style={styles.container}>
 
       <HeaderItem onSearchClick={() => {
-        navigation.navigate(RouteNames.product_search_screen)
+        navigation.navigate(RouteNames.product_search_screen, { isRoute: true })
       }} />
       <ScrollView
         showsVerticalScrollIndicator={false}

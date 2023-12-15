@@ -38,8 +38,8 @@ export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel 
                     />
                     <TouchableOpacity style={style.sendOTPButton}>
                         <LinearGradient
-                            colors={["#ff7600", "#ffc500"]}
-                            start={{ x: 0.4, y: 0 }}
+                            colors={["#FE8C00", "#FC4A1A"]}
+                            start={{ x: 0.2, y: 0 }}
                             end={{ x: 1, y: 1 }}
                             style={[
                                 style.leftSideGradient,
@@ -54,8 +54,7 @@ export const VerifyDeleteAccountDialog = ({ isShow = false, onConfirm, onCancel 
                                 style={{
                                     color: "#ffffff",
                                     paddingLeft: 12,
-                                    fontFamily: "SegoeUI",
-                                    fontSize: 14,
+                                    fontSize: 15,
                                 }}
                             >
                                 {AppString.get_code}

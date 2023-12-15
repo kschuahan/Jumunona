@@ -7,7 +7,24 @@ import { dimensions } from "../../utils/sizes";
 import MasonryList from "@react-native-seoul/masonry-list";
 import { appIcons, imagesUrl } from "../../utils/AppIcons";
 import { RouteNames } from "../../utils/RoutesNames";
+import { LinearGradient } from "expo-linear-gradient";
 const shoeImageURL = require("../../../assets/shoe.jpg");
+
+
+const categoryData = [
+    { id: 1, desc: "Jackets" },
+    { id: 2, desc: "Tops" },
+    { id: 3, desc: "Child" },
+    { id: 4, desc: "Baby" },
+    { id: 5, desc: "Home" },
+    { id: 6, desc: "Electro" },
+    { id: 7, desc: "Auto" },
+    { id: 8, desc: "Home" },
+    { id: 9, desc: "Beauty" },
+    { id: 10, desc: "Suits" },
+    { id: 11, desc: "Accesso" },
+    { id: 12, desc: "Make-Up" },
+];
 
 const data = [
     {
@@ -61,7 +78,7 @@ const data = [
         desc: "600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
     },
 ];
-export const ProductSearchResultScreen = ({ navigation }) => {
+export const ProductSearchResultScreen = ({ navigation, route }) => {
 
     useEffect(() => {
 
@@ -117,10 +134,14 @@ export const ProductSearchResultScreen = ({ navigation }) => {
 
     return (
         <View style={style.container}>
+
+            {route.params && route.params.isRoute ? null : <CategoriesList navigation={navigation} />}
+
             <View style={{
                 flexDirection: "row", backgroundColor: colors.white, alignItems: "center",
                 paddingStart: 20, paddingEnd: 21, paddingTop: 6,
-                borderTopStartRadius: 13, borderTopEndRadius: 13
+                borderTopStartRadius: 13, borderTopEndRadius: 13,
+                marginTop: route.params && route.params.isRoute ? undefined : 16
             }}>
                 <FlatList
                     style={style.primaryCategoriesContent}
@@ -296,6 +317,88 @@ export const ProductSearchResultScreen = ({ navigation }) => {
             </View>
         </View>
     )
+}
+
+const CategoriesList = ({ navigation }) => {
+    const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] = useState(1);
+
+    return <View style={{ height: 137, backgroundColor: colors.white, borderRadius: 13 }}>
+        <View style={styles.primaryCategories}>
+            <FlatList
+                style={styles.primaryCategoriesContent}
+                data={categoryData}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+
+                keyExtractor={(item) => {
+                    return item.id.toString();
+                }}
+                renderItem={({ item }) => {
+                    return (
+                        <View style={{ flex: 1, marginRight: 22 }}>
+                            <TouchableOpacity
+                                onPress={() => setActiveItemPrimaryCategory(item.id)}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 16,
+                                        color:
+                                            activeItemPrimaryCategory === item.id
+                                                ? "#ff7600"
+                                                : "black",
+
+                                    }}
+                                >
+                                    {item.desc}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    );
+                }}
+            />
+            <View style={styles.downArrowButton}>
+                <LinearGradient
+                    colors={[colors.whiteF2F2F2, colors.whiteF6F6F6]}
+                    start={{ x: 0.4, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={{ height: 20, width: 4, backgroundColor: '#7E7D7D29', borderRadius: 100 }}
+                >
+                </LinearGradient>
+                <TouchableOpacity onPress={() => {
+                    navigation.push(RouteNames.categories)
+                }}>
+                    <Ionicons name="chevron-down-outline" size={24} />
+                </TouchableOpacity>
+            </View>
+
+
+
+        </View>
+
+        <FlatList
+            data={["3rd level", "Thicken", "Zipper", "Zipper", "Zipper"]}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{ marginStart: 8 }}
+            keyExtractor={(item) => {
+                return item.toString();
+            }}
+            renderItem={({ item }) =>
+                <TouchableOpacity style={{ marginEnd: 8, gap: 2 }}>
+                    <Image source={{ uri: imagesUrl.shoes }} style={{ height: 70, width: 70, borderRadius: 18 }} />
+                    <Text
+                        style={{
+                            fontSize: 15,
+                            color: colors.black,
+                            alignSelf: 'center',
+                        }}
+                    >
+                        {item}
+                    </Text>
+                </TouchableOpacity>
+
+            } />
+    </View>
 }
 
 

@@ -82,7 +82,7 @@ const MyOrder = () => {
   return <View style={{ backgroundColor: colors.white, marginTop: 10.5, padding: 8, borderRadius: 13, }}>
     <View>
       <View style={[styles.profile, { marginTop: 5, alignItems: 'center', marginStart: 12 }]}>
-        <Text style={[styles.textStyle, { fontSize: 15, fontWeight: '600' }]}>{AppString.my_order}</Text>
+        <Text style={[styles.textStyle, { fontSize: 15, fontWeight: '500' }]}>{AppString.my_order}</Text>
         <Ionicons name={'chevron-forward-outline'} color={colors.black} size={18} />
 
       </View>

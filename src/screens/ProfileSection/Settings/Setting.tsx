@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import React from 'react'
 import { styles } from '../../../utils/AppStyles'
 import { imagesUrl } from '../../../utils/AppIcons'
@@ -79,6 +79,23 @@ export const SettingScreen = ({ navigation }) => {
 
         <View style={{ backgroundColor: colors.white, paddingTop: 15.5, paddingBottom: 11.5, marginTop: 9, borderRadius: 13 }}>
           <TouchableOpacity onPress={() => {
+
+            Alert.alert(
+              'Logout',
+              'Are you sure you want to logout?',
+              [
+                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                {
+                  text: 'OK', onPress: () => {
+                    navigation.reset({
+                      index: 0,
+                      routes: [{ name: RouteNames.login }]
+                    })
+                  }
+                }
+              ],
+              { cancelable: false }
+            )
           }} style={[styles.profile, { marginTop: undefined, alignItems: 'center', justifyContent: 'center', padding: 4 }]}>
             <Text style={[styles.textStyle, { fontSize: 16, fontWeight: '500', fontFamily: undefined }]}>{AppString.go_out}</Text>
           </TouchableOpacity>
@@ -148,8 +165,8 @@ const Profile = ({ onClick }) => {
 
           </View>
         </TouchableOpacity>
-        <View style={{ height: 1, backgroundColor: colors.darkWhite, marginTop: 4.92, marginBottom: 15.08 }} />
-        <View style={{ paddingHorizontal: 13, paddingBottom: 12 }}>
+        <View style={{ height: 1, backgroundColor: colors.darkWhite, marginTop: 4.92 }} />
+        <View style={{ paddingHorizontal: 13, paddingBottom: 6 }}>
           <TextWithIcon
             title={AppString.my_addresses}
             padding={10}

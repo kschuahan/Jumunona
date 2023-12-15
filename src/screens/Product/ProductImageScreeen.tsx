@@ -41,7 +41,7 @@ const ProductImageScreeen = ({ isShow = false, onClose, pos = 1 }) => {
     return (
 
         <Modal visible={isShow} transparent={true} animationType="slide" onRequestClose={onClose}>
-            <ImageViewer imageUrls={images} index={pos} />
+            <ImageViewer  imageUrls={images} index={pos} />
             <TouchableOpacity style={{
                 position: 'absolute', top: 30, start: 16,
                 backgroundColor: colors.black333333, borderRadius: 20, height: 29, width: 29, 

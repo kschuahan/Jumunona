@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import RootStackParamList from "../utils/navigation";
+import { colors } from "../utils/AppColors";
 
 const logo = require("../../assets/icon-512x512.png");
 
@@ -24,7 +25,7 @@ interface ForgotPasswordScreenProps {
   navigation: ForgotPasswordScreenNavigationProp;
 }
 
-const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}) => {
+const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation }) => {
   const [mobile, setMobile] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +46,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
             fontFamily: "SegoeUIBold",
             color: "#FF7600",
             paddingTop: 8,
-            textAlign:'center'
+            textAlign: 'center'
           }}
         >
           Jumunona
@@ -58,7 +59,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
               flexDirection: "row",
               width: "100%",
               paddingBottom: 12,
-              paddingTop: 12,
+              paddingTop: 13,
             }}
           >
             <LinearGradient
@@ -71,7 +72,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
             </LinearGradient>
 
             <TextInput
-              placeholder="Enter Mobile No."
+              placeholder="Введите ваш номер телефона"
               style={styles.mobileTextInput}
               onChangeText={(text) => {
                 setMobile(text);
@@ -81,7 +82,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
           </View>
 
           <View
-            style={{ flexDirection: "row", width: "100%", paddingBottom: 12 }}
+            style={{ flexDirection: "row", width: "100%", paddingBottom: 13 }}
           >
             <LinearGradient
               colors={["#ff7600", "#ffc500"]}
@@ -89,12 +90,12 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
               end={{ x: 1, y: 1 }}
               style={styles.leftSideGradient}
             >
-              <Text style={styles.otpText}>OTP</Text>
+              <Text style={styles.otpText}>Код</Text>
             </LinearGradient>
 
             <View style={{ flex: 1, flexDirection: "row" }}>
               <TextInput
-                placeholder="Enter SMS Code..."
+                placeholder="Введите SMS-код"
                 style={styles.codeTextInput}
                 onChangeText={(text) => {
                   setConfirmationCode(text);
@@ -103,8 +104,8 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
               />
               <TouchableOpacity style={styles.sendOTPButton}>
                 <LinearGradient
-                  colors={["#ff7600", "#ffc500"]}
-                  start={{ x: 0.4, y: 0 }}
+                  colors={["#ffc500", "#ff7600"]}
+                  start={{ x: 0.01, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={[
                     styles.leftSideGradient,
@@ -112,6 +113,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
                       justifyContent: "center",
                       alignItems: "center",
                       paddingRight: 10,
+                      width:undefined
                     },
                   ]}
                 >
@@ -123,7 +125,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
                       fontSize: 14,
                     }}
                   >
-                    Send
+                    Получить код
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
@@ -131,7 +133,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
           </View>
 
           <View
-            style={{ flexDirection: "row", width: "100%", paddingBottom: 12 }}
+            style={{ flexDirection: "row", width: "100%", paddingBottom: 13 }}
           >
             <LinearGradient
               colors={["#ff7600", "#ffc500"]}
@@ -139,11 +141,11 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
               end={{ x: 1, y: 1 }}
               style={styles.leftSideGradient}
             >
-              <Text style={styles.passwordText}>Password</Text>
+              <Text style={styles.passwordText}>Пароль</Text>
             </LinearGradient>
 
             <TextInput
-              placeholder="Create Password"
+              placeholder="Придумайте новый пароль"
               style={styles.passwordTextInput}
               onChangeText={(text) => {
                 setPassword(text);
@@ -153,7 +155,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
           </View>
 
           <View
-            style={{ flexDirection: "row", width: "100%", paddingBottom: 12 }}
+            style={{ flexDirection: "row", width: "100%", paddingBottom: 13 }}
           >
             <LinearGradient
               colors={["#ff7600", "#ffc500"]}
@@ -161,11 +163,11 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
               end={{ x: 1, y: 1 }}
               style={styles.leftSideGradient}
             >
-              <Text style={styles.passwordText}>Password</Text>
+              <Text style={styles.passwordText}>Пароль</Text>
             </LinearGradient>
 
             <TextInput
-              placeholder="Repeat Password"
+              placeholder="Введите пароль ещё раз"
               style={styles.passwordTextInput}
               onChangeText={(text) => {
                 setRePassword(text);
@@ -177,14 +179,14 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
       </View>
       <View style={styles.termsText}></View>
       <View style={styles.buttonsView}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => { }}>
           <LinearGradient
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             colors={["#FE8C00", "#ff7600"]}
-            style={[styles.loginButtonGradient, { marginBottom: 12 }]}
+            style={[styles.loginButtonGradient, { marginBottom: 13 }]}
           >
-            <Text style={styles.signuploginText}>Sign Up</Text>
+            <Text style={styles.signuploginText}>Подтвердить</Text>
           </LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity
@@ -198,7 +200,7 @@ const ForgotPasswordScreen : React.FC<ForgotPasswordScreenProps> = ({navigation}
             colors={["#FDCA30", "#FDCA30"]}
             style={styles.loginButtonGradient}
           >
-            <Text style={styles.signuploginText}>Log In</Text>
+            <Text style={styles.signuploginText}>Войти</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -211,7 +213,7 @@ export default ForgotPasswordScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignSelf:'center'
+    alignSelf: 'center'
   },
   top: {
     alignItems: "center",
@@ -221,7 +223,7 @@ const styles = StyleSheet.create({
   },
   registerText: {
     fontSize: 21,
-    fontFamily: "SegoeUIBold",
+    fontWeight: '400',
     width: 300,
     alignItems: "center",
     justifyContent: "center",
@@ -231,8 +233,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     alignItems: "center",
     justifyContent: "space-evenly",
-    backgroundColor: "#ffffff",
-    borderRadius: 20,
+    backgroundColor: colors.white,
+    borderRadius: 17,
     height: 201,
     width: 359,
   },
@@ -286,11 +288,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 34,
     borderRadius: 24,
-    marginLeft: -85,
+    marginLeft: -107,
     justifyContent: "center",
     alignItems: "center",
     paddingRight: 10,
-    
+
   },
   passwordText: {
     color: "#fff",

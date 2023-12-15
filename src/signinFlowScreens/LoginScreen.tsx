@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import RootStackParamList from "../utils/navigation";
+import { colors } from "../utils/AppColors";
 const logo = require("../../assets/icon-512x512.png");
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
@@ -29,9 +30,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         <Text
           style={{
             fontSize: 21,
-            fontWeight: "bold",
+            fontWeight: "400",
             paddingBottom: 24,
-            fontFamily: "SegoeUIBold",
           }}
         >
           Вход
@@ -54,7 +54,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       <View style={styles.middle}>
         <View style={{ marginHorizontal: 12 }}>
           <View
-            style={{ flexDirection: "row", width: "100%", marginBottom: 18 }}
+            style={{ flexDirection: "row", width: "100%", marginBottom: 13 }}
           >
             <LinearGradient
               colors={["#ff7600", "#ffc500"]}
@@ -73,13 +73,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             </LinearGradient>
 
             <TextInput
-              placeholder="Enter Mobile No."
+              placeholder="Введите ваш номер телефона"
               style={styles.mobileTextInput}
             ></TextInput>
           </View>
           <View>
             <TextInput
-              placeholder="Please Enter Password"
+              placeholder="Введите свой пароль"
               style={styles.passwordTextInput}
             ></TextInput>
           </View>
@@ -98,9 +98,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           style={styles.buttonGradient}
         >
           <Text
-            style={{ fontSize: 18, color: "#fff", fontFamily: "SegoeUIBold" }}
+            style={{ fontSize: 16, color: "#fff", fontWeight: "bold" }}
           >
-            Log in
+            Войти
           </Text>
         </LinearGradient>
       </TouchableOpacity>
@@ -109,17 +109,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           onPress={() => {
             navigation.replace("ForgotPassword");
           }}
-          style={{ fontWeight: "600", fontFamily: "SegoeUI" }}
+          style={{ fontWeight: "600", fontFamily: "SegoeUI", fontSize: 12 }}
         >
-          Forgot Password?
+          Забыли пароль?
         </Text>
         <Text
           onPress={() => {
             navigation.replace("Signup");
           }}
-          style={{ fontWeight: "600", fontFamily: "SegoeUI" }}
+          style={{ fontWeight: "600", fontFamily: "SegoeUI", fontSize: 12 }}
         >
-          Sign Up Now
+          Зарегистрироваться
         </Text>
       </View>
     </ScrollView>
@@ -131,7 +131,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignSelf: "center",
+    backgroundColor: colors.whiteF2F2F2
   },
   top: {
     alignItems: "center",
@@ -142,14 +142,13 @@ const styles = StyleSheet.create({
   },
   middle: {
     paddingHorizontal: 10,
-    paddingTop: 11,
+    paddingTop: 13,
+    marginTop: 20,
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "hsl(0, 0%, 98%)",
-    borderRadius: 20,
-    width: 359,
-    height: 107,
-    alignSelf: "center",
+    backgroundColor: colors.white,
+    borderRadius: 17,
+    marginHorizontal: 8
   },
   bottom: {
     flexDirection: "row",
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   mobileTextInput: {
-    width: "82%",
+    width: '82%',
     backgroundColor: "#f5f5f5",
     height: 34,
     borderRadius: 24,
@@ -180,7 +179,7 @@ const styles = StyleSheet.create({
     height: 34,
     borderRadius: 24,
     paddingLeft: 16,
-    marginBottom: 24,
+    marginBottom: 13,
     fontFamily: "SegoeUI",
     fontSize: 14,
   },
@@ -191,8 +190,7 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     paddingLeft: 20,
     paddingRight: 20,
-    justifyContent: "space-between",
-    fontFamily: "SegoeUIBold",
+    fontWeight: 'bold'
   },
   buttonGradient: {
     elevation: 4,

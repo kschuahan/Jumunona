@@ -43,7 +43,7 @@ export const ConditionsScreen = ({ navigation }) => {
             <View style={styles.container}>
 
 
-                <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, paddingTop: 5, paddingBottom: 5, borderRadius: 13 }}>
+                <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, borderRadius: 13 }}>
                     <TextWithIcon title={AppString.trem_of_use} onClick={() => {
                         navigation.navigate(RouteNames.term_of_use)
                     }} />

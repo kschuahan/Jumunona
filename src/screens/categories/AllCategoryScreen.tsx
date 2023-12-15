@@ -54,7 +54,7 @@ export const AllCategoriesScreen = ({ navigation }) => {
                     }} style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 17.25 }}>
                         <Text style={[styles.textStyle, {
                             fontSize: 16, color: pos == index ? colors.lightOrange : colors.black444444,
-                            
+
                         }]}>
                             {item}
                         </Text>
@@ -74,6 +74,7 @@ export const AllCategoriesScreen = ({ navigation }) => {
                         borderRadius: 11
                     }}>
                         <TextWithIcon title={item.title} onClick={() => {
+                            navigation.push(RouteNames.product_search_screen)
 
                         }} />
                         <FlatList
@@ -87,7 +88,12 @@ export const AllCategoriesScreen = ({ navigation }) => {
                                 <TouchableOpacity style={{
                                     flex: 1 / 3, justifyContent: 'center',
                                     alignItems: 'center', marginTop: 11
-                                }}>
+                                }}
+                                    onPress={() => {
+                                        navigation.push(RouteNames.product_search_screen, { isRoute: true })
+                                    }}
+
+                                >
 
                                     <Image
                                         source={{ uri: imagesUrl.jacket }}
