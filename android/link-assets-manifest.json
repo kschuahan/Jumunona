@@ -1,0 +1,217 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Segoe UI Bold Italic.ttf",
+      "sha1": "3d4d4e5829dc013f6d4c93e03c439c5afa3b1853"
+    },
+    {
+      "path": "assets/fonts/Segoe UI Bold.ttf",
+      "sha1": "b2b26ea5a35f7c2f107d358f584985aa14218c4d"
+    },
+    {
+      "path": "assets/fonts/Segoe UI Italic.ttf",
+      "sha1": "5fc7be6462d15845217ffa4d609fd904e4c36fea"
+    },
+    {
+      "path": "assets/fonts/Segoe UI.ttf",
+      "sha1": "995e37cfba0e3df9a716891a4cf9a05b38b118f9"
+    },
+    {
+      "path": "assets/fonts/SegoeUI.ttf",
+      "sha1": "995e37cfba0e3df9a716891a4cf9a05b38b118f9"
+    },
+    {
+      "path": "assets/fonts/SegoeUIBold.ttf",
+      "sha1": "b2b26ea5a35f7c2f107d358f584985aa14218c4d"
+    },
+    {
+      "path": "assets/Icons/addCircleOutline.svg",
+      "sha1": "b8d621901ee978c418432aeb5bd86b768774b963"
+    },
+    {
+      "path": "assets/Icons/addOutline.svg",
+      "sha1": "db2a7d78e0a6e195a825e792c75ca87c80cd1e53"
+    },
+    {
+      "path": "assets/Icons/archiveOutline.svg",
+      "sha1": "84bce1ad4b6ea256d95269dab4a0cb0be0c57b9a"
+    },
+    {
+      "path": "assets/Icons/arrowRedoOutline.svg",
+      "sha1": "3855f198071682bec9f4cf5ae405d949db88b00f"
+    },
+    {
+      "path": "assets/Icons/arrowUndoOutline.svg",
+      "sha1": "55f1c9b2e0390385e3fb89d7cbbdd3577aef8d44"
+    },
+    {
+      "path": "assets/Icons/caretDown.svg",
+      "sha1": "606951ec69c379d43c43943818bcebfbd87bae2c"
+    },
+    {
+      "path": "assets/Icons/cart-filled.svg",
+      "sha1": "b79e96fa0f0b70d7d061d9e4d419a9e737258047"
+    },
+    {
+      "path": "assets/Icons/cart.svg",
+      "sha1": "0e32c24c8ddbee815518b2325ef2e105e5823e2a"
+    },
+    {
+      "path": "assets/Icons/cartOutlineIcon.svg",
+      "sha1": "d0898270db137e83adda0599e752a734237a680d"
+    },
+    {
+      "path": "assets/Icons/category-focused.svg",
+      "sha1": "79784c24f091a07f93e151f660f34e151a1adbc2"
+    },
+    {
+      "path": "assets/Icons/category.svg",
+      "sha1": "7e1f1b3197579b4c8445a24bd6d2b0dba480be9a"
+    },
+    {
+      "path": "assets/Icons/chatbubbleEllipsisIcon.svg",
+      "sha1": "e9c3a262cf57fe49d708c8142e69ea1b177b75a3"
+    },
+    {
+      "path": "assets/Icons/checkMarkCircle.svg",
+      "sha1": "ae5b96eabf95d1223fd7064136fbb7c6c3973856"
+    },
+    {
+      "path": "assets/Icons/checkmarkOutline.svg",
+      "sha1": "0a966e64206de58cdf07cb695ed74f90c1ad6d79"
+    },
+    {
+      "path": "assets/Icons/chevronBackOutline.svg",
+      "sha1": "8e0fa62e8c024832f492896a06a9cec71b8baf05"
+    },
+    {
+      "path": "assets/Icons/chevronDownOutlline.svg",
+      "sha1": "5abe9093ef77e70cd9514f9d04d87a03733dbbdf"
+    },
+    {
+      "path": "assets/Icons/chevronForwardOutline.svg",
+      "sha1": "77c4cdd66e50e6b3ca83e8688f427e046a7f75ff"
+    },
+    {
+      "path": "assets/Icons/closeCircleOutline.svg",
+      "sha1": "5287e9ea16c9e9b56a984072699e9ccd05d0f1ae"
+    },
+    {
+      "path": "assets/Icons/closeIcon.svg",
+      "sha1": "6da0fa4e12fe02cf24eb51887cdefeca510f750d"
+    },
+    {
+      "path": "assets/Icons/createOutline.svg",
+      "sha1": "d586555e37db77cc5489c858e3b7c75e70bb8cee"
+    },
+    {
+      "path": "assets/Icons/editIcon.svg",
+      "sha1": "057fcb4de4df73ae1bbe3f67e356fe00c6ea5438"
+    },
+    {
+      "path": "assets/Icons/ellipsis-horizontal.svg",
+      "sha1": "469cc62907886562e89a8607e02d25c4302a33d0"
+    },
+    {
+      "path": "assets/Icons/ellipsisOutlineNormal.svg",
+      "sha1": "beec8aa0b8b67086848c0b61890cbbb86f6332e6"
+    },
+    {
+      "path": "assets/Icons/funnelOutlineGrey.svg",
+      "sha1": "9afd7389aeb207def14c676579063b4171985698"
+    },
+    {
+      "path": "assets/Icons/happyOutline.svg",
+      "sha1": "0ffcc6cac3ae96b5ad06fcacabba0b4d33124963"
+    },
+    {
+      "path": "assets/Icons/heartOutline.svg",
+      "sha1": "b99a6aa9a5f4d476ad757b7fb9a98df397bf3f8f"
+    },
+    {
+      "path": "assets/Icons/heartRed.svg",
+      "sha1": "f2e4d9c9337b8b48fa6152dd301ec67fe26e011e"
+    },
+    {
+      "path": "assets/Icons/helpCircleOutline.svg",
+      "sha1": "f305294001a678ee7b56c18c074acfc45670bc47"
+    },
+    {
+      "path": "assets/Icons/home-focused-1.svg",
+      "sha1": "6e50b55a4b1711d4645f41253c9ca2885b35fa21"
+    },
+    {
+      "path": "assets/Icons/home-focused.svg",
+      "sha1": "05a2783e03f83153bffe29663b358674e7ba524f"
+    },
+    {
+      "path": "assets/Icons/home.svg",
+      "sha1": "c6e151f22aa54cda89250e87a00b35b09c18d7f6"
+    },
+    {
+      "path": "assets/Icons/hoodieIcon.svg",
+      "sha1": "170feb284eef981a57ff1b83127393acd15eb58e"
+    },
+    {
+      "path": "assets/Icons/image-outline.svg",
+      "sha1": "1851f78f83ca04f42101c6219e68242338386ad6"
+    },
+    {
+      "path": "assets/Icons/locationOutline.svg",
+      "sha1": "d3bb98836ac191946be958fb71ce4b6330be107f"
+    },
+    {
+      "path": "assets/Icons/messageIcon-filled.svg",
+      "sha1": "a82f5d50005e5b26f543a261570217f252bd5eb6"
+    },
+    {
+      "path": "assets/Icons/messageIcon.svg",
+      "sha1": "5da842bf2a98377908bcbed7dfff464d603e609a"
+    },
+    {
+      "path": "assets/Icons/myAccount-filled.svg",
+      "sha1": "eb8f09e3ff7f746fd4caaee2cce84651db62def7"
+    },
+    {
+      "path": "assets/Icons/myAccount.svg",
+      "sha1": "0b5b53e4b528d3238b3bcbe5c724a8ed237ee4c4"
+    },
+    {
+      "path": "assets/Icons/recycle.svg",
+      "sha1": "585219324c52f2f3a4092ed6c2d629f7aa5f49c8"
+    },
+    {
+      "path": "assets/Icons/removeCircleOutline.svg",
+      "sha1": "b7a793f5d57408b1097f078c4f3a4bc182e91e80"
+    },
+    {
+      "path": "assets/Icons/resizeIcon.svg",
+      "sha1": "83999f9682b9855061f244901d42ed1d71046346"
+    },
+    {
+      "path": "assets/Icons/scaleIcon.svg",
+      "sha1": "0391f8a1d4744c5f597fa8ca07fef57a2ead77c2"
+    },
+    {
+      "path": "assets/Icons/searchIcon.svg",
+      "sha1": "7216d91b4100e400293a133c2bf328177d75910b"
+    },
+    {
+      "path": "assets/Icons/settingsOutline.svg",
+      "sha1": "76e45da09d834b29e176b9a4ecd8056e534839a9"
+    },
+    {
+      "path": "assets/Icons/sheildCheckmark.svg",
+      "sha1": "89ff0713fc9fa3f1fde468ff2a16fcdb24bd1518"
+    },
+    {
+      "path": "assets/Icons/terminalOutline.svg",
+      "sha1": "8ac9a362b0378733f4ef58d606828fbcddd8ee7f"
+    },
+    {
+      "path": "assets/Icons/timeOutine.svg",
+      "sha1": "63969263897fe13cc22fb77de0e717e3ae895a58"
+    }
+  ]
+}

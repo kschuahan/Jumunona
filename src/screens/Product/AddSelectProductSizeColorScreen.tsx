@@ -1,343 +1,525 @@
-import { Modal, View, Image, Text, TouchableOpacity, FlatList, Pressable } from "react-native";
-import { ScrollView } from "react-native-virtualized-view";
-import { useState } from "react";
-import { LinearGradient } from "expo-linear-gradient";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { AppString } from "../../utils/AppStrings";
-import { styles } from "../../utils/AppStyles";
-import { appIcons, imagesUrl } from "../../utils/AppIcons";
-import { colors } from "../../utils/AppColors";
-import { fontFamilty } from "../../utils/Fonts";
+import {
+  Modal,
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
+import {ScrollView} from 'react-native-virtualized-view';
+import {useState} from 'react';
+import LinearGradient from 'react-native-linear-gradient';
+import {AppString} from '../../utils/AppStrings';
+import {styles} from '../../utils/AppStyles';
+import {imagesUrl} from '../../utils/AppIcons';
+import {colors} from '../../utils/AppColors';
+import {fontFamily} from '../../utils/Fonts';
+import CloseIcon from '../../../assets/Icons/closeIcon.svg';
+import ShieldCheckmarkIcon from '../../../assets/Icons/sheildCheckmark.svg';
+import Policy from '../../../assets/Icons/Policy.svg';
 
+import ScaleIcon from '../../../assets/Icons/PhoneData.svg';
+import AddCircleOutline from '../../../assets/Icons/AddCircle.svg';
+import ChevronFwdOutline from '../../../assets/Icons/ForwardOrange.svg';
+import ResizeIcon from '../../../assets/Icons/resizeIcon.svg';
+import RemoveCircleOutline from '../../../assets/Icons/removeCircleOutline.svg';
 
-const AddSelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
+const AddSelectProductSizeColorScreen = ({isShow = false, onClose}) => {
+  const [number, setNumber] = useState('');
+  const [otp, setOtp] = useState('');
 
-    const [number, setNumber] = useState("")
-    const [otp, setOtp] = useState("")
-
-    return <Modal transparent={true} animationType={"slide"} visible={isShow} onRequestClose={onClose} >
-        <View style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: "flex-end" }]}>
-            <View style={{
-                paddingHorizontal: 10, backgroundColor: colors.white, borderTopLeftRadius: 13,
-                borderTopRightRadius: 13, width: "100%", flex: 0.79
+  return (
+    <Modal
+      transparent={true}
+      animationType={'slide'}
+      visible={isShow}
+      onRequestClose={onClose}>
+      <View
+        style={[
+          styles.botton_view,
+          {backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end'},
+        ]}>
+        <View
+          style={{
+            paddingHorizontal: 10,
+            backgroundColor: colors.white,
+            borderTopLeftRadius: 13,
+            borderTopRightRadius: 13,
+            width: '100%',
+            flex: 0.79,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingTop: 9,
             }}>
-                <View
-                    style={{ flexDirection: "row", justifyContent: "space-between", paddingTop: 9 }}
-                >
-                    <View
-                        style={{ flexDirection: "row", justifyContent: "space-between", alignContent: "space-between", }}
-                    >
-                        <Image
-                            source={{ uri: imagesUrl.shoes }}
-                            style={{ height: 65, width: 65, borderRadius: 10 }}
-                        />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignContent: 'space-between',
+              }}>
+              <Image
+                source={{uri: imagesUrl.shoes}}
+                style={{height: 65, width: 65, borderRadius: 10}}
+              />
 
-                        <Text
-                            style={[
-                                styles.textStyle,
-                                { fontSize: 21, fontFamily: "SegoeUI", color: colors.startOrange, marginStart: 11.5 },
-                            ]}
-                        >
-                            178с.
-                        </Text>
-                    </View>
-                    <TouchableOpacity style={{ marginEnd: 7.11 }} onPress={() => {
-                        onClose()
-                    }} >
-                        <Ionicons name={"close"} size={25} />
-                    </TouchableOpacity>
-
-                </View>
-                <ScrollView style={{ paddingBottom: 40, }} showsVerticalScrollIndicator={false}>
-                    <CancelReturnPolicyView onClick={() => { }} />
-                    <PhoneDataScreen onClick={() => { }} />
-                    <View style={{ height: 1, marginVertical: 13, backgroundColor: colors.darkWhite }} />
-
-                    <ColorOptions />
-                    <View style={{ height: 1, marginVertical: 13, backgroundColor: colors.darkWhite }} />
-
-                    <SizeAndBuyingForView />
-                    <View style={{ height: 1, marginVertical: 10, backgroundColor: colors.darkWhite }} />
-                    <QuanityView />
-
-                    <View style={{ marginTop: 37 }}>
-                        <CommonButton text={AppString.add} onClick={() => {
-
-                        }} />
-                    </View>
-                </ScrollView>
-
-
-
-            </View>
-        </View>
-    </Modal >
-}
-
-
-const CancelReturnPolicyView = ({ onClick }) => {
-
-    return (
-        <View
-
-            style={[
-                styles.profile,
-                {
-                    marginTop: 9, alignItems: "center", paddingVertical: 4,
-                    paddingHorizontal: 6, backgroundColor: "#F6F6F6", borderRadius: 8,
-                    justifyContent: "flex-start"
-                },
-            ]}
-        >
-            <Ionicons
-                name={"shield-checkmark"}
-                color={"#CCCCCC"}
-                size={25}
-            />
-            <Text
+              <Text
                 style={[
-                    styles.textStyle,
-                    { fontSize: 14, fontWeight: "400", fontFamily: fontFamilty.regular, paddingStart: 8 },
-                ]}
-            >
-                Delivery • Return • Price • Order • cancellation
-            </Text>
-
-        </View>
-    );
-}
-
-const PhoneDataScreen = ({ onClick }) => {
-
-    return (
-        <View
-
-            style={[
-                styles.profile,
-                {
-                    marginTop: 13, alignItems: "center", paddingVertical: 5, paddingHorizontal: 6,
-                    backgroundColor: "#FDF1EC", borderRadius: 8, justifyContent: 'space-between'
-                },
-            ]}
-        >
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}><Ionicons
-                name={"bandage-outline"}
-                color={colors.startOrange}
-                size={20}
-            />
-                <Text
-                    style={[
-                        styles.textStyle,
-                        { fontSize: 14, paddingStart: 8.22, fontWeight: "400", },
-                    ]}
-                >Body data</Text></View>
-            <Ionicons
-                name={"chevron-forward-outline"}
-                color={colors.startOrange}
-                size={15}
-            />
-        </View>
-    );
-}
-
-const ColorOptions = ({ }) => {
-    const [selectedColor, setSelectedColor] = useState(1)
-    return (
-        <View >
-            <Text style={[styles.textStyle, { fontSize: 14 }]}>Цвет (2)</Text>
-
-            <FlatList
-                data={[1, 2]}
-                renderItem={({ item, index }) =>
-
-                    <View style={{ marginEnd: 8 }}>
-                        <View style={{ height: 13 }} />
-                        <TouchableOpacity onPress={() => {
-                            setSelectedColor(item)
-                        }} >
-                            <View style={{ marginHorizontal: 1, justifyContent: "center", flexDirection: "column", alignContent: "center", }}>
-                                <Image source={{ uri: imagesUrl.shoes }} style={{ width: 109, height: 111, borderRadius: 7 }} />
-                                <View style={{ width: 109, height: 42, justifyContent: "center", backgroundColor: "#F6F6F6", borderRadius: 7 }}>
-                                    <Text style={[styles.textStyle, {
-                                        textAlign: "center", alignSelf: "center",
-                                        color: selectedColor == item ? colors.startOrange : colors.black
-                                    }]}> light gray</Text>
-                                </View>
-
-                                <View style={{
-                                    position: 'absolute',
-                                    top: 5, end: 4, height: 19, width: 19,
-                                    backgroundColor: colors.greyB3B3B38C,
-                                    justifyContent: 'center', alignItems: 'center', borderRadius: 10
-                                }}>
-                                    <Ionicons name={'resize-outline'} size={12} color={colors.white} />
-
-                                </View>
-                            </View>
-                            {selectedColor == item ?
-                                <View style={{
-                                    position: "absolute", backgroundColor: "rgba(255, 118, 0, 0.08)",
-                                    width: "100%", height: "100%", borderRadius: 7,
-                                    borderColor: colors.startOrange, borderWidth: 1
-                                }} />
-                                : null
-                            }
-
-                            {index == 1 ? <View style={{
-                                position: 'absolute',
-                                top: -10, end: -1, height: 13, width: 44,
-                                backgroundColor: colors.greyCCCCCC,
-                                borderColor: colors.whiteF2F2F2,
-                                justifyContent: 'center', alignItems: 'center',
-                                borderBottomEndRadius: 5, borderTopStartRadius: 5
-                            }}>
-                                <Text style={[styles.textStyle, {
-                                    color: colors.white, fontSize: 10
-                                }]}>sold out</Text>
-                            </View> : null}
-                        </TouchableOpacity>
-                    </View>
-                }
-                horizontal
-                showsHorizontalScrollIndicator={false}
-            />
-        </View>
-    )
-}
-
-const SizeAndBuyingForView = ({ }) => {
-
-    const [selectedSize, setSelecteSize] = useState(false)
-    const users = ["Vali", "Name 2", "+ Add"]
-    const sizes = ["24", "25", "26", "27", "28", "29", "30", "31", "32"]
-    const [selectedItem, setSelecteItem] = useState("")
-    return (
-        <View >
-            <View style={{ flexDirection: "row", justifyContent: "flex-start" }} >
-                <TouchableOpacity onPress={() => {
-                    setSelecteSize(false)
-                }}>
-                    <View style={{ flexDirection: "column", justifyContent: "flex-start" }}>
-                        <Text style={[styles.textStyle, { fontSize: 14, color: !selectedSize ? colors.startOrange : colors.black }]}>Для</Text>
-                        {!selectedSize ? <View style={{ height: 2, backgroundColor: colors.startOrange, width: 30 }} /> : null}
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    setSelecteSize(true)
-                }}>
-                    <View style={{ flexDirection: "column", justifyContent: "flex-start", marginStart: 15 }}>
-                        <Text style={[styles.textStyle, { fontSize: 14, color: selectedSize ? colors.startOrange : colors.black }]}>Размер</Text>
-                        {selectedSize ? <View style={{ height: 2, backgroundColor: colors.startOrange, width: 30 }} /> : null}
-                    </View>
-                </TouchableOpacity>
+                  styles.textStyle,
+                  {
+                    fontSize: 21,
+                    fontFamily: fontFamily.regular,
+                    color: colors.startOrange,
+                    marginStart: 11.5,
+                  },
+                ]}>
+                178с.
+              </Text>
             </View>
-            <FlatList
-                data={selectedSize ? sizes : users}
-                scrollEnabled={false}
-                numColumns={5}
-                renderItem={({ item }) =>
-
-                    <View style={{ margin: 8, flex: 1 / (selectedSize ? 5 : 3.5) }}>
-
-                        <TouchableOpacity onPress={() => {
-                            setSelecteItem(item)
-                        }} >
-                            <View style={{
-                                paddingHorizontal: 16, paddingVertical: 5,
-                                justifyContent: "center", backgroundColor: "#F6F6F6", borderRadius: selectedSize ? 5 : 15
-                            }}>
-                                <Text style={[styles.textStyle, {
-                                    color: selectedItem == item ? colors.startOrange : colors.black121212,
-                                    textAlign: "center", alignSelf: "center", fontSize: 14
-                                }]}> {item}</Text>
-                            </View>
-
-                        </TouchableOpacity>
-                        {selectedItem == item ?
-                            <View style={{
-                                position: "absolute", backgroundColor: "rgba(255, 118, 0, 0.08)",
-                                width: "100%", height: "100%", borderRadius: selectedSize ? 5 : 15, borderColor: colors.startOrange, borderWidth: 1
-                            }} />
-                            : null
-                        }
-                    </View>
-                }
-                showsVerticalScrollIndicator={false}
+            <TouchableOpacity
+              style={{marginEnd: 7.11}}
+              onPress={() => {
+                onClose();
+              }}>
+              <CloseIcon width={15} height={15} />
+            </TouchableOpacity>
+          </View>
+          <ScrollView
+            style={{paddingBottom: 40}}
+            showsVerticalScrollIndicator={false}>
+            <CancelReturnPolicyView onClick={() => {}} />
+            <PhoneDataScreen onClick={() => {}} />
+            <View
+              style={{
+                height: 1,
+                marginVertical: 13,
+                backgroundColor: colors.darkWhite,
+              }}
             />
-        </View>
-    )
-}
 
-const QuanityView = ({ }) => {
-    const [quantiy, setQuantity] = useState(1)
-    const maxQuantity = 9
-    return (
-        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 5 }}>
-            <Text style={[styles.textStyle, { textAlign: "center", fontSize: 14, alignSelf: "center" }]}>Quantity</Text>
+            <ColorOptions />
+            <View
+              style={{
+                height: 1,
+                marginVertical: 13,
+                backgroundColor: colors.darkWhite,
+              }}
+            />
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <TouchableOpacity onPress={() => {
-                    if (quantiy > 1) {
-                        setQuantity(quantiy - 1)
-                    }
-                }}
-                >
-                    <Ionicons
-                        name={"remove-circle-outline"}
-                        color={quantiy > 1 ? colors.startOrange : "#F1F1F1"}
-                        size={30}
+            <SizeAndBuyingForView />
+            <View
+              style={{
+                height: 1,
+                marginVertical: 10,
+                backgroundColor: colors.darkWhite,
+              }}
+            />
+            <QuanityView />
 
-                    />
-                </TouchableOpacity>
-                <Text style={[styles.textStyle, { alignSelf: "center", fontSize: 17, paddingRight: 8 }]}> {quantiy.toString()}</Text>
-                <TouchableOpacity onPress={() => {
-                    if (quantiy < maxQuantity) {
-                        setQuantity(quantiy + 1)
-                    }
-                }}
-                >
-                    <Ionicons
-                        name={"add-circle"}
-                        color={quantiy < maxQuantity ? colors.startOrange : "#F1F1F1"}
-                        size={30}
-                    />
-                </TouchableOpacity>
-
-
+            <View style={{marginTop: 37}}>
+              <CommonButton text={AppString.add} onClick={() => {}} />
             </View>
+          </ScrollView>
         </View>
-    )
-}
+      </View>
+    </Modal>
+  );
+};
 
+const CancelReturnPolicyView = ({onClick}) => {
+  return (
+    <View
+      style={[
+        styles.profile,
+        {
+          marginTop: 9,
+          alignItems: 'center',
+          paddingVertical: 4,
+          paddingHorizontal: 6,
+          backgroundColor: '#F6F6F6',
+          borderRadius: 8,
+          justifyContent: 'flex-start',
+        },
+      ]}>
+      <Policy />
+      <Text
+        style={[
+          styles.textStyle,
+          {
+            fontSize: 14,
+            fontWeight: '400',
+            fontFamily: fontFamily.regular,
+            paddingStart: 8,
+          },
+        ]}>
+        Delivery • Return • Price • Order • cancellation
+      </Text>
+    </View>
+  );
+};
 
-const CommonButton = ({ text = AppString.add_to_cart, endColor = colors.endOrange,
-    startorange = colors.startOrange, onClick }) => {
+const PhoneDataScreen = ({onClick}) => {
+  return (
+    <View
+      style={[
+        styles.profile,
+        {
+          marginTop: 13,
+          alignItems: 'center',
+          paddingVertical: 5,
+          paddingHorizontal: 6,
+          backgroundColor: '#FDF1EC',
+          borderRadius: 8,
+          justifyContent: 'space-between',
+        },
+      ]}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <ScaleIcon />
+        <Text
+          style={[
+            styles.textStyle,
+            {fontSize: 14, paddingStart: 4.22, fontWeight: '400'},
+          ]}>
+          Body data
+        </Text>
+      </View>
+      <ChevronFwdOutline color={colors.startOrange} width={12} height={12} />
+    </View>
+  );
+};
 
-    return (
-        <TouchableOpacity onPress={onClick} style={{ flex: 0.5 }}>
-            <LinearGradient
-                colors={[startorange, endColor]}
-                start={{ x: 0.4, y: 0 }}
-                end={{ x: 1, y: 1 }}
+const ColorOptions = ({}) => {
+  const [selectedColor, setSelectedColor] = useState(1);
+  return (
+    <View>
+      <Text style={[styles.textStyle, {fontSize: 14}]}>Цвет (2)</Text>
+
+      <FlatList
+        data={[1, 2]}
+        renderItem={({item, index}) => (
+          <View style={{marginEnd: 8}}>
+            <View style={{height: 13}} />
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedColor(item);
+              }}>
+              <View
                 style={{
-                    borderRadius: 1000,
-                    marginEnd: 10,
-                    height: 40,
+                  marginHorizontal: 1,
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  alignContent: 'center',
+                }}>
+                <Image
+                  source={{uri: imagesUrl.shoes}}
+                  style={{width: 109, height: 111, borderRadius: 7}}
+                />
+                <View
+                  style={{
+                    width: 109,
+                    height: 42,
                     justifyContent: 'center',
-                    alignItems: "center"
-                }}
-            >
-                <Text
+                    backgroundColor: '#F6F6F6',
+                    borderRadius: 7,
+                  }}>
+                  <Text
                     style={[
-                        styles.textStyle,
-                        { color: colors.white, fontFamily: "SegoeUI", fontSize: 14 },
-                    ]}
-                >
-                    {text}
-                </Text>
-            </LinearGradient>
-        </TouchableOpacity>
-    );
-}
+                      styles.textStyle,
+                      {
+                        textAlign: 'center',
+                        alignSelf: 'center',
+                        color:
+                          selectedColor == item
+                            ? colors.startOrange
+                            : colors.black,
+                      },
+                    ]}>
+                    {' '}
+                    light gray
+                  </Text>
+                </View>
 
-export default AddSelectProductSizeColorScreen
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 5,
+                    end: 4,
+                    height: 19,
+                    width: 19,
+                    backgroundColor: colors.greyB3B3B38C,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 10,
+                  }}>
+                  <ResizeIcon width={19} height={19} color={colors.white} />
+                </View>
+              </View>
+              {selectedColor == item ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    backgroundColor: 'rgba(255, 118, 0, 0.08)',
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 7,
+                    borderColor: colors.startOrange,
+                    borderWidth: 1,
+                  }}
+                />
+              ) : null}
+
+              {index == 1 ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: -10,
+                    end: -1,
+                    height: 13,
+                    width: 44,
+                    backgroundColor: colors.greyCCCCCC,
+                    borderColor: colors.whiteF2F2F2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderBottomEndRadius: 5,
+                    borderTopStartRadius: 5,
+                  }}>
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        color: colors.white,
+                        fontSize: 10,
+                      },
+                    ]}>
+                    sold out
+                  </Text>
+                </View>
+              ) : null}
+            </TouchableOpacity>
+          </View>
+        )}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
+    </View>
+  );
+};
+
+const SizeAndBuyingForView = ({}) => {
+  const [selectedSize, setSelecteSize] = useState(false);
+  const users = ['Vali', 'Name 2', '+ Add'];
+  const sizes = ['24', '25', '26', '27', '28', '29', '30', '31', '32'];
+  const [selectedItem, setSelecteItem] = useState('');
+  return (
+    <View>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+        <TouchableOpacity
+          onPress={() => {
+            setSelecteSize(false);
+          }}>
+          <View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
+            <Text
+              style={[
+                styles.textStyle,
+                {
+                  fontSize: 14,
+                  color: !selectedSize ? colors.startOrange : colors.black,
+                },
+              ]}>
+              Для
+            </Text>
+            {!selectedSize ? (
+              <View
+                style={{
+                  height: 2,
+                  backgroundColor: colors.startOrange,
+                  width: 30,
+                }}
+              />
+            ) : null}
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setSelecteSize(true);
+          }}>
+          <View
+            style={{
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              marginStart: 15,
+            }}>
+            <Text
+              style={[
+                styles.textStyle,
+                {
+                  fontSize: 14,
+                  color: selectedSize ? colors.startOrange : colors.black,
+                },
+              ]}>
+              Размер
+            </Text>
+            {selectedSize ? (
+              <View
+                style={{
+                  height: 2,
+                  backgroundColor: colors.startOrange,
+                  width: 30,
+                }}
+              />
+            ) : null}
+          </View>
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        data={selectedSize ? sizes : users}
+        scrollEnabled={false}
+        numColumns={5}
+        renderItem={({item}) => (
+          <View style={{margin: 8, flex: 1 / (selectedSize ? 5 : 3.5)}}>
+            <TouchableOpacity
+              onPress={() => {
+                setSelecteItem(item);
+              }}>
+              <View
+                style={{
+                  paddingHorizontal: 16,
+                  paddingVertical: 5,
+                  justifyContent: 'center',
+                  backgroundColor: '#F6F6F6',
+                  borderRadius: selectedSize ? 5 : 15,
+                }}>
+                <Text
+                  style={[
+                    styles.textStyle,
+                    {
+                      color:
+                        selectedItem == item
+                          ? colors.startOrange
+                          : colors.black121212,
+                      textAlign: 'center',
+                      alignSelf: 'center',
+                      fontSize: 14,
+                    },
+                  ]}>
+                  {' '}
+                  {item}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            {selectedItem == item ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  backgroundColor: 'rgba(255, 118, 0, 0.08)',
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: selectedSize ? 5 : 15,
+                  borderColor: colors.startOrange,
+                  borderWidth: 1,
+                }}
+              />
+            ) : null}
+          </View>
+        )}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
+  );
+};
+
+const QuanityView = ({}) => {
+  const [quantiy, setQuantity] = useState(1);
+  const maxQuantity = 9;
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 5,
+      }}>
+      <Text
+        style={[
+          styles.textStyle,
+          {textAlign: 'center', fontSize: 14, alignSelf: 'center'},
+        ]}>
+        Quantity
+      </Text>
+
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <TouchableOpacity
+          onPress={() => {
+            if (quantiy > 1) {
+              setQuantity(quantiy - 1);
+            }
+          }}>
+          <RemoveCircleOutline
+            color={quantiy > 1 ? colors.startOrange : '#F1F1F1'}
+            width={30}
+            height={30}
+          />
+        </TouchableOpacity>
+        <Text
+          style={[
+            styles.textStyle,
+            {alignSelf: 'center', fontSize: 17, paddingRight: 8},
+          ]}>
+          {' '}
+          {quantiy.toString()}
+        </Text>
+        <TouchableOpacity
+          onPress={() => {
+            if (quantiy < maxQuantity) {
+              setQuantity(quantiy + 1);
+            }
+          }}>
+          <AddCircleOutline
+            color={quantiy < maxQuantity ? colors.startOrange : '#F1F1F1'}
+            width={30}
+            height={30}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const CommonButton = ({
+  text = AppString.add_to_cart,
+  endColor = colors.endOrange,
+  startorange = colors.startOrange,
+  onClick,
+}) => {
+  return (
+    <TouchableOpacity onPress={onClick} style={{flex: 0.5}}>
+      <LinearGradient
+        colors={[startorange, endColor]}
+        start={{x: 0.4, y: 0}}
+        end={{x: 1, y: 1}}
+        style={{
+          borderRadius: 1000,
+          marginEnd: 10,
+          height: 40,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text
+          style={[
+            styles.textStyle,
+            {color: colors.white, fontFamily: fontFamily.regular, fontSize: 14},
+          ]}>
+          {text}
+        </Text>
+      </LinearGradient>
+    </TouchableOpacity>
+  );
+};
+
+export default AddSelectProductSizeColorScreen;

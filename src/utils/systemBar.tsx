@@ -1,9 +1,5 @@
-import NavigationBarColor from "react-native-navigation-bar-color";
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
-interface Color{
-    color:string;
-}
-
-export const setSystemBarColor = (color: Color) => {
-  NavigationBarColor.changeNavigationBarColor(color);
+export const setSystemBarColor = (color: string) => {
+  changeNavigationBarColor(color);
 };

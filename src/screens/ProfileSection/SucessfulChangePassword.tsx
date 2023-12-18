@@ -1,104 +1,99 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { styles } from '../../utils/AppStyles'
-import { imagesUrl } from '../../utils/AppIcons'
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { colors } from '../../utils/AppColors';
-import { AppString } from '../../utils/AppStrings';
-import { Card } from 'react-native-paper'
-import { LinearGradient } from "expo-linear-gradient";
-import { dimensions } from '../../utils/sizes';
-import { useCallback, useEffect, useState } from "react";
-import { HeaderBackButton } from '@react-navigation/elements';
-import { RouteNames } from '../../utils/RoutesNames';
-import { StatusBar } from 'expo-status-bar';
-import { fontFamilty } from '../../utils/Fonts';
+import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {styles} from '../../utils/AppStyles';
+import {colors} from '../../utils/AppColors';
+import {AppString} from '../../utils/AppStrings';
+import {useEffect} from 'react';
+import {RouteNames} from '../../utils/RouteNames';
+import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
+import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
+import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 
+export const SucessfulChangePasswordScreen = ({navigation}) => {
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: '',
 
+      headerRight: () => (
+        <TouchableOpacity style={{alignItems: 'center'}}>
+          <EllipsisHorizontal width={24} height={24} />
+        </TouchableOpacity>
+      ),
 
-export const SucessfulChangePasswordScreen = ({ navigation }) => {
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [{name: RouteNames.main}],
+            });
+          }}
+          style={{alignItems: 'center'}}>
+          <ChevronBackOutline width={15} height={15} />
+        </TouchableOpacity>
+      ),
+      headerStyle: {
+        backgroundColor: '#F6F6F6',
+      },
 
-    useEffect(() => {
+      headerShadowVisible: false,
+    });
+  });
 
-        navigation.setOptions({
-            headerTitle: "",
+  return (
+    <ScrollView
+      contentContainerStyle={{flex: 1}}
+      showsVerticalScrollIndicator={false}>
+      <View style={[styles.container, {backgroundColor: '#F6F6F6'}]}>
+        <View
+          style={{
+            backgroundColor: colors.white,
+            paddingHorizontal: 10,
+            borderRadius: 17,
+          }}>
+          <View style={{alignSelf: 'center', marginTop: 21, marginBottom: 14}}>
+            <CheckmarkCircle width={55} height={55} color={colors.endOrange} />
+          </View>
 
-            headerRight: (() => <TouchableOpacity style={{ alignItems: "center" }}>
-                <Ionicons name="ellipsis-horizontal-outline" size={24} />
-            </TouchableOpacity>),
+          <Text
+            style={[
+              styles.textStyle,
+              {fontSize: 23, fontWeight: '700', alignSelf: 'center'},
+            ]}>
+            {AppString.sucessfully_changed}
+          </Text>
 
-            headerLeft: () =>
-            (
-                <TouchableOpacity onPress={() => {
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: RouteNames.main }]
-                    })
-                }} style={{ alignItems: "center" }}>
-                    <Ionicons name="chevron-back-outline" size={24} />
-                </TouchableOpacity>
-            ),
-            headerStyle: {
-                backgroundColor: '#F6F6F6',
-
-            },
-
-            headerShadowVisible: false,
-
-        })
-    }, [])
-
-    return (
-        <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-            <View style={[styles.container, { backgroundColor: '#F6F6F6' }]}>
-
-                <View style={{ backgroundColor: colors.white, paddingHorizontal: 10, borderRadius: 17 }}>
-                    <View
-                        style={
-                            { alignSelf: 'center', marginTop: 21, marginBottom: 14 }
-                        }
-                    >
-                        <Ionicons
-                            name={"checkmark-circle"}
-                            size={55}
-                            color={colors.endOrange}
-                        />
-
-                    </View>
-
-                    <Text
-                        style={[
-                            styles.textStyle,
-                            { fontSize: 23, fontWeight: '700', alignSelf: 'center' },
-                        ]}
-                    >
-                        {AppString.sucessfully_changed}
-                    </Text>
-
-                    <TouchableOpacity onPress={() => {
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: RouteNames.main }]
-                        })
-                    }} style={{
-                        marginTop: 52, marginBottom: 21, borderColor: colors.greyCECECE, borderWidth: 0.8,
-                        height: 30, justifyContent: 'center', marginHorizontal: 77, borderRadius: 15
-                    }}>
-                        <Text
-                            style={[
-                                styles.textStyle,
-                                {
-                                    fontSize: 13,  alignSelf: 'center',
-                                    color: colors.black666666
-                                },
-                            ]}
-                        >
-                            {AppString.go_back_to_the_main_page}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
-
-            </View></ScrollView>
-    )
-}
+          <TouchableOpacity
+            onPress={() => {
+              navigation.reset({
+                index: 0,
+                routes: [{name: RouteNames.main}],
+              });
+            }}
+            style={{
+              marginTop: 52,
+              marginBottom: 21,
+              borderColor: colors.greyCECECE,
+              borderWidth: 0.8,
+              height: 30,
+              justifyContent: 'center',
+              marginHorizontal: 77,
+              borderRadius: 15,
+            }}>
+            <Text
+              style={[
+                styles.textStyle,
+                {
+                  fontSize: 13,
+                  alignSelf: 'center',
+                  color: colors.black666666,
+                },
+              ]}>
+              {AppString.go_back_to_the_main_page}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
+  );
+};

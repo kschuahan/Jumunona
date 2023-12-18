@@ -1,0 +1,923 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00E356F31AD99517003FC87E /* jumunonaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* jumunonaTests.m */; };
+		0C80B921A6F3F58F76C31292 /* libPods-jumunona.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-jumunona.a */; };
+		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
+		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		7699B88040F8A987B510C191 /* libPods-jumunona-jumunonaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-jumunona-jumunonaTests.a */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		7251D936523B42AAAE59A107 /* Segoe UI Bold Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3813CFF7C8A4E05A408862A /* Segoe UI Bold Italic.ttf */; };
+		C0E7B1DDA7864D989C5DFC4E /* Segoe UI Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 791CB7934C3D4EEEB6567687 /* Segoe UI Bold.ttf */; };
+		E615EBD3E6524649B6040AAB /* Segoe UI Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D583C251094C42B4AAE6B704 /* Segoe UI Italic.ttf */; };
+		30C36F0ACD6D49CC9E79CB6D /* Segoe UI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6C1E05358F04ED3AE9A293B /* Segoe UI.ttf */; };
+		69004545376D472889A4484E /* addCircleOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0CC59E39CFB247EBBBF47046 /* addCircleOutline.svg */; };
+		DEEF4E5418024693B72B4D7F /* addOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 907AD867522A4B24B3C618A5 /* addOutline.svg */; };
+		19EAC23831D24101BDD3983B /* archiveOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0ED496605DF048E8B5F9DFE9 /* archiveOutline.svg */; };
+		EDBE721281E6463F8DA2F9F9 /* arrowRedoOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 73BAC551BB3C4B38BC06EF48 /* arrowRedoOutline.svg */; };
+		830FE31118F145CAAFD4948C /* arrowUndoOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = C782D34AF3684C92928EF29D /* arrowUndoOutline.svg */; };
+		606B32ED52184DB7BB6AE828 /* caretDown.svg in Resources */ = {isa = PBXBuildFile; fileRef = AE80FD0672854C759E0AEC19 /* caretDown.svg */; };
+		DD5DCED5BB6B4DBFAEB9BB0B /* cart-filled.svg in Resources */ = {isa = PBXBuildFile; fileRef = CD7AC3A4D4B443CDB6CB7C20 /* cart-filled.svg */; };
+		70A105DE582F46BA85B181E7 /* cart.svg in Resources */ = {isa = PBXBuildFile; fileRef = 05641E1F704E4019B5FA990C /* cart.svg */; };
+		D2E9D2BE3A3F4B1C9C8ABD7E /* cartOutlineIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = C76FA69F06F94DA69ED4F4C9 /* cartOutlineIcon.svg */; };
+		0786974CE14B42A580DEE8C6 /* category-focused.svg in Resources */ = {isa = PBXBuildFile; fileRef = 59D5BB3897DA47DC9CB28410 /* category-focused.svg */; };
+		FA7C25C362984CD39D906884 /* category.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9D5C15A34A1444DEAD17BFCF /* category.svg */; };
+		BA5E85D125AC499BB86FAE21 /* chatbubbleEllipsisIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = D8CE3289F84A4C53920C1279 /* chatbubbleEllipsisIcon.svg */; };
+		CE0E8AA9DD9D474281413D12 /* checkMarkCircle.svg in Resources */ = {isa = PBXBuildFile; fileRef = 85EF6218BF554BC49A346595 /* checkMarkCircle.svg */; };
+		CC0DFB4E4D23438F8811ACB8 /* checkmarkOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5AC6DF6072354E1481F09897 /* checkmarkOutline.svg */; };
+		781F5466FFA9477D8BB013A7 /* chevronBackOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 319F22B513A0468099A87215 /* chevronBackOutline.svg */; };
+		58D1ED10C0014DB1B92307D5 /* chevronDownOutlline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 14AB539E7276428699FFE272 /* chevronDownOutlline.svg */; };
+		8A15D7296CD84B6DAAB7DBCE /* chevronForwardOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3A2757B788744FB3992110E9 /* chevronForwardOutline.svg */; };
+		FDA8EE2839754D13A9BE9BDE /* closeCircleOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 17294343CEA540E6B8C1CA09 /* closeCircleOutline.svg */; };
+		C401C93343D442908A08F7BD /* closeIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 1FEE970120B349AEB54042D6 /* closeIcon.svg */; };
+		C9AFB6CCF35B43309A761FD8 /* createOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 78AD9A98CF5A476DAEB16705 /* createOutline.svg */; };
+		78C01579C32545A58E93BF20 /* editIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 00A46D9F06AC432C969A7331 /* editIcon.svg */; };
+		51C7F281CEF2452C99B6FD11 /* ellipsis-horizontal.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7F05D653A5D446DCB24770F0 /* ellipsis-horizontal.svg */; };
+		C6BA68EBC2894E3F9EF7BC13 /* ellipsisOutlineNormal.svg in Resources */ = {isa = PBXBuildFile; fileRef = D8B3E0E75B104B409E2B807C /* ellipsisOutlineNormal.svg */; };
+		6F3E5C6E429C4ED3B875EC13 /* funnelOutlineGrey.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9EEF8BDACB91479BA66A6190 /* funnelOutlineGrey.svg */; };
+		FB2ADFE215414417BA251BA9 /* happyOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = BFFB5641E38243829BE1CC02 /* happyOutline.svg */; };
+		FFA762A2C09D4FBBA7183314 /* heartOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 62AB0B151B634CF9B51A7ECE /* heartOutline.svg */; };
+		62CB0B3D968A47B9BAB106C5 /* heartRed.svg in Resources */ = {isa = PBXBuildFile; fileRef = 965D814CDD864753B7518CC2 /* heartRed.svg */; };
+		0D83F67D16284C46BA0D8D49 /* helpCircleOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 37B34CF5889D49DB827FDD1D /* helpCircleOutline.svg */; };
+		41AB7FBA61DF4FDFA7A6CF4C /* home-focused-1.svg in Resources */ = {isa = PBXBuildFile; fileRef = DC9007DDFF494AA29A7DE697 /* home-focused-1.svg */; };
+		CAFB28B3ADE8418B846FEE16 /* home-focused.svg in Resources */ = {isa = PBXBuildFile; fileRef = 73D05C08B89B4509AE6EAA2E /* home-focused.svg */; };
+		6ED962CBA3114B6E9345B7E2 /* home.svg in Resources */ = {isa = PBXBuildFile; fileRef = FE3DB7D4ACF8448F8CEFB2F3 /* home.svg */; };
+		6A2673822FB14AEAB99BA7D7 /* hoodieIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = E58DA7EF551A4B4282764D11 /* hoodieIcon.svg */; };
+		01CC1FC370BE4506B2ADA2AC /* image-outline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 498159283A724AA280D7DF21 /* image-outline.svg */; };
+		FF17656E55F043B596F58D1E /* locationOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = F74B73F9CD5943D6A16588B8 /* locationOutline.svg */; };
+		F4CBC0788A0F4AF4BB267BE2 /* messageIcon-filled.svg in Resources */ = {isa = PBXBuildFile; fileRef = 7AE4E9D9CDF94F07AED3A74D /* messageIcon-filled.svg */; };
+		1EC73A1DDE61454C8AC8E5AA /* messageIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 25EDA0D9B9A74872AEED58ED /* messageIcon.svg */; };
+		406C74391F7A4AB2888F2AF9 /* myAccount-filled.svg in Resources */ = {isa = PBXBuildFile; fileRef = 07BD49CAE15E46E4BC66536F /* myAccount-filled.svg */; };
+		36BB9C8D893C41CC98D0CEE9 /* myAccount.svg in Resources */ = {isa = PBXBuildFile; fileRef = FAE13B64B48441A281BF5121 /* myAccount.svg */; };
+		811184F28AB3476B8F4B91E8 /* recycle.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3B3C851D7FFD45E7A23C2DF9 /* recycle.svg */; };
+		642AE4CC2B3A4AE197A64C19 /* removeCircleOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = E08D5958198B48A08634D320 /* removeCircleOutline.svg */; };
+		F51A888A5143436EA3CA9E57 /* resizeIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 18A1CCA87487437282DDC3B7 /* resizeIcon.svg */; };
+		E2D882762FA94A66ACC2AFB9 /* scaleIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = BB9443CA2759440CA81C3153 /* scaleIcon.svg */; };
+		87471E1E41BC4E38908D222B /* searchIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 91B7FB14B62A4437B3DC5A18 /* searchIcon.svg */; };
+		5078DABB0A4342F2AFC2538A /* settingsOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 64E2F3240B524F99A0308AE5 /* settingsOutline.svg */; };
+		F345EE56972A4EAB865A2E8A /* sheildCheckmark.svg in Resources */ = {isa = PBXBuildFile; fileRef = BE23672CB2D140EB89411C58 /* sheildCheckmark.svg */; };
+		3A4BE0A211B54A3AB3234CB3 /* terminalOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = FBDA2B807B9849BE88DAB2C6 /* terminalOutline.svg */; };
+		8F2062C1184C4129AC1192B8 /* timeOutine.svg in Resources */ = {isa = PBXBuildFile; fileRef = ECA486780E88429F8C98ABAA /* timeOutine.svg */; };
+		8F86A7EEB1B94D7588509E5C /* SegoeUI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB5A13A624AF4BB6B120BABD /* SegoeUI.ttf */; };
+		37E8A4A185F84610961D74C1 /* SegoeUIBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD65E3A99898499ABC04FA94 /* SegoeUIBold.ttf */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		00E356F41AD99517003FC87E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = jumunona;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00E356EE1AD99517003FC87E /* jumunonaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jumunonaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* jumunonaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = jumunonaTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* jumunona.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jumunona.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = jumunona/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = jumunona/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = jumunona/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = jumunona/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = jumunona/main.m; sourceTree = "<group>"; };
+		19F6CBCC0A4E27FBF8BF4A61 /* libPods-jumunona-jumunonaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-jumunona-jumunonaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B4392A12AC88292D35C810B /* Pods-jumunona.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jumunona.debug.xcconfig"; path = "Target Support Files/Pods-jumunona/Pods-jumunona.debug.xcconfig"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-jumunona.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jumunona.release.xcconfig"; path = "Target Support Files/Pods-jumunona/Pods-jumunona.release.xcconfig"; sourceTree = "<group>"; };
+		5B7EB9410499542E8C5724F5 /* Pods-jumunona-jumunonaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jumunona-jumunonaTests.debug.xcconfig"; path = "Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5DCACB8F33CDC322A6C60F78 /* libPods-jumunona.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-jumunona.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = jumunona/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		89C6BE57DB24E9ADA2F236DE /* Pods-jumunona-jumunonaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jumunona-jumunonaTests.release.xcconfig"; path = "Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests.release.xcconfig"; sourceTree = "<group>"; };
+		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		A3813CFF7C8A4E05A408862A /* Segoe UI Bold Italic.ttf */ = {isa = PBXFileReference; name = "Segoe UI Bold Italic.ttf"; path = "../assets/fonts/Segoe UI Bold Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		791CB7934C3D4EEEB6567687 /* Segoe UI Bold.ttf */ = {isa = PBXFileReference; name = "Segoe UI Bold.ttf"; path = "../assets/fonts/Segoe UI Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D583C251094C42B4AAE6B704 /* Segoe UI Italic.ttf */ = {isa = PBXFileReference; name = "Segoe UI Italic.ttf"; path = "../assets/fonts/Segoe UI Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B6C1E05358F04ED3AE9A293B /* Segoe UI.ttf */ = {isa = PBXFileReference; name = "Segoe UI.ttf"; path = "../assets/fonts/Segoe UI.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0CC59E39CFB247EBBBF47046 /* addCircleOutline.svg */ = {isa = PBXFileReference; name = "addCircleOutline.svg"; path = "../assets/Icons/addCircleOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		907AD867522A4B24B3C618A5 /* addOutline.svg */ = {isa = PBXFileReference; name = "addOutline.svg"; path = "../assets/Icons/addOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0ED496605DF048E8B5F9DFE9 /* archiveOutline.svg */ = {isa = PBXFileReference; name = "archiveOutline.svg"; path = "../assets/Icons/archiveOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		73BAC551BB3C4B38BC06EF48 /* arrowRedoOutline.svg */ = {isa = PBXFileReference; name = "arrowRedoOutline.svg"; path = "../assets/Icons/arrowRedoOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C782D34AF3684C92928EF29D /* arrowUndoOutline.svg */ = {isa = PBXFileReference; name = "arrowUndoOutline.svg"; path = "../assets/Icons/arrowUndoOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AE80FD0672854C759E0AEC19 /* caretDown.svg */ = {isa = PBXFileReference; name = "caretDown.svg"; path = "../assets/Icons/caretDown.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CD7AC3A4D4B443CDB6CB7C20 /* cart-filled.svg */ = {isa = PBXFileReference; name = "cart-filled.svg"; path = "../assets/Icons/cart-filled.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		05641E1F704E4019B5FA990C /* cart.svg */ = {isa = PBXFileReference; name = "cart.svg"; path = "../assets/Icons/cart.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C76FA69F06F94DA69ED4F4C9 /* cartOutlineIcon.svg */ = {isa = PBXFileReference; name = "cartOutlineIcon.svg"; path = "../assets/Icons/cartOutlineIcon.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		59D5BB3897DA47DC9CB28410 /* category-focused.svg */ = {isa = PBXFileReference; name = "category-focused.svg"; path = "../assets/Icons/category-focused.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9D5C15A34A1444DEAD17BFCF /* category.svg */ = {isa = PBXFileReference; name = "category.svg"; path = "../assets/Icons/category.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D8CE3289F84A4C53920C1279 /* chatbubbleEllipsisIcon.svg */ = {isa = PBXFileReference; name = "chatbubbleEllipsisIcon.svg"; path = "../assets/Icons/chatbubbleEllipsisIcon.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		85EF6218BF554BC49A346595 /* checkMarkCircle.svg */ = {isa = PBXFileReference; name = "checkMarkCircle.svg"; path = "../assets/Icons/checkMarkCircle.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5AC6DF6072354E1481F09897 /* checkmarkOutline.svg */ = {isa = PBXFileReference; name = "checkmarkOutline.svg"; path = "../assets/Icons/checkmarkOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		319F22B513A0468099A87215 /* chevronBackOutline.svg */ = {isa = PBXFileReference; name = "chevronBackOutline.svg"; path = "../assets/Icons/chevronBackOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		14AB539E7276428699FFE272 /* chevronDownOutlline.svg */ = {isa = PBXFileReference; name = "chevronDownOutlline.svg"; path = "../assets/Icons/chevronDownOutlline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3A2757B788744FB3992110E9 /* chevronForwardOutline.svg */ = {isa = PBXFileReference; name = "chevronForwardOutline.svg"; path = "../assets/Icons/chevronForwardOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		17294343CEA540E6B8C1CA09 /* closeCircleOutline.svg */ = {isa = PBXFileReference; name = "closeCircleOutline.svg"; path = "../assets/Icons/closeCircleOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1FEE970120B349AEB54042D6 /* closeIcon.svg */ = {isa = PBXFileReference; name = "closeIcon.svg"; path = "../assets/Icons/closeIcon.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		78AD9A98CF5A476DAEB16705 /* createOutline.svg */ = {isa = PBXFileReference; name = "createOutline.svg"; path = "../assets/Icons/createOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		00A46D9F06AC432C969A7331 /* editIcon.svg */ = {isa = PBXFileReference; name = "editIcon.svg"; path = "../assets/Icons/editIcon.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7F05D653A5D446DCB24770F0 /* ellipsis-horizontal.svg */ = {isa = PBXFileReference; name = "ellipsis-horizontal.svg"; path = "../assets/Icons/ellipsis-horizontal.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D8B3E0E75B104B409E2B807C /* ellipsisOutlineNormal.svg */ = {isa = PBXFileReference; name = "ellipsisOutlineNormal.svg"; path = "../assets/Icons/ellipsisOutlineNormal.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9EEF8BDACB91479BA66A6190 /* funnelOutlineGrey.svg */ = {isa = PBXFileReference; name = "funnelOutlineGrey.svg"; path = "../assets/Icons/funnelOutlineGrey.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BFFB5641E38243829BE1CC02 /* happyOutline.svg */ = {isa = PBXFileReference; name = "happyOutline.svg"; path = "../assets/Icons/happyOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		62AB0B151B634CF9B51A7ECE /* heartOutline.svg */ = {isa = PBXFileReference; name = "heartOutline.svg"; path = "../assets/Icons/heartOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		965D814CDD864753B7518CC2 /* heartRed.svg */ = {isa = PBXFileReference; name = "heartRed.svg"; path = "../assets/Icons/heartRed.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		37B34CF5889D49DB827FDD1D /* helpCircleOutline.svg */ = {isa = PBXFileReference; name = "helpCircleOutline.svg"; path = "../assets/Icons/helpCircleOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		DC9007DDFF494AA29A7DE697 /* home-focused-1.svg */ = {isa = PBXFileReference; name = "home-focused-1.svg"; path = "../assets/Icons/home-focused-1.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		73D05C08B89B4509AE6EAA2E /* home-focused.svg */ = {isa = PBXFileReference; name = "home-focused.svg"; path = "../assets/Icons/home-focused.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FE3DB7D4ACF8448F8CEFB2F3 /* home.svg */ = {isa = PBXFileReference; name = "home.svg"; path = "../assets/Icons/home.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E58DA7EF551A4B4282764D11 /* hoodieIcon.svg */ = {isa = PBXFileReference; name = "hoodieIcon.svg"; path = "../assets/Icons/hoodieIcon.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		498159283A724AA280D7DF21 /* image-outline.svg */ = {isa = PBXFileReference; name = "image-outline.svg"; path = "../assets/Icons/image-outline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F74B73F9CD5943D6A16588B8 /* locationOutline.svg */ = {isa = PBXFileReference; name = "locationOutline.svg"; path = "../assets/Icons/locationOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7AE4E9D9CDF94F07AED3A74D /* messageIcon-filled.svg */ = {isa = PBXFileReference; name = "messageIcon-filled.svg"; path = "../assets/Icons/messageIcon-filled.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		25EDA0D9B9A74872AEED58ED /* messageIcon.svg */ = {isa = PBXFileReference; name = "messageIcon.svg"; path = "../assets/Icons/messageIcon.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		07BD49CAE15E46E4BC66536F /* myAccount-filled.svg */ = {isa = PBXFileReference; name = "myAccount-filled.svg"; path = "../assets/Icons/myAccount-filled.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FAE13B64B48441A281BF5121 /* myAccount.svg */ = {isa = PBXFileReference; name = "myAccount.svg"; path = "../assets/Icons/myAccount.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3B3C851D7FFD45E7A23C2DF9 /* recycle.svg */ = {isa = PBXFileReference; name = "recycle.svg"; path = "../assets/Icons/recycle.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E08D5958198B48A08634D320 /* removeCircleOutline.svg */ = {isa = PBXFileReference; name = "removeCircleOutline.svg"; path = "../assets/Icons/removeCircleOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		18A1CCA87487437282DDC3B7 /* resizeIcon.svg */ = {isa = PBXFileReference; name = "resizeIcon.svg"; path = "../assets/Icons/resizeIcon.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BB9443CA2759440CA81C3153 /* scaleIcon.svg */ = {isa = PBXFileReference; name = "scaleIcon.svg"; path = "../assets/Icons/scaleIcon.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		91B7FB14B62A4437B3DC5A18 /* searchIcon.svg */ = {isa = PBXFileReference; name = "searchIcon.svg"; path = "../assets/Icons/searchIcon.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		64E2F3240B524F99A0308AE5 /* settingsOutline.svg */ = {isa = PBXFileReference; name = "settingsOutline.svg"; path = "../assets/Icons/settingsOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BE23672CB2D140EB89411C58 /* sheildCheckmark.svg */ = {isa = PBXFileReference; name = "sheildCheckmark.svg"; path = "../assets/Icons/sheildCheckmark.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FBDA2B807B9849BE88DAB2C6 /* terminalOutline.svg */ = {isa = PBXFileReference; name = "terminalOutline.svg"; path = "../assets/Icons/terminalOutline.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		ECA486780E88429F8C98ABAA /* timeOutine.svg */ = {isa = PBXFileReference; name = "timeOutine.svg"; path = "../assets/Icons/timeOutine.svg"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EB5A13A624AF4BB6B120BABD /* SegoeUI.ttf */ = {isa = PBXFileReference; name = "SegoeUI.ttf"; path = "../assets/fonts/SegoeUI.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AD65E3A99898499ABC04FA94 /* SegoeUIBold.ttf */ = {isa = PBXFileReference; name = "SegoeUIBold.ttf"; path = "../assets/fonts/SegoeUIBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00E356EB1AD99517003FC87E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7699B88040F8A987B510C191 /* libPods-jumunona-jumunonaTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C80B921A6F3F58F76C31292 /* libPods-jumunona.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00E356EF1AD99517003FC87E /* jumunonaTests */ = {
+			isa = PBXGroup;
+			children = (
+				00E356F21AD99517003FC87E /* jumunonaTests.m */,
+				00E356F01AD99517003FC87E /* Supporting Files */,
+			);
+			path = jumunonaTests;
+			sourceTree = "<group>";
+		};
+		00E356F01AD99517003FC87E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				00E356F11AD99517003FC87E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		13B07FAE1A68108700A75B9A /* jumunona */ = {
+			isa = PBXGroup;
+			children = (
+				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				13B07FB61A68108700A75B9A /* Info.plist */,
+				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
+				13B07FB71A68108700A75B9A /* main.m */,
+			);
+			name = jumunona;
+			sourceTree = "<group>";
+		};
+		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
+				5DCACB8F33CDC322A6C60F78 /* libPods-jumunona.a */,
+				19F6CBCC0A4E27FBF8BF4A61 /* libPods-jumunona-jumunonaTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		83CBB9F61A601CBA00E9B192 = {
+			isa = PBXGroup;
+			children = (
+				13B07FAE1A68108700A75B9A /* jumunona */,
+				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				00E356EF1AD99517003FC87E /* jumunonaTests */,
+				83CBBA001A601CBA00E9B192 /* Products */,
+				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				528D7E469C604EEC94AAC881 /* Resources */,
+			);
+			indentWidth = 2;
+			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
+		};
+		83CBBA001A601CBA00E9B192 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				13B07F961A680F5B00A75B9A /* jumunona.app */,
+				00E356EE1AD99517003FC87E /* jumunonaTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3B4392A12AC88292D35C810B /* Pods-jumunona.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-jumunona.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-jumunona-jumunonaTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-jumunona-jumunonaTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		528D7E469C604EEC94AAC881 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				A3813CFF7C8A4E05A408862A /* Segoe UI Bold Italic.ttf */,
+				791CB7934C3D4EEEB6567687 /* Segoe UI Bold.ttf */,
+				D583C251094C42B4AAE6B704 /* Segoe UI Italic.ttf */,
+				B6C1E05358F04ED3AE9A293B /* Segoe UI.ttf */,
+				0CC59E39CFB247EBBBF47046 /* addCircleOutline.svg */,
+				907AD867522A4B24B3C618A5 /* addOutline.svg */,
+				0ED496605DF048E8B5F9DFE9 /* archiveOutline.svg */,
+				73BAC551BB3C4B38BC06EF48 /* arrowRedoOutline.svg */,
+				C782D34AF3684C92928EF29D /* arrowUndoOutline.svg */,
+				AE80FD0672854C759E0AEC19 /* caretDown.svg */,
+				CD7AC3A4D4B443CDB6CB7C20 /* cart-filled.svg */,
+				05641E1F704E4019B5FA990C /* cart.svg */,
+				C76FA69F06F94DA69ED4F4C9 /* cartOutlineIcon.svg */,
+				59D5BB3897DA47DC9CB28410 /* category-focused.svg */,
+				9D5C15A34A1444DEAD17BFCF /* category.svg */,
+				D8CE3289F84A4C53920C1279 /* chatbubbleEllipsisIcon.svg */,
+				85EF6218BF554BC49A346595 /* checkMarkCircle.svg */,
+				5AC6DF6072354E1481F09897 /* checkmarkOutline.svg */,
+				319F22B513A0468099A87215 /* chevronBackOutline.svg */,
+				14AB539E7276428699FFE272 /* chevronDownOutlline.svg */,
+				3A2757B788744FB3992110E9 /* chevronForwardOutline.svg */,
+				17294343CEA540E6B8C1CA09 /* closeCircleOutline.svg */,
+				1FEE970120B349AEB54042D6 /* closeIcon.svg */,
+				78AD9A98CF5A476DAEB16705 /* createOutline.svg */,
+				00A46D9F06AC432C969A7331 /* editIcon.svg */,
+				7F05D653A5D446DCB24770F0 /* ellipsis-horizontal.svg */,
+				D8B3E0E75B104B409E2B807C /* ellipsisOutlineNormal.svg */,
+				9EEF8BDACB91479BA66A6190 /* funnelOutlineGrey.svg */,
+				BFFB5641E38243829BE1CC02 /* happyOutline.svg */,
+				62AB0B151B634CF9B51A7ECE /* heartOutline.svg */,
+				965D814CDD864753B7518CC2 /* heartRed.svg */,
+				37B34CF5889D49DB827FDD1D /* helpCircleOutline.svg */,
+				DC9007DDFF494AA29A7DE697 /* home-focused-1.svg */,
+				73D05C08B89B4509AE6EAA2E /* home-focused.svg */,
+				FE3DB7D4ACF8448F8CEFB2F3 /* home.svg */,
+				E58DA7EF551A4B4282764D11 /* hoodieIcon.svg */,
+				498159283A724AA280D7DF21 /* image-outline.svg */,
+				F74B73F9CD5943D6A16588B8 /* locationOutline.svg */,
+				7AE4E9D9CDF94F07AED3A74D /* messageIcon-filled.svg */,
+				25EDA0D9B9A74872AEED58ED /* messageIcon.svg */,
+				07BD49CAE15E46E4BC66536F /* myAccount-filled.svg */,
+				FAE13B64B48441A281BF5121 /* myAccount.svg */,
+				3B3C851D7FFD45E7A23C2DF9 /* recycle.svg */,
+				E08D5958198B48A08634D320 /* removeCircleOutline.svg */,
+				18A1CCA87487437282DDC3B7 /* resizeIcon.svg */,
+				BB9443CA2759440CA81C3153 /* scaleIcon.svg */,
+				91B7FB14B62A4437B3DC5A18 /* searchIcon.svg */,
+				64E2F3240B524F99A0308AE5 /* settingsOutline.svg */,
+				BE23672CB2D140EB89411C58 /* sheildCheckmark.svg */,
+				FBDA2B807B9849BE88DAB2C6 /* terminalOutline.svg */,
+				ECA486780E88429F8C98ABAA /* timeOutine.svg */,
+				EB5A13A624AF4BB6B120BABD /* SegoeUI.ttf */,
+				AD65E3A99898499ABC04FA94 /* SegoeUIBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		00E356ED1AD99517003FC87E /* jumunonaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "jumunonaTests" */;
+			buildPhases = (
+				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
+				00E356EA1AD99517003FC87E /* Sources */,
+				00E356EB1AD99517003FC87E /* Frameworks */,
+				00E356EC1AD99517003FC87E /* Resources */,
+				C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */,
+				F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				00E356F51AD99517003FC87E /* PBXTargetDependency */,
+			);
+			name = jumunonaTests;
+			productName = jumunonaTests;
+			productReference = 00E356EE1AD99517003FC87E /* jumunonaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		13B07F861A680F5B00A75B9A /* jumunona */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "jumunona" */;
+			buildPhases = (
+				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				FD10A7F022414F080027D42C /* Start Packager */,
+				13B07F871A680F5B00A75B9A /* Sources */,
+				13B07F8C1A680F5B00A75B9A /* Frameworks */,
+				13B07F8E1A680F5B00A75B9A /* Resources */,
+				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
+				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = jumunona;
+			productName = jumunona;
+			productReference = 13B07F961A680F5B00A75B9A /* jumunona.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		83CBB9F71A601CBA00E9B192 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1210;
+				TargetAttributes = {
+					00E356ED1AD99517003FC87E = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 1120;
+					};
+				};
+			};
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "jumunona" */;
+			compatibilityVersion = "Xcode 12.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 83CBB9F61A601CBA00E9B192;
+			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				13B07F861A680F5B00A75B9A /* jumunona */,
+				00E356ED1AD99517003FC87E /* jumunonaTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00E356EC1AD99517003FC87E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13B07F8E1A680F5B00A75B9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				7251D936523B42AAAE59A107 /* Segoe UI Bold Italic.ttf in Resources */,
+				C0E7B1DDA7864D989C5DFC4E /* Segoe UI Bold.ttf in Resources */,
+				E615EBD3E6524649B6040AAB /* Segoe UI Italic.ttf in Resources */,
+				30C36F0ACD6D49CC9E79CB6D /* Segoe UI.ttf in Resources */,
+				69004545376D472889A4484E /* addCircleOutline.svg in Resources */,
+				DEEF4E5418024693B72B4D7F /* addOutline.svg in Resources */,
+				19EAC23831D24101BDD3983B /* archiveOutline.svg in Resources */,
+				EDBE721281E6463F8DA2F9F9 /* arrowRedoOutline.svg in Resources */,
+				830FE31118F145CAAFD4948C /* arrowUndoOutline.svg in Resources */,
+				606B32ED52184DB7BB6AE828 /* caretDown.svg in Resources */,
+				DD5DCED5BB6B4DBFAEB9BB0B /* cart-filled.svg in Resources */,
+				70A105DE582F46BA85B181E7 /* cart.svg in Resources */,
+				D2E9D2BE3A3F4B1C9C8ABD7E /* cartOutlineIcon.svg in Resources */,
+				0786974CE14B42A580DEE8C6 /* category-focused.svg in Resources */,
+				FA7C25C362984CD39D906884 /* category.svg in Resources */,
+				BA5E85D125AC499BB86FAE21 /* chatbubbleEllipsisIcon.svg in Resources */,
+				CE0E8AA9DD9D474281413D12 /* checkMarkCircle.svg in Resources */,
+				CC0DFB4E4D23438F8811ACB8 /* checkmarkOutline.svg in Resources */,
+				781F5466FFA9477D8BB013A7 /* chevronBackOutline.svg in Resources */,
+				58D1ED10C0014DB1B92307D5 /* chevronDownOutlline.svg in Resources */,
+				8A15D7296CD84B6DAAB7DBCE /* chevronForwardOutline.svg in Resources */,
+				FDA8EE2839754D13A9BE9BDE /* closeCircleOutline.svg in Resources */,
+				C401C93343D442908A08F7BD /* closeIcon.svg in Resources */,
+				C9AFB6CCF35B43309A761FD8 /* createOutline.svg in Resources */,
+				78C01579C32545A58E93BF20 /* editIcon.svg in Resources */,
+				51C7F281CEF2452C99B6FD11 /* ellipsis-horizontal.svg in Resources */,
+				C6BA68EBC2894E3F9EF7BC13 /* ellipsisOutlineNormal.svg in Resources */,
+				6F3E5C6E429C4ED3B875EC13 /* funnelOutlineGrey.svg in Resources */,
+				FB2ADFE215414417BA251BA9 /* happyOutline.svg in Resources */,
+				FFA762A2C09D4FBBA7183314 /* heartOutline.svg in Resources */,
+				62CB0B3D968A47B9BAB106C5 /* heartRed.svg in Resources */,
+				0D83F67D16284C46BA0D8D49 /* helpCircleOutline.svg in Resources */,
+				41AB7FBA61DF4FDFA7A6CF4C /* home-focused-1.svg in Resources */,
+				CAFB28B3ADE8418B846FEE16 /* home-focused.svg in Resources */,
+				6ED962CBA3114B6E9345B7E2 /* home.svg in Resources */,
+				6A2673822FB14AEAB99BA7D7 /* hoodieIcon.svg in Resources */,
+				01CC1FC370BE4506B2ADA2AC /* image-outline.svg in Resources */,
+				FF17656E55F043B596F58D1E /* locationOutline.svg in Resources */,
+				F4CBC0788A0F4AF4BB267BE2 /* messageIcon-filled.svg in Resources */,
+				1EC73A1DDE61454C8AC8E5AA /* messageIcon.svg in Resources */,
+				406C74391F7A4AB2888F2AF9 /* myAccount-filled.svg in Resources */,
+				36BB9C8D893C41CC98D0CEE9 /* myAccount.svg in Resources */,
+				811184F28AB3476B8F4B91E8 /* recycle.svg in Resources */,
+				642AE4CC2B3A4AE197A64C19 /* removeCircleOutline.svg in Resources */,
+				F51A888A5143436EA3CA9E57 /* resizeIcon.svg in Resources */,
+				E2D882762FA94A66ACC2AFB9 /* scaleIcon.svg in Resources */,
+				87471E1E41BC4E38908D222B /* searchIcon.svg in Resources */,
+				5078DABB0A4342F2AFC2538A /* settingsOutline.svg in Resources */,
+				F345EE56972A4EAB865A2E8A /* sheildCheckmark.svg in Resources */,
+				3A4BE0A211B54A3AB3234CB3 /* terminalOutline.svg in Resources */,
+				8F2062C1184C4129AC1192B8 /* timeOutine.svg in Resources */,
+				8F86A7EEB1B94D7588509E5C /* SegoeUI.ttf in Resources */,
+				37E8A4A185F84610961D74C1 /* SegoeUIBold.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+		};
+		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jumunona/Pods-jumunona-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jumunona/Pods-jumunona-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-jumunona/Pods-jumunona-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-jumunona-jumunonaTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-jumunona-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jumunona/Pods-jumunona-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jumunona/Pods-jumunona-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-jumunona/Pods-jumunona-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FD10A7F022414F080027D42C /* Start Packager */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Start Packager";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00E356EA1AD99517003FC87E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00E356F31AD99517003FC87E /* jumunonaTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		13B07F871A680F5B00A75B9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				13B07FC11A68108700A75B9A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9A /* jumunona */;
+			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		00E356F61AD99517003FC87E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-jumunona-jumunonaTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = jumunonaTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+					"$(inherited)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/jumunona.app/jumunona";
+			};
+			name = Debug;
+		};
+		00E356F71AD99517003FC87E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-jumunona-jumunonaTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = NO;
+				INFOPLIST_FILE = jumunonaTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+					"$(inherited)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/jumunona.app/jumunona";
+			};
+			name = Release;
+		};
+		13B07F941A680F5B00A75B9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-jumunona.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = jumunona/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = jumunona;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		13B07F951A680F5B00A75B9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-jumunona.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = jumunona/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = jumunona;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		83CBBA201A601CBA00E9B192 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+				);
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		83CBBA211A601CBA00E9B192 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+				);
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "jumunonaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00E356F61AD99517003FC87E /* Debug */,
+				00E356F71AD99517003FC87E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "jumunona" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				13B07F941A680F5B00A75B9A /* Debug */,
+				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "jumunona" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83CBBA201A601CBA00E9B192 /* Debug */,
+				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
+}

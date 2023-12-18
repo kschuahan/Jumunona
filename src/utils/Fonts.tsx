@@ -1,6 +1,6 @@
-export const fontFamilty = {
-    regular: "SegoeUI",
-    bold: "SegoeUIBold",
-    semibold: "",
-    medium: ""
-}
+export const fontFamily = {
+  regular: 'SegoeUI',
+  bold: 'SegoeUIBold',
+  semibold: '',
+  medium: '',
+};

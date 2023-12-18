@@ -1,37 +1,4 @@
 {
-  "expo": {
-    "name": "jumunona",
-    "slug": "jumunona",
-    "scheme": "jumunona",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon-512x512.png",
-    "userInterfaceStyle": "light",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.abhineh.jumunona"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/icon-60x60.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.abhineh.jumunona"
-    },
-    "web": {
-      "favicon": "./assets/icon-32x32.png"
-    },
-    "androidStatusBar": {
-      "networkActivityIndicatorVisible": true,
-      "backgroundColor": "#ffffff"
-    }
-    // "extra": {
-    //   "eas": {
-    //     "projectId": "b90f0786-a76e-45d8-b6dc-3d730c791e8e"
-    //   }
-    // }
-  }
+  "name": "jumunona",
+  "displayName": "jumunona"
 }

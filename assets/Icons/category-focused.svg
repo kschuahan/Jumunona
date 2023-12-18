@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24.995" height="25" viewBox="0 0 24.995 25">
+  <g id="Group_1301" data-name="Group 1301" transform="translate(-102.495 -738)">
+    <g id="Component_4_119" data-name="Component 4 – 119" transform="translate(102.495 738)">
+      <g id="Rectangle_424" data-name="Rectangle 424" fill="#ff7600" stroke="#ff7600" stroke-width="1.2">
+        <path d="M2.5,0H8.887a2.5,2.5,0,0,1,2.5,2.5v8.087a.8.8,0,0,1-.8.8H2.5A2.5,2.5,0,0,1,0,8.887V2.5A2.5,2.5,0,0,1,2.5,0Z" stroke="none"/>
+        <path d="M2.5.6H8.887a1.9,1.9,0,0,1,1.9,1.9v8.087a.2.2,0,0,1-.2.2H2.5a1.9,1.9,0,0,1-1.9-1.9V2.5A1.9,1.9,0,0,1,2.5.6Z" fill="none"/>
+      </g>
+      <g id="Rectangle_425" data-name="Rectangle 425" transform="translate(13.608)" fill="#ff7600" stroke="#ff7600" stroke-width="1.2">
+        <rect width="11.387" height="11.387" rx="5" stroke="none"/>
+        <rect x="0.6" y="0.6" width="10.187" height="10.187" rx="4.4" fill="none"/>
+      </g>
+      <g id="Rectangle_426" data-name="Rectangle 426" transform="translate(13.608 13.613)" fill="#ff7600" stroke="#ff7600" stroke-width="1.2">
+        <path d="M.8,0H8.887a2.5,2.5,0,0,1,2.5,2.5V8.887a2.5,2.5,0,0,1-2.5,2.5H2.5A2.5,2.5,0,0,1,0,8.887V.8A.8.8,0,0,1,.8,0Z" stroke="none"/>
+        <path d="M.8.6H8.887a1.9,1.9,0,0,1,1.9,1.9V8.887a1.9,1.9,0,0,1-1.9,1.9H2.5a1.9,1.9,0,0,1-1.9-1.9V.8A.2.2,0,0,1,.8.6Z" fill="none"/>
+      </g>
+      <g id="Rectangle_427" data-name="Rectangle 427" transform="translate(0 13.613)" fill="#ff7600" stroke="#ff7600" stroke-width="1.2">
+        <path d="M2.5,0h8.087a.8.8,0,0,1,.8.8V8.887a2.5,2.5,0,0,1-2.5,2.5H2.5A2.5,2.5,0,0,1,0,8.887V2.5A2.5,2.5,0,0,1,2.5,0Z" stroke="none"/>
+        <path d="M2.5.6h8.087a.2.2,0,0,1,.2.2V8.887a1.9,1.9,0,0,1-1.9,1.9H2.5a1.9,1.9,0,0,1-1.9-1.9V2.5A1.9,1.9,0,0,1,2.5.6Z" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>
