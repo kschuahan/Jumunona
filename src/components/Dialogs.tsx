@@ -51,7 +51,7 @@ export const VerifyDeleteAccountDialog = ({
           <Text
             style={[
               styles.textStyle,
-              { marginTop: 10, fontFamily: fontFamily.bold, fontSize: 17 },
+              { fontFamily: fontFamily.bold, fontSize: 17 },
             ]}>
             {AppString.confirmation_code}
           </Text>
@@ -92,7 +92,7 @@ export const VerifyDeleteAccountDialog = ({
           <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
             <TouchableOpacity
               onPress={onCancel}
-              style={{ marginVertical: 16, width: '45%' }}>
+              style={{ marginVertical: 10, paddingBottom: 16, width: '45%' }}>
               <LinearGradient
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
@@ -107,6 +107,7 @@ export const VerifyDeleteAccountDialog = ({
                 <Text
                   style={{
                     fontSize: 16,
+
                     color: colors.white,
                     paddingHorizontal: 20,
                     fontFamily: fontFamily.bold,
@@ -118,7 +119,8 @@ export const VerifyDeleteAccountDialog = ({
             <TouchableOpacity
               onPress={onConfirm}
               style={{
-                marginVertical: 16,
+                marginVertical: 10,
+                marginBottom: 16,
                 elevation: 4,
                 height: 46,
                 alignItems: 'center',

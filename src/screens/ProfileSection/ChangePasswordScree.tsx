@@ -1,5 +1,5 @@
 import LinearGradient from 'react-native-linear-gradient';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,21 +8,22 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {colors} from '../../utils/AppColors';
-import {AppString} from '../../utils/AppStrings';
-import {styles} from '../../utils/AppStyles';
-import {RouteNames} from '../../utils/RouteNames';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
+import { styles } from '../../utils/AppStyles';
+import { RouteNames } from '../../utils/RouteNames';
 
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import { fontFamily } from '../../utils/Fonts';
+import { CustomHeader } from '../../components/Header';
 
-const ChangePassswordScreen = ({navigation}) => {
+const ChangePassswordScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: AppString.change_password,
       headerRight: () => (
-        <TouchableOpacity style={{alignItems: 'center'}}>
+        <TouchableOpacity style={{ alignItems: 'center' }}>
           <EllipsisHorizontal width={24} height={24} />
         </TouchableOpacity>
       ),
@@ -32,7 +33,7 @@ const ChangePassswordScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}
-          style={{alignItems: 'center'}}>
+          style={{ alignItems: 'center' }}>
           <ChevronBackOutline width={15} height={15} />
         </TouchableOpacity>
       ),
@@ -42,65 +43,69 @@ const ChangePassswordScreen = ({navigation}) => {
   const [confirmNewPass, setConfirmNewPass] = useState('');
 
   return (
-    <ScrollView>
-      <View
-        style={[
-          style.container,
-          {backgroundColor: colors.white, borderRadius: 13},
-        ]}>
-        <Text
+    <View style={[styles.container, { padding: 0 }]}>
+      <CustomHeader navigation={navigation} title={AppString.change_password} />
+
+      <ScrollView>
+        <View
           style={[
-            styles.textStyle,
-            {marginBottom: 6, fontFamily: fontFamily.bold, fontSize: 17},
+            style.container,
+            { backgroundColor: colors.white, borderRadius: 13,  marginTop: 6},
           ]}>
-          {AppString.new_password}
-        </Text>
-
-        <View style={{flexDirection: 'row', marginBottom: 14}}>
-          <TextInput
-            placeholder={AppString.create_new_password}
-            style={style.passwordTextInput}
-            value={newPass}
-            onChangeText={text => {
-              setNewPass(text);
-            }}></TextInput>
-        </View>
-
-        <Text
-          style={[
-            styles.textStyle,
-            {marginBottom: 6, fontFamily: fontFamily.bold, fontSize: 17},
-          ]}>
-          {AppString.confrim_new_password}
-        </Text>
-        <View style={{flexDirection: 'row'}}>
-          <TextInput
-            placeholder={AppString.enter_your_pass_again}
-            style={style.passwordTextInput}
-            value={confirmNewPass}
-            onChangeText={text => {
-              setNewPass(text);
-            }}></TextInput>
-        </View>
-      </View>
-
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate(RouteNames.sucessfulChangePassword);
-        }}
-        style={style.confirmButton}>
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          colors={['#FE8C00', '#FC4A1A']}
-          style={styles.buttonGradient}>
           <Text
-            style={{fontSize: 18, color: '#fff', fontFamily: fontFamily.bold}}>
-            {AppString.confirm}
+            style={[
+              styles.textStyle,
+              { marginBottom: 6, fontFamily: fontFamily.bold, fontSize: 17 },
+            ]}>
+            {AppString.new_password}
           </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    </ScrollView>
+
+          <View style={{ flexDirection: 'row', marginBottom: 14 }}>
+            <TextInput
+              placeholder={AppString.create_new_password}
+              style={style.passwordTextInput}
+              value={newPass}
+              onChangeText={text => {
+                setNewPass(text);
+              }}></TextInput>
+          </View>
+
+          <Text
+            style={[
+              styles.textStyle,
+              { marginBottom: 6, fontFamily: fontFamily.bold, fontSize: 17 },
+            ]}>
+            {AppString.confrim_new_password}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <TextInput
+              placeholder={AppString.enter_your_pass_again}
+              style={style.passwordTextInput}
+              value={confirmNewPass}
+              onChangeText={text => {
+                setNewPass(text);
+              }}></TextInput>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(RouteNames.sucessfulChangePassword);
+          }}
+          style={style.confirmButton}>
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={['#FE8C00', '#FC4A1A']}
+            style={styles.buttonGradient}>
+            <Text
+              style={{ fontSize: 18, color: '#fff', fontFamily: fontFamily.bold }}>
+              {AppString.confirm}
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 };
 

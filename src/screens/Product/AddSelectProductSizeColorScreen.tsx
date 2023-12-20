@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import {ScrollView} from 'react-native-virtualized-view';
-import {useState} from 'react';
+import { ScrollView } from 'react-native-virtualized-view';
+import { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {AppString} from '../../utils/AppStrings';
-import {styles} from '../../utils/AppStyles';
-import {imagesUrl} from '../../utils/AppIcons';
-import {colors} from '../../utils/AppColors';
-import {fontFamily} from '../../utils/Fonts';
+import { AppString } from '../../utils/AppStrings';
+import { styles } from '../../utils/AppStyles';
+import { imagesUrl } from '../../utils/AppIcons';
+import { colors } from '../../utils/AppColors';
+import { fontFamily } from '../../utils/Fonts';
 import CloseIcon from '../../../assets/Icons/closeIcon.svg';
 import ShieldCheckmarkIcon from '../../../assets/Icons/sheildCheckmark.svg';
 import Policy from '../../../assets/Icons/Policy.svg';
@@ -24,7 +24,7 @@ import ChevronFwdOutline from '../../../assets/Icons/ForwardOrange.svg';
 import ResizeIcon from '../../../assets/Icons/resizeIcon.svg';
 import RemoveCircleOutline from '../../../assets/Icons/removeCircleOutline.svg';
 
-const AddSelectProductSizeColorScreen = ({isShow = false, onClose}) => {
+const AddSelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
   const [number, setNumber] = useState('');
   const [otp, setOtp] = useState('');
 
@@ -37,7 +37,7 @@ const AddSelectProductSizeColorScreen = ({isShow = false, onClose}) => {
       <View
         style={[
           styles.botton_view,
-          {backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end'},
+          { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end' },
         ]}>
         <View
           style={{
@@ -61,8 +61,8 @@ const AddSelectProductSizeColorScreen = ({isShow = false, onClose}) => {
                 alignContent: 'space-between',
               }}>
               <Image
-                source={{uri: imagesUrl.shoes}}
-                style={{height: 65, width: 65, borderRadius: 10}}
+                source={{ uri: imagesUrl.shoes }}
+                style={{ height: 65, width: 65, borderRadius: 10 }}
               />
 
               <Text
@@ -79,7 +79,7 @@ const AddSelectProductSizeColorScreen = ({isShow = false, onClose}) => {
               </Text>
             </View>
             <TouchableOpacity
-              style={{marginEnd: 7.11}}
+              style={{ marginEnd: 7.11, marginTop: 6 }}
               onPress={() => {
                 onClose();
               }}>
@@ -87,10 +87,10 @@ const AddSelectProductSizeColorScreen = ({isShow = false, onClose}) => {
             </TouchableOpacity>
           </View>
           <ScrollView
-            style={{paddingBottom: 40}}
+            style={{ paddingBottom: 40 }}
             showsVerticalScrollIndicator={false}>
-            <CancelReturnPolicyView onClick={() => {}} />
-            <PhoneDataScreen onClick={() => {}} />
+            <CancelReturnPolicyView onClick={() => { }} />
+            <PhoneDataScreen onClick={() => { }} />
             <View
               style={{
                 height: 1,
@@ -118,8 +118,8 @@ const AddSelectProductSizeColorScreen = ({isShow = false, onClose}) => {
             />
             <QuanityView />
 
-            <View style={{marginTop: 37}}>
-              <CommonButton text={AppString.add} onClick={() => {}} />
+            <View style={{ marginTop: 37 }}>
+              <CommonButton text={AppString.add} onClick={() => { }} />
             </View>
           </ScrollView>
         </View>
@@ -128,13 +128,13 @@ const AddSelectProductSizeColorScreen = ({isShow = false, onClose}) => {
   );
 };
 
-const CancelReturnPolicyView = ({onClick}) => {
+const CancelReturnPolicyView = ({ onClick }) => {
   return (
     <View
       style={[
         styles.profile,
         {
-          marginTop: 9,
+          marginTop: 6,
           alignItems: 'center',
           paddingVertical: 4,
           paddingHorizontal: 6,
@@ -160,7 +160,7 @@ const CancelReturnPolicyView = ({onClick}) => {
   );
 };
 
-const PhoneDataScreen = ({onClick}) => {
+const PhoneDataScreen = ({ onClick }) => {
   return (
     <View
       style={[
@@ -185,7 +185,7 @@ const PhoneDataScreen = ({onClick}) => {
         <Text
           style={[
             styles.textStyle,
-            {fontSize: 14, paddingStart: 4.22, fontWeight: '400'},
+            { fontSize: 14, paddingStart: 4.22, fontWeight: '400' },
           ]}>
           Body data
         </Text>
@@ -195,17 +195,17 @@ const PhoneDataScreen = ({onClick}) => {
   );
 };
 
-const ColorOptions = ({}) => {
+const ColorOptions = ({ }) => {
   const [selectedColor, setSelectedColor] = useState(1);
   return (
     <View>
-      <Text style={[styles.textStyle, {fontSize: 14}]}>Цвет (2)</Text>
+      <Text style={[styles.textStyle, { fontSize: 14 }]}>Цвет (2)</Text>
 
       <FlatList
         data={[1, 2]}
-        renderItem={({item, index}) => (
-          <View style={{marginEnd: 8}}>
-            <View style={{height: 13}} />
+        renderItem={({ item, index }) => (
+          <View style={{ marginEnd: 8 }}>
+            <View style={{ height: 13 }} />
             <TouchableOpacity
               onPress={() => {
                 setSelectedColor(item);
@@ -218,8 +218,8 @@ const ColorOptions = ({}) => {
                   alignContent: 'center',
                 }}>
                 <Image
-                  source={{uri: imagesUrl.shoes}}
-                  style={{width: 109, height: 111, borderRadius: 7}}
+                  source={{ uri: imagesUrl.shoes }}
+                  style={{ width: 109, height: 111, borderRadius: 7 }}
                 />
                 <View
                   style={{
@@ -312,19 +312,19 @@ const ColorOptions = ({}) => {
   );
 };
 
-const SizeAndBuyingForView = ({}) => {
+const SizeAndBuyingForView = ({ }) => {
   const [selectedSize, setSelecteSize] = useState(false);
   const users = ['Vali', 'Name 2', '+ Add'];
   const sizes = ['24', '25', '26', '27', '28', '29', '30', '31', '32'];
   const [selectedItem, setSelecteItem] = useState('');
   return (
     <View>
-      <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
         <TouchableOpacity
           onPress={() => {
             setSelecteSize(false);
           }}>
-          <View style={{flexDirection: 'column', justifyContent: 'flex-start'}}>
+          <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
             <Text
               style={[
                 styles.textStyle,
@@ -382,8 +382,8 @@ const SizeAndBuyingForView = ({}) => {
         data={selectedSize ? sizes : users}
         scrollEnabled={false}
         numColumns={5}
-        renderItem={({item}) => (
-          <View style={{margin: 8, flex: 1 / (selectedSize ? 5 : 3.5)}}>
+        renderItem={({ item }) => (
+          <View style={{ margin: 8, flex: 1 / (selectedSize ? 5 : 3.5) }}>
             <TouchableOpacity
               onPress={() => {
                 setSelecteItem(item);
@@ -435,7 +435,7 @@ const SizeAndBuyingForView = ({}) => {
   );
 };
 
-const QuanityView = ({}) => {
+const QuanityView = ({ }) => {
   const [quantiy, setQuantity] = useState(1);
   const maxQuantity = 9;
   return (
@@ -448,12 +448,12 @@ const QuanityView = ({}) => {
       <Text
         style={[
           styles.textStyle,
-          {textAlign: 'center', fontSize: 14, alignSelf: 'center'},
+          { textAlign: 'center', fontSize: 14, alignSelf: 'center' },
         ]}>
         Quantity
       </Text>
 
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <TouchableOpacity
           onPress={() => {
             if (quantiy > 1) {
@@ -469,7 +469,7 @@ const QuanityView = ({}) => {
         <Text
           style={[
             styles.textStyle,
-            {alignSelf: 'center', fontSize: 17, paddingRight: 8},
+            { alignSelf: 'center', fontSize: 17, paddingRight: 8 },
           ]}>
           {' '}
           {quantiy.toString()}
@@ -498,11 +498,11 @@ const CommonButton = ({
   onClick,
 }) => {
   return (
-    <TouchableOpacity onPress={onClick} style={{flex: 0.5}}>
+    <TouchableOpacity onPress={onClick} style={{ flex: 0.5 }}>
       <LinearGradient
         colors={[startorange, endColor]}
-        start={{x: 0.4, y: 0}}
-        end={{x: 1, y: 1}}
+        start={{ x: 0.4, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={{
           borderRadius: 1000,
           marginEnd: 10,
@@ -513,7 +513,7 @@ const CommonButton = ({
         <Text
           style={[
             styles.textStyle,
-            {color: colors.white, fontFamily: fontFamily.regular, fontSize: 14},
+            { color: colors.white, fontFamily: fontFamily.regular, fontSize: 14 },
           ]}>
           {text}
         </Text>

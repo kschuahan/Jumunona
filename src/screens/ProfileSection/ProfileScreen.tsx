@@ -49,7 +49,7 @@ const ProfileScreen = (props: any) => {
           style={{
             flexDirection: 'row',
             marginTop: 23.25,
-            marginHorizontal: 40,
+            marginHorizontal: 30,
             justifyContent: 'space-between',
           }}>
           <IconWithText
@@ -60,6 +60,7 @@ const ProfileScreen = (props: any) => {
             onPress={() => {
               props.navigation.navigate(RouteNames.favorite);
             }}
+            gap={4}
           />
           <IconWithText
             SvgSource={checkmarkCircleOutlineIcon}
@@ -67,6 +68,8 @@ const ProfileScreen = (props: any) => {
             height={21}
             title={AppString.subscription}
             onPress={() => { }}
+            gap={4}
+
           />
           <IconWithText
             SvgSource={timeOutlineIcon}
@@ -74,6 +77,8 @@ const ProfileScreen = (props: any) => {
             height={21}
             title={AppString.story}
             onPress={() => { }}
+            gap={4}
+
           />
           <IconWithText
             SvgSource={Wallet}
@@ -81,6 +86,8 @@ const ProfileScreen = (props: any) => {
             height={21}
             title={AppString.wallet}
             onPress={() => { }}
+            gap={4}
+
           />
         </View>
 
@@ -105,6 +112,7 @@ const ProfileScreen = (props: any) => {
               color={colors.lightRed}
               title={AppString.address}
               onPress={() => { }}
+              gap={6}
             />
             <IconWithText
               SvgSource={Body}
@@ -113,6 +121,8 @@ const ProfileScreen = (props: any) => {
               color={colors.lightRed}
               title={AppString.body}
               onPress={() => { }}
+              gap={6}
+
             />
             <IconWithText
               SvgSource={Team}
@@ -121,6 +131,8 @@ const ProfileScreen = (props: any) => {
               color={colors.lightRed}
               title={AppString.team}
               onPress={() => { }}
+              gap={6}
+
             />
             <IconWithText
               SvgSource={Reviews}
@@ -131,6 +143,8 @@ const ProfileScreen = (props: any) => {
               onPress={() => {
                 props.navigation.navigate(RouteNames.myReviews);
               }}
+              gap={6}
+
             />
             <IconWithText
               SvgSource={help}
@@ -139,6 +153,8 @@ const ProfileScreen = (props: any) => {
               color={colors.lightRed}
               title={AppString.help}
               onPress={() => { }}
+              gap={6}
+
             />
           </View>
         </View>
@@ -153,16 +169,17 @@ const ProfileScreen = (props: any) => {
             bottom: 16,
             width: dimensions.width - 12,
             marginHorizontal: 6,
-            paddingStart: 24,
-            paddingEnd: 18,
+            paddingStart: 14,
+            paddingEnd: 6,
           }}>
           <Text
             style={[
               styles.textStyle,
               {
                 fontSize: 13,
-                marginStart: 20,
+                marginStart: 16,
                 marginBottom: 20,
+                marginTop: -8,
                 color: colors.black141414,
                 fontWeight: '500',
                 fontFamily: undefined,
@@ -190,6 +207,7 @@ const MyOrder = () => {
         backgroundColor: colors.white,
         marginTop: 10.5,
         padding: 8,
+        paddingTop: 4,
         borderRadius: 13,
       }}>
       <View>
@@ -217,6 +235,7 @@ const MyOrder = () => {
             onPress={() => { }}
             width={21}
             height={21}
+            gap={3}
           />
           <IconWithText
             SvgSource={Treatment}
@@ -227,6 +246,8 @@ const MyOrder = () => {
             onPress={() => { }}
             width={21}
             height={21}
+            gap={4}
+
           />
           <IconWithText
             SvgSource={Sent}
@@ -236,6 +257,8 @@ const MyOrder = () => {
             color={colors.balc111111}
             title={AppString.sent}
             onPress={() => { }}
+            gap={4}
+
           />
           <IconWithText
             SvgSource={Review}
@@ -246,6 +269,8 @@ const MyOrder = () => {
             onPress={() => { }}
             width={21}
             height={21}
+            gap={4}
+
           />
           <IconWithText
             SvgSource={arrowUndoOutline}
@@ -254,9 +279,11 @@ const MyOrder = () => {
             width={21}
             height={21}
             onPress={() => { }}
+            gap={4}
+
           />
         </View>
-        <View style={{ marginBottom: 8, marginHorizontal: 9 }}>
+        <View style={{ marginBottom: 8, marginHorizontal: 1 }}>
           <ProfileProduct />
         </View>
       </View>
@@ -385,11 +412,12 @@ const IconWithText = ({
   onPress,
   color = colors.black,
   end = 6,
+  gap = 9.5
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={{ alignItems: 'center', gap: 9.5 }}>
+      style={{ alignItems: 'center', gap: gap }}>
       <SvgSource height={height} width={width} color={color} />
       {isVisible ? (
         <LinearGradient

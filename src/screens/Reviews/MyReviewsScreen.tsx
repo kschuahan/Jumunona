@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,21 +7,23 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {styles} from '../../utils/AppStyles';
-import {colors} from '../../utils/AppColors';
-import {AppString} from '../../utils/AppStrings';
-import {imagesUrl} from '../../utils/AppIcons';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { styles } from '../../utils/AppStyles';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
+import { imagesUrl } from '../../utils/AppIcons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import { fontFamily } from '../../utils/Fonts';
+import { RouteNames } from '../../utils/RouteNames';
+import { CustomHeader } from '../../components/Header';
 
-const MyReviewsScreen = ({navigation}) => {
+const MyReviewsScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: AppString.my_reviews,
       headerRight: () => (
-        <TouchableOpacity style={{alignItems: 'center'}}>
+        <TouchableOpacity style={{ alignItems: 'center' }}>
           <EllipsisHorizontal width={24} height={24} />
         </TouchableOpacity>
       ),
@@ -31,7 +33,7 @@ const MyReviewsScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}
-          style={{alignItems: 'center'}}>
+          style={{ alignItems: 'center' }}>
           <ChevronBackOutline width={15} height={15} />
         </TouchableOpacity>
       ),
@@ -40,7 +42,9 @@ const MyReviewsScreen = ({navigation}) => {
 
   const [reviewList, setReviewList] = useState([0, 0, 0, 0]);
   return (
-    <SafeAreaView edges={['bottom', 'left', 'right']} style={{flex: 1}}>
+    <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1 }}>
+      <CustomHeader navigation={navigation} title={AppString.my_reviews} />
+
       <FlatList
         data={reviewList}
         renderItem={item => {
@@ -53,7 +57,7 @@ const MyReviewsScreen = ({navigation}) => {
   );
 };
 
-const ReviewBox = ({}) => {
+const ReviewBox = ({ }) => {
   return (
     <View
       style={[
@@ -62,7 +66,7 @@ const ReviewBox = ({}) => {
           borderRadius: 13,
           backgroundColor: colors.white,
           marginHorizontal: 10,
-          marginTop: 9,
+          marginVertical: 4.5,
           padding: undefined,
           paddingHorizontal: 10,
         },
@@ -87,11 +91,11 @@ const ReviewBox = ({}) => {
           paddingTop: 13,
           paddingBottom: 10,
         }}>
-        <Text style={[styles.textStyle, {fontSize: 12, color: '#959595'}]}>
+        <Text style={[styles.textStyle, { fontSize: 12, color: '#959595' }]}>
           2022-03-11
         </Text>
 
-        <Text style={[styles.textStyle, {fontSize: 12, color: '#979797'}]}>
+        <Text style={[styles.textStyle, { fontSize: 12, color: '#979797' }]}>
           Просмотров 100
         </Text>
       </View>
@@ -106,10 +110,10 @@ const ReviewProduct = ({
 }) => {
   return (
     <View style={[style.reviewProduct]}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image
-          source={{uri: imagesUrl.shoes}}
-          style={{height: 63, width: 63, borderRadius: 10, margin: 3}}
+          source={{ uri: imagesUrl.shoes }}
+          style={{ height: 63, width: 63, borderRadius: 10, margin: 3 }}
         />
         <View
           style={{
@@ -125,9 +129,9 @@ const ReviewProduct = ({
               paddingHorizontal: 7,
               paddingTop: 7,
             }}>
-            <Text style={[styles.textStyle, {fontSize: 14}]}>{title}</Text>
+            <Text style={[styles.textStyle, { fontSize: 14 }]}>{title}</Text>
 
-            <Text style={[styles.textStyle, {fontSize: 14}]}>368с.</Text>
+            <Text style={[styles.textStyle, { fontSize: 14 }]}>368с.</Text>
           </View>
           <View
             style={{
@@ -136,7 +140,7 @@ const ReviewProduct = ({
               justifyContent: 'space-between',
               paddingHorizontal: 7,
             }}>
-            <Text style={[styles.textStyle, {fontSize: 14, color: '#959595'}]}>
+            <Text style={[styles.textStyle, { fontSize: 14, color: '#959595' }]}>
               Light grey; XL
             </Text>
 
@@ -158,7 +162,7 @@ const ReviewProduct = ({
   );
 };
 
-const FooterView = ({}) => {
+const FooterView = ({ }) => {
   return (
     <View
       style={{

@@ -177,14 +177,15 @@ export const ProductSizeChartSceen = ({ isShow, onClose }) => {
               {header.map((subItem, index) => (
                 <View
                   style={{
-                    padding: index == 0 ? 21 : 10,
+                    padding: index == 0 ? 12 : 10,
                     backgroundColor: index % 2 == 0 ? '#F7F7F9' : colors.white,
                     alignItems: 'center',
+                    paddingHorizontal: 10,
+                    paddingEnd: 16,
                     borderTopLeftRadius: index == 0 ? 13 : 0,
                     borderBottomLeftRadius: index == header.length - 1 ? 13 : 0,
                   }}>
-                  <Text style={{ fontFamily: fontFamily.bold, fontSize: 12, color: colors.black  }}>
-                    {' '}
+                  <Text style={{ fontFamily: fontFamily.bold, fontSize: 12, color: colors.black }}>
                     {subItem.toString()}
                   </Text>
                 </View>
@@ -202,7 +203,10 @@ export const ProductSizeChartSceen = ({ isShow, onClose }) => {
                         flexDirection: 'row',
                         backgroundColor:
                           index % 2 == 0 ? '#F7F7F9' : colors.white,
-                        paddingVertical: 10,
+                        paddingVertical: index == 0 ? 0 : 10,
+                        paddingBottom: index == 0 ? 0 : 10,
+
+                        justifyContent: 'center'
                       }}>
                       <View
                         style={{
@@ -214,7 +218,6 @@ export const ProductSizeChartSceen = ({ isShow, onClose }) => {
                         }}>
                         <Text
                           style={{ fontFamily: fontFamily.bold, fontSize: 12, color: colors.black }}>
-                          {' '}
                           {subItem.toString()}
                         </Text>
                       </View>

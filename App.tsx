@@ -52,7 +52,10 @@ const App: React.FC = () => {
             headerTitleStyle: {
               fontWeight: 'bold',
               fontSize: 21,
+
             },
+
+            headerBackVisible: false,
             headerStyle: {
               backgroundColor: '#ffffff',
             },
@@ -83,78 +86,119 @@ const App: React.FC = () => {
             component={ForgotPasswordScreen}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name={RouteNames.setting} component={SettingScreen} />
+          <Stack.Screen name={RouteNames.setting} component={SettingScreen} options={{ headerShown: false }}
+          />
           <Stack.Screen
             name={RouteNames.profileDetail}
             component={ProfileDetailScreen}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name={RouteNames.viewPhoneNumber}
             component={ViewMobileNumberScreen}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.deleteAccount}
             component={DeleteAccount}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.confirmDeleteAccount}
             component={ConfirmDeleteAccount}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.changePhone}
             component={ChangePhoneScreen}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.changeEmail}
             component={ChangeEmailScreen}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.changePassword}
             component={ChangePassswordScreen}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.sucessfulChangePassword}
             component={SucessfulChangePasswordScreen}
+
           />
           <Stack.Screen
             name={RouteNames.myReviews}
             component={MyReviewsScreen}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.notificationSetting}
             component={NotificationSettingScreen}
+            options={{ headerShown: false }}
+
           />
-          <Stack.Screen name={RouteNames.selectCity} component={SelectCity} />
+          <Stack.Screen name={RouteNames.selectCity}
+            component={SelectCity}
+            options={{ headerShown: false }}
+
+          />
           <Stack.Screen
             name={RouteNames.term_of_use}
             component={TermOfUseScreen}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.privacy_policy}
             component={PrivacyPolicyScreen}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.personal_info}
             component={PersonalInfoPolicy}
+            options={{ headerShown: false }}
+
           />
 
           <Stack.Screen
             name={RouteNames.conditions}
             component={ConditionsScreen}
+            options={{ headerShown: false }}
+
           />
 
           <Stack.Screen
             name={RouteNames.system_permission}
             component={SystemPermissionsScreen}
+            options={{ headerShown: false }}
+
           />
-          <Stack.Screen name={RouteNames.aboutUs} component={AboutUsScreen} />
+          <Stack.Screen name={RouteNames.aboutUs}
+            component={AboutUsScreen}
+            options={{ headerShown: false }}
+
+          />
           <Stack.Screen
             name={RouteNames.copyright}
             component={CopyrightScreen}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.licenseAgreement}
             component={LicenseAgreementScreen}
+            options={{ headerShown: false }}
+
           />
           <Stack.Screen
             name={RouteNames.favorite}
@@ -174,11 +218,15 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.product_search_screen}
             component={ProductSearchResultScreen}
+            options={{ headerShown: false }}
+
           />
 
           <Stack.Screen
             name={RouteNames.categories}
             component={AllCategoriesScreen}
+            options={{ headerShown: false }}
+
           />
         </Stack.Navigator>
       </NavigationContainer>

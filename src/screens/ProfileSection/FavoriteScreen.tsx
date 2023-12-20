@@ -9,40 +9,40 @@ import {
   Platform,
 } from 'react-native';
 import React from 'react';
-import {styles} from '../../utils/AppStyles';
-import {imagesUrl} from '../../utils/AppIcons';
-import {colors} from '../../utils/AppColors';
-import {AppString} from '../../utils/AppStrings';
-import {Card} from 'react-native-paper';
-import {useState} from 'react';
-import {fontFamily} from '../../utils/Fonts';
+import { styles } from '../../utils/AppStyles';
+import { imagesUrl } from '../../utils/AppIcons';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
+import { Card } from 'react-native-paper';
+import { useState } from 'react';
+import { fontFamily } from '../../utils/Fonts';
 
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import CheckmarkOutline from '../../../assets/Icons/CheckOrange.svg';
 import CreateOutline from '../../../assets/Icons/EditItem.svg';
 
-import CheckmarkCircle from '../../../assets/Icons/checkMarkCircle.svg';
-import EllipsisHorizontalNormal from '../../../assets/Icons/ellipsisOutlineNormal.svg';
 import SearchIcon from '../../../assets/Icons/searchIcon.svg';
+import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
+import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 
 const categories = ['New', 'Womens', 'Mens', '内衣', '鞋靴', '箱包', '美妆'];
 const products = [
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
 ];
 
-export const FavoriteScreen = ({navigation}) => {
+export const FavoriteScreen = ({ navigation }) => {
   const [pos, setPos] = useState(0);
 
   const [select, setSelect] = useState(false);
@@ -51,7 +51,7 @@ export const FavoriteScreen = ({navigation}) => {
     <View
       style={[
         styles.container,
-        {backgroundColor: colors.whiteF7F7F7, padding: undefined},
+        { backgroundColor: colors.whiteF7F7F7, padding: undefined },
       ]}>
       <Card
         style={{
@@ -61,29 +61,35 @@ export const FavoriteScreen = ({navigation}) => {
           borderTopEndRadius: 0,
           borderTopStartRadius: 0,
           marginBottom: 5,
-          paddingTop: Platform.OS == 'ios' ? 20 : 10,
+          paddingTop: Platform.OS == 'ios' ? 20 : 25,
           paddingBottom: 5,
         }}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems:'center'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <ChevronBackOutline width={15} height={15} />
           </TouchableOpacity>
           <Text
             style={[
               styles.textStyle,
-              {fontSize: 21, fontFamily: fontFamily.bold},
+              { fontSize: 21, fontWeight: 'bold' },
             ]}>
-            {AppString.want_to + ' (821)'}
+            {AppString.want_to} <Text
+              style={[
+                styles.textStyle,
+                { fontSize: 21 },
+              ]}>
+              {'(281)'}
+            </Text>
           </Text>
           <TouchableOpacity
             onPress={() => {
-               setSelect(!select)
+              //setSelect(!select)
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             {select ? (
               <CheckmarkOutline
                 width={19}
@@ -92,8 +98,8 @@ export const FavoriteScreen = ({navigation}) => {
               />
             ) : (
               <CreateOutline
-                width={14}
-                height={14}
+                width={15}
+                height={15}
                 color={colors.black666666}
               />
             )}
@@ -117,9 +123,9 @@ export const FavoriteScreen = ({navigation}) => {
           },
         ]}>
         <FlatList
-          style={{width: '30%', backgroundColor: colors.whiteF7F7F7}}
+          style={{ width: '30%', backgroundColor: colors.whiteF7F7F7 }}
           data={categories}
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <TouchableOpacity
               onPress={() => {
                 setPos(index);
@@ -144,13 +150,13 @@ export const FavoriteScreen = ({navigation}) => {
         />
 
         <FlatList
-          style={{width: '80%', marginTop: 10, marginStart: 10}}
+          style={{ width: '80%', marginTop: 8, marginStart: 10 }}
           data={products}
           keyExtractor={item => {
             return item.toString();
           }}
           numColumns={3}
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <TouchableOpacity
               style={{
                 flex: 1 / 3,
@@ -159,20 +165,20 @@ export const FavoriteScreen = ({navigation}) => {
                 marginBottom: 20,
               }}>
               <Image
-                source={{uri: imagesUrl.shoes}}
-                style={{height: 80, width: 80, borderRadius: 5}}
+                source={{ uri: imagesUrl.shoes }}
+                style={{ height: 80, width: 80, borderRadius: 5 }}
               />
               <Text
                 style={[
                   styles.textStyle,
-                  {fontSize: 14, color: colors.lightOrange, marginTop: 8},
+                  { fontSize: 14, color: colors.lightOrange, marginTop: 2 },
                 ]}>
                 {item.title}
               </Text>
               {select ? (
                 <TouchableOpacity
-                  onPress={() => {}}
-                  style={{position: 'absolute', end: 10, top: 2}}>
+                  onPress={() => { }}
+                  style={{ position: 'absolute', end: 10, top: 2 }}>
                   {item.isSelected ? (
                     <CheckmarkCircle
                       width={17}
@@ -214,13 +220,12 @@ const SearchView = () => {
         justifyContent: 'flex-start',
         backgroundColor: colors.whiteF7F7F7,
         borderRadius: 19,
-        marginBottom: 5,
         marginTop: 8,
       }}>
       <SearchIcon
         width={17}
         height={17}
-        style={{marginStart: 15}}
+        style={{ marginStart: 15 }}
         color={colors.grey}
       />
       <TextInput
@@ -243,5 +248,6 @@ const style = StyleSheet.create({
     marginStart: 11,
     fontFamily: fontFamily.regular,
     fontSize: 15,
+    paddingVertical: 0
   },
 });

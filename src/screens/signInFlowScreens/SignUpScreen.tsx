@@ -7,12 +7,14 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import { colors } from '../../utils/AppColors';
 
 const logo = require('../../../assets/icon-512x512.png');
+import AboutUs from '../../../assets/Icons/AppLogo.svg';
 
-const SignUpScreen: React.FC = ({navigation, route}) => {
+const SignUpScreen: React.FC = ({ navigation, route }) => {
   const [mobile, setMobile] = useState('');
   const [confirmationCode, setConfirmationCode] = useState('');
   const [password, setPassword] = useState('');
@@ -22,9 +24,8 @@ const SignUpScreen: React.FC = ({navigation, route}) => {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.top}>
         <Text style={styles.registerText}>Регистрация</Text>
-        <Image
-          style={{width: 82, height: 82, marginTop: 56.25, borderRadius: 24}}
-          source={logo}
+        <AboutUs
+          style={{ width: 82, height: 82, marginTop: 51.5, borderRadius: 24 }}
         />
         <Text
           style={{
@@ -37,19 +38,19 @@ const SignUpScreen: React.FC = ({navigation, route}) => {
         </Text>
       </View>
       <View style={styles.middle}>
-        <View style={{marginHorizontal: 12}}>
+        <View style={{ marginHorizontal: 12 }}>
           <View
-            style={{flexDirection: 'row', width: '100%', paddingBottom: 13}}>
+            style={{ flexDirection: 'row', width: '100%', paddingBottom: 13 }}>
             <LinearGradient
               colors={['#ff7600', '#ffc500']}
-              start={{x: 0.4, y: 0}}
-              end={{x: 1, y: 1}}
+              start={{ x: 0.4, y: 0 }}
+              end={{ x: 1, y: 1 }}
               style={styles.leftSideGradient}>
               <Text style={styles._992}>+992</Text>
             </LinearGradient>
 
             <TextInput
-              placeholder="Enter Mobile No."
+              placeholder="Введите ваш номер телефона"
               style={styles.mobileTextInput}
               onChangeText={text => {
                 setMobile(text);
@@ -58,18 +59,18 @@ const SignUpScreen: React.FC = ({navigation, route}) => {
           </View>
 
           <View
-            style={{flexDirection: 'row', width: '100%', paddingBottom: 13}}>
+            style={{ flexDirection: 'row', width: '100%', paddingBottom: 13 }}>
             <LinearGradient
               colors={['#ff7600', '#ffc500']}
-              start={{x: 0.4, y: 0}}
-              end={{x: 1, y: 1}}
+              start={{ x: 0.4, y: 0 }}
+              end={{ x: 1, y: 1 }}
               style={styles.leftSideGradient}>
-              <Text style={styles.otpText}>OTP</Text>
+              <Text style={styles.otpText}>Код</Text>
             </LinearGradient>
 
-            <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
               <TextInput
-                placeholder="Enter SMS Code..."
+                placeholder="Введите SMS-код"
                 style={styles.codeTextInput}
                 onChangeText={text => {
                   setConfirmationCode(text);
@@ -79,24 +80,25 @@ const SignUpScreen: React.FC = ({navigation, route}) => {
               <TouchableOpacity style={styles.sendOTPButton}>
                 <LinearGradient
                   colors={['#ff7600', '#ffc500']}
-                  start={{x: 0.4, y: 0}}
-                  end={{x: 1, y: 1}}
+                  start={{ x: 0.4, y: 0 }}
+                  end={{ x: 1, y: 1 }}
                   style={[
                     styles.leftSideGradient,
                     {
                       justifyContent: 'center',
                       alignItems: 'center',
                       paddingRight: 10,
+                      width: undefined
                     },
                   ]}>
                   <Text
                     style={{
                       color: '#ffffff',
                       paddingLeft: 12,
-                      fontFamily: 'SegoeUI',
                       fontSize: 14,
+                      fontWeight: '400'
                     }}>
-                    Send
+                    Получить код
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
@@ -104,17 +106,17 @@ const SignUpScreen: React.FC = ({navigation, route}) => {
           </View>
 
           <View
-            style={{flexDirection: 'row', width: '100%', paddingBottom: 13}}>
+            style={{ flexDirection: 'row', width: '100%', paddingBottom: 13 }}>
             <LinearGradient
               colors={['#ff7600', '#ffc500']}
-              start={{x: 0.4, y: 0}}
-              end={{x: 1, y: 1}}
+              start={{ x: 0.4, y: 0 }}
+              end={{ x: 1, y: 1 }}
               style={styles.leftSideGradient}>
-              <Text style={styles.passwordText}>Password</Text>
+              <Text style={styles.passwordText}>Пароль</Text>
             </LinearGradient>
 
             <TextInput
-              placeholder="Create Password"
+              placeholder="Придумайте свой пароль"
               style={styles.passwordTextInput}
               onChangeText={text => {
                 setPassword(text);
@@ -123,17 +125,17 @@ const SignUpScreen: React.FC = ({navigation, route}) => {
           </View>
 
           <View
-            style={{flexDirection: 'row', width: '100%', paddingBottom: 13}}>
+            style={{ flexDirection: 'row', width: '100%', paddingBottom: 13 }}>
             <LinearGradient
               colors={['#ff7600', '#ffc500']}
-              start={{x: 0.4, y: 0}}
-              end={{x: 1, y: 1}}
+              start={{ x: 0.4, y: 0 }}
+              end={{ x: 1, y: 1 }}
               style={styles.leftSideGradient}>
-              <Text style={styles.passwordText}>Password</Text>
+              <Text style={styles.passwordText}>Пароль</Text>
             </LinearGradient>
 
             <TextInput
-              placeholder="Repeat Password"
+              placeholder="Введите пароль ещё раз"
               style={styles.passwordTextInput}
               onChangeText={text => {
                 setRePassword(text);
@@ -141,18 +143,19 @@ const SignUpScreen: React.FC = ({navigation, route}) => {
               value={rePassword}></TextInput>
           </View>
 
-          <View style={{flexDirection: 'row', width: '100%'}}>
+          <View style={{ flexDirection: 'row', width: '100%' }}>
             <LinearGradient
               colors={['#ff7600', '#ffc500']}
-              start={{x: 0.4, y: 0}}
-              end={{x: 1, y: 1}}
+              start={{ x: 0.4, y: 0 }}
+              end={{ x: 1, y: 1 }}
               style={styles.leftSideGradient}>
-              <Text style={styles.referralCodeText}>Code</Text>
+              <Text style={styles.referralCodeText}>Код</Text>
             </LinearGradient>
 
             <TextInput
-              placeholder="Have a referral code?"
+              placeholder="Введите код приглашения (если есть)"
               style={styles.referralCodeTextInput}
+              numberOfLines={1}
               onChangeText={text => {
                 setRefferalCode(text);
               }}
@@ -161,16 +164,16 @@ const SignUpScreen: React.FC = ({navigation, route}) => {
         </View>
       </View>
       <Text style={styles.termsText}>
-        I agree to the “Terms of Use” and “Privacy Policy” by clicking Register
+        Согласен(а) с <Text style={[styles.termsText, { color: '#131E78' }]}>«Условиями использования»</Text> и <Text style={[styles.termsText, { color: '#131E78' }]}>«Конфиденциальностью»</Text> нажимая Зарегистрироваться
       </Text>
       <View style={styles.buttonsView}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => { }}>
           <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
             colors={['#FE8C00', '#ff7600']}
-            style={[styles.loginButtonGradient, {marginBottom: 13}]}>
-            <Text style={styles.signupText}>Sign Up</Text>
+            style={[styles.loginButtonGradient, { marginBottom: 13 }]}>
+            <Text style={styles.signupText}>Зарегистрироваться</Text>
           </LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity
@@ -178,11 +181,11 @@ const SignUpScreen: React.FC = ({navigation, route}) => {
             navigation.replace('Login');
           }}>
           <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            colors={['#FDCA30', '#FDCA30']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={['#FFE259', '#FDCB32', '#FDCA30']}
             style={styles.loginButtonGradient}>
-            <Text style={styles.loginText}>Log In</Text>
+            <Text style={styles.loginText}>Войти</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -206,9 +209,9 @@ const styles = StyleSheet.create({
   },
   registerText: {
     fontSize: 21,
-    fontFamily: 'SegoeUIBold',
     width: 160,
     textAlign: 'center',
+    color: colors.black
   },
   middle: {
     paddingHorizontal: 12,
@@ -236,12 +239,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   leftSideGradient: {
-    width: '40%',
+    width: '35%',
     height: 36,
     borderRadius: 24,
   },
   mobileTextInput: {
-    width: '82%',
+    width: '87%',
     backgroundColor: '#f5f5f5',
     height: 36,
     borderRadius: 24,
@@ -274,24 +277,24 @@ const styles = StyleSheet.create({
     marginLeft: -85,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingRight: 10,
+    paddingRight: 74,
     textAlign: 'center',
   },
   passwordText: {
     color: '#fff',
     paddingTop: 8,
     paddingLeft: 8.09,
-    fontFamily: 'SegoeUI',
+    fontWeight: '400',
     fontSize: 14,
   },
   passwordTextInput: {
-    width: '82%',
+    width: '87%',
     backgroundColor: '#f5f5f5',
     height: 36,
     borderRadius: 24,
     marginLeft: -40,
     paddingLeft: 16,
-    fontFamily: 'SegoeUI',
+    fontWeight: '400',
     fontSize: 14,
   },
   referralCodeText: {
@@ -302,24 +305,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   referralCodeTextInput: {
-    width: '82%',
+    width: '87%',
     backgroundColor: '#f5f5f5',
     height: 36,
     borderRadius: 24,
     marginLeft: -40,
     paddingLeft: 16,
-    fontFamily: 'SegoeUI',
     fontSize: 14,
+    fontWeight: '400'
   },
   termsText: {
-    color: '#999',
+    color: '#3D3D3D',
     paddingBottom: 12,
-    paddingLeft: 28,
-    paddingRight: 20,
-    paddingTop: 14,
-    fontFamily: 'SegoeUI',
-    fontSize: 14,
-    fontWeight: '700',
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 8,
+    fontSize: 11,
+    fontWeight: '400',
   },
   buttonsView: {
     width: '100%',
@@ -336,8 +338,7 @@ const styles = StyleSheet.create({
   loginText: {
     fontSize: 16,
     color: '#000',
-    fontWeight: '600',
-    fontFamily: 'SegoeUIBold',
+    fontWeight: '500',
     textAlign: 'center',
   },
   loginButtonGradient: {
@@ -345,6 +346,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 24,
-    marginHorizontal: 24,
+    marginHorizontal: 10,
   },
 });

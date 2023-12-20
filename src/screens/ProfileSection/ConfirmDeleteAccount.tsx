@@ -15,6 +15,7 @@ import {
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import { fontFamily } from '../../utils/Fonts';
+import { CustomHeader } from '../../components/Header';
 
 const ConfirmDeleteAccount = ({ navigation }) => {
   useEffect(() => {
@@ -42,76 +43,81 @@ const ConfirmDeleteAccount = ({ navigation }) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showFailurePop, setShowFailurePop] = useState(false);
   return (
-    <ScrollView style={[styles.container]} showsVerticalScrollIndicator={false}>
-      <TitleDesciptionView
-        title={AppString.by_deleting_you_waive_rights_Title}
-        desc={AppString.by_deleting_you_waive_rights_Desc}
-      />
-      <TitleDesciptionView
-        title={AppString.the_following_conditions_must_be_met_Title}
-        desc={AppString.the_following_conditions_must_be_met_Desc}
-        color={colors.balc111111}
-      />
-      <AgreeTermsVew
-        isSelected={agreeToTnC}
-        onSelect={() => {
-          setAgreeToTnC(!agreeToTnC);
-        }}
-      />
+    <View style={[styles.container, { padding: 0 }]}>
+      <CustomHeader navigation={navigation} title={AppString.deleting_an_account} />
 
-      <TouchableOpacity
-        onPress={() => {
-          setShowConfirm(true);
-        }}
-        style={{ paddingBottom: 100 }}>
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          colors={['#FE8C00', '#FC4A1A']}
-          style={{
-            elevation: 4,
-            height: 46,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 23,
-          }}>
-          <Text
+      <ScrollView style={[styles.container, { paddingTop: 0 }]} showsVerticalScrollIndicator={false}>
+        <TitleDesciptionView
+          title={AppString.by_deleting_you_waive_rights_Title}
+          desc={AppString.by_deleting_you_waive_rights_Desc}
+        />
+        <TitleDesciptionView
+          title={AppString.the_following_conditions_must_be_met_Title}
+          desc={AppString.the_following_conditions_must_be_met_Desc}
+          color={colors.balc111111}
+          paddingBottom={30}
+        />
+        <AgreeTermsVew
+          isSelected={agreeToTnC}
+          onSelect={() => {
+            setAgreeToTnC(!agreeToTnC);
+          }}
+        />
+
+        <TouchableOpacity
+          onPress={() => {
+            setShowConfirm(true);
+          }}
+          style={{ paddingBottom: 100, marginHorizontal: 20 }}>
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={['#FE8C00', '#FC4A1A']}
             style={{
-              fontSize: 16,
-              color: colors.white,
-              fontFamily: fontFamily.bold,
+              elevation: 4,
+              height: 45,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 23,
             }}>
-            {AppString.confirm_delete}
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-      <VerifyDeleteAccountDialog
-        isShow={showConfirm}
-        onConfirm={() => {
-          setShowConfirm(false);
-          setShowFailurePop(true);
-        }}
-        onCancel={() => {
-          setShowConfirm(false);
-        }}
-      />
+            <Text
+              style={{
+                fontSize: 16,
+                color: colors.white,
+                fontFamily: fontFamily.bold,
+              }}>
+              {AppString.confirm_delete}
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+        <VerifyDeleteAccountDialog
+          isShow={showConfirm}
+          onConfirm={() => {
+            setShowConfirm(false);
+            setShowFailurePop(true);
+          }}
+          onCancel={() => {
+            setShowConfirm(false);
+          }}
+        />
 
-      <FailAccDeletePopup
-        isShow={showFailurePop}
-        onConfirm={() => {
-          setShowFailurePop(false);
-        }}
-        onCancel={() => {
-          setShowFailurePop(false);
-        }}
-      />
-    </ScrollView>
+        <FailAccDeletePopup
+          isShow={showFailurePop}
+          onConfirm={() => {
+            setShowFailurePop(false);
+          }}
+          onCancel={() => {
+            setShowFailurePop(false);
+          }}
+        />
+      </ScrollView>
+    </View>
   );
 };
 
-const TitleDesciptionView = ({ title, desc, color = colors.grey6C6C6C }) => {
+const TitleDesciptionView = ({ title, desc, color = colors.grey6C6C6C, paddingBottom = 0 }) => {
   return (
-    <View style={{ paddingVertical: 14 }}>
+    <View style={{ paddingVertical: 8 }}>
       <Text
         style={{
           fontSize: 15,
@@ -123,7 +129,7 @@ const TitleDesciptionView = ({ title, desc, color = colors.grey6C6C6C }) => {
       </Text>
       <View
         style={{ backgroundColor: colors.white, borderRadius: 13, padding: 10 }}>
-        <Text style={{ fontSize: 14, lineHeight: 25, color: color }}>
+        <Text style={{ fontSize: 14, lineHeight: 18, color: color, paddingBottom: paddingBottom }}>
           {desc}
         </Text>
       </View>
@@ -139,7 +145,7 @@ const AgreeTermsVew = ({ isSelected, onSelect }) => {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          paddingVertical: 12,
+          paddingBottom: 12,
         }}>
         {isSelected ? (
           <CheckmarkCircle width={17} height={17} color={colors.lightOrange} />

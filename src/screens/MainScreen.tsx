@@ -1,13 +1,13 @@
 /* eslint-disable react/no-unstable-nested-components */
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import {createMaterialBottomTabNavigator} from 'react-native-paper/react-navigation';
-import {colors} from '../utils/AppColors';
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
+import { colors } from '../utils/AppColors';
 import HomeScreen from './HomeScreen';
 import CategoryScreen from './CategoryScreen';
 import CartScreen from './CartScreen';
 import ProfileScreen from '../screens/ProfileSection/ProfileScreen';
-import {RouteNames} from '../utils/RouteNames';
+import { RouteNames } from '../utils/RouteNames';
 import CartIcon from '../../assets/Icons/cart.svg';
 import CategoryIcon from '../../assets/Icons/category.svg';
 import ProfileIcon from '../../assets/Icons/myAccount.svg';
@@ -24,24 +24,38 @@ import MessagesScreen from './Chat/MessagesScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
-const MainScreen: React.FC = ({}) => {
+const MainScreen: React.FC = ({ }) => {
   return (
-    <View style={styles.container}>
       <Tab.Navigator
         initialRouteName={RouteNames.home}
         labeled={false}
+        shifting={true}
+
         activeColor={colors.lightOrange}
         inactiveColor={colors.lightOrange}
-        barStyle={styles.navigator}>
+        barStyle={{
+          backgroundColor: colors.white,
+          height: 78, 
+          elevation: 40,
+          borderTopLeftRadius: 13,
+          borderTopRightRadius: 13,
+          borderColor: 'transparent',
+          overflow: 'hidden'
+        }}
+
+
+      >
+
         <Tab.Screen
+
           name={RouteNames.home}
           component={HomeScreen}
           options={{
-            tabBarIcon: ({focused, color}) => {
+            tabBarIcon: ({ focused, color }) => {
               return focused ? (
-                <HomeFocusedIcon1 width={26} height={26} color={color} />
+                <HomeFocusedIcon1 color={color} style={{ marginTop: -15 }} />
               ) : (
-                <HomeIcon width={26} height={26} color={color} />
+                <HomeIcon color={color} style={{ marginTop: -15 }} />
               );
             },
           }}
@@ -50,11 +64,11 @@ const MainScreen: React.FC = ({}) => {
           name={RouteNames.categoriesHome}
           component={CategoryScreen}
           options={{
-            tabBarIcon: ({focused, color}) => {
+            tabBarIcon: ({ focused, color }) => {
               return focused ? (
-                <CategoryFocusedIcon width={25} height={25} color={color} />
+                <CategoryFocusedIcon color={color} style={{ marginTop: -15 }} />
               ) : (
-                <CategoryIcon width={25} height={25} color={color} />
+                <CategoryIcon color={color} style={{ marginTop: -15 }} />
               );
             },
           }}
@@ -63,11 +77,11 @@ const MainScreen: React.FC = ({}) => {
           name={RouteNames.chat_screen}
           component={MessagesScreen}
           options={{
-            tabBarIcon: ({focused, color}) => {
+            tabBarIcon: ({ focused, color }) => {
               return focused ? (
-                <MessageFocusedIcon width={25} height={25} color={color} />
+                <MessageFocusedIcon color={color} style={{ marginTop: -15 }} />
               ) : (
-                <MessageIcon width={25} height={25} color={color} />
+                <MessageIcon color={color} style={{ marginTop: -15 }} />
               );
             },
           }}
@@ -76,11 +90,11 @@ const MainScreen: React.FC = ({}) => {
           name={RouteNames.cartScreen}
           component={CartScreen}
           options={{
-            tabBarIcon: ({focused, color}) => {
+            tabBarIcon: ({ focused, color }) => {
               return focused ? (
-                <CartFocusedIcon width={25} height={25} color={color} />
+                <CartFocusedIcon color={color} style={{ marginTop: -15 }} />
               ) : (
-                <CartIcon width={25} height={25} color={color} />
+                <CartIcon color={color} style={{ marginTop: -15 }} />
               );
             },
           }}
@@ -89,37 +103,36 @@ const MainScreen: React.FC = ({}) => {
           name={RouteNames.profileScreen}
           component={ProfileScreen}
           options={{
-            tabBarIcon: ({focused, color}) => {
+            tabBarIcon: ({ focused, color }) => {
               return focused ? (
-                <MyAccountFocusedIcon width={25} height={25} color={color} />
+                <MyAccountFocusedIcon color={color} style={{ marginTop: -18 }} />
               ) : (
-                <ProfileIcon width={25} height={25} color={color} />
+                <ProfileIcon color={color} style={{ marginTop: -18 }} />
               );
             },
           }}
         />
       </Tab.Navigator>
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colors.white},
+  container: { flex: 1, backgroundColor: colors.white },
   bottomTabBarStyle: {
     backgroundColor: '#ffffff',
     height: 70,
     elevation: 40,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
     borderColor: 'transparent',
     overflow: 'hidden',
   },
   navigator: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.black,
     borderWidth: 0.5,
     borderBottomWidth: 1,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 13,
+    borderTopRightRadius: 13,
     borderColor: 'transparent',
     overflow: 'hidden',
     height: 78,

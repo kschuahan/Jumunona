@@ -79,7 +79,7 @@ const BuySelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
               </Text>
             </View>
             <TouchableOpacity
-              style={{ marginEnd: 7.11 }}
+              style={{ marginEnd: 7.11, marginTop: 6 }}
               onPress={() => {
                 onClose();
               }}>
@@ -103,7 +103,7 @@ const BuySelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
             <View
               style={{
                 height: 1,
-                marginVertical: 13,
+                marginVertical: 12,
                 backgroundColor: colors.darkWhite,
               }}
             />
@@ -134,7 +134,7 @@ const CancelReturnPolicyView = ({ onClick }) => {
       style={[
         styles.profile,
         {
-          marginTop: 9,
+          marginTop: 6,
           alignItems: 'center',
           paddingVertical: 4,
           paddingHorizontal: 6,
@@ -181,7 +181,7 @@ const PhoneDataScreen = ({ onClick }) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <ScaleIcon  />
+        <ScaleIcon />
         <Text
           style={[
             styles.textStyle,

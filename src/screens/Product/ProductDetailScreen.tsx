@@ -445,7 +445,7 @@ const ReviewsSection = ({ viewAllReviews, text = '' }) => {
         paddingHorizontal: 10,
         paddingVertical: 10,
       }}>
-      <TextWithIcon Icon={null} title={AppString.review} onClick={viewAllReviews} />
+      <TextWithIcon Icon={null} title={AppString.review + "(300+)"} onClick={viewAllReviews} />
       <FlatList
         data={reviewFilter}
         horizontal
@@ -484,14 +484,14 @@ const ReviewsSection = ({ viewAllReviews, text = '' }) => {
   );
 };
 
-export const ReviewUser = ({ text = 'Серый XL' }) => {
+export const ReviewUser = ({ text = 'Серый XL', size = 81 }) => {
   return (
     <View>
       <FlatList
         data={[1, 2]}
         scrollEnabled={false}
         renderItem={({ item, index }) => (
-          <View style={{ paddingVertical: 10 }}>
+          <View style={{ marginBottom: 10, marginTop: index == 0 ? 5 : 30 }}>
             <View style={{ flexDirection: 'row' }}>
               <Image
                 style={{ width: 40, height: 40, borderRadius: 20 }}
@@ -503,6 +503,7 @@ export const ReviewUser = ({ text = 'Серый XL' }) => {
                   alignContent: 'flex-start',
                   flexDirection: 'column',
                   paddingStart: 8,
+                  gap: 4
                 }}>
                 <Text style={[styles.textStyle, { fontSize: 15 }]}>
                   user****ame
@@ -516,7 +517,7 @@ export const ReviewUser = ({ text = 'Серый XL' }) => {
                   26.10.2022
                 </Text>
               </View>
-              <RatingView rating={4} />
+              <RatingView rating={5} />
             </View>
 
             {text != '' ? (
@@ -525,7 +526,6 @@ export const ReviewUser = ({ text = 'Серый XL' }) => {
                   styles.textStyle,
                   {
                     fontSize: 14,
-                    fontFamily: fontFamily.regular,
                     marginTop: 12.5,
                     color: colors.grey,
                   },
@@ -542,19 +542,17 @@ export const ReviewUser = ({ text = 'Серый XL' }) => {
                   marginTop: text == '' ? 10 : 4,
                   color: colors.balc111111,
                 },
-              ]}>
-              Very good quality多能显示2行-----------
-            </Text>
+              ]}>Very good quality多能显示2行-----------</Text>
 
             {index != 0 ? (
               <FlatList
                 style={{ marginTop: 15 }}
                 data={[1, 2, 3, 4, 5]}
                 renderItem={({ item }) => (
-                  <View style={{ marginHorizontal: 1 }}>
+                  <View style={{ marginHorizontal: size == 81 ? 1 : 3 }}>
                     <Image
                       source={{ uri: imagesUrl.shoes }}
-                      style={{ width: 81, height: 81, borderRadius: 6 }}
+                      style={{ width: size, height: size, borderRadius: 6 }}
                     />
                   </View>
                 )}
@@ -618,7 +616,7 @@ const ProductDesclamenation = () => {
         paddingEnd: 13.56,
         paddingStart: 12.5,
         marginBottom: 10,
-        paddingBottom: 8,
+        paddingBottom: 4,
       }}>
       <Text
         style={[
@@ -766,7 +764,7 @@ const ShopView = ({ }) => {
         borderRadius: 13,
         backgroundColor: colors.white,
         padding: 10,
-        marginTop: 10,
+        marginTop: 12,
       }}>
       <View
         style={{
@@ -783,6 +781,7 @@ const ShopView = ({ }) => {
             flex: 1,
             alignContent: 'flex-start',
             flexDirection: 'column',
+            marginTop: -8,
             paddingStart: 10,
             gap: 3,
           }}>
@@ -997,7 +996,7 @@ const RelatedProducts = ({ onclick }) => {
             paddingHorizontal: 5,
             alignSelf: 'center',
           }}>
-          Детали
+          Ещё
         </Text>
         <View
           style={{
@@ -1070,7 +1069,8 @@ const RelatedProducts = ({ onclick }) => {
                     marginLeft: 4,
                     fontSize: 15,
                     fontWeight: '500',
-                    color: colors.black                  }}
+                    color: colors.black
+                  }}
                   numberOfLines={1}>
                   Футболка
                 </Text>

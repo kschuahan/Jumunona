@@ -20,13 +20,13 @@ export const styles = StyleSheet.create({
   },
   profile: {
     flexDirection: 'row',
-    marginTop: Platform.OS == 'ios' ? undefined : 25,
+    marginTop: Platform.OS == 'ios' ? undefined : 49,
     justifyContent: 'space-between',
   },
   textStyle: {
     color: colors.black,
     fontSize: 12,
-    fontFamily: fontFamily.regular,
+    fontWeight: '400',
   },
   loginButton: {
     marginHorizontal: 30,

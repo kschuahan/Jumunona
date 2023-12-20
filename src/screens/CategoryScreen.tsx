@@ -147,8 +147,8 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                         activeItemPrimaryCategory === item.id
                           ? '#ff7600'
                           : 'black',
-                          fontWeight:'400',
-                        }}>
+                      fontWeight: '400',
+                    }}>
                     {item.desc}
                   </Text>
                 </TouchableOpacity>
@@ -377,8 +377,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     fontFamily: fontFamily.regular,
     fontSize: 15,
-    marginBottom: -2,
   },
+
   primaryCategories: {
     flexDirection: 'row',
     width: dimensions.width,
@@ -411,10 +411,10 @@ const styles = StyleSheet.create({
   },
   secondaryCategoriesBG: {
     width: dimensions.width,
-    height: 182,
     backgroundColor: '#FFFFFF',
     borderBottomLeftRadius: 12,
     paddingHorizontal: 6,
+    paddingBottom: 6.5,
     borderBottomRightRadius: 12,
   },
   productsGrid: {

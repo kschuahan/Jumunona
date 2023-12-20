@@ -6,6 +6,7 @@ import {useEffect} from 'react';
 import {AppString} from '../../../utils/AppStrings';
 import EllipsisHorizontal from '../../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../../assets/Icons/chevronBackOutline.svg';
+import { CustomHeader } from '../../../components/Header';
 
 const LicenseAgreementScreen = ({navigation}) => {
   useEffect(() => {
@@ -31,8 +32,11 @@ const LicenseAgreementScreen = ({navigation}) => {
   });
 
   return (
+    <View style={[styles.container, { padding: 0, backgroundColor: colors.lightBlue }]}>
+    <CustomHeader navigation={navigation} title={AppString.license_agreement} />
+
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={[styles.container, {backgroundColor: colors.lightBlue}]}>
+      <View style={[styles.container, { backgroundColor: colors.lightBlue, paddingTop: 6 }]}>
         <Text
           style={[
             styles.textStyle,
@@ -126,6 +130,7 @@ const LicenseAgreementScreen = ({navigation}) => {
         </View>
       </View>
     </ScrollView>
+    </View>
   );
 };
 

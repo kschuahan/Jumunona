@@ -130,5 +130,6 @@ export const AppString = {
   chat: 'Чат',
   clear: 'очистить',
   settings: 'Настройки',
-  search: 'Поиск'
+  search: 'Поиск',
+  profile: 'Профиль'
 };

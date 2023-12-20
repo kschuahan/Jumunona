@@ -137,7 +137,7 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                 onPress={() => { }}
                 style={{
                   backgroundColor: colors.white,
-                  marginEnd: 13,
+                  marginEnd: 5,
                   borderRadius: 20,
                 }}>
                 <Text
@@ -171,7 +171,7 @@ export const ProudctReviewsScreen = ({ navigation }) => {
             style={{ paddingHorizontal: 13, borderRadius: 13, height: '100%' }}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => {
-              return <ReviewUser />;
+              return <ReviewUser size={113} />;
             }}
           />
         </View>

@@ -6,23 +6,24 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
-import {styles} from '../../utils/AppStyles';
-import {imagesUrl} from '../../utils/AppIcons';
-import {colors} from '../../utils/AppColors';
-import {AppString} from '../../utils/AppStrings';
-import {RouteNames} from '../../utils/RouteNames';
-import {fontFamily} from '../../utils/Fonts';
+import React, { useEffect } from 'react';
+import { styles } from '../../utils/AppStyles';
+import { imagesUrl } from '../../utils/AppIcons';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
+import { RouteNames } from '../../utils/RouteNames';
+import { fontFamily } from '../../utils/Fonts';
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/chevronForwardOutline.svg';
+import { CustomHeader } from '../../components/Header';
 
-const ProfileDetailScreen = ({navigation}) => {
+const ProfileDetailScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: RouteNames.setting,
       headerRight: () => (
-        <TouchableOpacity style={{alignItems: 'center'}}>
+        <TouchableOpacity style={{ alignItems: 'center' }}>
           <EllipsisHorizontal width={24} height={24} />
         </TouchableOpacity>
       ),
@@ -32,126 +33,128 @@ const ProfileDetailScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}
-          style={{alignItems: 'center'}}>
-          <ChevronBackOutline width={15} height={15}/>
+          style={{ alignItems: 'center' }}>
+          <ChevronBackOutline width={15} height={15} />
         </TouchableOpacity>
       ),
     });
   });
 
   return (
-    <ScrollView
-      contentContainerStyle={{flex: 1}}
-      showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <UserAvatar onClick={() => {}} />
-        <View
-          style={{
-            backgroundColor: colors.white,
-            paddingHorizontal: 3,
-            marginTop: 10,
-            borderRadius: 13,
-            paddingTop: 5,
-            paddingBottom: 1.16,
-          }}>
-          <TextWithIcon
-            title={AppString.name}
-            value={'Valijon'}
-            onClick={() => {}}
-          />
-          <View style={{height: 1, backgroundColor: colors.darkWhite}} />
+    <View style={[styles.container, { padding: 0 }]}>
+      <CustomHeader navigation={navigation} title={AppString.profile} />
 
-          <TextWithIcon
-            title={AppString.gender}
-            value={'Мужской'}
-            onClick={() => {}}
-          />
-          <View style={{height: 1, backgroundColor: colors.darkWhite}} />
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}>
+        <View style={[styles.container, { paddingTop: 5 }]}>
+          <UserAvatar onClick={() => { }} />
+          <View
+            style={{
+              backgroundColor: colors.white,
+              paddingHorizontal: 3,
+              marginTop: 10,
+              borderRadius: 13,
+              paddingBottom: 1.16,
+            }}>
+            <TextWithIcon
+              title={AppString.name}
+              value={'Valijon'}
+              onClick={() => { }}
+            />
+            <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
 
-          <TextWithIcon
-            title={AppString.age}
-            value={'1992'}
-            onClick={() => {}}
-          />
-        </View>
+            <TextWithIcon
+              title={AppString.gender}
+              value={'Мужской'}
+              onClick={() => { }}
+            />
+            <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
 
-        <View
-          style={{
-            backgroundColor: colors.white,
-            paddingVertical: 10,
-            paddingHorizontal: 3,
-            marginTop: 10,
-            borderRadius: 13,
-            paddingBottom: 1.16,
-          }}>
-          <TextWithIcon
-            title={AppString.number}
-            value={'150******50'}
-            onClick={() => {
-              navigation.navigate(RouteNames.viewPhoneNumber, {isMobile: true});
-            }}
-          />
-          <View style={{height: 1, backgroundColor: colors.darkWhite}} />
-          <TextWithIcon
-            title={AppString.mail}
-            value={'Valijon@gmail.com'}
-            onClick={() => {
-              navigation.navigate(RouteNames.viewPhoneNumber, {
-                isMobile: false,
-              });
-            }}
-          />
-          <View style={{height: 1, backgroundColor: colors.darkWhite}} />
-          <TextWithIcon
-            title={AppString.change_password}
-            onClick={() => {
-              navigation.navigate(RouteNames.changePassword);
-            }}
-          />
-        </View>
+            <TextWithIcon
+              title={AppString.age}
+              value={'1992'}
+              onClick={() => { }}
+            />
+          </View>
 
-        <View
-          style={{
-            backgroundColor: colors.white,
-            paddingTop: 15.5,
-            paddingBottom: 11.5,
-            marginTop: 10,
-            borderRadius: 13,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(RouteNames.deleteAccount);
-            }}
-            style={[
-              styles.profile,
-              {
-                marginTop: undefined,
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 4,
-              },
-            ]}>
-            <Text
+          <View
+            style={{
+              backgroundColor: colors.white,
+              paddingBottom: 4,
+              paddingHorizontal: 3,
+              marginTop: 10,
+              borderRadius: 13,
+            }}>
+            <TextWithIcon
+              title={AppString.number}
+              value={'150******50'}
+              onClick={() => {
+                navigation.navigate(RouteNames.viewPhoneNumber, { isMobile: true });
+              }}
+            />
+            <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
+            <TextWithIcon
+              title={AppString.mail}
+              value={'Valijon@gmail.com'}
+              onClick={() => {
+                navigation.navigate(RouteNames.viewPhoneNumber, {
+                  isMobile: false,
+                });
+              }}
+            />
+            <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
+            <TextWithIcon
+              title={AppString.change_password}
+              onClick={() => {
+                navigation.navigate(RouteNames.changePassword);
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              backgroundColor: colors.white,
+              paddingTop: 10,
+              paddingBottom: 10,
+              marginTop: 10,
+              borderRadius: 13,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(RouteNames.deleteAccount);
+              }}
               style={[
-                styles.textStyle,
-                {fontSize: 16, fontFamily: undefined, fontWeight: '500'},
+                styles.profile,
+                {
+                  marginTop: undefined,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 4,
+                },
               ]}>
-              {AppString.delete_account}
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={[
+                  styles.textStyle,
+                  { fontSize: 16, fontFamily: undefined, fontWeight: '400' },
+                ]}>
+                {AppString.delete_account}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
-const UserAvatar = ({onClick}) => {
+const UserAvatar = ({ onClick }) => {
   return (
-    <View style={{borderRadius: 13, backgroundColor: colors.white}}>
+    <View style={{ borderRadius: 13, backgroundColor: colors.white }}>
       <View style={[style.userAvatar]}>
         <Image
-          source={{uri: imagesUrl.profile}}
-          style={{height: 111, width: 111, borderRadius: 56}}
+          source={{ uri: imagesUrl.profile }}
+          style={{ height: 111, width: 111, borderRadius: 56 }}
         />
         <Text
           style={[
@@ -171,7 +174,7 @@ const UserAvatar = ({onClick}) => {
   );
 };
 
-const TextWithIcon = ({title = AppString.address, value = '', onClick}) => {
+const TextWithIcon = ({ title = AppString.address, value = '', onClick }) => {
   return (
     <TouchableOpacity
       onPress={onClick}
@@ -189,7 +192,7 @@ const TextWithIcon = ({title = AppString.address, value = '', onClick}) => {
       <Text
         style={[
           styles.textStyle,
-          {fontSize: 14, fontWeight: '500', color: colors.black121212},
+          { fontSize: 14, fontWeight: '500', color: colors.black121212 },
         ]}>
         {title}
       </Text>
@@ -199,6 +202,7 @@ const TextWithIcon = ({title = AppString.address, value = '', onClick}) => {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
+          gap: 6
         }}>
         <Text
           style={[

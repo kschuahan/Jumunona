@@ -6,11 +6,11 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import {AppString} from '../../utils/AppStrings';
-import {styles} from '../../utils/AppStyles';
-import {colors} from '../../utils/AppColors';
-import {fontFamily} from '../../utils/Fonts';
-import {appIcons} from '../../utils/AppIcons';
+import { AppString } from '../../utils/AppStrings';
+import { styles } from '../../utils/AppStyles';
+import { colors } from '../../utils/AppColors';
+import { fontFamily } from '../../utils/Fonts';
+import { appIcons } from '../../utils/AppIcons';
 import LinearGradient from 'react-native-linear-gradient';
 
 interface Guarntees {
@@ -51,7 +51,7 @@ const guarantees: Guarntees[] = [
     desc: 'После возврата, деньги будут зачислены на ваш счет в течение 24 часов',
   },
 ];
-const ProuductGuanteeScreen = ({isShow = false, onClose}) => {
+const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
   return (
     <Modal
       transparent={true}
@@ -61,7 +61,7 @@ const ProuductGuanteeScreen = ({isShow = false, onClose}) => {
       <View
         style={[
           styles.botton_view,
-          {backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end'},
+          { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end' },
         ]}>
         <View
           style={{
@@ -75,10 +75,11 @@ const ProuductGuanteeScreen = ({isShow = false, onClose}) => {
           <View
             style={{
               flexDirection: 'row',
-              alignContent: 'center',
               alignItems: 'center',
               alignSelf: 'center',
-              marginTop: 23.5,
+              justifyContent: 'center',
+              marginTop: 20.7,
+              marginStart: -50,
               marginBottom: 12,
             }}>
             <Image
@@ -105,9 +106,9 @@ const ProuductGuanteeScreen = ({isShow = false, onClose}) => {
           </View>
           <FlatList
             data={guarantees}
-            renderItem={({item}) => (
-              <View style={{marginVertical: 12, marginEnd: 22}}>
-                <View style={{flexDirection: 'row'}}>
+            renderItem={({ item }) => (
+              <View style={{ marginVertical: 12, marginEnd: 22 }}>
+                <View style={{ flexDirection: 'row' }}>
                   <Image
                     source={appIcons.checked}
                     style={{
@@ -117,11 +118,12 @@ const ProuductGuanteeScreen = ({isShow = false, onClose}) => {
                       marginTop: 4,
                     }}
                   />
-                  <View style={{marginLeft: 13, flexDirection: 'column'}}>
+                  <View style={{ marginLeft: 13, flexDirection: 'column' }}>
                     <Text
                       style={[
                         styles.textStyle,
                         {
+                          marginTop: 4,
                           fontFamily: fontFamily.bold,
                           fontSize: 15,
                           color: colors.black262626,
@@ -138,7 +140,6 @@ const ProuductGuanteeScreen = ({isShow = false, onClose}) => {
                           color: colors.black262626,
                         },
                       ]}>
-                      {' '}
                       {item.desc}
                     </Text>
                   </View>
@@ -168,11 +169,11 @@ const CommonButton = ({
   return (
     <TouchableOpacity
       onPress={onClick}
-      style={{marginBottom: 30, marginTop: 20}}>
+      style={{ marginBottom: 30, marginTop: 20 }}>
       <LinearGradient
         colors={[startorange, endColor]}
-        start={{x: 0.4, y: 0}}
-        end={{x: 1, y: 1}}
+        start={{ x: 0.4, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={{
           borderRadius: 1000,
           marginEnd: 10,
@@ -183,7 +184,7 @@ const CommonButton = ({
         <Text
           style={[
             styles.textStyle,
-            {color: colors.white, fontFamily: fontFamily.regular, fontSize: 14},
+            { color: colors.white, fontFamily: fontFamily.regular, fontSize: 14 },
           ]}>
           {text}
         </Text>

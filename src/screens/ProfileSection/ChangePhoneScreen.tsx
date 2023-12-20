@@ -1,5 +1,5 @@
 import LinearGradient from 'react-native-linear-gradient';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,20 +8,21 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {colors} from '../../utils/AppColors';
-import {AppString} from '../../utils/AppStrings';
-import {styles} from '../../utils/AppStyles';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
+import { styles } from '../../utils/AppStyles';
 
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
-import {fontFamily} from '../../utils/Fonts';
+import { fontFamily } from '../../utils/Fonts';
+import { CustomHeader } from '../../components/Header';
 
-const ChangePhoneScreen = ({navigation}) => {
+const ChangePhoneScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: AppString.change_phone_number,
       headerRight: () => (
-        <TouchableOpacity style={{alignItems: 'center'}}>
+        <TouchableOpacity style={{ alignItems: 'center' }}>
           <EllipsisHorizontal width={24} height={24} />
         </TouchableOpacity>
       ),
@@ -31,7 +32,7 @@ const ChangePhoneScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}
-          style={{alignItems: 'center'}}>
+          style={{ alignItems: 'center' }}>
           <ChevronBackOutline width={15} height={15} />
         </TouchableOpacity>
       ),
@@ -41,92 +42,95 @@ const ChangePhoneScreen = ({navigation}) => {
   const [otp, setOtp] = useState('');
 
   return (
-    <ScrollView>
-      <View
-        style={[
-          style.container,
-          {backgroundColor: colors.white, borderRadius: 13},
-        ]}>
-        <Text
+    <View style={[styles.container, { padding: 0 }]}>
+      <CustomHeader navigation={navigation} title={AppString.change_phone_number} />
+
+      <ScrollView>
+        <View
           style={[
-            styles.textStyle,
-            {marginBottom: 6, fontFamily: fontFamily.bold, fontSize: 17},
+            style.container,
+            { backgroundColor: colors.white, borderRadius: 13, marginTop: 6, paddingTop: 6 },
           ]}>
-          {AppString.enter_new_number}
-        </Text>
-
-        <View style={{flexDirection: 'row', marginBottom: 14}}>
-          <LinearGradient
-            colors={['#ff7600', '#ffc500']}
-            start={{x: 0.4, y: 0}}
-            end={{x: 1, y: 1}}
-            style={{
-              width: '24%',
-              height: 34,
-              borderRadius: 24,
-              paddingLeft: 8,
-            }}>
-            <Text style={style._992}>+992</Text>
-          </LinearGradient>
-
-          <TextInput
-            placeholder={AppString.enter_your_new_nubmer}
-            style={style.mobileTextInput}
-            value={phone}
-            onChangeText={text => {
-              setPhone(text);
-            }}></TextInput>
-        </View>
-
-        <Text
-          style={[
-            styles.textStyle,
-            {marginBottom: 6, fontFamily: fontFamily.bold, fontSize: 17},
-          ]}>
-          {AppString.confirmation_code}
-        </Text>
-        <View style={{flexDirection: 'row'}}>
-          <TextInput
-            placeholder={AppString.enter_new_number}
-            style={style.passwordTextInput}
-            value={otp}
-            onChangeText={text => {
-              setOtp(text);
-            }}></TextInput>
-          <TouchableOpacity
-            style={{
-              width: '35%',
-              height: 34,
-              paddingLeft: 8,
-              marginLeft: -30,
-              opacity: phone.length == 0 ? 0.5 : 1,
-            }}
-            onPress={() => {}}
-            disabled={phone.length == 0}>
-            <LinearGradient
-              colors={['#FE8C00', '#FC4A1A']}
-              start={{x: 0.4, y: 0}}
-              end={{x: 1, y: 1}}
-              style={{flex: 1, borderRadius: 24}}>
-              <Text style={style._992}>{AppString.get_code}</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <TouchableOpacity onPress={() => {}} style={style.loginButton}>
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          colors={['#FE8C00', '#FC4A1A']}
-          style={styles.buttonGradient}>
           <Text
-            style={{fontSize: 18, color: '#fff', fontFamily: fontFamily.bold}}>
-            {AppString.confirm}
+            style={[
+              styles.textStyle,
+              { marginBottom: 8, fontFamily: fontFamily.bold, fontSize: 17 },
+            ]}>
+            {AppString.enter_new_number}
           </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    </ScrollView>
+
+          <View style={{ flexDirection: 'row', marginBottom: 14 }}>
+            <LinearGradient
+              colors={['#ff7600', '#ffc500']}
+              start={{ x: 0.4, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={{
+                width: '24%',
+                height: 34,
+                borderRadius: 24,
+              }}>
+              <Text style={style._992}>+992</Text>
+            </LinearGradient>
+
+            <TextInput
+              placeholder={AppString.enter_your_new_nubmer}
+              style={style.mobileTextInput}
+              value={phone}
+              onChangeText={text => {
+                setPhone(text);
+              }}></TextInput>
+          </View>
+
+          <Text
+            style={[
+              styles.textStyle,
+              { marginBottom: 8, fontFamily: fontFamily.bold, fontSize: 17 },
+            ]}>
+            {AppString.confirmation_code}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <TextInput
+              placeholder={AppString.enter_new_number}
+              style={style.passwordTextInput}
+              value={otp}
+              onChangeText={text => {
+                setOtp(text);
+              }}></TextInput>
+            <TouchableOpacity
+              style={{
+                width: '35%',
+                height: 34,
+                paddingLeft: 8,
+                marginLeft: -30,
+                opacity: phone.length == 0 ? 0.5 : 1,
+              }}
+              onPress={() => { }}
+              disabled={phone.length == 0}>
+              <LinearGradient
+                colors={['#FE8C00', '#FC4A1A']}
+                start={{ x: 0.4, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{ flex: 1, borderRadius: 24 }}>
+                <Text style={style._992}>{AppString.get_code}</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <TouchableOpacity onPress={() => { }} style={style.loginButton}>
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={['#FE8C00', '#FC4A1A']}
+            style={styles.buttonGradient}>
+            <Text
+              style={{ fontSize: 18, color: '#fff', fontFamily: fontFamily.bold }}>
+              {AppString.confirm}
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -141,7 +145,7 @@ const style = StyleSheet.create({
   _992: {
     color: '#ffffff',
     paddingTop: 7,
-    paddingLeft: 8,
+    paddingLeft: 4,
     fontFamily: fontFamily.regular,
     fontSize: 14,
   },
@@ -154,6 +158,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 16,
     fontFamily: fontFamily.regular,
     fontSize: 14,
+    paddingVertical: 0
   },
   passwordTextInput: {
     width: '73%',

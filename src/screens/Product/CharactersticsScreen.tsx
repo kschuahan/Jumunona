@@ -1,26 +1,26 @@
-import {Modal, View, Text, TouchableOpacity, FlatList} from 'react-native';
+import { Modal, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {AppString} from '../../utils/AppStrings';
-import {styles} from '../../utils/AppStyles';
-import {colors} from '../../utils/AppColors';
-import {fontFamily} from '../../utils/Fonts';
+import { AppString } from '../../utils/AppStrings';
+import { styles } from '../../utils/AppStyles';
+import { colors } from '../../utils/AppColors';
+import { fontFamily } from '../../utils/Fonts';
 
 const charachterList = [
-  {title: 'Версия', subTitle: 'Обтягивающая'},
-  {title: 'Плечевые лямки', subTitle: 'Несъемные'},
-  {title: 'Эластичность', subTitle: 'Низкая'},
-  {title: 'Основной состав ткани', subTitle: 'Хлопок'},
-  {title: 'Color', subTitle: 'Red Blue'},
-  {title: 'Sleeve Type', subTitle: 'Conventional'},
-  {title: '细分风格', subTitle: '湖'},
-  {title: '基础风格', subTitle: '青春流行'},
-  {title: '适用季节', subTitle: '秋季'},
-  {title: '厚薄', subTitle: '常规'},
-  {title: '适用场景', subTitle: '休闲'},
-  {title: '版型', subTitle: '宽松型'},
-  {title: '服饰工艺', subTitle: '水洗'},
+  { title: 'Версия', subTitle: 'Обтягивающая', ms: 130 },
+  { title: 'Плечевые лямки', subTitle: 'Несъемные', ms: 62 },
+  { title: 'Эластичность', subTitle: 'Низкая', ms: 83 },
+  { title: 'Основной состав ткани', subTitle: 'Хлопок', ms: 16 },
+  { title: 'Color', subTitle: 'Red Blue', ms: 51 },
+  { title: 'Sleeve Type', subTitle: 'Conventional', ms: 9 },
+  { title: '细分风格', subTitle: '湖', ms: 28 },
+  { title: '基础风格', subTitle: '青春流行', ms: 28 },
+  { title: '适用季节', subTitle: '秋季', ms: 28 },
+  { title: '厚薄', subTitle: '常规', ms: 55 },
+  { title: '适用场景', subTitle: '休闲', ms: 28 },
+  { title: '版型', subTitle: '宽松型', ms: 55 },
+  { title: '服饰工艺', subTitle: '水洗', ms: 28 },
 ];
-const CharacterSticsScreen = ({isShow = false, onClose}) => {
+const CharacterSticsScreen = ({ isShow = false, onClose }) => {
   return (
     <Modal
       transparent={true}
@@ -30,7 +30,7 @@ const CharacterSticsScreen = ({isShow = false, onClose}) => {
       <View
         style={[
           styles.botton_view,
-          {backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end'},
+          { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end' },
         ]}>
         <View
           style={{
@@ -47,7 +47,7 @@ const CharacterSticsScreen = ({isShow = false, onClose}) => {
               {
                 fontSize: 16,
                 alignSelf: 'center',
-                marginVertical: 10,
+                marginTop: 22,
                 color: colors.black262626,
               },
             ]}>
@@ -55,19 +55,19 @@ const CharacterSticsScreen = ({isShow = false, onClose}) => {
           </Text>
 
           <FlatList
-            style={{marginBottom: 60}}
+            style={{ marginBottom: 60 }}
             data={charachterList}
             keyExtractor={item => {
               return item.title.toString();
             }}
             showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <View>
-                <View style={{flexDirection: 'row', paddingVertical: 16}}>
+                <View style={{ flexDirection: 'row', paddingVertical: 12, gap: item.ms }}>
                   <Text
                     style={[
                       styles.textStyle,
-                      {fontSize: 14, color: colors.grey9D9D9D, flex: 0.5},
+                      { fontSize: 14, color: colors.grey9D9D9D },
                     ]}>
                     {item.title}
                   </Text>
@@ -77,7 +77,6 @@ const CharacterSticsScreen = ({isShow = false, onClose}) => {
                       {
                         fontSize: 14,
                         color: colors.blacl5B5B5B,
-                        flex: 0.5,
                       },
                     ]}>
                     {item.subTitle}
@@ -96,7 +95,7 @@ const CharacterSticsScreen = ({isShow = false, onClose}) => {
 };
 
 const Separator = () => {
-  return <View style={{height: 1, backgroundColor: colors.darkWhite}} />;
+  return <View style={{ height: 1, backgroundColor: colors.darkWhite }} />;
 };
 
 const CommonButton = ({
@@ -108,11 +107,11 @@ const CommonButton = ({
   return (
     <TouchableOpacity
       onPress={onClick}
-      style={{position: 'absolute', width: '100%', start: 16, bottom: 10}}>
+      style={{ position: 'absolute', width: '100%', start: 16, bottom: 10 }}>
       <LinearGradient
         colors={[startorange, endColor]}
-        start={{x: 0.4, y: 0}}
-        end={{x: 1, y: 1}}
+        start={{ x: 0.4, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={{
           borderRadius: 1000,
           marginEnd: 10,
@@ -123,7 +122,7 @@ const CommonButton = ({
         <Text
           style={[
             styles.textStyle,
-            {color: colors.white, fontFamily: fontFamily.regular, fontSize: 14},
+            { color: colors.white, fontFamily: fontFamily.regular, fontSize: 14 },
           ]}>
           {text}
         </Text>

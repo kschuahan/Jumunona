@@ -285,7 +285,7 @@ const ProfileProduct = ({
         {
           marginHorizontal: 0,
           position: 'absolute',
-          bottom: 100,
+          bottom: 95,
           backgroundColor: colors.white,
           padding: 10,
           width: dimensions.width - 20,

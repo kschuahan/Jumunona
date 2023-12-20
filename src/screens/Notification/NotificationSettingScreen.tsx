@@ -1,19 +1,20 @@
-import {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, Switch} from 'react-native';
-import {styles} from '../../utils/AppStyles';
-import {colors} from '../../utils/AppColors';
-import {AppString} from '../../utils/AppStrings';
-import {fontFamily} from '../../utils/Fonts';
+import { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Switch } from 'react-native';
+import { styles } from '../../utils/AppStyles';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
+import { fontFamily } from '../../utils/Fonts';
 import EllipsisHorizontalIcon from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutlineIcon from '../../../assets/Icons/chevronBackOutline.svg';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/chevronForwardOutline.svg';
+import { CustomHeader } from '../../components/Header';
 
-const NotificationSettingScreen = ({navigation}) => {
+const NotificationSettingScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: AppString.notification_Settings,
       headerRight: () => (
-        <TouchableOpacity style={{alignItems: 'center'}}>
+        <TouchableOpacity style={{ alignItems: 'center' }}>
           <EllipsisHorizontalIcon width={24} height={24} />
         </TouchableOpacity>
       ),
@@ -23,7 +24,7 @@ const NotificationSettingScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}
-          style={{alignItems: 'center'}}>
+          style={{ alignItems: 'center' }}>
           <ChevronBackOutlineIcon width={15} height={15} />
         </TouchableOpacity>
       ),
@@ -31,28 +32,33 @@ const NotificationSettingScreen = ({navigation}) => {
   });
 
   return (
-    <View style={[styles.container]}>
-      <View
-        style={{borderRadius: 13, backgroundColor: colors.white, padding: 10}}>
-        <HeaderView />
-        <SeparatorView />
-        <ListView
-          title={AppString.receive_msg_notification}
-          desc={AppString.including_responses_from_support_and_chat}
-        />
-        <SeparatorView />
-        <ListView
-          title={AppString.Receive_notifications_from_the_platform}
-          desc={
-            AppString.Including_logistics_updates_promotional_offers_interactive_messages_etc
-          }
-        />
+    <View style={[styles.container, { padding: 0 }]}>
+      <CustomHeader navigation={navigation} title={AppString.notification_Settings} />
+
+      <View style={[styles.container, { paddingTop: 6 }]}>
+
+        <View
+          style={{ borderRadius: 13, backgroundColor: colors.white, padding: 10 }}>
+          <HeaderView />
+          <SeparatorView />
+          <ListView
+            title={AppString.receive_msg_notification}
+            desc={AppString.including_responses_from_support_and_chat}
+          />
+          <SeparatorView />
+          <ListView
+            title={AppString.Receive_notifications_from_the_platform}
+            desc={
+              AppString.Including_logistics_updates_promotional_offers_interactive_messages_etc
+            }
+          />
+        </View>
       </View>
     </View>
   );
 };
 
-const HeaderView = ({}) => {
+const HeaderView = ({ }) => {
   return (
     <View
       style={{
@@ -60,11 +66,11 @@ const HeaderView = ({}) => {
         justifyContent: 'space-between',
         alignItems: 'center',
       }}>
-      <View style={{flexDirection: 'column', justifyContent: 'space-between'}}>
+      <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
         <Text
           style={[
             styles.textStyle,
-            {fontSize: 16, fontFamily: fontFamily.bold, paddingBottom: 7},
+            { fontSize: 16, fontFamily: fontFamily.bold, paddingBottom: 7 },
           ]}>
           {AppString.receive_notification}
         </Text>
@@ -72,7 +78,7 @@ const HeaderView = ({}) => {
         <Text
           style={[
             styles.textStyle,
-            {fontSize: 14, fontFamily: fontFamily.regular, color: '#9C9C9C'},
+            { fontSize: 14, fontFamily: fontFamily.regular, color: '#9C9C9C' },
           ]}>
           {AppString.receive_msg_notification}
         </Text>
@@ -85,12 +91,12 @@ const HeaderView = ({}) => {
 const SeparatorView = () => {
   return (
     <View
-      style={{height: 1, marginVertical: 10, backgroundColor: colors.darkWhite}}
+      style={{ height: 1, marginVertical: 10, backgroundColor: colors.darkWhite }}
     />
   );
 };
 
-const ListView = ({title = '', desc = ''}) => {
+const ListView = ({ title = '', desc = '' }) => {
   const [switchOn, setSwitchOn] = useState(true);
   return (
     <View
@@ -109,7 +115,7 @@ const ListView = ({title = '', desc = ''}) => {
         <Text
           style={[
             styles.textStyle,
-            {fontSize: 16, fontFamily: fontFamily.bold, paddingBottom: 7},
+            { fontSize: 16, fontFamily: fontFamily.bold, paddingBottom: 7 },
           ]}>
           {title}
         </Text>
@@ -117,14 +123,14 @@ const ListView = ({title = '', desc = ''}) => {
         <Text
           style={[
             styles.textStyle,
-            {fontSize: 14, fontFamily: fontFamily.regular, color: '#9C9C9C'},
+            { fontSize: 14, fontFamily: fontFamily.regular, color: '#9C9C9C' },
           ]}>
           {desc}
         </Text>
       </View>
-      <View style={{padding: 10}}>
+      <View style={{ padding: 10 }}>
         <Switch
-          trackColor={{false: colors.lightGrey, true: '#65C468'}}
+          trackColor={{ false: colors.lightGrey, true: '#65C468' }}
           thumbColor={colors.white}
           ios_backgroundColor={colors.lightGrey}
           onValueChange={() => {

@@ -10,6 +10,7 @@ import { RouteNames } from '../../utils/RouteNames';
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/chevronForwardOutline.svg';
+import { CustomHeader } from '../../components/Header';
 
 export const ConditionsScreen = ({ navigation }) => {
   useEffect(() => {
@@ -35,43 +36,46 @@ export const ConditionsScreen = ({ navigation }) => {
   });
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flex: 1 }}
-      showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <View
-          style={{
-            backgroundColor: colors.white,
-            paddingHorizontal: 10,
-            borderRadius: 13,
-          }}>
-          <TextWithIcon
-            title={AppString.trem_of_use}
-            onClick={() => {
-              navigation.navigate(RouteNames.term_of_use);
-            }}
-          />
-          <TextWithIcon
-            title={AppString.system_permissions}
-            onClick={() => {
-              navigation.navigate(RouteNames.system_permission);
-            }}
-          />
-          <TextWithIcon
-            title={AppString.privacy_policy}
-            onClick={() => {
-              navigation.navigate(RouteNames.privacy_policy);
-            }}
-          />
-          <TextWithIcon
-            title={AppString.pertional_information}
-            onClick={() => {
-              navigation.navigate(RouteNames.personal_info);
-            }}
-          />
+    <View style={[styles.container, { padding: 0 }]}>
+      <CustomHeader navigation={navigation} title={RouteNames.conditions} />
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}>
+        <View style={[styles.container, { paddingTop: 5 }]}>
+          <View
+            style={{
+              backgroundColor: colors.white,
+              paddingHorizontal: 10,
+              borderRadius: 13,
+            }}>
+            <TextWithIcon
+              title={AppString.trem_of_use}
+              onClick={() => {
+                navigation.navigate(RouteNames.term_of_use);
+              }}
+            />
+            <TextWithIcon
+              title={AppString.system_permissions}
+              onClick={() => {
+                navigation.navigate(RouteNames.system_permission);
+              }}
+            />
+            <TextWithIcon
+              title={AppString.privacy_policy}
+              onClick={() => {
+                navigation.navigate(RouteNames.privacy_policy);
+              }}
+            />
+            <TextWithIcon
+              title={AppString.pertional_information}
+              onClick={() => {
+                navigation.navigate(RouteNames.personal_info);
+              }}
+            />
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 

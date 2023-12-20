@@ -17,172 +17,162 @@ import { fontFamily } from '../../../utils/Fonts';
 import EllipsisHorizontal from '../../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../../assets/Icons/chevronBackOutline.svg';
 import ChevronFwdOutline from '../../../../assets/Icons/chevronForwardOutline.svg';
+import { BackLogo, CustomHeader, LogoTitle, MenuLogo } from '../../../components/Header';
 
 export const SettingScreen = ({ navigation }) => {
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: RouteNames.setting,
-
-      headerRight: () => (
-        <TouchableOpacity style={{ alignItems: 'center' }}>
-          <EllipsisHorizontal width={24} height={24} />
-        </TouchableOpacity>
-      ),
-
-      headerLeft: () => (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-          style={{ alignItems: 'center' }}>
-          <ChevronBackOutline width={15} height={15} />
-        </TouchableOpacity>
-      ),
-    });
-  });
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (<MenuLogo />),
+  //     headerTitle: () => (
+  //       <LogoTitle title={RouteNames.setting} />
+  //     ),
+  //     headerLeft: () => (<BackLogo navigation={navigation} />),
+  //   });
+  // });
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flex: 1 }}
-      showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <Profile
-          onClick={() => {
-            navigation.navigate(RouteNames.profileDetail);
-          }}
-        />
-        <View
-          style={{
-            backgroundColor: colors.white,
-            paddingStart: 12.5,
-            paddingEnd: 16.96,
-            paddingTop: 2.5,
-            marginTop: 9,
-            borderRadius: 13,
-            paddingBottom: 3,
-          }}>
-          <TextWithIcon
-            padding={13}
-            title={AppString.notifications}
+    <View style={[styles.container, { padding: 0 }]}>
+      <CustomHeader navigation={navigation} title={RouteNames.setting} />
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}>
+        <View style={[styles.container, { paddingTop: 6 }]}>
+          <Profile
             onClick={() => {
-              navigation.navigate(RouteNames.notificationSetting);
+              navigation.navigate(RouteNames.profileDetail);
             }}
           />
-          <TextWithIcon
-            padding={13}
-            title={AppString.city}
-            onClick={() => {
-              navigation.navigate(RouteNames.selectCity);
-            }}
-          />
-          <TextWithIcon
-            padding={13}
-            title={AppString.feedback_and_help}
-            onClick={() => { }}
-          />
-        </View>
+          <View
+            style={{
+              backgroundColor: colors.white,
+              paddingStart: 12.5,
+              paddingEnd: 16.96,
+              marginTop: 9,
+              borderRadius: 13,
+              paddingBottom: 3,
+            }}>
+            <TextWithIcon
+              padding={13}
+              title={AppString.notifications}
+              onClick={() => {
+                navigation.navigate(RouteNames.notificationSetting);
+              }}
+            />
+            <TextWithIcon
+              padding={13}
+              title={AppString.city}
+              onClick={() => {
+                navigation.navigate(RouteNames.selectCity);
+              }}
+            />
+            <TextWithIcon
+              padding={13}
+              title={AppString.feedback_and_help}
+              onClick={() => { }}
+            />
+          </View>
 
-        <View
-          style={{
-            backgroundColor: colors.white,
-            paddingHorizontal: 12.5,
-            marginTop: 9,
-            borderRadius: 13,
-            paddingBottom: 3,
-            paddingEnd: 16.96,
-            paddingTop: 1.5,
-          }}>
-          <TextWithIcon
-            padding={14.25}
-            title={AppString.trem_and_privacy}
-            onClick={() => {
-              navigation.navigate(RouteNames.conditions);
-            }}
-          />
-          <TextWithIcon
-            padding={13.75}
-            title={AppString.about_us}
-            onClick={() => {
-              navigation.navigate(RouteNames.aboutUs);
-            }}
-          />
-          <TextWithIcon
-            padding={14}
-            title={AppString.clear_catch}
-            onClick={() => { }}
-          />
-          <TextWithIcon
-            padding={11}
-            title={AppString.catch_for_update}
-            onClick={() => { }}
-          />
-        </View>
+          <View
+            style={{
+              backgroundColor: colors.white,
+              paddingHorizontal: 12.5,
+              marginTop: 9,
+              borderRadius: 13,
+              paddingBottom: 3,
+              paddingEnd: 16.96,
+            }}>
+            <TextWithIcon
+              padding={13}
+              title={AppString.trem_and_privacy}
+              onClick={() => {
+                navigation.navigate(RouteNames.conditions);
+              }}
+            />
+            <TextWithIcon
+              padding={13.75}
+              title={AppString.about_us}
+              onClick={() => {
+                navigation.navigate(RouteNames.aboutUs);
+              }}
+            />
+            <TextWithIcon
+              padding={14}
+              title={AppString.clear_catch}
+              onClick={() => { }}
+            />
+            <TextWithIcon
+              padding={11}
+              title={AppString.catch_for_update}
+              onClick={() => { }}
+            />
+          </View>
 
-        <View
-          style={{
-            backgroundColor: colors.white,
-            paddingTop: 15.5,
-            paddingBottom: 11.5,
-            marginTop: 9,
-            borderRadius: 13,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert(
-                'Logout',
-                'Are you sure you want to logout?',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      navigation.reset({
-                        index: 0,
-                        routes: [{ name: RouteNames.login }],
-                      });
+          <View
+            style={{
+              backgroundColor: colors.white,
+              paddingTop: 10,
+              paddingBottom: 10,
+              marginTop: 9,
+              borderRadius: 13,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert(
+                  'Logout',
+                  'Are you sure you want to logout?',
+                  [
+                    {
+                      text: 'Cancel',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
                     },
-                  },
-                ],
-                { cancelable: false },
-              );
-            }}
-            style={[
-              styles.profile,
-              {
-                marginTop: undefined,
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 4,
-              },
-            ]}>
-            <Text
+                    {
+                      text: 'OK',
+                      onPress: () => {
+                        navigation.reset({
+                          index: 0,
+                          routes: [{ name: RouteNames.login }],
+                        });
+                      },
+                    },
+                  ],
+                  { cancelable: false },
+                );
+              }}
               style={[
-                styles.textStyle,
-                { fontSize: 16, fontWeight: '500', fontFamily: undefined },
+                styles.profile,
+                {
+                  marginTop: undefined,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 4,
+                },
               ]}>
-              {AppString.go_out}
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={[
+                  styles.textStyle,
+                  { fontSize: 16, fontWeight: '400', fontFamily: undefined },
+                ]}>
+                {AppString.go_out}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
 const Profile = ({ onClick }) => {
   return (
     <View
-      style={{ backgroundColor: colors.white, borderRadius: 13, marginTop: 9 }}>
+      style={{ backgroundColor: colors.white, borderRadius: 13 }}>
       <View>
         <TouchableOpacity onPress={onClick}>
           <View
             style={[
               styles.profile,
-              { alignItems: 'center', marginTop: undefined, padding: 10 },
+              { alignItems: 'center', marginTop: undefined, padding: 10, paddingEnd: 15 },
             ]}>
             <View
               style={{
@@ -197,7 +187,7 @@ const Profile = ({ onClick }) => {
                 source={{ uri: imagesUrl.profile }}
                 style={{ height: 60, width: 60, borderRadius: 35 }}
               />
-              <View style={{ paddingHorizontal: 10, gap: 9.5 }}>
+              <View style={{ paddingHorizontal: 10, gap: 4 }}>
                 <Text
                   style={[
                     styles.textStyle,
@@ -234,7 +224,7 @@ const Profile = ({ onClick }) => {
             marginTop: 4.92,
           }}
         />
-        <View style={{ paddingHorizontal: 13, paddingBottom: 6 }}>
+        <View style={{ paddingHorizontal: 15, paddingBottom: 6 }}>
           <TextWithIcon
             title={AppString.my_addresses}
             padding={10}

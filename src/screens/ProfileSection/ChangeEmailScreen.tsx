@@ -1,5 +1,5 @@
 import LinearGradient from 'react-native-linear-gradient';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,20 +8,21 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {colors} from '../../utils/AppColors';
-import {AppString} from '../../utils/AppStrings';
-import {styles} from '../../utils/AppStyles';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
+import { styles } from '../../utils/AppStyles';
 
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
-import {fontFamily} from '../../utils/Fonts';
+import { fontFamily } from '../../utils/Fonts';
+import { CustomHeader } from '../../components/Header';
 
-const ChangeEmailScreen = ({navigation}) => {
+const ChangeEmailScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: AppString.change_email,
       headerRight: () => (
-        <TouchableOpacity style={{alignItems: 'center'}}>
+        <TouchableOpacity style={{ alignItems: 'center' }}>
           <EllipsisHorizontal width={24} height={24} />
         </TouchableOpacity>
       ),
@@ -31,7 +32,7 @@ const ChangeEmailScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}
-          style={{alignItems: 'center'}}>
+          style={{ alignItems: 'center' }}>
           <ChevronBackOutline width={15} height={15} />
         </TouchableOpacity>
       ),
@@ -41,80 +42,84 @@ const ChangeEmailScreen = ({navigation}) => {
   const [otp, setOtp] = useState('');
 
   return (
-    <ScrollView>
-      <View
-        style={[
-          style.container,
-          {backgroundColor: colors.white, borderRadius: 13},
-        ]}>
-        <Text
+    <View style={[styles.container, { padding: 0 }]}>
+      <CustomHeader navigation={navigation} title={AppString.change_email} />
+
+      <ScrollView>
+        <View
           style={[
-            styles.textStyle,
-            {marginBottom: 6, fontFamily: fontFamily.bold, fontSize: 17},
+            style.container,
+            { backgroundColor: colors.white, borderRadius: 13, marginTop: 6, paddingTop: 6 },
           ]}>
-          {AppString.enter_new_email}
-        </Text>
-
-        <View style={{flexDirection: 'row', marginBottom: 14}}>
-          <TextInput
-            placeholder={AppString.enter_your_new_email}
-            style={style.emailTextInput}
-            value={email}
-            onChangeText={text => {
-              setEmail(text);
-            }}></TextInput>
-        </View>
-
-        <Text
-          style={[
-            styles.textStyle,
-            {marginBottom: 6, fontFamily: fontFamily.bold, fontSize: 17},
-          ]}>
-          {AppString.confirmation_code}
-        </Text>
-        <View style={{flexDirection: 'row'}}>
-          <TextInput
-            placeholder={AppString.enter_new_number}
-            style={style.passwordTextInput}
-            value={otp}
-            onChangeText={text => {
-              setOtp(text);
-            }}
-          />
-          <TouchableOpacity
-            style={{
-              width: '35%',
-              height: 34,
-              paddingLeft: 8,
-              marginLeft: -30,
-              opacity: email.length == 0 ? 0.5 : 1,
-            }}
-            onPress={() => {}}
-            disabled={email.length == 0}>
-            <LinearGradient
-              colors={['#FE8C00', '#FC4A1A']}
-              start={{x: 0.4, y: 0}}
-              end={{x: 1, y: 1}}
-              style={{flex: 1, borderRadius: 24}}>
-              <Text style={style._992}>{AppString.get_code}</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <TouchableOpacity onPress={() => {}} style={style.loginButton}>
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          colors={['#FE8C00', '#FC4A1A']}
-          style={styles.buttonGradient}>
           <Text
-            style={{fontSize: 18, color: '#fff', fontFamily: fontFamily.bold}}>
-            {AppString.confirm}
+            style={[
+              styles.textStyle,
+              { marginBottom: 8, fontFamily: fontFamily.bold, fontSize: 17 },
+            ]}>
+            {AppString.enter_new_email}
           </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    </ScrollView>
+
+          <View style={{ flexDirection: 'row', marginBottom: 14 }}>
+            <TextInput
+              placeholder={AppString.enter_your_new_email}
+              style={style.emailTextInput}
+              value={email}
+              onChangeText={text => {
+                setEmail(text);
+              }}></TextInput>
+          </View>
+
+          <Text
+            style={[
+              styles.textStyle,
+              { marginBottom: 8, fontFamily: fontFamily.bold, fontSize: 17 },
+            ]}>
+            {AppString.confirmation_code}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <TextInput
+              placeholder={AppString.enter_new_number}
+              style={style.passwordTextInput}
+              value={otp}
+              onChangeText={text => {
+                setOtp(text);
+              }}
+            />
+            <TouchableOpacity
+              style={{
+                width: '35%',
+                height: 34,
+                paddingLeft: 8,
+                marginLeft: -30,
+                opacity: email.length == 0 ? 0.5 : 1,
+              }}
+              onPress={() => { }}
+              disabled={email.length == 0}>
+              <LinearGradient
+                colors={['#FE8C00', '#FC4A1A']}
+                start={{ x: 0.4, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{ flex: 1, borderRadius: 24 }}>
+                <Text style={style._992}>{AppString.get_code}</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <TouchableOpacity onPress={() => { }} style={style.loginButton}>
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={['#FE8C00', '#FC4A1A']}
+            style={styles.buttonGradient}>
+            <Text
+              style={{ fontSize: 18, color: '#fff', fontFamily: fontFamily.bold }}>
+              {AppString.confirm}
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 };
 

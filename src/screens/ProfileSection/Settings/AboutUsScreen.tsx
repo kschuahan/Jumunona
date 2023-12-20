@@ -1,25 +1,27 @@
-import React, {useEffect} from 'react';
-import {TouchableOpacity, View, Image, Text} from 'react-native';
-import {AppString} from '../../../utils/AppStrings';
+import React, { useEffect } from 'react';
+import { TouchableOpacity, View, Image, Text } from 'react-native';
+import { AppString } from '../../../utils/AppStrings';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {styles} from '../../../utils/AppStyles';
-import {colors} from '../../../utils/AppColors';
-import {appIcons} from '../../../utils/AppIcons';
-import {fontFamily} from '../../../utils/Fonts';
-import {ScrollView} from 'react-native-virtualized-view';
+import { styles } from '../../../utils/AppStyles';
+import { colors } from '../../../utils/AppColors';
+import { appIcons } from '../../../utils/AppIcons';
+import { fontFamily } from '../../../utils/Fonts';
+import { ScrollView } from 'react-native-virtualized-view';
 
 import EllipsisHorizontal from '../../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../../assets/Icons/chevronBackOutline.svg';
 import HomeFocusedIcon from '../../../../assets/Icons/home-focused.svg';
 import ChevronFwdOutline from '../../../../assets/Icons/chevronForwardOutline.svg';
+import { CustomHeader } from '../../../components/Header';
+import AboutUs from '../../../../assets/Icons/AboutUs.svg';
 
-export const AboutUsScreen = ({navigation}) => {
+export const AboutUsScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: AppString.about_us,
 
       headerRight: () => (
-        <TouchableOpacity style={{alignItems: 'center'}}>
+        <TouchableOpacity style={{ alignItems: 'center' }}>
           <EllipsisHorizontal width={24} height={24} />
         </TouchableOpacity>
       ),
@@ -29,7 +31,7 @@ export const AboutUsScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}
-          style={{alignItems: 'center'}}>
+          style={{ alignItems: 'center' }}>
           <ChevronBackOutline width={15} height={15} />
         </TouchableOpacity>
       ),
@@ -37,22 +39,29 @@ export const AboutUsScreen = ({navigation}) => {
   });
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: colors.white,
-          marginTop: 3,
-        },
-      ]}>
-      <AppDetailView />
-      <EstimateView onClick={() => {}} />
-      <DescriptionView />
+    <View style={[styles.container, {
+      padding: 0, backgroundColor: colors.white,
+    }]}>
+      <CustomHeader navigation={navigation} title={AppString.about_us} />
+
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: colors.white,
+            marginTop: 3,
+            paddingTop: 6
+          },
+        ]}>
+        <AppDetailView />
+        <EstimateView onClick={() => { }} />
+        <DescriptionView />
+      </View>
     </View>
   );
 };
 
-const AppDetailView = ({}) => {
+const AppDetailView = ({ }) => {
   return (
     <View
       style={{
@@ -61,13 +70,14 @@ const AppDetailView = ({}) => {
         alignContent: 'center',
         alignItems: 'center',
       }}>
-      <HomeFocusedIcon width={70} height={70} style={{marginTop: 50}} />
+      <AboutUs style={{ marginTop: 50 }} />
       <Text
         style={{
           fontSize: 20,
           fontWeight: 'bold',
+          color: colors.black,
           fontFamily: fontFamily.bold,
-          marginTop: 16,
+          marginTop: 12,
         }}>
         {AppString.AppName}
       </Text>
@@ -75,8 +85,8 @@ const AppDetailView = ({}) => {
         style={{
           fontSize: 16,
           fontFamily: fontFamily.regular,
-          marginTop: 6,
           paddingTop: 0,
+          paddingBottom: 6,
           color: '#090909',
         }}>
         Version 1.0.1
@@ -84,7 +94,7 @@ const AppDetailView = ({}) => {
     </View>
   );
 };
-const EstimateView = ({onClick}) => {
+const EstimateView = ({ onClick }) => {
   return (
     <View
       style={{
@@ -101,10 +111,10 @@ const EstimateView = ({onClick}) => {
 };
 
 const Separator = () => {
-  return <View style={{height: 1, backgroundColor: colors.darkWhite}} />;
+  return <View style={{ height: 1, backgroundColor: colors.darkWhite }} />;
 };
 
-const TextWithIcon = ({onClick}) => {
+const TextWithIcon = ({ onClick }) => {
   return (
     <TouchableOpacity
       onPress={onClick}
@@ -118,7 +128,7 @@ const TextWithIcon = ({onClick}) => {
         },
       ]}>
       <Text
-        style={[styles.textStyle, {fontSize: 16, fontFamily: fontFamily.bold}]}>
+        style={[styles.textStyle, { fontSize: 16, fontFamily: fontFamily.bold }]}>
         {AppString.estimate}
       </Text>
       <ChevronFwdOutline color="#2E2E2E" width={15} height={15} />
@@ -133,7 +143,9 @@ const DescriptionView = () => {
         style={{
           fontSize: 16,
           fontFamily: fontFamily.bold,
-          marginTop: 16,
+          marginTop: 30,
+          color: colors.black,
+
         }}>
         Brief introduction about the company {'\n'}
         Brief introduction of the company{'\n'}

@@ -6,6 +6,7 @@ import {useEffect} from 'react';
 import {AppString} from '../../../utils/AppStrings';
 import EllipsisHorizontal from '../../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../../assets/Icons/chevronBackOutline.svg';
+import { CustomHeader } from '../../../components/Header';
 
 const PersonalInfoPolicy = ({navigation}) => {
   useEffect(() => {
@@ -31,8 +32,11 @@ const PersonalInfoPolicy = ({navigation}) => {
   });
 
   return (
+    <View style={[styles.container, { padding: 0, backgroundColor: colors.lightBlue }]}>
+    <CustomHeader navigation={navigation} title={AppString.personal_info} />
+
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={[styles.container, {backgroundColor: colors.lightBlue}]}>
+      <View style={[styles.container, { backgroundColor: colors.lightBlue, paddingTop: 6 }]}>
         <Text
           style={[
             styles.textStyle,
@@ -173,6 +177,7 @@ const PersonalInfoPolicy = ({navigation}) => {
         </View>
       </View>
     </ScrollView>
+    </View>
   );
 };
 
