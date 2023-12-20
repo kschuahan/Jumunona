@@ -74,7 +74,7 @@ const MainScreen: React.FC = ({ }) => {
           }}
         />
         <Tab.Screen
-          name={RouteNames.chat_screen}
+          name={RouteNames.chatScreenUsersList}
           component={MessagesScreen}
           options={{
             tabBarIcon: ({ focused, color }) => {

@@ -40,4 +40,9 @@ export const colors = {
   grey6C6C6C: '#6C6C6C',
   balck0C0C0C: '#0C0C0C',
   lightBlue: '#F6F9FE',
+  grey9E9791: '#9E9791',
+  black323232: '#323232',
+  grey919191: '#919191',
+  greyC4C4C4: '#C4C4C4',
+  whiteF0F0F0: '#F0F0F0'
 };

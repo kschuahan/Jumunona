@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   buttonGradient: {
-    elevation: 4,
     height: 38,
     alignItems: "center",
     justifyContent: "center",

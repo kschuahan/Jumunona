@@ -13,6 +13,7 @@ import { colors } from '../../utils/AppColors';
 
 const logo = require('../../../assets/icon-512x512.png');
 import AboutUs from '../../../assets/Icons/AppLogo.svg';
+import { RouteNames } from '../../utils/RouteNames';
 
 const SignUpScreen: React.FC = ({ navigation, route }) => {
   const [mobile, setMobile] = useState('');
@@ -164,7 +165,13 @@ const SignUpScreen: React.FC = ({ navigation, route }) => {
         </View>
       </View>
       <Text style={styles.termsText}>
-        Согласен(а) с <Text style={[styles.termsText, { color: '#131E78' }]}>«Условиями использования»</Text> и <Text style={[styles.termsText, { color: '#131E78' }]}>«Конфиденциальностью»</Text> нажимая Зарегистрироваться
+        Согласен(а) с <Text onPress={() => {
+          navigation.navigate(RouteNames.term_of_use)
+
+        }} style={[styles.termsText, { color: '#131E78' }]}>«Условиями использования»</Text> и <Text onPress={() => {
+          navigation.navigate(RouteNames.privacy_policy)
+
+        }} style={[styles.termsText, { color: '#131E78' }]}>«Конфиденциальностью»</Text> нажимая Зарегистрироваться
       </Text>
       <View style={styles.buttonsView}>
         <TouchableOpacity onPress={() => { }}>

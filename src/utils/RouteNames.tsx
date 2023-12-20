@@ -1,4 +1,4 @@
-import {AppString} from './AppStrings';
+import { AppString } from './AppStrings';
 
 export const RouteNames = {
   home: 'Home',
@@ -37,6 +37,7 @@ export const RouteNames = {
   product_review_screen: 'ProudctReviewsScreen',
   select_product_color_size: 'Select product color size',
   chat_screen: 'Chat',
+  chatScreenUsersList: 'Chat Screen User List',
   product_search_screen: 'product_search_screen',
   categories: "Categories Screen"
 
