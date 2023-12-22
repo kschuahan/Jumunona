@@ -131,5 +131,16 @@ export const AppString = {
   clear: 'очистить',
   settings: 'Настройки',
   search: 'Поиск',
-  profile: 'Профиль'
+  profile: 'Профиль',
+  chatSettings: 'Настройки чата',
+  message_notifications: 'Уведомления о сообщениях',
+  subscribe: 'Subscribe',
+  goto_the_store: 'Перейти в магазин',
+  top_of_the_list: 'Вверх списка',
+  mute_notification_sound: 'Отключить звук уведомлений',
+  clear_chat_history: 'Очистить историю чата',
+  sure: 'Уверены?',
+  recovery_after_cleaning_is_not_posible: 'Восстановление после очистки невозможно',
+  yes: 'Да',
+  no: 'Нет'
 };

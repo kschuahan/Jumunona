@@ -21,16 +21,24 @@ import { RouteNames } from '../../utils/RouteNames';
 
 const MessagesScreen = ({ navigation }) => {
 
-  const rightButtons = () => {
+
+  const [chats, setChats] = useState([1, 2, 4, 5, 6, 7, 8, 23, 9, 0])
+
+  const RightButtons = ({ index = 0 }) => {
 
     return <View style={[style.rowDirectionCenter, {
       justifyContent: 'space-around',
       width: 222,
       backgroundColor: '#F0F0F0'
     }]}>
-      <TouchableOpacity><ChatSettingIcon /></TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        navigation.navigate(RouteNames.shopSettings)
+      }}><ChatSettingIcon /></TouchableOpacity>
       <TouchableOpacity><UploadIcon /></TouchableOpacity>
-      <TouchableOpacity><DeleteIcon /></TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        const data = chats.filter((it, pos) => pos != index)
+        setChats(data)
+      }}><DeleteIcon /></TouchableOpacity>
 
     </View>
   }
@@ -44,9 +52,11 @@ const MessagesScreen = ({ navigation }) => {
           <FlatList
             showsVerticalScrollIndicator={false}
             style={{ backgroundColor: colors.white }}
-            data={[1, 2, 4, 5, 6, 7, 8, 23, 9, 0]}
+            data={chats}
             renderItem={({ item, index }) =>
-              <Swipeable renderRightActions={rightButtons}>
+              <Swipeable renderRightActions={() =>
+                <RightButtons index={index} />
+              }>
                 <View>
                   <UserChatListItem item={item} onClick={() => {
                     navigation.navigate(RouteNames.chat_screen)
@@ -58,7 +68,9 @@ const MessagesScreen = ({ navigation }) => {
           />
 
         </View>
-        <TouchableOpacity style={{
+        <TouchableOpacity onPress={() => {
+          navigation.navigate(RouteNames.chatSetting)
+        }} style={{
           backgroundColor: colors.black323232, height: 48,
           borderRadius: 13, justifyContent: 'center', alignItems: 'center',
           flexDirection: 'row',

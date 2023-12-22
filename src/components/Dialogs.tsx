@@ -197,6 +197,99 @@ export const FailAccDeletePopup = ({ isShow = false, onConfirm, onCancel }) => {
     </Modal>
   );
 };
+
+
+
+
+
+export const ClearChatPopup = ({ isShow = false, onConfirm, onCancel }) => {
+
+
+  return (
+    <Modal
+      transparent={true}
+      animationType={'fade'}
+      visible={isShow}
+    
+      onRequestClose={onCancel}>
+      <View
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .3 )' }]}>
+        <View
+          style={[
+            styles.bottom_sheet,
+            {
+              justifyContent: 'center',
+              alignContent: 'center',
+              width: '82%'
+            },
+          ]}>
+          <Text
+            style={[
+              styles.textStyle,
+              {
+                paddingVertical: 13,
+                paddingBottom: 8,
+                fontSize: 17,
+                textAlign: 'center',
+              },
+            ]}>
+            {AppString.sure}
+          </Text>
+
+          <Text
+            style={[
+              styles.textStyle,
+              {
+                paddingBottom: 20,
+                fontSize: 13,
+                textAlign: 'center',
+                paddingHorizontal: 4
+              },
+            ]}>
+            {AppString.recovery_after_cleaning_is_not_posible}
+          </Text>
+
+          <View
+            style={{ height: 1, backgroundColor: '#CFCFCF' }}
+          />
+
+          <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+
+            <TouchableOpacity onPress={onConfirm} style={{ justifyContent: 'center', alignItems: 'center', flex: 0.5 }}>
+              <Text
+                style={[
+                  styles.textStyle,
+                  {
+                    fontSize: 18,
+                    color: '#4A78E8'
+                  },
+                ]}>
+                {AppString.yes}
+              </Text>
+            </TouchableOpacity>
+            <View
+              style={{ height: '100%', width: 1, backgroundColor: '#CFCFCF' }}
+            />
+            <TouchableOpacity onPress={onCancel} style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 11, flex: 0.5 }}>
+              <Text
+                style={[
+                  styles.textStyle,
+                  {
+                    fontSize: 18,
+                    color: '#4A78E8'
+
+                  },
+                ]}>
+                {AppString.no}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+      </View>
+    </Modal>
+  );
+};
 const style = StyleSheet.create({
   textInput: {
     width: '100%',

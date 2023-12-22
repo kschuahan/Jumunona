@@ -11,6 +11,10 @@ import com.facebook.soloader.SoLoader;
 import java.util.List;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.res.Configuration;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -61,5 +65,18 @@ public class MainApplication extends Application implements ReactApplication {
       DefaultNewArchitectureEntryPoint.load();
     }
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+      adjustFontScale(getResources().getConfiguration());
+
   }
+
+
+    private void adjustFontScale(Configuration configuration) {
+        configuration.fontScale = (float) 1.0;
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        metrics.scaledDensity = configuration.fontScale * metrics.density;
+        getBaseContext().getResources().updateConfiguration(configuration, metrics);
+    }
 }
+
