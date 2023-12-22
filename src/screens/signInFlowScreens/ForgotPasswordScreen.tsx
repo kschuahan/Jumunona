@@ -267,6 +267,8 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     fontFamily: "SegoeUI",
     fontSize: 14,
+    paddingVertical: 0
+
   },
   otpText: {
     color: "#fff",
@@ -284,6 +286,8 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     fontFamily: "SegoeUI",
     fontSize: 14,
+    paddingVertical: 0
+
   },
   sendOTPButton: {
     width: "100%",
@@ -311,6 +315,8 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     fontFamily: "SegoeUI",
     fontSize: 14,
+    paddingVertical: 0
+
   },
   termsText: {
     color: "#999",

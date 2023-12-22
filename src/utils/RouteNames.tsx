@@ -39,6 +39,8 @@ export const RouteNames = {
   chat_screen: 'Chat',
   chatScreenUsersList: 'Chat Screen User List',
   product_search_screen: 'product_search_screen',
-  categories: "Categories Screen"
+  categories: "Categories Screen",
+  chatSetting: AppString.chatSettings,
+  shopSettings: 'Shop Settings'
 
 };

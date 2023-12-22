@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
     marginBottom: 13,
     fontFamily: "SegoeUI",
     fontSize: 14,
+    paddingVertical: 0
   },
   loginButton: {
     flex: 1,
