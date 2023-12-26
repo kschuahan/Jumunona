@@ -152,6 +152,7 @@ const ReasonCell = ({ item, index, onSelect }) => {
             {
               fontSize: 16,
               color: colors.black121212,
+              width: '90%'
             },
           ]}>
           {item.title}

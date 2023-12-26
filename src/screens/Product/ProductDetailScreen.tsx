@@ -8,6 +8,7 @@ import {
   Image,
   StyleSheet,
   TextInput,
+  Dimensions,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useEffect, useRef, useState } from 'react';
@@ -39,6 +40,9 @@ import Share from '../../../assets/Icons/Share.svg';
 import Forward from '../../../assets/Icons/Forward.svg';
 import CheckGrey from '../../../assets/Icons/CheckGrey.svg';
 import Star from '../../../assets/Icons/Star.svg';
+import GreyStar from '../../../assets/Icons/GreyStar.svg';
+import OrangeStar from '../../../assets/Icons/OrangeStar.svg';
+
 import Cube from '../../../assets/Icons/Cube.svg';
 import Profile from '../../../assets/Icons/Profile.svg';
 
@@ -47,6 +51,7 @@ import Chars from '../../../assets/Icons/Chars.svg';
 import Guaranty from '../../../assets/Icons/Guaranty.svg';
 import Sizes from '../../../assets/Icons/Sizes.svg';
 import ColorIcon from '../../../assets/Icons/ColorIcon.svg';
+import StarRating from 'react-native-star-rating-widget';
 
 const shoeImageURL = appIcons.shoeImageURL;
 const china = appIcons.china;
@@ -65,7 +70,7 @@ interface Position {
   y: number;
   name: string;
 }
-const data: Product[] = [
+export const data: Product[] = [
   {
     id: 1,
     imageURL: shoeImageURL,
@@ -121,6 +126,8 @@ const postionsArray: Position[] = [
 export const ProductDetailScreen = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [butShow, setBuyShow] = useState(false);
+  const [guranty, setOnGauranty] = useState(false);
+
   const [addShow, setAddShow] = useState(false);
 
   const handleViewableItemsChanged = useRef(({ viewableItems, changed }) => {
@@ -135,7 +142,9 @@ export const ProductDetailScreen = ({ navigation }) => {
       headerTitle: '',
 
       headerRight: () => (
-        <View style={{ flexDirection: 'row', gap: 34, alignItems: 'center' }}>
+        <View style={{
+          flexDirection: 'row', gap: 34, alignItems: 'center', marginBottom: -2
+        }}>
           <TouchableOpacity
             onPress={() => {
               onShare();
@@ -144,7 +153,9 @@ export const ProductDetailScreen = ({ navigation }) => {
             <Share />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate(RouteNames.cartScreen)
+          }} style={{ alignItems: 'center', marginStart: -20 }}>
             <CartIcon />
           </TouchableOpacity>
           <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
@@ -158,6 +169,8 @@ export const ProductDetailScreen = ({ navigation }) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'flex-start',
+            marginBottom: -2
+
           }}>
           <TouchableOpacity
             onPress={() => {
@@ -174,34 +187,43 @@ export const ProductDetailScreen = ({ navigation }) => {
         backgroundColor: colors.white,
       },
 
-      headerShadowVisible: true,
+      headerShadowVisible: false,
     });
   }, []);
 
   const [currentPosition, setCurrentPosition] = useState(0);
-  const [like, setLike] = useState(false);
+  const [selectPosition, setSelectPosition] = useState(0);
 
+  const [like, setLike] = useState(false);
+  const scrollRef = useRef<ScrollView>()
   const handleScroll = (event: Object) => {
     //  console.log(event.nativeEvent.contentOffset.y);
     if (event.nativeEvent.contentOffset.y < 50) {
       setCurrentPosition(0);
+      setSelectPosition(0)
     } else if (
       event.nativeEvent.contentOffset.y >= 50 &&
       event.nativeEvent.contentOffset.y < 550
     ) {
       setCurrentPosition(50);
+      setSelectPosition(0)
+
     } else if (
       event.nativeEvent.contentOffset.y >= 550 &&
       event.nativeEvent.contentOffset.y < 1050
     ) {
       setCurrentPosition(550);
+      setSelectPosition(1)
+
     } else if (
       event.nativeEvent.contentOffset.y >= 1050 &&
       event.nativeEvent.contentOffset.y < 1400
     ) {
       setCurrentPosition(1050);
+      setSelectPosition(2)
     } else if (event.nativeEvent.contentOffset.y > 1400) {
       setCurrentPosition(1700);
+      setSelectPosition(3)
     }
   };
 
@@ -210,6 +232,7 @@ export const ProductDetailScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
+        ref={scrollRef}
         showsVerticalScrollIndicator={false}
         onScroll={handleScroll}
         scrollEventThrottle={16}
@@ -240,7 +263,7 @@ export const ProductDetailScreen = ({ navigation }) => {
                   <Image
                     source={{ uri: item }}
                     style={{
-                      width: dimensions.width,
+                      width: Dimensions.get('window').width,
                       height: 375,
                     }}
                     resizeMode="cover"
@@ -254,10 +277,12 @@ export const ProductDetailScreen = ({ navigation }) => {
                 {
                   position: 'absolute',
                   bottom: 10,
-                  end: 10,
+                  end: 9,
                   color: colors.white,
-                  paddingVertical: 7,
-                  paddingHorizontal: 13,
+                  height: 23,
+                  width: 38,
+                  textAlign: 'center',
+                  paddingTop: 4,
                   backgroundColor: 'rgba(0, 0,0, .6 )',
                   fontSize: 10,
                   borderRadius: 12,
@@ -268,7 +293,9 @@ export const ProductDetailScreen = ({ navigation }) => {
           </View>
 
           <ProductDetails />
-          <ProductDesclamenation />
+          <ProductDesclamenation isGauranty={guranty} onGauranctCancle={() => {
+            setOnGauranty(false)
+          }} />
           <View style={{ paddingHorizontal: 9 }}>
             <ReviewsSection
               viewAllReviews={() => {
@@ -295,7 +322,7 @@ export const ProductDetailScreen = ({ navigation }) => {
             flexDirection: 'row',
             backgroundColor: colors.white,
             justifyContent: 'space-between',
-            paddingVertical: 8,
+            paddingBottom: 4,
             borderBottomLeftRadius: 13,
             borderBottomRightRadius: 13,
             shadowOpacity: 0.4,
@@ -313,22 +340,40 @@ export const ProductDetailScreen = ({ navigation }) => {
             }}
             scrollEnabled={false}
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
               return (
-                <View
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelectPosition(index)
+
+                    if (index == 0) {
+                      scrollRef.current?.scrollTo(0, 0, true)
+                      // setCurrentPosition(50)
+                    } else if (index == 1) {
+                      scrollRef.current?.scrollTo(552, 0, true)
+
+                      // setCurrentPosition(550)
+                    }
+                    else if (index == 2) {
+                      scrollRef.current?.scrollTo(1052, 0, true)
+                      // setCurrentPosition(1050)
+                    } else {
+                      scrollRef.current?.scrollTo(1702, 0, true)
+                      //setCurrentPosition(1700)
+                    }
+                  }}
                   style={{
                     flexDirection: 'column',
-                    width: dimensions.width / postionsArray.length,
+                    width: Dimensions.get('window').width / postionsArray.length,
                     alignItems: 'center',
                   }}>
                   <Text
                     style={{
-                      fontSize: 16,
+                      fontSize: 14,
                       color:
                         currentPosition == item.y
-                          ? colors.endOrange
-                          : colors.black,
-                      fontFamily: fontFamily.regular,
+                          ? colors.lightOrange
+                          : colors.black333333,
                       paddingBottom: 3,
                     }}>
                     {item.name}
@@ -336,13 +381,13 @@ export const ProductDetailScreen = ({ navigation }) => {
                   {currentPosition == item.y ? (
                     <View
                       style={{
-                        backgroundColor: colors.endOrange,
+                        backgroundColor: colors.lightOrange,
                         height: 2,
                         width: 26,
                       }}
                     />
                   ) : null}
-                </View>
+                </TouchableOpacity>
               );
             }}
           />
@@ -353,7 +398,7 @@ export const ProductDetailScreen = ({ navigation }) => {
           backgroundColor: colors.white,
           position: 'absolute',
           bottom: 0,
-          width: dimensions.width,
+          width: Dimensions.get('window').width,
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingBottom: 34,
@@ -361,6 +406,8 @@ export const ProductDetailScreen = ({ navigation }) => {
           flexDirection: 'row',
           borderTopStartRadius: 13,
           borderTopEndRadius: 13,
+          shadowColor: colors.black,
+          elevation: 10
         }}>
         <View style={{ flexDirection: 'row', marginStart: 36, gap: 40 }}>
           <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
@@ -395,7 +442,7 @@ export const ProductDetailScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <View style={{ flexDirection: 'row', gap: 6, flexWrap: 'wrap' }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
           <CommonButton
             startorange={colors.yellowStart}
             endColor={colors.yellowEnd}
@@ -424,11 +471,17 @@ export const ProductDetailScreen = ({ navigation }) => {
         onClose={() => {
           setAddShow(false);
         }}
+        onGuranty={() => {
+          setOnGauranty(true)
+        }}
       />
       <BuySelectProductSizeColorScreen
         isShow={butShow}
         onClose={() => {
           setBuyShow(false);
+        }}
+        onGuranty={() => {
+          setOnGauranty(true)
         }}
       />
     </View>
@@ -470,7 +523,7 @@ const ReviewsSection = ({ viewAllReviews, text = '' }) => {
                 <Text
                   style={{
                     fontSize: 15,
-                    color: colors.startOrange,
+                    color: colors.orangeF66123,
                   }}>
                   {item.desc}
                 </Text>
@@ -517,7 +570,7 @@ export const ReviewUser = ({ text = 'Серый XL', size = 81 }) => {
                   26.10.2022
                 </Text>
               </View>
-              <RatingView rating={5} />
+              <RatingView rating={3.5} />
             </View>
 
             {text != '' ? (
@@ -581,15 +634,17 @@ const CommonButton = ({
         end={{ x: 1, y: 1 }}
         style={{
           borderRadius: 1000,
-          marginEnd: 10,
+          marginEnd: 8,
           height: 38,
+          width: 107,
           paddingHorizontal: 19,
           justifyContent: 'center',
+          alignItems: 'center'
         }}>
         <Text
           style={[
             styles.textStyle,
-            { color: colors.white, fontFamily: fontFamily.regular, fontSize: 14 },
+            { color: colors.white, fontWeight: 'bold', fontSize: 14 },
           ]}>
           {text}
         </Text>
@@ -598,12 +653,16 @@ const CommonButton = ({
   );
 };
 
-const ProductDesclamenation = () => {
+const ProductDesclamenation = ({ isGauranty = false, onGauranctCancle }) => {
   const [showColorSize, setShowColorSize] = useState(false);
-  const [showGurantees, setShowGurantees] = useState(false);
+  const [showGurantees, setShowGurantees] = useState(isGauranty);
 
   const [showCharacterstics, setShowCharacterstics] = useState(false);
   const [showSizeChart, setShowSizeChart] = useState(false);
+
+  useEffect(() => {
+    setShowGurantees(isGauranty)
+  }, [isGauranty])
 
   return (
     <View
@@ -632,7 +691,7 @@ const ProductDesclamenation = () => {
       </Text>
       <TextWithIcon
         Icon={ColorIcon}
-        title="6 цветов на выбор"
+        title="2 цветов на выбор"
         onClick={() => {
           setShowColorSize(true);
         }}
@@ -663,11 +722,15 @@ const ProductDesclamenation = () => {
         onClose={() => {
           setShowColorSize(false);
         }}
+        onGuranty={() => {
+          setShowGurantees(true);
+        }}
       />
       <ProuductGuanteeScreen
         isShow={showGurantees}
         onClose={() => {
           setShowGurantees(false);
+          onGauranctCancle()
         }}
       />
       <CharacterSticsScreen
@@ -708,12 +771,14 @@ const TextWithIcon = ({
         style={[
           styles.textStyle,
           {
-            fontSize: 14,
-            fontWeight: '400',
-            fontFamily: fontFamily.regular,
+            fontSize: Icon == null ? 15 : 14,
+            fontWeight: Icon == null ? '500' : '400',
             width: '92%',
+
           },
-        ]}>
+        ]}
+        numberOfLines={1}
+      >
         {' '}
         {title}
       </Text>
@@ -732,25 +797,38 @@ export const RatingView = ({ rating = 3.5, count = 5 }) => {
   return (
     <View>
 
-      <AirbnbRating count={count} reviewSize={rating} selectedColor={colors.endOrange} size={12}
-        isDisabled showRating={false} />
-      {/* <FlatList
+      {/* <AirbnbRating count={count} reviewSize={rating} selectedColor={colors.endOrange} size={11}
+        isDisabled showRating={false} /> */}
+
+      {/* <Rating
+        ratingImage={appIcons.star}
+        ratingColor='#FC4A1A'
+        ratingBackgroundColor='#D9D9D9'
+        ratingCount={5}
+        imageSize={12}
+        style={{ paddingVertical: 10 }}
+      /> */}
+      {/* <StarRating
+        maxStars={5}
+        starSize={15}
+        color='#FC4A1A'
+        enableHalfStar={true}
+        emptyColor='#D9D9D9'
+        rating={rating} onChange={function (rating: number): void {
+          console.log(rating);
+
+        }} /> */}
+      <FlatList
         data={ratingArray}
         scrollEnabled={false}
         horizontal
         keyExtractor={item => {
           return item.toString();
         }}
-        renderItem={({ item }) => {
-          return (
-            <Ionicons
-              name={'star'}
-              size={11}
-              color={rating >= item ? colors.endOrange : colors.extraGrey}
-            />
-          );
-        }}
-      /> */}
+        renderItem={({ item, index }) =>
+          rating > index ? <OrangeStar style={{ marginStart: 3 }} /> : <GreyStar style={{ marginStart: 3 }} />
+        }
+      />
     </View>
   );
 };
@@ -827,12 +905,12 @@ const ShopView = ({ }) => {
           color={'#CCCCCC'}
         />
       </View>
-      <View style={{ justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-        <TouchableOpacity onPress={() => { }} style={style.button}>
+      <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 13 }}>
+        <TouchableOpacity onPress={() => { }} style={[style.button]}>
           <Text
             style={{
-              fontSize: 16,
-              color: colors.startOrange,
+              fontSize: 13,
+              color: colors.lightOrange,
               paddingHorizontal: 10,
             }}>
             {AppString.all_goods}
@@ -841,8 +919,8 @@ const ShopView = ({ }) => {
         <TouchableOpacity onPress={() => { }} style={style.button}>
           <Text
             style={{
-              fontSize: 16,
-              color: colors.startOrange,
+              fontSize: 13,
+              color: colors.lightOrange,
               paddingHorizontal: 10,
             }}>
             {AppString.categories}
@@ -910,6 +988,8 @@ const ShopFeaturedProduct = () => {
               <Text
                 style={{
                   fontSize: 13,
+                  fontWeight: '400',
+                  color: colors.balc111111
                 }}
                 numberOfLines={1}>
                 Название това...
@@ -934,16 +1014,41 @@ const ShopFeaturedProduct = () => {
 const ProductImages = ({ onClick }) => {
   return (
     <View>
-      <Text
-        style={{
-          fontSize: 12.5,
-          color: '#666666',
-          paddingTop: 15,
-          paddingBottom: 12,
-          alignSelf: 'center',
-        }}>
-        --------- Детали ----------
-      </Text>
+
+      <View style={{
+        justifyContent: 'center', alignItems: 'center',
+        flexDirection: 'row', paddingTop: 15,
+        paddingBottom: 12, gap: 10
+      }}>
+        <View
+          style={{
+            height: 0.5,
+            width: 55,
+            borderRadius: 0.5,
+            marginTop: 3,
+            backgroundColor: '#DDDDDD',
+          }}
+        />
+        <Text
+          style={{
+            fontSize: 12.5,
+            color: '#666666',
+
+            alignSelf: 'center',
+          }}>
+          Детали
+        </Text>
+        <View
+          style={{
+            height: 0.5,
+            width: 55,
+            marginTop: 3,
+
+            borderRadius: 0.5,
+            backgroundColor: '#DDDDDD',
+          }}
+        />
+      </View>
       {imagesArray.map((item, index) => (
         <TouchableOpacity
           onPress={() => {
@@ -974,7 +1079,7 @@ const RelatedProducts = ({ onclick }) => {
             height: 1,
             width: 50,
             borderRadius: 0.5,
-            backgroundColor: colors.endOrange,
+            backgroundColor: colors.lightOrange,
           }}
         />
         <View
@@ -982,7 +1087,7 @@ const RelatedProducts = ({ onclick }) => {
             height: 2,
             width: 2,
             borderRadius: 1,
-            backgroundColor: colors.endOrange,
+            backgroundColor: colors.lightOrange,
           }}
         />
 
@@ -1003,7 +1108,7 @@ const RelatedProducts = ({ onclick }) => {
             height: 2,
             width: 2,
             borderRadius: 1,
-            backgroundColor: colors.endOrange,
+            backgroundColor: colors.lightOrange,
           }}
         />
         <View
@@ -1011,7 +1116,7 @@ const RelatedProducts = ({ onclick }) => {
             height: 1,
             width: 50,
             borderRadius: 0.5,
-            backgroundColor: colors.endOrange,
+            backgroundColor: colors.lightOrange,
           }}
         />
       </View>
@@ -1026,7 +1131,7 @@ const RelatedProducts = ({ onclick }) => {
           return (
             <TouchableOpacity
               style={{
-                borderRadius: 12,
+                borderRadius: 13,
                 backgroundColor: '#ffffff',
                 marginEnd: 9,
                 marginVertical: 4,
@@ -1049,7 +1154,7 @@ const RelatedProducts = ({ onclick }) => {
 
                   backgroundColor: '#f1f1f1',
 
-                  marginBottom: 8,
+                  marginBottom: 7,
                 }}
               />
 
@@ -1057,12 +1162,12 @@ const RelatedProducts = ({ onclick }) => {
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'flex-start',
+                  alignItems: 'center',
                   paddingLeft: 7,
-                  gap: 2,
                 }}>
                 <Image
                   source={china}
-                  style={{ height: 15, width: 15, marginTop: 3 }}
+                  style={{ height: 15, width: 15 }}
                 />
                 <Text
                   style={{
@@ -1196,11 +1301,11 @@ const ProductDetails = () => {
 const style = StyleSheet.create({
   searchTextInput: {
     height: 33,
-    width: '76%',
-    marginStart: 11,
+    marginStart: 4,
     fontFamily: 'SegoeUI',
     fontSize: 15,
-    padding: 0
+    padding: 0,
+    width: '80%'
   },
   primaryCategoriesContent: {
     paddingTop: 8,
@@ -1218,7 +1323,7 @@ const style = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 100,
     borderWidth: 0.8,
-    borderColor: colors.startOrange,
+    borderColor: colors.lightOrange,
   },
 });
 
@@ -1233,6 +1338,7 @@ const SearchView = () => {
         justifyContent: 'flex-start',
         backgroundColor: colors.whiteF6F6F6,
         borderRadius: 19,
+        width: '90%'
       }}>
       {/* <Ionicons
         name="search"

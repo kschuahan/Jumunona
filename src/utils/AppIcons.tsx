@@ -6,6 +6,8 @@ export const appIcons = {
   ruler: require('../../assets/ruler.svg'),
   check: require('../../assets/check.png'),
   checked: require('../../assets/checked.png'),
+  star: require('../../assets/star.png'),
+
 };
 
 export const imagesUrl = {

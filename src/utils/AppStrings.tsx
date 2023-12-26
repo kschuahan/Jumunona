@@ -142,5 +142,9 @@ export const AppString = {
   sure: 'Уверены?',
   recovery_after_cleaning_is_not_posible: 'Восстановление после очистки невозможно',
   yes: 'Да',
-  no: 'Нет'
+  no: 'Нет',
+  similar: 'Похожее',
+  choose_all: 'Выбрать все',
+  total: 'Всего',
+  currency_symbol:'¥'
 };

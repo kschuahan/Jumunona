@@ -6,6 +6,7 @@ import {
   StyleSheet,
   FlatList,
   Image,
+  Dimensions,
 } from 'react-native';
 import { colors } from '../../utils/AppColors';
 import { useEffect, useState } from 'react';
@@ -203,7 +204,7 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
             backgroundColor: colors.white,
             paddingTop: 15.5,
             paddingHorizontal: 8,
-            width: dimensions.width,
+            width: Dimensions.get('window').width,
           }}>
           <FlatList
             data={filter}
@@ -477,7 +478,7 @@ const style = StyleSheet.create({
   },
 
   productsGrid: {
-    width: dimensions.width,
+    width: Dimensions.get('window').width,
     flex: 1,
     marginBottom: 4,
     backgroundColor: '#FFFFFF',

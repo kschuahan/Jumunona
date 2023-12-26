@@ -1,4 +1,4 @@
-import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import React from 'react';
 import { styles } from '../../utils/AppStyles';
 import { imagesUrl } from '../../utils/AppIcons';
@@ -167,7 +167,7 @@ const ProfileScreen = (props: any) => {
             paddingBottom: 17,
             position: 'absolute',
             bottom: 16,
-            width: dimensions.width - 12,
+            width: Dimensions.get('window').width - 12,
             marginHorizontal: 6,
             paddingStart: 14,
             paddingEnd: 6,

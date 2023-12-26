@@ -1,5 +1,5 @@
 import { FlatList, Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { styles } from '../../utils/AppStyles'
 import ClearIcon from '../../../assets/Icons/Clear.svg';
 import AddIcon from '../../../assets/Icons/AddChat.svg';
@@ -19,12 +19,14 @@ import { appIcons, imagesUrl } from '../../utils/AppIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { RouteNames } from '../../utils/RouteNames';
 
+let row: Array<any> = [];
+let prevOpenedRow;
 const MessagesScreen = ({ navigation }) => {
 
 
   const [chats, setChats] = useState([1, 2, 4, 5, 6, 7, 8, 23, 9, 0])
 
-  const RightButtons = ({ index = 0 }) => {
+  const RightButtons = ({ index = 0, onClick }) => {
 
     return <View style={[style.rowDirectionCenter, {
       justifyContent: 'space-around',
@@ -32,16 +34,26 @@ const MessagesScreen = ({ navigation }) => {
       backgroundColor: '#F0F0F0'
     }]}>
       <TouchableOpacity onPress={() => {
+        onClick()
         navigation.navigate(RouteNames.shopSettings)
       }}><ChatSettingIcon /></TouchableOpacity>
       <TouchableOpacity><UploadIcon /></TouchableOpacity>
       <TouchableOpacity onPress={() => {
+        onClick()
         const data = chats.filter((it, pos) => pos != index)
         setChats(data)
       }}><DeleteIcon /></TouchableOpacity>
 
     </View>
   }
+
+  const closeRow = (index) => {
+    if (prevOpenedRow && prevOpenedRow !== row[index]) {
+      prevOpenedRow.close();
+    }
+    prevOpenedRow = row[index];
+  }
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
 
@@ -53,10 +65,17 @@ const MessagesScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             style={{ backgroundColor: colors.white }}
             data={chats}
-            renderItem={({ item, index }) =>
-              <Swipeable renderRightActions={() =>
-                <RightButtons index={index} />
-              }>
+            renderItem={({ item, index }) => {
+
+              return <Swipeable ref={ref => row[index] = ref}
+                onSwipeableOpen={() => closeRow(index)}
+
+
+                renderRightActions={() =>
+                  <RightButtons index={index} onClick={() => {
+
+                  }} />
+                }>
                 <View>
                   <UserChatListItem item={item} onClick={() => {
                     navigation.navigate(RouteNames.chat_screen)
@@ -64,6 +83,7 @@ const MessagesScreen = ({ navigation }) => {
                   <View style={{ height: 0.8, backgroundColor: colors.whiteF0F0F0, marginStart: 68, marginTop: 14 }} />
                 </View>
               </Swipeable>
+            }
             }
           />
 

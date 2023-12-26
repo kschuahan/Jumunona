@@ -1,4 +1,4 @@
-import { Modal, View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, FlatList, Pressable } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { AppString } from '../../utils/AppStrings';
 import { styles } from '../../utils/AppStyles';
@@ -27,12 +27,12 @@ const CharacterSticsScreen = ({ isShow = false, onClose }) => {
       animationType={'slide'}
       visible={isShow}
       onRequestClose={onClose}>
-      <View
+      <Pressable onPress={onClose}
         style={[
           styles.botton_view,
           { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end' },
         ]}>
-        <View
+        <Pressable
           style={{
             paddingHorizontal: 10,
             backgroundColor: colors.white,
@@ -88,8 +88,8 @@ const CharacterSticsScreen = ({ isShow = false, onClose }) => {
             )}
           />
           <CommonButton onClick={onClose} />
-        </View>
-      </View>
+        </Pressable>
+      </Pressable>
     </Modal>
   );
 };

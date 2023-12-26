@@ -1,5 +1,5 @@
-import React from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { Dimensions, StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -40,10 +40,16 @@ import { AllCategoriesScreen } from './src/screens/categories/AllCategoryScreen'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ChatSettings from './src/screens/Chat/ChatSetting';
 import ShopSettings from './src/screens/Chat/ShopSetting';
+import { dimensions, recalculateDimensions } from './src/utils/sizes';
 
 const Stack = createNativeStackNavigator();
 
 const App: React.FC = () => {
+
+
+  useEffect(() => {
+    recalculateDimensions()
+  }, [])
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
@@ -217,7 +223,8 @@ const App: React.FC = () => {
             component={ProudctReviewsScreen}
           />
 
-          <Stack.Screen name={RouteNames.chat_screen} component={ChatScreen} />
+          <Stack.Screen name={RouteNames.chat_screen} component={ChatScreen} options={{ headerShown: false }}
+          />
           <Stack.Screen
             name={RouteNames.product_search_screen}
             component={ProductSearchResultScreen}

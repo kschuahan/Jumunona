@@ -1,4 +1,4 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import { colors } from './AppColors';
 import { fontFamily } from './Fonts';
 import { dimensions } from './sizes';
@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
 
   primaryCategories: {
     flexDirection: "row",
-    width: dimensions.width,
+    width: Dimensions.get('window').width,
     height: 35,
     gap: 6,
     backgroundColor: colors.white,

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  Pressable,
 } from 'react-native';
 import { AppString } from '../../utils/AppStrings';
 import { styles } from '../../utils/AppStyles';
@@ -58,12 +59,12 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
       animationType={'slide'}
       visible={isShow}
       onRequestClose={onClose}>
-      <View
+       <Pressable onPress={onClose}
         style={[
           styles.botton_view,
           { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end' },
         ]}>
-        <View
+        <Pressable
           style={{
             paddingStart: 13,
             backgroundColor: colors.white,
@@ -154,8 +155,8 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
             endColor={colors.endOrange}
             onClick={onClose}
           />
-        </View>
-      </View>
+        </Pressable>
+      </Pressable>
     </Modal>
   );
 };

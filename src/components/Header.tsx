@@ -3,6 +3,8 @@ import { styles } from "../utils/AppStyles";
 import { fontFamily } from "../utils/Fonts";
 import ChevronBackOutline from '../../assets/Icons/chevronBackOutline.svg';
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
+import ShopGrey from '../../assets/Icons/ShopGrey.svg';
+
 import { Card } from "react-native-paper";
 import { colors } from "../utils/AppColors";
 import { AppString } from "../utils/AppStrings";
@@ -103,6 +105,42 @@ export const CustomHeader = ({ navigation, title }) => {
 
 
 
+
+export const ChatHeader = ({ navigation, title = 'Shop name' }) => {
+
+    return <Card
+        style={{
+            elevation: 2,
+            paddingHorizontal: 13,
+            paddingEnd: 12,
+            borderRadius: 13,
+            backgroundColor: colors.whiteF6F6F6,
+            borderTopEndRadius: 0,
+            borderTopStartRadius: 0,
+            paddingTop: Platform.OS == 'ios' ? 20 : 20,
+            paddingBottom: 5,
+            marginBottom: 4
+        }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 20 }}>
+                <BackLogo navigation={navigation} />
+                <LogoTitle title={title} /></View>
+
+            <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 17 }}>
+                <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
+                    {/* <Ionicons name="gift-outline" size={24} /> */}
+                    <ShopGrey />
+                </TouchableOpacity>
+                <MenuLogo />
+
+            </View>
+        </View>
+    </Card>
+}
+
+
+
+
 export const CustomHeaderWithSearch = ({ navigation }) => {
 
     return <Card
@@ -143,8 +181,8 @@ export const CustomHeaderWithoutBackgroundSearch = ({ navigation }) => {
             paddingTop: Platform.OS == 'ios' ? 20 : 20,
             paddingBottom: 5,
         }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',  }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap:5 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
                 <BackLogo navigation={navigation} />
                 <SearchView placeholder="Футболки" />
             </View>

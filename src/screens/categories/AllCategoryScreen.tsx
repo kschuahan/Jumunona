@@ -65,14 +65,14 @@ export const AllCategoriesScreen = ({ navigation }) => {
   return (
     <View style={[styles.container, { padding: 0 }]}>
       <CustomHeader navigation={navigation} title={AppString.categories} />
-      <View style={[styles.container, { paddingEnd: 6, paddingTop: 6 }]}>
+      <View style={[styles.container, { paddingEnd: 6, backgroundColor: undefined }]}>
         <View
           style={[
             styles.container,
-            { flexDirection: 'row', padding: undefined, marginTop: -10 },
+            { flexDirection: 'row', padding: undefined, backgroundColor: undefined },
           ]}>
           <FlatList
-            style={{ width: '22%', backgroundColor: colors.whiteF7F7F7 }}
+            style={{ width: '22%', marginTop: -10 }}
             data={categories}
             renderItem={({ item, index }) => (
               <TouchableOpacity
@@ -82,7 +82,8 @@ export const AllCategoriesScreen = ({ navigation }) => {
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginVertical: 17.25,
+                  marginBottom: 17.25,
+                  marginTop: index == 0 ? 13 : 17.25
                 }}>
                 <Text
                   style={[
@@ -100,7 +101,7 @@ export const AllCategoriesScreen = ({ navigation }) => {
           />
 
           <FlatList
-            style={{ width: '78%' }}
+            style={{ width: '78%', marginTop: -14 }}
             data={[
               { title: 'Jackets', product: products },
               { title: 'Tops', product: products },

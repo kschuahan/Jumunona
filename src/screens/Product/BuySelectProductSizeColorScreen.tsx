@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
+  Pressable,
 } from 'react-native';
 import { ScrollView } from 'react-native-virtualized-view';
 import { useState } from 'react';
@@ -24,7 +25,7 @@ import ChevronFwdOutline from '../../../assets/Icons/ForwardOrange.svg';
 import ResizeIcon from '../../../assets/Icons/resizeIcon.svg';
 import RemoveCircleOutline from '../../../assets/Icons/removeCircleOutline.svg';
 
-const BuySelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
+const BuySelectProductSizeColorScreen = ({ isShow = false, onClose, onGuranty }) => {
   const [number, setNumber] = useState('');
   const [otp, setOtp] = useState('');
 
@@ -34,12 +35,12 @@ const BuySelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
       animationType={'slide'}
       visible={isShow}
       onRequestClose={onClose}>
-      <View
+      <Pressable onPress={onClose}
         style={[
           styles.botton_view,
           { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end' },
         ]}>
-        <View
+        <Pressable
           style={{
             paddingHorizontal: 10,
             backgroundColor: colors.white,
@@ -89,7 +90,7 @@ const BuySelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
           <ScrollView
             style={{ paddingBottom: 40 }}
             showsVerticalScrollIndicator={false}>
-            <CancelReturnPolicyView onClick={() => { }} />
+            <CancelReturnPolicyView onClick={() => { onGuranty() }} />
             <PhoneDataScreen onClick={() => { }} />
             <View
               style={{
@@ -118,19 +119,26 @@ const BuySelectProductSizeColorScreen = ({ isShow = false, onClose }) => {
             />
             <QuanityView />
 
-            <View style={{ marginTop: 37 }}>
-              <CommonButton text={AppString.buy} onClick={() => { }} />
-            </View>
+
           </ScrollView>
-        </View>
-      </View>
-    </Modal>
+
+          <View style={{
+            width: '100%',
+            position: 'absolute',
+            bottom: 10,
+            start: 10
+          }}>
+            <CommonButton text={AppString.buy} onClick={() => { }} />
+          </View>
+        </Pressable>
+      </Pressable>
+    </Modal >
   );
 };
 
 const CancelReturnPolicyView = ({ onClick }) => {
   return (
-    <View
+    <TouchableOpacity onPress={onClick}
       style={[
         styles.profile,
         {
@@ -150,13 +158,12 @@ const CancelReturnPolicyView = ({ onClick }) => {
           {
             fontSize: 14,
             fontWeight: '400',
-            fontFamily: fontFamily.regular,
             paddingStart: 8,
           },
         ]}>
         Delivery • Return • Price • Order • cancellation
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -380,12 +387,14 @@ const SizeAndBuyingForView = ({ }) => {
           </View>
         </TouchableOpacity>
       </View>
-      <FlatList
+      {/* <FlatList
         data={selectedSize ? sizes : users}
         scrollEnabled={false}
         numColumns={5}
-        renderItem={({ item }) => (
-          <View style={{ margin: 8, flex: 1 / (selectedSize ? 5 : 3.5) }}>
+        renderItem={({ item }) => ( */}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        {(selectedSize ? sizes : users).map((item) =>
+          <View style={{ margin: 8 }}>
             <TouchableOpacity
               onPress={() => {
                 setSelecteItem(item);
@@ -429,10 +438,11 @@ const SizeAndBuyingForView = ({ }) => {
                 }}
               />
             ) : null}
-          </View>
-        )}
+          </View>)}
+      </View>
+      {/* )}
         showsVerticalScrollIndicator={false}
-      />
+      /> */}
     </View>
   );
 };
@@ -446,6 +456,7 @@ const QuanityView = ({ }) => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 5,
+        paddingBottom: 60
       }}>
       <Text
         style={[
@@ -515,7 +526,7 @@ const CommonButton = ({
         <Text
           style={[
             styles.textStyle,
-            { color: colors.white, fontFamily: fontFamily.regular, fontSize: 14 },
+            { color: colors.white, fontWeight: 'bold', fontSize: 14 },
           ]}>
           {text}
         </Text>

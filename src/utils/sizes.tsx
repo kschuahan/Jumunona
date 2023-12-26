@@ -1,3 +1,11 @@
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
-export const dimensions = Dimensions.get('screen');
+export var dimensions = Dimensions.get('window');
+
+
+export const recalculateDimensions = () => {
+    dimensions = Dimensions.get('window');
+}
+
+
+

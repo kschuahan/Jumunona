@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   FlatList,
+  Dimensions,
 } from 'react-native';
 import { styles } from '../../utils/AppStyles';
 import { colors } from '../../utils/AppColors';
@@ -23,6 +24,7 @@ import EllipsisHosrizontalIcon from '../../../assets/Icons/ellipsis-horizontal.s
 import AddOutlineIcon from '../../../assets/Icons/AddWhite.svg';
 import { fontFamily } from '../../utils/Fonts';
 import CloseIcon from '../../../assets/Icons/Closegrey.svg';
+import { ChatHeader } from '../../components/Header';
 
 export const ChatScreen = ({ navigation }) => {
   useEffect(() => {
@@ -61,60 +63,71 @@ export const ChatScreen = ({ navigation }) => {
       style={[
         styles.container,
         {
-          paddingBottom: 100,
+          padding: 0,
           backgroundColor: colors.whiteF2F2F2,
         },
       ]}>
-      <FlatList
-        style={{ flex: 1 }}
-        data={[1, 2]}
-        keyExtractor={item => {
-          return item.toString();
-        }}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item, index }) => (
-          <View>
-            {index == 0 ? (
-              <Text
-                style={[
-                  styles.textStyle,
-                  {
-                    color: colors.balck4F4F4D,
-                    textAlign: 'center',
-                    marginTop: 9.5,
-                    marginBottom: 6.5,
-                  },
-                ]}>
-                {'15:29'}
-              </Text>
-            ) : null}
-            {index % 2 == 0 ? (
-              <LeftInflate item={item} />
-            ) : (
-              <SendProductDetailsInflate item={item} />
-            )}
+      <ChatHeader navigation={navigation} />
+      <View
+        style={[
+          styles.container,
+          {
+            paddingBottom: 100,
+            backgroundColor: colors.whiteF2F2F2,
+          },
+        ]}>
+        <FlatList
+          style={{ flex: 1 }}
+          data={[1, 2]}
+          keyExtractor={item => {
+            return item.toString();
+          }}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item, index }) => (
+            <View>
+              {index == 0 ? (
+                <Text
+                  style={[
+                    styles.textStyle,
+                    {
+                      color: colors.balck4F4F4D,
+                      textAlign: 'center',
+                      marginTop: 9.5,
+                      marginBottom: 6.5,
+                    },
+                  ]}>
+                  {'15:29'}
+                </Text>
+              ) : null}
+              {index % 2 == 0 ? (
+                <LeftInflate item={item} />
+              ) : (
+                <SendProductDetailsInflate item={item} />
+              )}
+            </View>
+          )}
+        />
+
+        <ProfileProduct subTitle="" onClick={undefined} />
+
+        <View style={style.textInputWithSend}>
+          <SearchView />
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                // navigation.navigate(RouteNames.chat_screen)
+              }}
+              style={style.circleButton}>
+              <HappyOutlineIcon width={37} height={37} />
+            </TouchableOpacity>
+            <TouchableOpacity style={style.circleButton}>
+              <AddOutlineIcon width={37} height={37} />
+            </TouchableOpacity>
           </View>
-        )}
-      />
-
-      <ProfileProduct subTitle="" onClick={undefined} />
-
-      <View style={style.textInputWithSend}>
-        <SearchView />
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <TouchableOpacity
-            onPress={() => {
-              // navigation.navigate(RouteNames.chat_screen)
-            }}
-            style={style.circleButton}>
-            <HappyOutlineIcon width={37} height={37} />
-          </TouchableOpacity>
-          <TouchableOpacity style={style.circleButton}>
-            <AddOutlineIcon width={37} height={37} />
-          </TouchableOpacity>
         </View>
       </View>
     </View>
+
   );
 };
 
@@ -288,7 +301,7 @@ const ProfileProduct = ({
           bottom: 95,
           backgroundColor: colors.white,
           padding: 10,
-          width: dimensions.width - 20,
+          width: Dimensions.get('window').width - 20,
           start: 10,
           end: 12,
         },
@@ -356,7 +369,7 @@ const style = StyleSheet.create({
     backgroundColor: colors.whiteF7F7F7,
     position: 'absolute',
     bottom: 0,
-    width: dimensions.width,
+    width: Dimensions.get('window').width,
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 42,
@@ -386,7 +399,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     marginVertical: 10,
-    width: dimensions.width / 1.5,
+    width: Dimensions.get('window').width / 1.5,
   },
 });
 

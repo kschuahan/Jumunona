@@ -22,6 +22,7 @@ import { fontFamily } from '../../utils/Fonts';
 import Share from '../../../assets/Icons/Share.svg';
 import CartIcon from '../../../assets/Icons/Carts.svg';
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
+import { RouteNames } from '../../utils/RouteNames';
 const reviewFilter = [
   { id: 1, desc: "Don't lose color(8)" },
   { id: 2, desc: 'Good Fabric(12)' },
@@ -31,7 +32,6 @@ const filterOptions = [
   { id: 1, desc: 'Все' },
   { id: 2, desc: 'Изображение' },
   { id: 3, desc: 'Хорошие' },
-  { id: 4, desc: 'Средние' },
   { id: 5, desc: 'Плохие' },
 ];
 
@@ -52,7 +52,9 @@ export const ProudctReviewsScreen = ({ navigation }) => {
             <Share />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate(RouteNames.cartScreen)
+          }} style={{ alignItems: 'center', marginStart: -20 }}>
             <CartIcon />
           </TouchableOpacity>
           <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
@@ -104,12 +106,14 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                   <Text
                     style={{
                       fontSize: 14,
+                      fontWeight: '400',
                       color: selectedFactory === item.id ? '#ff7600' : 'black',
                     }}>
                     {item.desc}
                     <Text
                       style={{
                         fontSize: 14,
+                        fontWeight: '400',
                         color:
                           selectedFactory === item.id ? '#ff7600' : colors.grey,
                       }}>
@@ -139,6 +143,8 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                   backgroundColor: colors.white,
                   marginEnd: 5,
                   borderRadius: 20,
+                  height: 26,
+                  justifyContent: 'center'
                 }}>
                 <Text
                   style={{
@@ -146,7 +152,7 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                     color: colors.balc111111,
                     paddingHorizontal: 12,
                     textAlign: 'center',
-                    paddingVertical: 10,
+                    fontWeight: '400'
                   }}>
                   {item.desc}
                 </Text>

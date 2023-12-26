@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   Pressable,
+  Dimensions,
 } from 'react-native';
 import { ScrollView } from 'react-native-virtualized-view';
 import React, { useState } from 'react';
@@ -194,7 +195,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
               return (
                 <View
                   style={{
-                    flex: 1,
+                    flex: 0.5,
                     marginTop: 8,
                   }}>
                   {item.id === 10 ? (
@@ -258,10 +259,10 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                       height: 265,
                       paddingHorizontal: 1,
                       width: 'auto',
-                      borderRadius: 12,
+                      borderRadius: 13,
                       backgroundColor: '#f1f1f1',
 
-                      marginBottom: 8,
+                      marginBottom: 7,
                     }}
                   />
 
@@ -271,7 +272,6 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                       justifyContent: 'flex-start',
                       alignItems: 'center',
                       paddingLeft: 7,
-                      marginTop: 2,
                     }}>
                     <Image
                       source={china}
@@ -341,10 +341,8 @@ export default CategoryScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+
     backgroundColor: '#F6F6F6',
-    alignSelf: 'center',
   },
   headerContainer: {
     borderBottomLeftRadius: 24,
@@ -354,7 +352,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     paddingTop: 12,
     paddingBottom: 4,
-    width: dimensions.width,
+    width: Dimensions.get('window').width,
     paddingHorizontal: 8,
   },
   searchBarBG: {
@@ -381,7 +379,7 @@ const styles = StyleSheet.create({
 
   primaryCategories: {
     flexDirection: 'row',
-    width: dimensions.width,
+    width: '100%',
     height: 35,
     gap: 6,
     backgroundColor: colors.white,
@@ -410,7 +408,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F6F6F6',
   },
   secondaryCategoriesBG: {
-    width: dimensions.width,
+    width: '100%',
     backgroundColor: '#FFFFFF',
     borderBottomLeftRadius: 12,
     paddingHorizontal: 6,

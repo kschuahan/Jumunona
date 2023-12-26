@@ -9,14 +9,14 @@ import {
   FlatList,
   Pressable,
 } from 'react-native';
-import {ScrollView} from 'react-native-virtualized-view';
+import { ScrollView } from 'react-native-virtualized-view';
 import LinearGradient from 'react-native-linear-gradient';
 import MasonryList from '@react-native-seoul/masonry-list';
-import {dimensions} from '../utils/sizes';
-import {RouteNames} from '../utils/RouteNames';
-import {colors} from '../utils/AppColors';
+import { dimensions } from '../utils/sizes';
+import { RouteNames } from '../utils/RouteNames';
+import { colors } from '../utils/AppColors';
 import React from 'react';
-import {fontFamily} from '../utils/Fonts';
+import { fontFamily } from '../utils/Fonts';
 
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import ImageOutline from '../../assets/Icons/image-outline.svg';
@@ -86,22 +86,22 @@ const data: Product[] = [
 ];
 
 const categoryData: Category[] = [
-  {id: 1, desc: 'Men'},
-  {id: 2, desc: 'Women'},
-  {id: 3, desc: 'Child'},
-  {id: 4, desc: 'Shoes'},
-  {id: 5, desc: 'Bags'},
-  {id: 6, desc: 'Electro'},
-  {id: 7, desc: 'Auto'},
-  {id: 8, desc: 'Home'},
-  {id: 9, desc: 'Beauty'},
-  {id: 10, desc: 'Suits'},
+  { id: 1, desc: 'Men' },
+  { id: 2, desc: 'Women' },
+  { id: 3, desc: 'Child' },
+  { id: 4, desc: 'Shoes' },
+  { id: 5, desc: 'Bags' },
+  { id: 6, desc: 'Electro' },
+  { id: 7, desc: 'Auto' },
+  { id: 8, desc: 'Home' },
+  { id: 9, desc: 'Beauty' },
+  { id: 10, desc: 'Suits' },
   // { id: 11, desc: "Accesso" },
   // { id: 12, desc: "Make-Up" },
 ];
 const china = require('../../assets/china.png');
 
-const HeaderItem = ({onSearchClick}) => (
+const HeaderItem = ({ onSearchClick }) => (
   <View style={styles.header}>
     <TextInput
       style={styles.searchBox}
@@ -111,8 +111,8 @@ const HeaderItem = ({onSearchClick}) => (
     <TouchableOpacity style={styles.button} onPress={onSearchClick}>
       <LinearGradient
         colors={['#FF7600', '#FC4A1A']}
-        start={{x: 0.4, y: 0}}
-        end={{x: 1, y: 1}}
+        start={{ x: 0.4, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={styles.linearGradient}>
         <Text style={styles.searchButtonText}>Поиск</Text>
       </LinearGradient>
@@ -120,8 +120,8 @@ const HeaderItem = ({onSearchClick}) => (
   </View>
 );
 
-const MainCategoriesItem = ({navigation}) => (
-  <View style={{width: '100%'}}>
+const MainCategoriesItem = ({ navigation }) => (
+  <View style={{ width: '100%' }}>
     <FlatList
       style={styles.categories}
       scrollEnabled={false}
@@ -130,7 +130,7 @@ const MainCategoriesItem = ({navigation}) => (
         return item.id.toString();
       }}
       numColumns={5}
-      renderItem={({item, index}) => {
+      renderItem={({ item, index }) => {
         return (
           <View
             style={{
@@ -138,17 +138,17 @@ const MainCategoriesItem = ({navigation}) => (
               justifyContent: 'center',
             }}>
             {item.id === 10 ? (
-              <TouchableOpacity onPress={()=>{
+              <TouchableOpacity onPress={() => {
                 navigation.navigate(RouteNames.categories)
 
-              }} style={{alignItems: 'center'}}>
+              }} style={{ alignItems: 'center' }}>
                 <EllipsisHorizontal width={24} height={38} />
                 <Text
                   style={{
                     fontSize: 13,
                     color: colors.black,
                     paddingBottom: 10,
-                    fontWeight:'400'
+                    fontWeight: '400'
                   }}>
                   ещё
                 </Text>
@@ -157,12 +157,12 @@ const MainCategoriesItem = ({navigation}) => (
               <TouchableOpacity onPress={() => {
                 navigation.navigate(RouteNames.product_search_screen)
 
-              }}  style={{alignItems: 'center'}}>
+              }} style={{ alignItems: 'center' }}>
                 <ImageOutline width={50} height={38} />
                 <Text
                   style={{
                     fontSize: 13,
-                    fontWeight:'400',
+                    fontWeight: '400',
                     color: colors.black,
                     paddingBottom: 10,
                   }}>
@@ -177,7 +177,7 @@ const MainCategoriesItem = ({navigation}) => (
   </View>
 );
 
-const HomeScreen: React.FC = ({navigation}) => {
+const HomeScreen: React.FC = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <HeaderItem
@@ -188,19 +188,19 @@ const HomeScreen: React.FC = ({navigation}) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}>
-        <MainCategoriesItem navigation={navigation}/>
+        <MainCategoriesItem navigation={navigation} />
         <View style={styles.grid}>
           <MasonryList
             data={data}
             keyExtractor={item => {
               return item.id;
             }}
-            style={{marginHorizontal: 7}}
+            style={{ marginHorizontal: 7 }}
             numColumns={2}
-            renderItem={({item}) => {
+            renderItem={({ item }) => {
               return (
                 <Pressable
-                  style={[styles.gridViewItemStyle, {paddingBottom: 8}]}
+                  style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
                   onPress={() => {
                     navigation.navigate(RouteNames.product_detail);
                   }}>
@@ -208,7 +208,7 @@ const HomeScreen: React.FC = ({navigation}) => {
                     source={item.imageURL}
                     style={[
                       styles.gridViewItemImage,
-                      {height: item.id === 1 ? 220 : 255},
+                      { height: item.id === 1 ? 220 : 255 },
                     ]}
                   />
                   <View
@@ -217,9 +217,8 @@ const HomeScreen: React.FC = ({navigation}) => {
                       justifyContent: 'flex-start',
                       alignItems: 'center',
                       paddingLeft: 7,
-                      marginTop: 2,
                     }}>
-                    <Image source={china} style={{height: 15, width: 15}} />
+                    <Image source={china} style={{ height: 15, width: 15 }} />
                     <Text
                       style={{
                         marginLeft: 4,
@@ -238,7 +237,7 @@ const HomeScreen: React.FC = ({navigation}) => {
                       paddingLeft: 8,
                       marginTop: 3,
                     }}>
-                    <View style={{flexDirection: 'row', width: '30%'}}>
+                    <View style={{ flexDirection: 'row', width: '30%' }}>
                       <Text
                         style={{
                           fontSize: 17,
@@ -285,10 +284,8 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+
     backgroundColor: colors.whiteF6F6F6,
-    alignSelf: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -311,6 +308,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingLeft: 12,
     fontFamily: fontFamily.regular,
+    paddingVertical: 0
   },
   button: {
     marginLeft: -82.5,
@@ -330,8 +328,9 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.regular,
   },
   scrollView: {
-    flex: 9 / 10,
+    flex: 1,
     paddingTop: 4,
+    width: '100%',
     backgroundColor: colors.whiteF6F6F6,
   },
 
@@ -355,11 +354,10 @@ const styles = StyleSheet.create({
   },
   grid: {
     flex: 1,
-    width: dimensions.width,
+    width: '100%',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     marginBottom: 8,
-    alignSelf: 'stretch',
   },
   gridViewItemStyle: {
     borderRadius: 10,
@@ -371,7 +369,7 @@ const styles = StyleSheet.create({
   gridViewItemImage: {
     paddingHorizontal: 1,
     width: 'auto',
-    borderRadius: 10,
-    marginBottom: 8,
+    borderRadius: 13,
+    marginBottom: 7,
   },
 });
