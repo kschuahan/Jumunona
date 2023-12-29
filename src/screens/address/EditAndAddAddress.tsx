@@ -8,8 +8,13 @@ import ChevronBackOutlineIcon from '../../../assets/Icons/chevronBackOutline.svg
 import { colors } from "../../utils/AppColors";
 import RadioOff from '../../../assets/Icons/RadioOff.svg';
 import RadioOn from '../../../assets/Icons/RadionOn.svg';
+import ChevronFwdOutline from '../../../assets/Icons/chevronForwardOutline.svg';
+import DeleteAddressIcon from '../../../assets/Icons/DeleteAddress.svg';
+
 import LinearGradient from "react-native-linear-gradient";
 import { addressList } from "./MyAddressesScreen";
+import { DeleteAddress } from "../../components/Dialogs";
+import { SelectResionalScreen } from "./SelectResionalScreen";
 
 
 
@@ -21,6 +26,8 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
     const [resign, setResign] = useState('')
     const [address, setAddress] = useState('')
     const [isDefault, setIsDefault] = useState(false)
+    const [show, setShow] = useState(false)
+    const [showResion, setShowResion] = useState(false)
 
     useEffect(() => {
         if (route.params) {
@@ -39,7 +46,16 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
 
         navigation.setOptions({
             headerTitle: () => <View style={{ marginBottom: -20 }}><LogoTitle title={AppString.changeAddress} /></View>,
+            headerRight: () => (
 
+                route.params ? <TouchableOpacity onPress={() => {
+
+                    setShow(true)
+                }} style={{ alignItems: 'center', marginBottom: -15 }}>
+                    <DeleteAddressIcon />
+                </TouchableOpacity> : null
+
+            ),
 
             headerLeft: () => (
                 <TouchableOpacity
@@ -64,6 +80,8 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
         }} keybordType="numeric" />
         <TextInputData placeholder="Регион" value={resign} onChangeText={(it: string) => {
             setResign(it)
+        }} isForward={true} OnClick={() => {
+            setShowResion(true)
         }} />
         <TextInputData ml={true} placeholder="Улица, дом, квартира" hight={75} value={address} onChangeText={(it: string) => {
             setAddress(it)
@@ -107,6 +125,18 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
             }
 
         }} />
+
+        <DeleteAddress isShow={show} onCancel={() => {
+            setShow(false)
+        }} onConfirm={() => {
+            addressList.splice(route.params.index, 1)
+            setShow(false)
+            navigation.goBack()
+
+        }} />
+        <SelectResionalScreen isShow={showResion} onClose={() => {
+            setShowResion(false)
+        }} />
     </View>
 }
 
@@ -145,17 +175,19 @@ const CommonButton = ({
 
 
 const TextInputData = ({ placeholder = "Имя получателя", value = '',
-    onChangeText, keybordType = "default", br = 23, mb = 13, ml = false, hight = 40 }) => {
+    onChangeText, keybordType = "default", br = 23, mb = 13, ml = false, hight = 40, isForward = false, OnClick = () => { } }) => {
 
-    return <View>
+    return <TouchableOpacity disabled={!isForward} onPress={OnClick}>
         <TextInput
             value={value}
             placeholder={placeholder}
             onChangeText={onChangeText}
             multiline={ml}
             placeholderTextColor={'#979797'}
+            editable={!isForward}
             style={{
                 paddingHorizontal: 12,
+                paddingStart: keybordType == 'numeric' ? 50 : 12,
                 width: '100%', height: hight, borderRadius: br,
                 backgroundColor: 'white', marginBottom: mb,
                 fontSize: 16, color: colors.black,
@@ -165,5 +197,13 @@ const TextInputData = ({ placeholder = "Имя получателя", value = ''
             keyboardType={keybordType}
         />
 
-    </View>
+        {keybordType == 'numeric' ? <Text style={[styles.textStyle, {
+            fontSize: 16, color: '#707070',
+            position: 'absolute', start: 10, top: 8
+        }]}>+86</Text> : null}
+        {isForward ? <ChevronFwdOutline width={10} height={10} style={{
+            position: 'absolute', end: 10, top: 16
+        }} /> : null}
+
+    </TouchableOpacity>
 }

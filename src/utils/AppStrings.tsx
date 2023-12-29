@@ -151,6 +151,7 @@ export const AppString = {
   delete: 'Удалить',
   changeAddress: 'Изменить адрес',
   do_you_want_to_delete_an_address: 'Хотите удалить адрес?',
-  save:'Сохранить',
-  
+  save: 'Сохранить',
+  select_your_region: 'Выберите свой регион'
+
 };
