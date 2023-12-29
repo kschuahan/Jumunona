@@ -152,6 +152,17 @@ export const AppString = {
   changeAddress: 'Изменить адрес',
   do_you_want_to_delete_an_address: 'Хотите удалить адрес?',
   save: 'Сохранить',
-  select_your_region: 'Выберите свой регион'
+  select_your_region: 'Выберите свой регион',
 
+  currency_symbol:'¥',
+  placing_an_order: "Оформление заказа",
+  delivery: "Доставка",
+  byTrain: "Поездом",
+  byAir: "Авиа",
+  days: "дней",
+  free: "Бесплатно",
+  note: "Примечание",
+  piece: "шт",
+  details: "Детали",
+  goods: "Товары"
 };

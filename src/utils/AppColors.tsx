@@ -45,5 +45,7 @@ export const colors = {
   grey919191: '#919191',
   greyC4C4C4: '#C4C4C4',
   whiteF0F0F0: '#F0F0F0',
-  orangeF66123: '#F66123'
+  orangeF66123: '#F66123',
+  black14100D: "#14100D",
+  grayAAAAAA: "#AAAAAA"
 };

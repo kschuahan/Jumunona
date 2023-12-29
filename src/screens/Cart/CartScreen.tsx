@@ -10,7 +10,6 @@ import {
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 import { ScrollView } from 'react-native-virtualized-view';
 import React, { useEffect, useState } from 'react';
-import { RadioButton } from 'react-native-paper';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/chevronForwardOutline.svg';
 import EditIcon from '../../../assets/Icons/editIcon.svg';
 import { appIcons } from '../../utils/AppIcons';
@@ -276,13 +275,11 @@ const CartScreen = ({ navigation }) => {
             <CommonButton
               onClick={() => {
                 // setBuyShow(true);
-                navigation.navigate(RouteNames.myAddress)
+                //navigation.navigate(RouteNames.myAddress)
+                navigation.navigate(RouteNames.cartConfirmOrder)
               }}
             />
           </View>
-
-
-
         </View>
 
         <View style={{ height: 0.5, width: '100%', backgroundColor: '#D9D9D9',

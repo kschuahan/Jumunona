@@ -45,4 +45,6 @@ export const RouteNames = {
   myAddress: AppString.my_addresses,
   addAndEditpassword: AppString.changeAddress,
 
+  cartConfirmOrder: "Cart Confirm Order Screen",
+  
 };

@@ -44,6 +44,7 @@ import { dimensions, recalculateDimensions } from './src/utils/sizes';
 import { MyAddressesScreen } from './src/screens/address/MyAddressesScreen';
 import { LogoTitle } from './src/components/Header';
 import { EditAndAddAddressScreen } from './src/screens/address/EditAndAddAddress';
+import { CartConfirmOrderScreen } from './src/screens/Cart/CartConfirmOrderScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -265,6 +266,9 @@ const App: React.FC = () => {
             component={EditAndAddAddressScreen}
           // options={{ headerShown: false }}
 
+            name={RouteNames.cartConfirmOrder}
+            component={CartConfirmOrderScreen} 
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>
