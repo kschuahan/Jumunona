@@ -41,6 +41,8 @@ export const RouteNames = {
   product_search_screen: 'product_search_screen',
   categories: "Categories Screen",
   chatSetting: AppString.chatSettings,
-  shopSettings: 'Shop Settings'
+  shopSettings: 'Shop Settings',
+  myAddress: AppString.my_addresses,
+  addAndEditpassword: AppString.changeAddress,
 
 };

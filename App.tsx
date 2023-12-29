@@ -41,6 +41,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ChatSettings from './src/screens/Chat/ChatSetting';
 import ShopSettings from './src/screens/Chat/ShopSetting';
 import { dimensions, recalculateDimensions } from './src/utils/sizes';
+import { MyAddressesScreen } from './src/screens/address/MyAddressesScreen';
+import { LogoTitle } from './src/components/Header';
+import { EditAndAddAddressScreen } from './src/screens/address/EditAndAddAddress';
 
 const Stack = createNativeStackNavigator();
 
@@ -249,6 +252,18 @@ const App: React.FC = () => {
             name={RouteNames.shopSettings}
             component={ShopSettings}
             options={{ headerShown: false }}
+
+          />
+          <Stack.Screen
+            name={RouteNames.myAddress}
+            component={MyAddressesScreen}
+          // options={{ headerShown: false }}
+
+          />
+          <Stack.Screen
+            name={RouteNames.addAndEditpassword}
+            component={EditAndAddAddressScreen}
+          // options={{ headerShown: false }}
 
           />
         </Stack.Navigator>

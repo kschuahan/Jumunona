@@ -210,7 +210,7 @@ export const ClearChatPopup = ({ isShow = false, onConfirm, onCancel }) => {
       transparent={true}
       animationType={'fade'}
       visible={isShow}
-    
+
       onRequestClose={onCancel}>
       <View
         style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .3 )' }]}>
@@ -282,6 +282,97 @@ export const ClearChatPopup = ({ isShow = false, onConfirm, onCancel }) => {
                 ]}>
                 {AppString.no}
               </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+      </View>
+    </Modal>
+  );
+};
+
+
+
+export const DeleteAddress = ({ isShow = false, onConfirm, onCancel }) => {
+
+
+  return (
+    <Modal
+      transparent={true}
+      animationType={'fade'}
+      visible={isShow}
+
+      onRequestClose={onCancel}>
+      <View
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .3 )' }]}>
+        <View
+          style={[
+            styles.bottom_sheet,
+            {
+              justifyContent: 'center',
+              alignContent: 'center',
+              width: '82%',
+              borderRadius: 15
+            },
+          ]}>
+          <Text
+            style={[
+              styles.textStyle,
+              {
+                paddingTop: 25,
+                paddingBottom: 14,
+                fontSize: 21,
+                textAlign: 'center',
+              },
+            ]}>
+            {AppString.do_you_want_to_delete_an_address}
+          </Text>
+
+
+
+          <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center', gap: 13, marginBottom: 20 }}>
+
+            <TouchableOpacity onPress={onConfirm}
+              style={{
+                justifyContent: 'center', alignItems: 'center',
+                borderColor: colors.lightOrange, height: 39, width: 110, borderWidth: 1, borderRadius: 20
+              }}>
+              <Text
+                style={[
+                  styles.textStyle,
+                  {
+                    fontSize: 18,
+                    color: colors.lightOrange
+                  },
+                ]}>
+                {AppString.yes}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={onCancel} >
+              <LinearGradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                colors={['#FE8C00', '#FC4A1A']}
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 23,
+                  height: 39, width: 110,
+
+                }}>
+                <Text
+                  style={[
+                    styles.textStyle,
+                    {
+                      fontSize: 18,
+                      color: colors.white
+
+                    },
+                  ]}>
+                  {AppString.no}
+                </Text>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
         </View>

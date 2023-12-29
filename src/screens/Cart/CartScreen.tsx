@@ -229,7 +229,9 @@ const CartScreen = ({ navigation }) => {
             shadowColor: colors.black,
             elevation: 10,
             borderBlockColor: colors.whiteF7F7F7,
-            borderBottomWidth: 1
+            borderBottomWidth: 1,
+            marginBottom: -9,
+            paddingBottom:18
           }}>
 
           <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -274,6 +276,7 @@ const CartScreen = ({ navigation }) => {
             <CommonButton
               onClick={() => {
                 // setBuyShow(true);
+                navigation.navigate(RouteNames.myAddress)
               }}
             />
           </View>
@@ -282,6 +285,8 @@ const CartScreen = ({ navigation }) => {
 
         </View>
 
+        <View style={{ height: 0.5, width: '100%', backgroundColor: '#D9D9D9',
+         position: 'absolute', bottom: 0, }} />
 
 
       </View>
@@ -647,7 +652,7 @@ const ProductItem = ({ item, check = false, onClick }) => {
       alignItems: 'center',
       paddingBottom: 14,
       paddingHorizontal: 10,
-      width: '100%'
+      flex: 1
     }}>
     <RadioButtons isCheck={isCheck} onClick={() => {
       setIsCheck(!isCheck)

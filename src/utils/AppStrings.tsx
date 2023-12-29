@@ -146,5 +146,11 @@ export const AppString = {
   similar: 'Похожее',
   choose_all: 'Выбрать все',
   total: 'Всего',
-  currency_symbol:'¥'
+  currency_symbol: '¥',
+  default: 'По умолчанию',
+  delete: 'Удалить',
+  changeAddress: 'Изменить адрес',
+  do_you_want_to_delete_an_address: 'Хотите удалить адрес?',
+  save:'Сохранить',
+  
 };
