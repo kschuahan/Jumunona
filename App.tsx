@@ -41,6 +41,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ChatSettings from './src/screens/Chat/ChatSetting';
 import ShopSettings from './src/screens/Chat/ShopSetting';
 import { dimensions, recalculateDimensions } from './src/utils/sizes';
+import { CartConfirmOrderScreen } from './src/screens/Cart/CartConfirmOrderScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -250,6 +251,11 @@ const App: React.FC = () => {
             component={ShopSettings}
             options={{ headerShown: false }}
 
+          />
+          <Stack.Screen
+            name={RouteNames.cartConfirmOrder}
+            component={CartConfirmOrderScreen} 
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

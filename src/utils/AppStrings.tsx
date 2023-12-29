@@ -146,5 +146,15 @@ export const AppString = {
   similar: 'Похожее',
   choose_all: 'Выбрать все',
   total: 'Всего',
-  currency_symbol:'¥'
+  currency_symbol:'¥',
+  placing_an_order: "Оформление заказа",
+  delivery: "Доставка",
+  byTrain: "Поездом",
+  byAir: "Авиа",
+  days: "дней",
+  free: "Бесплатно",
+  note: "Примечание",
+  piece: "шт",
+  details: "Детали",
+  goods: "Товары"
 };
