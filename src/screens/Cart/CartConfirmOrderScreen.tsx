@@ -63,7 +63,9 @@ export const CartConfirmOrderScreen = ({ navigation }) => {
             <ScrollView
                 style={{ paddingHorizontal: 6 }}
             >
-                <AddressView />
+                <AddressView onClick={() => {
+                    navigation.navigate(RouteNames.myAddress)
+                }} />
                 <FlatList
                     data={cartItemData}
                     scrollEnabled={false}
@@ -79,27 +81,27 @@ export const CartConfirmOrderScreen = ({ navigation }) => {
                                 items={item} onClick={() => {
                                     navigation.push(RouteNames.product_detail)
                                 }}
-                                onShowNotePopup={ () => {
+                                onShowNotePopup={() => {
                                     setShowNotePopup(true)
                                 }}
-                                />
+                            />
                         );
                     }}
                 />
                 <TotalView />
                 <PaymentGateway />
             </ScrollView>
-            <BottomView navigation={navigation}/>
-            <DeliveryNotePopup isShow = {showNotePopup} onClose={ () => {
+            <BottomView navigation={navigation} />
+            <DeliveryNotePopup isShow={showNotePopup} onClose={() => {
                 setShowNotePopup(false)
             }} />
         </View>
     )
 }
 
-const AddressView = ({ }) => {
+const AddressView = ({ onClick }) => {
     return (
-        <View
+        <TouchableOpacity onPress={onClick}
             style={{
                 marginTop: 5,
                 paddingTop: 14,
@@ -148,7 +150,7 @@ const AddressView = ({ }) => {
                     end: 12.5
                 }}
             />
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -220,7 +222,7 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
                                     alignItems: "center",
                                     gap: 6
                                 }}
-                                onPress={onShowNotePopup }
+                                onPress={onShowNotePopup}
                             >
                                 <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, }} numberOfLines={2}>
                                     {AppString.no}
@@ -266,6 +268,7 @@ const CartItem = ({ item, check = false, onClick }) => {
     return (
         <View>
             <TouchableOpacity
+                disabled={true}
                 onPress={onClick}
                 style={{
                     flexDirection: 'row',
@@ -292,8 +295,8 @@ const CartItem = ({ item, check = false, onClick }) => {
                                 alignContent: "space-between"
                             }}
                         >
-                            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.balc111111, width: "80%", maxHeight: 30 }} numberOfLines={2}>
-                                若过度长的话只显示第一行 若过度长的话只显示第一行若过度长的话只显示第一行若过度长的话只显示第一行
+                            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.balc111111, width: "80%", maxHeight: 30 }} numberOfLines={1}>
+                                若过度长的话只显示第一行
                             </Text>
                             <Text style={{ fontSize: 14, fontWeight: '400', color: colors.balc111111 }} numberOfLines={2}>
                                 368c.
@@ -367,7 +370,11 @@ const CartItem = ({ item, check = false, onClick }) => {
                         <Text style={{ fontSize: 13, fontWeight: '400', color: colors.balc111111, textAlign: "right" }}>
                             {AppString.free}
                         </Text>
-                        <RadioButtons isCheck={deliveryByTrain} onClick={() => { setDeliveryByTrain(!deliveryByTrain) }} />
+                        <RadioButtons isCheck={deliveryByTrain} onClick={() => {
+                            if (!deliveryByTrain) {
+                                setDeliveryByTrain(true)
+                            }
+                        }} />
                     </View>
                     <View
                         style={{
@@ -383,7 +390,9 @@ const CartItem = ({ item, check = false, onClick }) => {
                         <RadioButtons
                             isCheck={!deliveryByTrain}
                             onClick={() => {
-                                setDeliveryByTrain(!deliveryByTrain)
+                                if (deliveryByTrain) {
+                                    setDeliveryByTrain(false)
+                                }
                             }} />
                     </View>
                 </View>
@@ -405,7 +414,7 @@ const TotalView = ({ }) => {
         <View
             style={{
                 marginTop: 9,
-                paddingVertical: 17.5,
+                paddingVertical: 10,
                 paddingHorizontal: 12,
                 backgroundColor: colors.white,
                 borderRadius: 13
@@ -424,7 +433,7 @@ const TotalView = ({ }) => {
                 style={{
                     flexDirection: "row",
                     width: "100%",
-                    paddingTop: 17,
+                    paddingTop: 10,
                     justifyContent: "space-between"
                 }}
             >
@@ -465,7 +474,7 @@ const TotalView = ({ }) => {
                 style={{
                     flexDirection: "row",
                     width: "100%",
-                    paddingTop: 17,
+                    paddingTop: 10,
                     justifyContent: "space-between"
                 }}
             >
@@ -491,7 +500,7 @@ const TotalView = ({ }) => {
                 style={{
                     flexDirection: "row",
                     width: "100%",
-                    paddingTop: 17,
+                    paddingTop: 10,
                     justifyContent: "space-between",
                     alignItems: "center"
                 }}
@@ -536,7 +545,7 @@ const TotalView = ({ }) => {
                 style={{
                     flexDirection: "row",
                     width: "100%",
-                    paddingTop: 17,
+                    paddingTop: 10,
                     justifyContent: "space-between"
                 }}
             >
@@ -586,7 +595,7 @@ const PaymentGateway = () => {
                     fontWeight: '400',
                     color: colors.balc111111,
                 }}>
-                   Корти милли
+                    Корти милли
                 </Text>
             </View>
             <CheckmarkCircle />
@@ -594,51 +603,60 @@ const PaymentGateway = () => {
     )
 }
 
-const BottomView = ({navigation}) => {
-   return <View
-          style={{
+const BottomView = ({ navigation }) => {
+    return <View
+        style={{
             backgroundColor: colors.white,
             position: 'absolute',
             bottom: 0,
             width: Dimensions.get('window').width,
             justifyContent: 'space-between',
-            alignItems: 'center',
             paddingVertical: 12,
             paddingHorizontal: 10,
+            paddingTop:10,
             flexDirection: 'row',
             borderTopStartRadius: 13,
             borderTopEndRadius: 13,
             shadowColor: colors.black,
             elevation: 10,
+            height:80,
             borderBlockColor: colors.whiteF7F7F7,
             borderBottomWidth: 1
-          }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+        }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom:8 }}>
             <Text
-              style={{
-                fontSize: 14,
-                color: '#333333',
-                fontFamily: '400',
-                marginHorizontal: 4
-              }}>
-              {AppString.total + ':'}
-            </Text>
-          <Text
                 style={{
-                  fontSize: 22,
-                  color: colors.lightOrange,
-                  fontWeight: 'bold',
-                  marginStart: 4
-                }}>786c.</Text>
-            </View>
-            <CommonButton
-            text= {AppString.confirm}
-              onClick={() => {
-                navigation.navigate(RouteNames.cartConfirmOrder)
-              }}
-            />
-         
+                    fontSize: 14,
+                    color: '#333333',
+                    fontFamily: '400',
+                    marginHorizontal: 4
+                }}>
+                {AppString.total + ' 2шт:'}
+            </Text>
+            <Text
+                style={{
+                    fontSize: 24,
+                    color: colors.lightOrange,
+                    fontWeight: 'bold',
+                    marginStart: 4,
+                    marginBottom:6
+                }}>751<Text
+                style={{
+                    fontSize: 24,
+                    color: colors.lightOrange,
+                    fontWeight: '400',
+                    marginStart: 4,
+                    marginBottom:6
+                }}>с.</Text></Text>
         </View>
+        <CommonButton
+            text={AppString.confirm}
+            onClick={() => {
+                navigation.navigate(RouteNames.cartConfirmOrder)
+            }}
+        />
+
+    </View>
 }
 
 const CommonButton = ({
@@ -646,28 +664,28 @@ const CommonButton = ({
     endColor = colors.endOrange,
     startorange = colors.startOrange,
     onClick,
-  }) => {
+}) => {
     return (
-      <TouchableOpacity onPress={onClick}>
-        <LinearGradient
-          colors={[startorange, endColor]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{
-            borderRadius: 20,
-            height: 40,
-            justifyContent: 'center',
-            alignItems: 'center',
-            
-          }}>
-          <Text
-            style={[
-              styles.textStyle,
-              { color: colors.white, fontWeight: '400', fontSize: 16, paddingHorizontal: 19 },
-            ]}>
-            {text}
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={onClick}>
+            <LinearGradient
+                colors={[startorange, endColor]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{
+                    borderRadius: 20,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+
+                }}>
+                <Text
+                    style={[
+                        styles.textStyle,
+                        { color: colors.white, fontWeight: '400', fontSize: 16, paddingHorizontal: 19 },
+                    ]}>
+                    {text}
+                </Text>
+            </LinearGradient>
+        </TouchableOpacity>
     );
-  };
+};

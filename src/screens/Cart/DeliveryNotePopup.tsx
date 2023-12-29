@@ -1,10 +1,10 @@
-import { Image, Modal, Pressable, Text, TouchableOpacity, View,TextInput } from "react-native"
+import { Image, Modal, Pressable, Text, TouchableOpacity, View, TextInput } from "react-native"
 import { colors } from "../../utils/AppColors"
 import { styles } from "../../utils/AppStyles"
 import CloseIcon from '../../../assets/Icons/closeIcon.svg';
 import { fontFamily } from "../../utils/Fonts";
 import { imagesUrl } from "../../utils/AppIcons";
-import {  } from "react-native-gesture-handler";
+import { } from "react-native-gesture-handler";
 import { useState } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import { AppString } from "../../utils/AppStrings";
@@ -30,7 +30,7 @@ export const DeliveryNotePopup = ({ isShow = false, onClose }) => {
                         backgroundColor: colors.white,
                         borderTopLeftRadius: 13,
                         borderTopRightRadius: 13,
-                        paddingTop: 21.5,
+                        paddingTop: 10,
                         width: '100%',
                     }}>
                     <View
@@ -39,22 +39,22 @@ export const DeliveryNotePopup = ({ isShow = false, onClose }) => {
                             justifyContent: 'space-between',
                             alignItems: "center"
                         }}>
-                            <View></View>
+                        <View></View>
                         <View>
 
                             <Text
-                                style = {{
+                                style={{
                                     fontSize: 17,
-                                    fontFamily: fontFamily.regular,
                                     fontWeight: "bold",
-                                    textAlign: "center"
+                                    textAlign: "center",
+                                    color: colors.black
                                 }}
                             >
-                            Примечание
+                                Примечание
                             </Text>
                         </View>
                         <TouchableOpacity
-                            style={{ marginEnd: 12}}
+                            style={{ marginEnd: 12 }}
 
                             onPress={() => {
                                 onClose();
@@ -62,28 +62,37 @@ export const DeliveryNotePopup = ({ isShow = false, onClose }) => {
                             <CloseIcon width={11} height={11} />
                         </TouchableOpacity>
                     </View>
-                    
-                    <TextInput
-                        value= {note}
-                        placeholder="Если у вас есть примечание к заказу, пожалуйста, укажите их здесь."
-                        style = {{
-                            height: 144,
-                            backgroundColor: colors.whiteF6F6F6,
-                            marginTop: 21,
-                            marginBottom: 28,
-                            borderRadius: 13,
-                            textAlign: "auto",
-                            padding: 13,
-                            paddingVertical: 50,
-                            fontFamily: fontFamily.regular,
-                            fontSize: 15
-                        }}
-                        onChangeText={(text) => {
-                            setNote(text)
-                        }}
-                        multiline={true}
-                    />
-                    <OKButton onClick={ onClose} />
+                    <View>
+                        <TextInput
+                            value={note}
+                            placeholder="Если у вас есть примечание к заказу, пожалуйста, укажите их здесь."
+                            placeholderTextColor={'#979797'}
+                            maxLength={200}
+                            style={{
+                                height: 144,
+                                backgroundColor: colors.whiteF6F6F6,
+                                marginTop: 21,
+                                marginBottom: 28,
+                                borderRadius: 13,
+                                textAlign: "auto",
+                                padding: 13,
+                                paddingVertical: 10,
+                                fontFamily: fontFamily.regular,
+                                fontSize: 15,
+                                verticalAlign: 'top',
+
+                            }}
+                            onChangeText={(text) => {
+                                setNote(text)
+                            }}
+                            multiline={true}
+
+                        />
+                        <Text style={[styles.textStyle, {
+                            fontSize: 11, color: colors.grey
+                            , position: 'absolute', bottom: 35, end: 12
+                        }]}>{`${note.length}/200`}</Text></View>
+                    <OKButton onClick={onClose} />
                 </Pressable>
             </Pressable >
         </Modal>
@@ -97,28 +106,28 @@ const OKButton = ({
     endColor = colors.endOrange,
     startorange = colors.startOrange,
     onClick,
-  }) => {
+}) => {
     return (
-      <TouchableOpacity onPress={onClick} style = {{marginBottom: 38}}>
-        <LinearGradient
-          colors={[startorange, endColor]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{
-            borderRadius: 18,
-            height: 36,
-            justifyContent: 'center',
-            alignItems: 'center',
-            
-          }}>
-          <Text
-            style={[
-              styles.textStyle,
-              { color: colors.white, fontWeight: '400', fontSize: 16, paddingHorizontal: 19 },
-            ]}>
-            {text}
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={onClick} style={{ marginBottom: 38 }}>
+            <LinearGradient
+                colors={[startorange, endColor]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{
+                    borderRadius: 18,
+                    height: 36,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+
+                }}>
+                <Text
+                    style={[
+                        styles.textStyle,
+                        { color: colors.white, fontWeight: '400', fontSize: 16, paddingHorizontal: 19 },
+                    ]}>
+                    {text}
+                </Text>
+            </LinearGradient>
+        </TouchableOpacity>
     );
-  };
+};

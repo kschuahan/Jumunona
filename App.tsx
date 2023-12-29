@@ -265,9 +265,10 @@ const App: React.FC = () => {
             name={RouteNames.addAndEditpassword}
             component={EditAndAddAddressScreen}
           // options={{ headerShown: false }}
-
+          />
+          <Stack.Screen
             name={RouteNames.cartConfirmOrder}
-            component={CartConfirmOrderScreen} 
+            component={CartConfirmOrderScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

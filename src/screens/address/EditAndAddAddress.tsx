@@ -136,6 +136,10 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
         }} />
         <SelectResionalScreen isShow={showResion} onClose={() => {
             setShowResion(false)
+        }} onConfirm={(city: string) => {
+            setResign(city)
+            setShowResion(false)
+
         }} />
     </View>
 }
