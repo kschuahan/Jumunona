@@ -10,6 +10,7 @@ import { colors } from "../utils/AppColors";
 import { AppString } from "../utils/AppStrings";
 import SearchIcon from '../../assets/Icons/searchIcon.svg';
 import { useState } from "react";
+import { RouteNames } from "../utils/RouteNames";
 
 export const LogoTitle = ({ title }) => {
     return (
@@ -35,8 +36,8 @@ export const BackLogo = ({ navigation }) => {
 
 
 
-export const MenuLogo = () => {
-    return <TouchableOpacity style={{ alignItems: 'center' }}>
+export const MenuLogo = ({ onClick = () => { } }) => {
+    return <TouchableOpacity onPress={onClick} style={{ alignItems: 'center' }}>
         <EllipsisHorizontal width={24} height={24} />
     </TouchableOpacity>
 }
@@ -106,7 +107,7 @@ export const CustomHeader = ({ navigation, title }) => {
 
 
 
-export const ChatHeader = ({ navigation, title = 'Shop name' }) => {
+export const ChatHeader = ({ navigation, title = 'Shop name', isVisible = true }) => {
 
     return <Card
         style={{
@@ -127,11 +128,16 @@ export const ChatHeader = ({ navigation, title = 'Shop name' }) => {
                 <LogoTitle title={title} /></View>
 
             <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 17 }}>
-                <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
+                {isVisible ? <TouchableOpacity onPress={() => {
+                    navigation.navigate(RouteNames.shopHomeScreen)
+                }} style={{ alignItems: 'center', marginStart: -20 }}>
                     {/* <Ionicons name="gift-outline" size={24} /> */}
                     <ShopGrey />
-                </TouchableOpacity>
-                <MenuLogo />
+                </TouchableOpacity> : false}
+                <MenuLogo onClick={() => {
+                    navigation.navigate(RouteNames.shopSettings)
+
+                }} />
 
             </View>
         </View>

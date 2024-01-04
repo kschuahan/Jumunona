@@ -230,7 +230,7 @@ const CartScreen = ({ navigation }) => {
             borderBlockColor: colors.whiteF7F7F7,
             borderBottomWidth: 1,
             marginBottom: -9,
-            paddingBottom:18
+            paddingBottom: 18
           }}>
 
           <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -282,8 +282,10 @@ const CartScreen = ({ navigation }) => {
           </View>
         </View>
 
-        <View style={{ height: 0.5, width: '100%', backgroundColor: '#D9D9D9',
-         position: 'absolute', bottom: 0, }} />
+        <View style={{
+          height: 0.5, width: '100%', backgroundColor: '#D9D9D9',
+          position: 'absolute', bottom: 0,
+        }} />
 
 
       </View>
@@ -587,6 +589,10 @@ const CartProduct = ({ check = true, items, navigation, onClick }) => {
       paddingTop: 10
     }}>
     <TouchableOpacity
+      onPress={() => {
+        navigation.navigate(RouteNames.shopHomeScreen)
+
+      }}
       style={{
         flexDirection: 'row',
         alignItems: 'center',

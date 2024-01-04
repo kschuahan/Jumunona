@@ -45,6 +45,7 @@ import { MyAddressesScreen } from './src/screens/address/MyAddressesScreen';
 import { LogoTitle } from './src/components/Header';
 import { EditAndAddAddressScreen } from './src/screens/address/EditAndAddAddress';
 import { CartConfirmOrderScreen } from './src/screens/Cart/CartConfirmOrderScreen';
+import ShopHomeScreen from './src/screens/Shops/ShopHomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -269,6 +270,11 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.cartConfirmOrder}
             component={CartConfirmOrderScreen}
+            options={{ headerShown: false }}
+          />
+           <Stack.Screen
+            name={RouteNames.shopHomeScreen}
+            component={ShopHomeScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

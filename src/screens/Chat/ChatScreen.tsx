@@ -25,8 +25,19 @@ import AddOutlineIcon from '../../../assets/Icons/AddWhite.svg';
 import { fontFamily } from '../../utils/Fonts';
 import CloseIcon from '../../../assets/Icons/Closegrey.svg';
 import { ChatHeader } from '../../components/Header';
+import CameraIcon from '../../../assets/Icons/Camera.svg';
 
-export const ChatScreen = ({ navigation }) => {
+import GalleryIcon from '../../../assets/Icons/Gallery.svg';
+
+import CloseIconChat from '../../../assets/Icons/CloseChat.svg';
+
+import VideoIcon from '../../../assets/Icons/Video.svg';
+
+
+export const ChatScreen = ({ navigation, route }) => {
+  console.log(route.params);
+  const [isShow, setIsShow] = useState(false)
+  const isShop = route.params ? route.params.isShop : false
   useEffect(() => {
     navigation.setOptions({
       headerTitle: 'Shop name',
@@ -36,10 +47,10 @@ export const ChatScreen = ({ navigation }) => {
       },
       headerRight: () => (
         <View style={{ flexDirection: 'row', gap: 30, alignItems: 'center' }}>
-          <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
+          {!isShop ? <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
             {/* <Ionicons name="gift-outline" size={24} /> */}
             <ShopGrey />
-          </TouchableOpacity>
+          </TouchableOpacity> : null}
           <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
             <EllipsisHosrizontalIcon />
           </TouchableOpacity>
@@ -67,7 +78,7 @@ export const ChatScreen = ({ navigation }) => {
           backgroundColor: colors.whiteF2F2F2,
         },
       ]}>
-      <ChatHeader navigation={navigation} />
+      <ChatHeader navigation={navigation} isVisible={!isShop} />
       <View
         style={[
           styles.container,
@@ -102,28 +113,46 @@ export const ChatScreen = ({ navigation }) => {
               {index % 2 == 0 ? (
                 <LeftInflate item={item} />
               ) : (
-                <SendProductDetailsInflate item={item} />
+                !isShop ? <SendProductDetailsInflate item={item} /> : null
               )}
             </View>
           )}
         />
 
-        <ProfileProduct subTitle="" onClick={undefined} />
+        {!isShop ? <ProfileProduct subTitle="" onClick={undefined} /> : null}
 
-        <View style={style.textInputWithSend}>
-          <SearchView />
-          <View style={{ flexDirection: 'row', gap: 10 }}>
-            <TouchableOpacity
-              onPress={() => {
-                // navigation.navigate(RouteNames.chat_screen)
-              }}
-              style={style.circleButton}>
-              <HappyOutlineIcon width={37} height={37} />
-            </TouchableOpacity>
-            <TouchableOpacity style={style.circleButton}>
-              <AddOutlineIcon width={37} height={37} />
-            </TouchableOpacity>
+        <View style={[style.textInputWithSend, { paddingBottom: !isShop ? 42 : 10 }]}>
+          <View style={[style.textInputWithSend1, { paddingBottom: 10 }]}>
+            <SearchView />
+            <View style={{ flexDirection: 'row', gap: 10 }}>
+              <TouchableOpacity
+                onPress={() => {
+                  // navigation.navigate(RouteNames.chat_screen)
+                }}
+                style={style.circleButton}>
+                <HappyOutlineIcon width={37} height={37} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                setIsShow(!isShow)
+              }} style={style.circleButton}>
+                {isShow ? <CloseIconChat width={37} height={37} /> : <AddOutlineIcon width={37} height={37} />}
+              </TouchableOpacity>
+            </View>
           </View>
+          {isShow ? <View style={{ flexDirection: 'row', }}>
+            <IconWithText onClick={() => {
+              setIsShow(!isShop)
+
+            }} marginEnd={20} />
+            <IconWithText title={AppString.album} onClick={() => {
+              setIsShow(!isShop)
+
+            }} Icon={GalleryIcon} />
+            <IconWithText title={AppString.video} onClick={() => {
+              setIsShow(!isShop)
+
+            }} Icon={VideoIcon} />
+          </View> : null}
         </View>
       </View>
     </View>
@@ -151,6 +180,24 @@ const LeftInflate = ({ item }) => {
     </View>
   );
 };
+
+
+const IconWithText = ({ title = AppString.image, onClick, Icon = CameraIcon, marginEnd = 33 }) => {
+  return <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', marginEnd: marginEnd }} onPress={onClick}>
+    <View style={{
+      backgroundColor: colors.white,
+      justifyContent: 'center', alignItems: 'center',
+      height: 58, width: 58, borderRadius: 8,
+    }}>
+      <Icon />
+
+    </View>
+    <Text
+      style={[styles.textStyle, { fontSize: 14, color: colors.black666666, marginTop: 4 }]}>
+      {title}
+    </Text>
+  </TouchableOpacity>
+}
 
 const RightInflate = ({ item }) => {
   return (
@@ -370,14 +417,20 @@ const style = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: Dimensions.get('window').width,
-    justifyContent: 'space-between',
-    alignItems: 'center',
     paddingBottom: 42,
     paddingTop: 8,
-    flexDirection: 'row',
     borderTopStartRadius: 13,
     borderTopEndRadius: 13,
     paddingHorizontal: 12,
+  },
+  textInputWithSend1: {
+
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+
+    flexDirection: 'row',
+
   },
   searchTextInput: {
     height: 33,
@@ -385,6 +438,7 @@ const style = StyleSheet.create({
     marginStart: 11,
     fontFamily: fontFamily.regular,
     fontSize: 15,
+    paddingVertical: 0
   },
   circleButton: {
     backgroundColor: colors.white,

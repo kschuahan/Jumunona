@@ -154,7 +154,7 @@ export const AppString = {
   save: 'Сохранить',
   select_your_region: 'Выберите свой регион',
 
-  currency_symbol:'¥',
+  currency_symbol: '¥',
   placing_an_order: "Оформление заказа",
   delivery: "Доставка",
   byTrain: "Поездом",
@@ -164,5 +164,8 @@ export const AppString = {
   note: "Примечание",
   piece: "шт",
   details: "Детали",
-  goods: "Товары"
+  goods: "Товары",
+  image: 'Изображение',
+  album: 'Альбом',
+  video: 'Видео'
 };

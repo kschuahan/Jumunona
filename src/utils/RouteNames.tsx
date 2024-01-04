@@ -2,6 +2,9 @@ import { AppString } from './AppStrings';
 
 export const RouteNames = {
   home: 'Home',
+  shophome: 'ShopHome',
+  shopcategoriesHome: 'shopCategories',
+
   categoriesHome: 'Categories',
   messgaesScreen: 'Messages',
   cartScreen: 'Cart',
@@ -38,6 +41,8 @@ export const RouteNames = {
   select_product_color_size: 'Select product color size',
   chat_screen: 'Chat',
   chatScreenUsersList: 'Chat Screen User List',
+  shopchatScreenUsersList: 'shop Chat Screen User List',
+
   product_search_screen: 'product_search_screen',
   categories: "Categories Screen",
   chatSetting: AppString.chatSettings,
@@ -46,5 +51,6 @@ export const RouteNames = {
   addAndEditpassword: AppString.changeAddress,
 
   cartConfirmOrder: "Cart Confirm Order Screen",
-  
+  shopHomeScreen: 'ShopHomeScreen'
+
 };

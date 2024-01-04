@@ -302,7 +302,7 @@ export const ProductDetailScreen = ({ navigation }) => {
                 navigation.navigate(RouteNames.product_review_screen);
               }}
             />
-            <ShopView />
+            <ShopView navigation={navigation} />
           </View>
           <ProductImages
             onClick={(index: number) => {
@@ -835,7 +835,7 @@ export const RatingView = ({ rating = 3.5, count = 5 }) => {
 
 // MARK: - Shop Detail
 
-const ShopView = ({ }) => {
+const ShopView = ({ navigation }) => {
   return (
     <View
       style={{
@@ -844,7 +844,10 @@ const ShopView = ({ }) => {
         padding: 10,
         marginTop: 12,
       }}>
-      <View
+      <TouchableOpacity onPress={() => {
+        navigation.navigate(RouteNames.shopHomeScreen)
+
+      }}
         style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -904,9 +907,12 @@ const ShopView = ({ }) => {
           style={{ paddingLeft: 10, paddingRight: 3 }}
           color={'#CCCCCC'}
         />
-      </View>
+      </TouchableOpacity>
       <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 13 }}>
-        <TouchableOpacity onPress={() => { }} style={[style.button]}>
+        <TouchableOpacity onPress={() => {
+          navigation.push(RouteNames.shopHomeScreen)
+
+        }} style={[style.button]}>
           <Text
             style={{
               fontSize: 13,
@@ -916,7 +922,10 @@ const ShopView = ({ }) => {
             {AppString.all_goods}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { }} style={style.button}>
+        <TouchableOpacity onPress={() => {
+          navigation.push(RouteNames.shopHomeScreen)
+
+        }} style={style.button}>
           <Text
             style={{
               fontSize: 13,
@@ -939,15 +948,21 @@ const ShopView = ({ }) => {
           Icon={null}
           padding={0}
           title={AppString.featured}
-          onClick={() => { }}
+          onClick={() => {
+            navigation.push(RouteNames.shopHomeScreen)
+
+          }}
         />
       </View>
-      <ShopFeaturedProduct />
-    </View>
+      <ShopFeaturedProduct onClick={() => {
+        navigation.push(RouteNames.product_detail)
+
+      }} />
+    </View >
   );
 };
 
-const ShopFeaturedProduct = () => {
+const ShopFeaturedProduct = ({ onClick }) => {
   return (
     <FlatList
       data={data}
@@ -959,7 +974,7 @@ const ShopFeaturedProduct = () => {
       style={{ marginEnd: -2.5 }}
       renderItem={({ item }) => {
         return (
-          <TouchableOpacity
+          <TouchableOpacity onPress={onClick}
             style={{
               backgroundColor: '#ffffff',
               marginHorizontal: 2.5,

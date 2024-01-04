@@ -16,6 +16,7 @@ import Profile from '../../../assets/Icons/Profile.svg';
 import ShopGrey from '../../../assets/Icons/ShopGreys.svg';
 import App from '../../../App';
 import { ClearChatPopup } from '../../components/Dialogs';
+import { RouteNames } from '../../utils/RouteNames';
 
 
 const ShopSettings = ({ navigation }) => {
@@ -54,7 +55,7 @@ const ShopSettings = ({ navigation }) => {
                         paddingHorizontal: 0,
                     }}>
 
-                    <ShopProfile />
+                    <ShopProfile navigation={navigation} />
                 </View>
 
                 <NotificationButtons />
@@ -149,7 +150,7 @@ const ListView = ({ title = '' }) => {
     );
 };
 
-const ShopProfile = () => {
+const ShopProfile = ({ navigation }) => {
 
     return <View>
         <View
@@ -217,14 +218,17 @@ const ShopProfile = () => {
             </TouchableOpacity>
         </View>
         <SeparatorView />
-        <View style={{
+        <TouchableOpacity onPress={() => {
+            navigation.navigate(RouteNames.shopHomeScreen)
+
+        }} style={{
             justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row', width: '100%',
             paddingHorizontal: 13, paddingTop: 6
         }}>
             <Text style={[styles.textStyle, { fontSize: 16 }]}>{AppString.goto_the_store}</Text>
             <ShopGrey height={15} width={15} />
 
-        </View>
+        </TouchableOpacity>
     </View>
 }
 
