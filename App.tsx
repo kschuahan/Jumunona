@@ -46,6 +46,9 @@ import { LogoTitle } from './src/components/Header';
 import { EditAndAddAddressScreen } from './src/screens/address/EditAndAddAddress';
 import { CartConfirmOrderScreen } from './src/screens/Cart/CartConfirmOrderScreen';
 import ShopHomeScreen from './src/screens/Shops/ShopHomeScreen';
+import { MyOrderScreen } from './src/screens/orders/MyOrders';
+import { OrderDetailsScreen } from './src/screens/orders/OrderDetail';
+import { ReturnSucessfullyScreen } from './src/screens/orders/ReturnSucessfully';
 
 const Stack = createNativeStackNavigator();
 
@@ -272,9 +275,27 @@ const App: React.FC = () => {
             component={CartConfirmOrderScreen}
             options={{ headerShown: false }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name={RouteNames.shopHomeScreen}
             component={ShopHomeScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name={RouteNames.myOrder}
+            component={MyOrderScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name={RouteNames.orderDetails}
+            component={OrderDetailsScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name={RouteNames.return_details}
+            component={ReturnSucessfullyScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

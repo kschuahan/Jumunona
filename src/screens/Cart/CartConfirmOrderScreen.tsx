@@ -170,7 +170,8 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
             <View
                 style={{
                     flexDirection: "row",
-                    paddingBottom: 9.5
+                    paddingBottom: 9.5,
+                    alignItems:'center'
                 }}
             >
                 <Image

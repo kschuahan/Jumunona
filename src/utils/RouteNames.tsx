@@ -51,6 +51,9 @@ export const RouteNames = {
   addAndEditpassword: AppString.changeAddress,
 
   cartConfirmOrder: "Cart Confirm Order Screen",
-  shopHomeScreen: 'ShopHomeScreen'
+  shopHomeScreen: 'ShopHomeScreen',
+  myOrder: 'My Order',
+  orderDetails: 'Order Details',
+  return_details: AppString.return_details
 
 };

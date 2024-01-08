@@ -35,6 +35,7 @@ import Reviews from '../../../assets/Icons/Reviews.svg';
 
 
 const ProfileScreen = (props: any) => {
+  const navigation = props.navigation
   return (
     <ScrollView
       contentContainerStyle={{ flex: 1 }}
@@ -91,7 +92,7 @@ const ProfileScreen = (props: any) => {
           />
         </View>
 
-        <MyOrder />
+        <MyOrder navigation={navigation} />
         <View
           style={{
             backgroundColor: colors.white,
@@ -111,7 +112,9 @@ const ProfileScreen = (props: any) => {
               height={21}
               color={colors.lightRed}
               title={AppString.address}
-              onPress={() => { }}
+              onPress={() => {
+                navigation.navigate(RouteNames.myAddress)
+              }}
               gap={6}
             />
             <IconWithText
@@ -200,7 +203,7 @@ const ProfileScreen = (props: any) => {
   );
 };
 
-const MyOrder = () => {
+const MyOrder = ({ navigation }) => {
   return (
     <View
       style={{
@@ -211,7 +214,11 @@ const MyOrder = () => {
         borderRadius: 13,
       }}>
       <View>
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(RouteNames.myOrder, { type: 'Все' })
+
+          }}
           style={[
             styles.profile,
             { marginTop: 5, alignItems: 'center', marginStart: 12 },
@@ -220,7 +227,7 @@ const MyOrder = () => {
             {AppString.my_order}
           </Text>
           <ChevronFwdOutlineIcon color={colors.black} width={12} height={12} />
-        </View>
+        </TouchableOpacity>
         <View
           style={[
             styles.profile,
@@ -232,7 +239,9 @@ const MyOrder = () => {
             isVisible={true}
             color={colors.balc111111}
             title={AppString.not_paid}
-            onPress={() => { }}
+            onPress={() => {
+              navigation.navigate(RouteNames.myOrder, { type: AppString.not_paid })
+            }}
             width={21}
             height={21}
             gap={3}
@@ -242,8 +251,11 @@ const MyOrder = () => {
             end={12}
             isVisible={true}
             color={colors.balc111111}
-            title={AppString.treatment}
-            onPress={() => { }}
+            title={AppString.processing}
+            onPress={() => {
+              navigation.navigate(RouteNames.myOrder, { type: AppString.processing })
+
+            }}
             width={21}
             height={21}
             gap={4}
@@ -256,7 +268,10 @@ const MyOrder = () => {
             isVisible={true}
             color={colors.balc111111}
             title={AppString.sent}
-            onPress={() => { }}
+            onPress={() => {
+              navigation.navigate(RouteNames.myOrder, { type: AppString.sent })
+
+            }}
             gap={4}
 
           />
@@ -266,7 +281,10 @@ const MyOrder = () => {
             isVisible={true}
             color={colors.balc111111}
             title={AppString.review}
-            onPress={() => { }}
+            onPress={() => {
+              navigation.navigate(RouteNames.myOrder, { type: AppString.review })
+
+            }}
             width={21}
             height={21}
             gap={4}

@@ -202,7 +202,7 @@ const style = StyleSheet.create({
     searchTextInput: {
         height: 33,
         width: '80%',
-        fontFamily: fontFamily.regular,
+        fontWeight: '400',
         fontSize: 15,
         paddingVertical: 0,
         paddingStart: 10
