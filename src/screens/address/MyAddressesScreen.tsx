@@ -1,6 +1,6 @@
 import { Dimensions, FlatList, Text, TouchableOpacity, View } from "react-native"
 import { styles } from "../../utils/AppStyles"
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, } from "react";
 import { AppString } from "../../utils/AppStrings";
 
 import EditIcon from '../../../assets/Icons/editIcon.svg';
@@ -20,7 +20,6 @@ import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 import HomeAddress from '../../../assets/Icons/HomeAddress.svg';
 import { DeleteAddress } from "../../components/Dialogs";
 import { useIsFocused } from "@react-navigation/native";
-
 let isEditedButton = false
 interface AddreessModal {
     id: number;

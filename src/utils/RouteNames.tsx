@@ -54,6 +54,6 @@ export const RouteNames = {
   shopHomeScreen: 'ShopHomeScreen',
   myOrder: 'My Order',
   orderDetails: 'Order Details',
-  return_details: AppString.return_details
-
+  return_details: AppString.return_details,
+  changeAddress: "Change Address"
 };

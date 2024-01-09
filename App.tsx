@@ -49,6 +49,7 @@ import ShopHomeScreen from './src/screens/Shops/ShopHomeScreen';
 import { MyOrderScreen } from './src/screens/orders/MyOrders';
 import { OrderDetailsScreen } from './src/screens/orders/OrderDetail';
 import { ReturnSucessfullyScreen } from './src/screens/orders/ReturnSucessfully';
+import { ChangeAddressScreen } from './src/screens/address/ChangeAddress';
 
 const Stack = createNativeStackNavigator();
 
@@ -297,6 +298,10 @@ const App: React.FC = () => {
             name={RouteNames.return_details}
             component={ReturnSucessfullyScreen}
             options={{ headerShown: false }}
+          />
+            <Stack.Screen
+            name={RouteNames.changeAddress}
+            component={ChangeAddressScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

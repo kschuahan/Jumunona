@@ -182,5 +182,9 @@ export const AppString = {
   information_about_order: 'Информация о заказе',
   order_processing: 'Обработка заказа',
   the_order_has_been_sent: 'Заказ отправлен',
-  order_completed: 'Заказ завершен'
+  order_completed: 'Заказ завершен',
+  source_address: "Исходный адрес",
+  select_new_Address: "Выбрать новый адрес",
+  all_address: "Все адреса",
+  confirm_changes: "Подтвердить изменения",
 };
