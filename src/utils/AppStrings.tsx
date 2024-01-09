@@ -206,5 +206,9 @@ export const AppString = {
   experience: 'Опыт:',
   photo: 'Фото',
   recieved_bonus_for_feedback: 'Получайте бонусы за правильный отзыв',
-  publicly: 'Публично'
+  publicly: 'Публично',
+  source_address: "Исходный адрес",
+  select_new_Address: "Выбрать новый адрес",
+  all_address: "Все адреса",
+  confirm_changes: "Подтвердить изменения",
 };

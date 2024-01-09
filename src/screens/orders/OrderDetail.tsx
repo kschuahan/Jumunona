@@ -33,6 +33,7 @@ export const OrderDetailsScreen = ({ navigation, route }) => {
             ListHeaderComponent={<View style={{ paddingHorizontal: 6 }}>
 
                 <AddressView type={route.params.status} onClick={() => {
+                    navigation.navigate(RouteNames.changeAddress)
 
                 }} />
                 <View style={{
@@ -453,7 +454,9 @@ const AddressView = ({ type = '', onClick }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
 
-            }}>
+            }}
+            onPress={onClick}
+            >
                 <Text style={[styles.textStyle, { fontSize: 13 }]}>{AppString.change}</Text>
             </TouchableOpacity> : null}
         </TouchableOpacity>

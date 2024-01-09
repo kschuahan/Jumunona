@@ -51,6 +51,7 @@ import { OrderDetailsScreen } from './src/screens/orders/OrderDetail';
 import { ReturnSucessfullyScreen } from './src/screens/orders/ReturnSucessfully';
 import { LogisticsScreen } from './src/screens/orders/Logistics';
 import { ProductReviewScreen } from './src/screens/orders/ProductReview';
+import { ChangeAddressScreen } from './src/screens/address/ChangeAddress';
 
 const Stack = createNativeStackNavigator();
 
@@ -310,7 +311,10 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.review}
             component={ProductReviewScreen}
-            options={{ headerShown: false }}
+            options={{ headerShown: false }} />
+          <Stack.Screen
+            name={RouteNames.changeAddress}
+            component={ChangeAddressScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

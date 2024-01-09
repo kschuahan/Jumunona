@@ -56,6 +56,7 @@ export const RouteNames = {
   orderDetails: 'Order Details',
   return_details: AppString.return_details,
   logistic_screen: AppString.logistics,
-  review: AppString.review
+  review: AppString.review,
 
+  changeAddress: "Change Address"
 };
