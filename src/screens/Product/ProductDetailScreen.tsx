@@ -792,7 +792,9 @@ const TextWithIcon = ({
   );
 };
 
-export const RatingView = ({ rating = 3.5, count = 5 }) => {
+export const RatingView = ({ rating = 3.5, count = 5,
+  size = undefined, ms = 3, Icon = OrangeStar,
+  EmptyStar = GreyStar, onClick = (number: number) => { }, disabled = true }) => {
   const ratingArray = [1, 2, 3, 4, 5];
   return (
     <View>
@@ -826,7 +828,8 @@ export const RatingView = ({ rating = 3.5, count = 5 }) => {
           return item.toString();
         }}
         renderItem={({ item, index }) =>
-          rating > index ? <OrangeStar style={{ marginStart: 3 }} /> : <GreyStar style={{ marginStart: 3 }} />
+          <TouchableOpacity disabled={disabled} onPress={() => onClick(index)}>{rating > index ? <Icon height={size} width={size} style={{ marginStart: ms }} /> :
+            <EmptyStar height={size} width={size} style={{ marginStart: ms }} />}</TouchableOpacity>
         }
       />
     </View>

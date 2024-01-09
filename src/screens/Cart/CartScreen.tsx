@@ -542,11 +542,11 @@ const OutOfStocksCardProduct = ({ item, onClick }) => {
 
 }
 
-const RadioButtons = ({ isCheck = false, onClick }) => {
+export const RadioButtons = ({ isCheck = false, onClick, size=22 }) => {
   return true ? <TouchableOpacity onPress={onClick}>{isCheck ? (
-    <CheckmarkCircle width={22} height={22} color={colors.lightOrange} />
+    <CheckmarkCircle width={size} height={size} color={colors.lightOrange} />
   ) : (
-    <EllipsisHorizontalNormal width={22} height={22} />
+    <EllipsisHorizontalNormal width={size} height={size} />
   )}</TouchableOpacity> : null
 }
 

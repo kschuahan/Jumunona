@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   Pressable,
+  Image,
 } from 'react-native';
 import { styles } from '../utils/AppStyles';
 import { AppString } from '../utils/AppStrings';
@@ -15,6 +16,11 @@ import { colors } from '../utils/AppColors';
 import { fontFamily } from '../utils/Fonts';
 
 import CloseCircleOutline from '../../assets/Icons/CloseCircle.svg';
+import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { imagesUrl } from '../utils/AppIcons';
+import CheckGreen from '../../assets/Icons/CheckGreen.svg';
+import CloseIconRed from '../../assets/Icons/CloseIconRed.svg';
+import { RadioButtons } from '../screens/Cart/CartScreen';
 
 export const VerifyDeleteAccountDialog = ({
   isShow = false,
@@ -198,6 +204,307 @@ export const FailAccDeletePopup = ({ isShow = false, onConfirm, onCancel }) => {
   );
 };
 
+
+
+
+export const LeaveCommentPopup = ({ isShow = false, onCancel }) => {
+
+  const [click, setClick] = useState(false)
+
+  return (
+    <Modal
+      transparent={true}
+      animationType={'fade'}
+      visible={isShow}
+      onRequestClose={onCancel}>
+
+      <View
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
+        <View
+          style={[
+            styles.bottom_sheet,
+            {
+              justifyContent: 'center',
+              alignContent: 'center',
+              width:'95%'
+            },
+          ]}>
+          <TitleWithImages />
+          <View style={{
+            flexDirection: 'row', alignItems: 'center',
+            justifyContent: 'center', marginTop: 10
+          }}>
+            <ViewWithColor Icon={CheckGreen} color='#02AAB0' />
+
+            <Text
+              style={[
+                styles.textStyle,
+                {
+                  marginStart: 9,
+                  fontWeight: '500'
+                },
+              ]}>
+              {'Изображения, детали и комментарии'}
+            </Text>
+          </View>
+
+          <TextWithColor />
+        </View>
+
+        <View
+          style={[
+            styles.bottom_sheet,
+            {
+              justifyContent: 'center',
+              alignContent: 'center',
+              marginTop: 13,
+              width:'95%'
+
+            },
+          ]}>
+          <TitleWithImages data={[1, 2]} />
+          <View style={{
+            flexDirection: 'row', alignItems: 'center',
+            marginTop: 10,
+            paddingHorizontal: 14
+          }}>
+            <ViewWithColor />
+            <Text
+              style={[
+                styles.textStyle,
+                {
+                  marginStart: 9,
+                  fontWeight: '500'
+                },
+              ]}>
+              {'Плохое изображение, отсутствует подробный текст'}
+            </Text>
+          </View>
+
+
+          <View style={{
+            flexDirection: 'row', alignItems: 'center',
+            marginTop: 10,
+            paddingHorizontal: 14
+          }}>
+
+            <RadioButtons size={15} isCheck={click} onClick={() => {
+              setClick(!click)
+            }} />
+            <Text
+              style={[
+                styles.textStyle,
+                {
+                  marginStart: 9,
+                  color: '#121212'
+                },
+              ]}>
+              {"Don't show again"}
+            </Text>
+          </View>
+          <TextWithColor text='1' mt={-20} />
+
+        </View>
+        <Pressable onPress={onCancel} style={{ paddingTop: 22 }}
+        >
+          <CloseCircleOutline
+            width={31}
+            height={31}
+          />
+        </Pressable>
+      </View>
+
+    </Modal >
+  );
+};
+
+const ViewWithColor = ({ Icon = CloseIconRed, s = 15, color = '#E52D27' }) => {
+
+  return <View style={{
+    height: s, width: s,
+    justifyContent: 'center', alignItems: 'center',
+    borderRadius: s / 2, backgroundColor: color
+  }}>
+    <Icon />
+  </View>
+}
+
+
+const TextWithColor = ({ text = '5', mt = -8 }) => {
+
+  return <View style={{
+    backgroundColor: '#E93368', height: 28, width: 48,
+    borderTopStartRadius: 8, borderBottomEndRadius: 8, alignSelf: 'flex-end',
+    justifyContent: 'center', alignItems: 'center', marginTop: mt
+  }}>
+    <Text
+      style={[
+        styles.textStyle,
+        {
+          fontSize: 13,
+          color: colors.white
+        },
+      ]}>
+      {'+'} <Text
+        style={[
+          styles.textStyle,
+          {
+            fontSize: 21,
+            color: colors.white
+          },
+        ]}>{text}</Text> <Text
+          style={[
+            styles.textStyle,
+            {
+              color: colors.white
+            },
+          ]}>{'J'}</Text>
+    </Text>
+
+  </View>
+}
+
+const TitleWithImages = ({ data = [1, 2, 4] }) => {
+
+  return <GestureHandlerRootView style={{ width: '100%' }}>
+    <View style={{ paddingHorizontal: 14 }}>
+
+      <Text
+        style={[
+          styles.textStyle,
+          {
+            paddingVertical: 9,
+            fontSize: 11,
+          },
+        ]}>
+        {'Хороший товар, удобная ткань, красивый и по размеру'}
+      </Text>
+
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        data={data}
+        renderItem={({ item, index }) =>
+          <Image source={{ uri: imagesUrl.shoes }} style={{
+            height: 100,
+            width: 100, borderRadius: 8, marginEnd: 9
+          }} />
+        }
+      />
+    </View>
+  </GestureHandlerRootView>
+}
+
+export const HelpPopup = ({ isShow = false, onCancel }) => {
+
+
+  return (
+    <Modal
+      transparent={true}
+      animationType={'fade'}
+      visible={isShow}
+      onRequestClose={onCancel}>
+      <View
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end' }]}>
+        <GestureHandlerRootView style={{ width: '100%' }}>
+          <View
+            style={[
+              styles.bottom_sheet,
+              {
+                paddingHorizontal: 10,
+                width: '100%', borderBottomRightRadius: 0,
+                borderBottomLeftRadius: 0
+              },
+            ]}>
+            <Text
+              style={[
+                styles.textStyle,
+                {
+                  paddingVertical: 9,
+                  fontWeight: '500',
+                  fontSize: 20,
+                  textAlign: 'center',
+                },
+              ]}>
+              {AppString.description}
+            </Text>
+
+            <FlatList
+              data={dataList}
+              scrollEnabled={false}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item, index }) =>
+                <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
+
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        fontSize: 17,
+                        color: '#121212'
+                      },
+                    ]}>
+                    {item.title}
+                  </Text>
+
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        fontSize: 14,
+                        color: '#989898'
+                      },
+                    ]}>
+                    {item.subTitle}
+                  </Text>
+                </View>
+              }
+            />
+
+            <TouchableOpacity style={{ marginTop: 20, marginBottom: 20 }} onPress={onCancel} >
+              <LinearGradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                colors={['#FE8C00', '#FC4A1A']}
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 23,
+                  height: 39,
+
+                }}>
+                <Text
+                  style={[
+                    styles.textStyle,
+                    {
+                      fontSize: 18,
+                      color: colors.white,
+                      fontWeight: 'bold'
+
+                    },
+                  ]}>
+                  {AppString.ok}
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </GestureHandlerRootView>
+      </View>
+    </Modal>
+  );
+};
+
+
+
+const dataList = [{
+  title: 'Публично',
+  subTitle: 'Псевдонимы пользователей и аватары будут отображаться публично в разделе комментариев.'
+},
+{
+  title: 'Анонимно',
+  subTitle: 'Комментарии будут отображаться анонимно.'
+},
+]
 
 
 

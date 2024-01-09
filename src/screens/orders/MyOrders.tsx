@@ -31,10 +31,10 @@ const notAll = [
     }
 ]
 
-const notPaid = ['Оплатить', 'Изменить адрес', 'Отменить заказ']
-const treatment = ['Вернуть деньги', 'Изменить адрес']
-const review = ['Получено', 'Логистика']
-const sent = ['Оценить', 'Логистика', 'Удалить']
+const notPaid = [AppString.pay, AppString.changeAddress, AppString.cancel_the_order]
+const treatment = [AppString.return_money, AppString.changeAddress]
+const review = [AppString.recieved, AppString.logistics]
+const sent = [AppString.estimate, AppString.logistics, AppString.delete]
 
 
 const all = [
@@ -60,7 +60,7 @@ const all = [
         price: 120,
         products: [1],
         status: AppString.return_issue,
-        actions: ['Оформлен возврат']
+        actions: [AppString.delete_order]
     },
     {
         price: 120,
@@ -92,7 +92,7 @@ export const MyOrderScreen = ({ navigation, route }) => {
             style={{ paddingHorizontal: 6 }}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) =>
-                <OrderItem type={type} items={item} onClick={(click: number) => {
+                <OrderItem type={type} navigation={navigation} items={item} onClick={(click: number) => {
 
                     if (click == 1) {//Shop Click
                         navigation.navigate(RouteNames.shopHomeScreen)
@@ -276,7 +276,7 @@ export const RelatedProducts = ({ onclick }) => {
 };
 
 
-const OrderItem = ({ items, onClick, type = AppString.processing }) => {
+const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) => {
     const [select, setSelect] = useState(0)
 
     return <TouchableOpacity onPress={() => {
@@ -439,7 +439,10 @@ const OrderItem = ({ items, onClick, type = AppString.processing }) => {
                         alignItems: 'center',
                         paddingHorizontal: 10,
                         borderColor: select === index ? colors.lightOrange : colors.greyCCCCCC
-                    }} onPress={() => setSelect(0)}>
+                    }} onPress={() => {
+                        buttonsClick(navigation, item)
+                    }
+                    }>
                     <Text
                         style={{
                             fontSize: 14,
@@ -452,6 +455,43 @@ const OrderItem = ({ items, onClick, type = AppString.processing }) => {
     </TouchableOpacity >
 
 }
+
+export const buttonsClick = (navigation, type) => {
+    console.log(type);
+
+    if (type == AppString.pay) {
+        navigation.push(RouteNames.cartConfirmOrder)
+    } else if (type == AppString.changeAddress) {
+        // navigation.push(RouteNames.cartConfirmOrder)
+
+    }
+    else if (type == AppString.cancel_the_order) {
+        // navigation.push(RouteNames.cartConfirmOrder)
+
+    }
+    else if (type == AppString.logistics) {
+         navigation.push(RouteNames.logistic_screen)
+
+    }
+    else if (type == AppString.return_money) {
+        // navigation.push(RouteNames.cartConfirmOrder)
+
+    }
+    else if (type == AppString.recieved) {
+        // navigation.push(RouteNames.cartConfirmOrder)
+
+    }
+    else if (type == AppString.delete) {
+        // navigation.push(RouteNames.cartConfirmOrder)
+
+    }
+    else if (type == AppString.estimate) {
+        // navigation.push(RouteNames.cartConfirmOrder)
+
+    }
+
+}
+
 export const slectefListCal = (type: string) => {
     if (type == AppString.processing) {
         return treatment

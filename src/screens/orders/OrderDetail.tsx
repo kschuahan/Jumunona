@@ -17,7 +17,7 @@ import DeliveryIcon from '../../../assets/Icons/DeliveryIcon.svg';
 import CheckIcon from '../../../assets/Icons/CheckIcon.svg';
 
 
-import { RelatedProducts, orders, slectefListCal } from "./MyOrders"
+import { RelatedProducts, buttonsClick, orders, slectefListCal } from "./MyOrders"
 import { RouteNames } from "../../utils/RouteNames"
 
 
@@ -109,6 +109,7 @@ export const OrderDetailsScreen = ({ navigation, route }) => {
                             borderColor: 0 === index ? colors.lightOrange : colors.greyCCCCCC
                         }} onPress={() => {
                             //setSelect(index)}
+                            buttonsClick(navigation, item)
                         }}>
                         <Text
                             style={{
