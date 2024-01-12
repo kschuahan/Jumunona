@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import ChevronBackOutlineIcon from '../../../assets/Icons/chevronBackOutline.svg';
 import { AppString } from "../../utils/AppStrings";
-import { LogoTitle } from "../../components/Header";
+import { CustomHeader, LogoTitle } from "../../components/Header";
 import EllipsisHorizontalIcon from '../../../assets/Icons/ellipsis-horizontal.svg';
 import { styles } from "../../utils/AppStyles";
 import { ScrollView } from "react-native-virtualized-view";
@@ -15,6 +15,7 @@ import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 import LinearGradient from "react-native-linear-gradient";
 import { RouteNames } from "../../utils/RouteNames";
+import ChevronFwdOutline from '../../../assets/Icons/chevronForwardOutline.svg';
 
 interface AddreessModal {
     id: number;
@@ -47,17 +48,7 @@ export const addressList: AddreessModal[] = [
 
 
     },
-    {
-        id: 3,
-        type: 'work',
-        name: 'Nalive',
-        mobile: '18088008045',
-        address: '广东省广州市天河区 街道街道 路路路 88号栋楼小区g1区5450房',
-        isSelected: false,
-        reasion: 'Tajikistan Khujand'
 
-
-    }
 ]
 export const ChangeAddressScreen = ({ navigation }) => {
 
@@ -83,36 +74,40 @@ export const ChangeAddressScreen = ({ navigation }) => {
         });
     });
     return (
-        <View  style={{
+        <View style={{
             flex: 1,
         }}>
+
+            <CustomHeader navigation={navigation} title={AppString.changeAddress} />
             <View
-            style={{
-                flex: 1,
-                paddingBottom: 72
-            }}
+                style={{
+                    flex: 1,
+                    paddingBottom: 72
+                }}
             >
-        <ScrollView
-             style={{
-               
-            }}
-            showsVerticalScrollIndicator={false}>
-            <CautionView />
-            <SorceAddressView />
-            <AddressesView onViewAllAddress={ () => {
-                    navigation.navigate(RouteNames.myAddress)
-            }} />
-            
-        </ScrollView>
+                <ScrollView
+                    style={{
+
+                    }}
+                    showsVerticalScrollIndicator={false}>
+                    <CautionView />
+                    <SorceAddressView />
+                    <AddressesView onViewAllAddress={() => {
+                        navigation.navigate(RouteNames.myAddress)
+                    }} />
+
+                </ScrollView>
+            </View>
+            <CommonButton
+                text={AppString.confirm_changes}
+                startorange={colors.startOrange}
+                endColor={colors.endOrange}
+                onClick={() => { 
+                  navigation.goBack()  
+                }}
+            />
+
         </View>
-        <CommonButton
-        text={AppString.confirm_changes}
-        startorange={colors.startOrange}
-        endColor={colors.endOrange}
-        onClick={ () => {}}
-      />
-    
-      </View>
     )
 }
 
@@ -191,7 +186,7 @@ const SorceAddressView = () => {
     )
 }
 
-const AddressesView = ({onViewAllAddress}) => {
+const AddressesView = ({ onViewAllAddress }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     return (
         <View
@@ -225,22 +220,28 @@ const AddressesView = ({onViewAllAddress}) => {
                     }} />}
             />
             <TouchableOpacity
-            onPress={onViewAllAddress}
-            style = {{
-                alignSelf: "center"
-            }}
-            >
-            <Text
+                onPress={onViewAllAddress}
                 style={{
-                    color: colors.black0B0B0B,
-                    fontSize: 16,
-                    fontFamily: fontFamily.regular,
-                    marginTop: 15
-
+                    alignSelf: "center"
                 }}
             >
-                {AppString.all_address}:
-            </Text>
+                <Text
+                    style={{
+                        color: colors.black0B0B0B,
+                        fontSize: 16,
+                        fontFamily: fontFamily.regular,
+                        marginTop: 15
+
+                    }}
+                >
+                    {AppString.all_address}  
+                    <ChevronFwdOutline
+                        color={colors.extraGrey}
+                        width={10}
+                        height={10}
+                        style={{ marginTop: 4 }}
+                    />
+                </Text>
             </TouchableOpacity>
         </View>
     )
@@ -303,10 +304,10 @@ const CommonButton = ({
     endColor = colors.endOrange,
     startorange = colors.startOrange,
     onClick,
-  }) => {
+}) => {
     return (
         <View
-            style= {{
+            style={{
                 backgroundColor: colors.white,
                 paddingHorizontal: 12,
                 paddingTop: 7,
@@ -315,33 +316,32 @@ const CommonButton = ({
                 position: "absolute",
                 bottom: 0,
                 flex: 1,
-                width:"100%",
+                width: "100%",
                 paddingBottom: 20
             }}
         >
-      <TouchableOpacity
-        onPress={onClick}
-        >
-        <LinearGradient
-          colors={[startorange, endColor]}
-          start={{ x: 0.4, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{
-            borderRadius: 20,
-            height: 40,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={[
-              styles.textStyle,
-              { color: colors.white, fontFamily: fontFamily.regular, fontSize: 14 },
-            ]}>
-            {text}
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-      </View>
+            <TouchableOpacity
+                onPress={onClick}
+            >
+                <LinearGradient
+                    colors={[startorange, endColor]}
+                    start={{ x: 0.4, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={{
+                        borderRadius: 20,
+                        height: 40,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <Text
+                        style={[
+                            styles.textStyle,
+                            { color: colors.white, fontWeight:'bold', fontSize: 14 },
+                        ]}>
+                        {text}
+                    </Text>
+                </LinearGradient>
+            </TouchableOpacity>
+        </View>
     );
-  };
-  
+};

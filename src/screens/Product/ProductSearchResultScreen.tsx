@@ -41,58 +41,58 @@ const categoryData = [
   { id: 12, desc: 'Make-Up' },
 ];
 
-const data = [
-  {
-    id: 1,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 2,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 3,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 4,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 5,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 6,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 7,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 8,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 9,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 10,
-    imageURL: shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-];
+  const data = [
+    {
+      id: 1,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      id: 2,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      id: 3,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      id: 4,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      id: 5,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      id: 6,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      id: 7,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      id: 8,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      id: 9,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      id: 10,
+      imageURL: shoeImageURL,
+      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+  ];
 export const ProductSearchResultScreen = ({ navigation, route }) => {
   useEffect(() => {
     navigation.setOptions({

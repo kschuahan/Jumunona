@@ -58,5 +58,8 @@ export const RouteNames = {
   logistic_screen: AppString.logistics,
   review: AppString.review,
 
-  changeAddress: "Change Address"
+  changeAddress: "Change Address",
+  select_return_region: AppString.select_your_region,
+  refund: AppString.refund,
+  return_exchange: AppString.return_exchange
 };

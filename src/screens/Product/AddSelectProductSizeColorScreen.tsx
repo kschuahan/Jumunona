@@ -201,7 +201,7 @@ const PhoneDataScreen = ({ onClick }) => {
   );
 };
 
-const ColorOptions = ({ }) => {
+export const ColorOptions = ({ }) => {
   const [selectedColor, setSelectedColor] = useState(1);
   return (
     <View>
@@ -318,15 +318,15 @@ const ColorOptions = ({ }) => {
   );
 };
 
-const SizeAndBuyingForView = ({ }) => {
-  const [selectedSize, setSelecteSize] = useState(false);
+export const SizeAndBuyingForView = ({ isSize = false }) => {
+  const [selectedSize, setSelecteSize] = useState(isSize ? true : false);
   const users = ['Vali', 'Name 2 is kallu singh', '+ Add'];
   const sizes = ['24', '25', '26', '27', '28', '29', '30', '31', '32'];
   const [selectedItem, setSelecteItem] = useState('');
   return (
     <View>
       <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-        <TouchableOpacity
+        {isSize ? null : <TouchableOpacity
           onPress={() => {
             setSelecteSize(false);
           }}>
@@ -351,7 +351,7 @@ const SizeAndBuyingForView = ({ }) => {
               />
             ) : null}
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity>}
         <TouchableOpacity
           onPress={() => {
             setSelecteSize(true);
@@ -360,7 +360,7 @@ const SizeAndBuyingForView = ({ }) => {
             style={{
               flexDirection: 'column',
               justifyContent: 'flex-start',
-              marginStart: 15,
+              marginStart: isSize ? 2 : 15,
             }}>
             <Text
               style={[
@@ -444,7 +444,7 @@ const SizeAndBuyingForView = ({ }) => {
   );
 };
 
-const QuanityView = ({ }) => {
+export const QuanityView = ({ isQuntiry = false }) => {
   const [quantiy, setQuantity] = useState(1);
   const maxQuantity = 9;
   return (
@@ -453,14 +453,14 @@ const QuanityView = ({ }) => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 5,
-        paddingBottom: 80
+        paddingBottom: isQuntiry ? 10 : 80
       }}>
       <Text
         style={[
           styles.textStyle,
           { textAlign: 'center', fontSize: 14, alignSelf: 'center' },
         ]}>
-        Quantity
+        {isQuntiry ? 'Количество (такое же, как при покупке)' : 'Quantity'}
       </Text>
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

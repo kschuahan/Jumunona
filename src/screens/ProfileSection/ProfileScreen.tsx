@@ -296,7 +296,10 @@ const MyOrder = ({ navigation }) => {
             color={colors.balc111111}
             width={21}
             height={21}
-            onPress={() => { }}
+            onPress={() => {
+              navigation.navigate(RouteNames.return_exchange)
+
+            }}
             gap={4}
 
           />

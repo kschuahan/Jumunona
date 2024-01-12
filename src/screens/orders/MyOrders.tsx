@@ -462,19 +462,17 @@ export const buttonsClick = (navigation, type) => {
     if (type == AppString.pay) {
         navigation.push(RouteNames.cartConfirmOrder)
     } else if (type == AppString.changeAddress) {
-        // navigation.push(RouteNames.cartConfirmOrder)
-
+         navigation.push(RouteNames.changeAddress)
     }
     else if (type == AppString.cancel_the_order) {
         // navigation.push(RouteNames.cartConfirmOrder)
-
     }
     else if (type == AppString.logistics) {
-         navigation.push(RouteNames.logistic_screen)
+        navigation.push(RouteNames.logistic_screen)
 
     }
     else if (type == AppString.return_money) {
-        // navigation.push(RouteNames.cartConfirmOrder)
+         navigation.push(RouteNames.select_return_region)
 
     }
     else if (type == AppString.recieved) {
@@ -486,7 +484,7 @@ export const buttonsClick = (navigation, type) => {
 
     }
     else if (type == AppString.estimate) {
-        // navigation.push(RouteNames.cartConfirmOrder)
+     navigation.push(RouteNames.review)
 
     }
 
