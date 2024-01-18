@@ -14,7 +14,7 @@ import CopyIcon from '../../../assets/Icons/CopyIcon.svg';
 export const ReturnSucessfullyScreen = ({ navigation }) => {
 
     return <View style={[styles.container, { padding: 0 }]}>
-        <CustomHeader navigation={navigation} title={AppString.return_details} />
+        <CustomHeader navigation={navigation} title={AppString.refund_details} />
 
         <ScrollView showsVerticalScrollIndicator={false}>
 

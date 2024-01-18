@@ -54,12 +54,13 @@ export const RouteNames = {
   shopHomeScreen: 'ShopHomeScreen',
   myOrder: 'My Order',
   orderDetails: 'Order Details',
-  return_details: AppString.return_details,
+  refund_details: AppString.refund_details,
   logistic_screen: AppString.logistics,
   review: AppString.review,
 
   changeAddress: "Change Address",
   select_return_region: AppString.select_your_region,
   refund: AppString.refund,
-  return_exchange: AppString.return_exchange
+  return_exchange: AppString.return_exchange,
+  exchangeDetail: "Exchange Detail Screen"
 };

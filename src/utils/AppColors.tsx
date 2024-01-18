@@ -50,5 +50,6 @@ export const colors = {
   grayAAAAAA: "#AAAAAA",
   ornageE75F2B: '#E75F2B',
   black0B0B0B: '#0B0B0B',
-  black636363: "#636363"
+  black636363: "#636363",
+  maroonC9372D: "#C9372D"
 };

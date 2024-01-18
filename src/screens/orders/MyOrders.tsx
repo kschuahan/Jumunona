@@ -22,8 +22,6 @@ const categories = [
     AppString.review
 ]
 
-
-
 const notAll = [
     {
         price: 120,
@@ -100,7 +98,7 @@ export const MyOrderScreen = ({ navigation, route }) => {
                         if (item.status != AppString.return_issue) {
                             navigation.navigate(RouteNames.orderDetails, { index: index, type: type, status: type == 'Все' ? item.status : type })
                         } else {
-                            navigation.navigate(RouteNames.return_details)
+                            navigation.navigate(RouteNames.refund_details)
                         }
                     }
                 }} />

@@ -11,7 +11,7 @@ export const AppString = {
   all_information: 'Вся информация',
   reefund_completed: 'Возврат завершен',
   refund_information: 'Информация о возврате',
-  return_details: 'Детали возврата средств',
+  refund_details: 'Детали возврата средств',
   want_to: 'Хочу',
   subscription: 'Подписки',
   additional_description: 'Дополнительное описание',
@@ -228,6 +228,13 @@ export const AppString = {
   select_return_time: 'Выберите время возврата',
   substitution: 'Замена',
   reason_for_exchange: 'Причина обмена',
-  return_exchange: "Возврат/Обмен"
+  return_exchange: "Возврат/Обмен",
+  refund_completed: "Возврат выполнен",
+  refund_processing: "Обрабатывается",
+  will_be_processed_within: "Обработается в течение ",
+  exchange_completed: "Обмен завершен",
+  sucessfully: "Успешно",
+  exchange_detail: "Детали обмена",
+  exchange: "Обмен",
 
 };

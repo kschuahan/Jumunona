@@ -55,6 +55,7 @@ import { ChangeAddressScreen } from './src/screens/address/ChangeAddress';
 import { SelectReturnReason } from './src/screens/orders/SelectReturnReson';
 import { RefundScreen } from './src/screens/orders/Refund';
 import { ReturnAndExchangeScreen } from './src/screens/orders/ReturnAndExchange';
+import { ExchangeDetailScreen } from './src/screens/orders/ExchangeDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -300,7 +301,7 @@ const App: React.FC = () => {
           />
 
           <Stack.Screen
-            name={RouteNames.return_details}
+            name={RouteNames.refund_details}
             component={ReturnSucessfullyScreen}
             options={{ headerShown: false }}
           />
@@ -338,6 +339,12 @@ const App: React.FC = () => {
             component={ReturnAndExchangeScreen}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name={RouteNames.exchangeDetail}
+            component={ExchangeDetailScreen}
+            options={{ headerShown: false }}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
