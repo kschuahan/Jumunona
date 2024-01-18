@@ -17,6 +17,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		19EAC23831D24101BDD3983B /* archiveOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 0ED496605DF048E8B5F9DFE9 /* archiveOutline.svg */; };
 		1EC73A1DDE61454C8AC8E5AA /* messageIcon.svg in Resources */ = {isa = PBXBuildFile; fileRef = 25EDA0D9B9A74872AEED58ED /* messageIcon.svg */; };
+		265F7F532B592947002CDFEB /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 265F7F522B592947002CDFEB /* main.jsbundle */; };
 		30C36F0ACD6D49CC9E79CB6D /* Segoe UI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6C1E05358F04ED3AE9A293B /* Segoe UI.ttf */; };
 		36BB9C8D893C41CC98D0CEE9 /* myAccount.svg in Resources */ = {isa = PBXBuildFile; fileRef = FAE13B64B48441A281BF5121 /* myAccount.svg */; };
 		37E8A4A185F84610961D74C1 /* SegoeUIBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD65E3A99898499ABC04FA94 /* SegoeUIBold.ttf */; };
@@ -80,76 +81,77 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00A46D9F06AC432C969A7331 /* editIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = editIcon.svg; path = ../assets/Icons/editIcon.svg; sourceTree = "<group>"; };
+		00A46D9F06AC432C969A7331 /* editIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = editIcon.svg; path = ../assets/Icons/editIcon.svg; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* jumunonaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = jumunonaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* jumunonaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = jumunonaTests.m; sourceTree = "<group>"; };
-		05641E1F704E4019B5FA990C /* cart.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = cart.svg; path = ../assets/Icons/cart.svg; sourceTree = "<group>"; };
-		07BD49CAE15E46E4BC66536F /* myAccount-filled.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "myAccount-filled.svg"; path = "../assets/Icons/myAccount-filled.svg"; sourceTree = "<group>"; };
-		0CC59E39CFB247EBBBF47046 /* addCircleOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = addCircleOutline.svg; path = ../assets/Icons/addCircleOutline.svg; sourceTree = "<group>"; };
-		0ED496605DF048E8B5F9DFE9 /* archiveOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = archiveOutline.svg; path = ../assets/Icons/archiveOutline.svg; sourceTree = "<group>"; };
+		05641E1F704E4019B5FA990C /* cart.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = cart.svg; path = ../assets/Icons/cart.svg; sourceTree = "<group>"; };
+		07BD49CAE15E46E4BC66536F /* myAccount-filled.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "myAccount-filled.svg"; path = "../assets/Icons/myAccount-filled.svg"; sourceTree = "<group>"; };
+		0CC59E39CFB247EBBBF47046 /* addCircleOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = addCircleOutline.svg; path = ../assets/Icons/addCircleOutline.svg; sourceTree = "<group>"; };
+		0ED496605DF048E8B5F9DFE9 /* archiveOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = archiveOutline.svg; path = ../assets/Icons/archiveOutline.svg; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* jumunona.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jumunona.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = jumunona/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = jumunona/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = jumunona/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = jumunona/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = jumunona/main.m; sourceTree = "<group>"; };
-		14AB539E7276428699FFE272 /* chevronDownOutlline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = chevronDownOutlline.svg; path = ../assets/Icons/chevronDownOutlline.svg; sourceTree = "<group>"; };
-		17294343CEA540E6B8C1CA09 /* closeCircleOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = closeCircleOutline.svg; path = ../assets/Icons/closeCircleOutline.svg; sourceTree = "<group>"; };
-		18A1CCA87487437282DDC3B7 /* resizeIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = resizeIcon.svg; path = ../assets/Icons/resizeIcon.svg; sourceTree = "<group>"; };
+		14AB539E7276428699FFE272 /* chevronDownOutlline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = chevronDownOutlline.svg; path = ../assets/Icons/chevronDownOutlline.svg; sourceTree = "<group>"; };
+		17294343CEA540E6B8C1CA09 /* closeCircleOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = closeCircleOutline.svg; path = ../assets/Icons/closeCircleOutline.svg; sourceTree = "<group>"; };
+		18A1CCA87487437282DDC3B7 /* resizeIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = resizeIcon.svg; path = ../assets/Icons/resizeIcon.svg; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-jumunona-jumunonaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-jumunona-jumunonaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1FEE970120B349AEB54042D6 /* closeIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = closeIcon.svg; path = ../assets/Icons/closeIcon.svg; sourceTree = "<group>"; };
-		25EDA0D9B9A74872AEED58ED /* messageIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = messageIcon.svg; path = ../assets/Icons/messageIcon.svg; sourceTree = "<group>"; };
-		319F22B513A0468099A87215 /* chevronBackOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = chevronBackOutline.svg; path = ../assets/Icons/chevronBackOutline.svg; sourceTree = "<group>"; };
-		37B34CF5889D49DB827FDD1D /* helpCircleOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = helpCircleOutline.svg; path = ../assets/Icons/helpCircleOutline.svg; sourceTree = "<group>"; };
-		3A2757B788744FB3992110E9 /* chevronForwardOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = chevronForwardOutline.svg; path = ../assets/Icons/chevronForwardOutline.svg; sourceTree = "<group>"; };
-		3B3C851D7FFD45E7A23C2DF9 /* recycle.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = recycle.svg; path = ../assets/Icons/recycle.svg; sourceTree = "<group>"; };
+		1FEE970120B349AEB54042D6 /* closeIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = closeIcon.svg; path = ../assets/Icons/closeIcon.svg; sourceTree = "<group>"; };
+		25EDA0D9B9A74872AEED58ED /* messageIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = messageIcon.svg; path = ../assets/Icons/messageIcon.svg; sourceTree = "<group>"; };
+		265F7F522B592947002CDFEB /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		319F22B513A0468099A87215 /* chevronBackOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = chevronBackOutline.svg; path = ../assets/Icons/chevronBackOutline.svg; sourceTree = "<group>"; };
+		37B34CF5889D49DB827FDD1D /* helpCircleOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = helpCircleOutline.svg; path = ../assets/Icons/helpCircleOutline.svg; sourceTree = "<group>"; };
+		3A2757B788744FB3992110E9 /* chevronForwardOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = chevronForwardOutline.svg; path = ../assets/Icons/chevronForwardOutline.svg; sourceTree = "<group>"; };
+		3B3C851D7FFD45E7A23C2DF9 /* recycle.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = recycle.svg; path = ../assets/Icons/recycle.svg; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-jumunona.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jumunona.debug.xcconfig"; path = "Target Support Files/Pods-jumunona/Pods-jumunona.debug.xcconfig"; sourceTree = "<group>"; };
-		498159283A724AA280D7DF21 /* image-outline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "image-outline.svg"; path = "../assets/Icons/image-outline.svg"; sourceTree = "<group>"; };
+		498159283A724AA280D7DF21 /* image-outline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "image-outline.svg"; path = "../assets/Icons/image-outline.svg"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-jumunona.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jumunona.release.xcconfig"; path = "Target Support Files/Pods-jumunona/Pods-jumunona.release.xcconfig"; sourceTree = "<group>"; };
-		59D5BB3897DA47DC9CB28410 /* category-focused.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "category-focused.svg"; path = "../assets/Icons/category-focused.svg"; sourceTree = "<group>"; };
-		5AC6DF6072354E1481F09897 /* checkmarkOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = checkmarkOutline.svg; path = ../assets/Icons/checkmarkOutline.svg; sourceTree = "<group>"; };
+		59D5BB3897DA47DC9CB28410 /* category-focused.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "category-focused.svg"; path = "../assets/Icons/category-focused.svg"; sourceTree = "<group>"; };
+		5AC6DF6072354E1481F09897 /* checkmarkOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = checkmarkOutline.svg; path = ../assets/Icons/checkmarkOutline.svg; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-jumunona-jumunonaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jumunona-jumunonaTests.debug.xcconfig"; path = "Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-jumunona.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-jumunona.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		62AB0B151B634CF9B51A7ECE /* heartOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = heartOutline.svg; path = ../assets/Icons/heartOutline.svg; sourceTree = "<group>"; };
-		64E2F3240B524F99A0308AE5 /* settingsOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = settingsOutline.svg; path = ../assets/Icons/settingsOutline.svg; sourceTree = "<group>"; };
-		73BAC551BB3C4B38BC06EF48 /* arrowRedoOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = arrowRedoOutline.svg; path = ../assets/Icons/arrowRedoOutline.svg; sourceTree = "<group>"; };
-		73D05C08B89B4509AE6EAA2E /* home-focused.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "home-focused.svg"; path = "../assets/Icons/home-focused.svg"; sourceTree = "<group>"; };
-		78AD9A98CF5A476DAEB16705 /* createOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = createOutline.svg; path = ../assets/Icons/createOutline.svg; sourceTree = "<group>"; };
-		791CB7934C3D4EEEB6567687 /* Segoe UI Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe UI Bold.ttf"; path = "../assets/fonts/Segoe UI Bold.ttf"; sourceTree = "<group>"; };
-		7AE4E9D9CDF94F07AED3A74D /* messageIcon-filled.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "messageIcon-filled.svg"; path = "../assets/Icons/messageIcon-filled.svg"; sourceTree = "<group>"; };
-		7F05D653A5D446DCB24770F0 /* ellipsis-horizontal.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "ellipsis-horizontal.svg"; path = "../assets/Icons/ellipsis-horizontal.svg"; sourceTree = "<group>"; };
+		62AB0B151B634CF9B51A7ECE /* heartOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = heartOutline.svg; path = ../assets/Icons/heartOutline.svg; sourceTree = "<group>"; };
+		64E2F3240B524F99A0308AE5 /* settingsOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = settingsOutline.svg; path = ../assets/Icons/settingsOutline.svg; sourceTree = "<group>"; };
+		73BAC551BB3C4B38BC06EF48 /* arrowRedoOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = arrowRedoOutline.svg; path = ../assets/Icons/arrowRedoOutline.svg; sourceTree = "<group>"; };
+		73D05C08B89B4509AE6EAA2E /* home-focused.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "home-focused.svg"; path = "../assets/Icons/home-focused.svg"; sourceTree = "<group>"; };
+		78AD9A98CF5A476DAEB16705 /* createOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = createOutline.svg; path = ../assets/Icons/createOutline.svg; sourceTree = "<group>"; };
+		791CB7934C3D4EEEB6567687 /* Segoe UI Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe UI Bold.ttf"; path = "../assets/fonts/Segoe UI Bold.ttf"; sourceTree = "<group>"; };
+		7AE4E9D9CDF94F07AED3A74D /* messageIcon-filled.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "messageIcon-filled.svg"; path = "../assets/Icons/messageIcon-filled.svg"; sourceTree = "<group>"; };
+		7F05D653A5D446DCB24770F0 /* ellipsis-horizontal.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ellipsis-horizontal.svg"; path = "../assets/Icons/ellipsis-horizontal.svg"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = jumunona/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		85EF6218BF554BC49A346595 /* checkMarkCircle.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = checkMarkCircle.svg; path = ../assets/Icons/checkMarkCircle.svg; sourceTree = "<group>"; };
+		85EF6218BF554BC49A346595 /* checkMarkCircle.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = checkMarkCircle.svg; path = ../assets/Icons/checkMarkCircle.svg; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-jumunona-jumunonaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jumunona-jumunonaTests.release.xcconfig"; path = "Target Support Files/Pods-jumunona-jumunonaTests/Pods-jumunona-jumunonaTests.release.xcconfig"; sourceTree = "<group>"; };
-		907AD867522A4B24B3C618A5 /* addOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = addOutline.svg; path = ../assets/Icons/addOutline.svg; sourceTree = "<group>"; };
-		91B7FB14B62A4437B3DC5A18 /* searchIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = searchIcon.svg; path = ../assets/Icons/searchIcon.svg; sourceTree = "<group>"; };
-		965D814CDD864753B7518CC2 /* heartRed.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = heartRed.svg; path = ../assets/Icons/heartRed.svg; sourceTree = "<group>"; };
-		9D5C15A34A1444DEAD17BFCF /* category.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = category.svg; path = ../assets/Icons/category.svg; sourceTree = "<group>"; };
-		9EEF8BDACB91479BA66A6190 /* funnelOutlineGrey.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = funnelOutlineGrey.svg; path = ../assets/Icons/funnelOutlineGrey.svg; sourceTree = "<group>"; };
-		A3813CFF7C8A4E05A408862A /* Segoe UI Bold Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe UI Bold Italic.ttf"; path = "../assets/fonts/Segoe UI Bold Italic.ttf"; sourceTree = "<group>"; };
-		AD65E3A99898499ABC04FA94 /* SegoeUIBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = SegoeUIBold.ttf; path = ../assets/fonts/SegoeUIBold.ttf; sourceTree = "<group>"; };
-		AE80FD0672854C759E0AEC19 /* caretDown.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = caretDown.svg; path = ../assets/Icons/caretDown.svg; sourceTree = "<group>"; };
-		B6C1E05358F04ED3AE9A293B /* Segoe UI.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe UI.ttf"; path = "../assets/fonts/Segoe UI.ttf"; sourceTree = "<group>"; };
-		BB9443CA2759440CA81C3153 /* scaleIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = scaleIcon.svg; path = ../assets/Icons/scaleIcon.svg; sourceTree = "<group>"; };
-		BE23672CB2D140EB89411C58 /* sheildCheckmark.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = sheildCheckmark.svg; path = ../assets/Icons/sheildCheckmark.svg; sourceTree = "<group>"; };
-		BFFB5641E38243829BE1CC02 /* happyOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = happyOutline.svg; path = ../assets/Icons/happyOutline.svg; sourceTree = "<group>"; };
-		C76FA69F06F94DA69ED4F4C9 /* cartOutlineIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = cartOutlineIcon.svg; path = ../assets/Icons/cartOutlineIcon.svg; sourceTree = "<group>"; };
-		C782D34AF3684C92928EF29D /* arrowUndoOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = arrowUndoOutline.svg; path = ../assets/Icons/arrowUndoOutline.svg; sourceTree = "<group>"; };
-		CD7AC3A4D4B443CDB6CB7C20 /* cart-filled.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "cart-filled.svg"; path = "../assets/Icons/cart-filled.svg"; sourceTree = "<group>"; };
-		D583C251094C42B4AAE6B704 /* Segoe UI Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe UI Italic.ttf"; path = "../assets/fonts/Segoe UI Italic.ttf"; sourceTree = "<group>"; };
-		D8B3E0E75B104B409E2B807C /* ellipsisOutlineNormal.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = ellipsisOutlineNormal.svg; path = ../assets/Icons/ellipsisOutlineNormal.svg; sourceTree = "<group>"; };
-		D8CE3289F84A4C53920C1279 /* chatbubbleEllipsisIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = chatbubbleEllipsisIcon.svg; path = ../assets/Icons/chatbubbleEllipsisIcon.svg; sourceTree = "<group>"; };
-		DC9007DDFF494AA29A7DE697 /* home-focused-1.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "home-focused-1.svg"; path = "../assets/Icons/home-focused-1.svg"; sourceTree = "<group>"; };
-		E08D5958198B48A08634D320 /* removeCircleOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = removeCircleOutline.svg; path = ../assets/Icons/removeCircleOutline.svg; sourceTree = "<group>"; };
-		E58DA7EF551A4B4282764D11 /* hoodieIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = hoodieIcon.svg; path = ../assets/Icons/hoodieIcon.svg; sourceTree = "<group>"; };
-		EB5A13A624AF4BB6B120BABD /* SegoeUI.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = SegoeUI.ttf; path = ../assets/fonts/SegoeUI.ttf; sourceTree = "<group>"; };
-		ECA486780E88429F8C98ABAA /* timeOutine.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = timeOutine.svg; path = ../assets/Icons/timeOutine.svg; sourceTree = "<group>"; };
+		907AD867522A4B24B3C618A5 /* addOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = addOutline.svg; path = ../assets/Icons/addOutline.svg; sourceTree = "<group>"; };
+		91B7FB14B62A4437B3DC5A18 /* searchIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = searchIcon.svg; path = ../assets/Icons/searchIcon.svg; sourceTree = "<group>"; };
+		965D814CDD864753B7518CC2 /* heartRed.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = heartRed.svg; path = ../assets/Icons/heartRed.svg; sourceTree = "<group>"; };
+		9D5C15A34A1444DEAD17BFCF /* category.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = category.svg; path = ../assets/Icons/category.svg; sourceTree = "<group>"; };
+		9EEF8BDACB91479BA66A6190 /* funnelOutlineGrey.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = funnelOutlineGrey.svg; path = ../assets/Icons/funnelOutlineGrey.svg; sourceTree = "<group>"; };
+		A3813CFF7C8A4E05A408862A /* Segoe UI Bold Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe UI Bold Italic.ttf"; path = "../assets/fonts/Segoe UI Bold Italic.ttf"; sourceTree = "<group>"; };
+		AD65E3A99898499ABC04FA94 /* SegoeUIBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SegoeUIBold.ttf; path = ../assets/fonts/SegoeUIBold.ttf; sourceTree = "<group>"; };
+		AE80FD0672854C759E0AEC19 /* caretDown.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = caretDown.svg; path = ../assets/Icons/caretDown.svg; sourceTree = "<group>"; };
+		B6C1E05358F04ED3AE9A293B /* Segoe UI.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe UI.ttf"; path = "../assets/fonts/Segoe UI.ttf"; sourceTree = "<group>"; };
+		BB9443CA2759440CA81C3153 /* scaleIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = scaleIcon.svg; path = ../assets/Icons/scaleIcon.svg; sourceTree = "<group>"; };
+		BE23672CB2D140EB89411C58 /* sheildCheckmark.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = sheildCheckmark.svg; path = ../assets/Icons/sheildCheckmark.svg; sourceTree = "<group>"; };
+		BFFB5641E38243829BE1CC02 /* happyOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = happyOutline.svg; path = ../assets/Icons/happyOutline.svg; sourceTree = "<group>"; };
+		C76FA69F06F94DA69ED4F4C9 /* cartOutlineIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = cartOutlineIcon.svg; path = ../assets/Icons/cartOutlineIcon.svg; sourceTree = "<group>"; };
+		C782D34AF3684C92928EF29D /* arrowUndoOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = arrowUndoOutline.svg; path = ../assets/Icons/arrowUndoOutline.svg; sourceTree = "<group>"; };
+		CD7AC3A4D4B443CDB6CB7C20 /* cart-filled.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "cart-filled.svg"; path = "../assets/Icons/cart-filled.svg"; sourceTree = "<group>"; };
+		D583C251094C42B4AAE6B704 /* Segoe UI Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe UI Italic.ttf"; path = "../assets/fonts/Segoe UI Italic.ttf"; sourceTree = "<group>"; };
+		D8B3E0E75B104B409E2B807C /* ellipsisOutlineNormal.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = ellipsisOutlineNormal.svg; path = ../assets/Icons/ellipsisOutlineNormal.svg; sourceTree = "<group>"; };
+		D8CE3289F84A4C53920C1279 /* chatbubbleEllipsisIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = chatbubbleEllipsisIcon.svg; path = ../assets/Icons/chatbubbleEllipsisIcon.svg; sourceTree = "<group>"; };
+		DC9007DDFF494AA29A7DE697 /* home-focused-1.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "home-focused-1.svg"; path = "../assets/Icons/home-focused-1.svg"; sourceTree = "<group>"; };
+		E08D5958198B48A08634D320 /* removeCircleOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = removeCircleOutline.svg; path = ../assets/Icons/removeCircleOutline.svg; sourceTree = "<group>"; };
+		E58DA7EF551A4B4282764D11 /* hoodieIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = hoodieIcon.svg; path = ../assets/Icons/hoodieIcon.svg; sourceTree = "<group>"; };
+		EB5A13A624AF4BB6B120BABD /* SegoeUI.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SegoeUI.ttf; path = ../assets/fonts/SegoeUI.ttf; sourceTree = "<group>"; };
+		ECA486780E88429F8C98ABAA /* timeOutine.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = timeOutine.svg; path = ../assets/Icons/timeOutine.svg; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F74B73F9CD5943D6A16588B8 /* locationOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = locationOutline.svg; path = ../assets/Icons/locationOutline.svg; sourceTree = "<group>"; };
-		FAE13B64B48441A281BF5121 /* myAccount.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = myAccount.svg; path = ../assets/Icons/myAccount.svg; sourceTree = "<group>"; };
-		FBDA2B807B9849BE88DAB2C6 /* terminalOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = terminalOutline.svg; path = ../assets/Icons/terminalOutline.svg; sourceTree = "<group>"; };
-		FE3DB7D4ACF8448F8CEFB2F3 /* home.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = home.svg; path = ../assets/Icons/home.svg; sourceTree = "<group>"; };
+		F74B73F9CD5943D6A16588B8 /* locationOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = locationOutline.svg; path = ../assets/Icons/locationOutline.svg; sourceTree = "<group>"; };
+		FAE13B64B48441A281BF5121 /* myAccount.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = myAccount.svg; path = ../assets/Icons/myAccount.svg; sourceTree = "<group>"; };
+		FBDA2B807B9849BE88DAB2C6 /* terminalOutline.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = terminalOutline.svg; path = ../assets/Icons/terminalOutline.svg; sourceTree = "<group>"; };
+		FE3DB7D4ACF8448F8CEFB2F3 /* home.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = home.svg; path = ../assets/Icons/home.svg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,7 +272,6 @@
 				AD65E3A99898499ABC04FA94 /* SegoeUIBold.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -283,6 +284,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				265F7F522B592947002CDFEB /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* jumunona */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* jumunonaTests */,
@@ -410,6 +412,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				265F7F532B592947002CDFEB /* main.jsbundle in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7251D936523B42AAAE59A107 /* Segoe UI Bold Italic.ttf in Resources */,
@@ -706,9 +709,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NU28ZS92S7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = jumunona/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Jumunona;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -719,10 +727,15 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jumunona.app;
 				PRODUCT_NAME = jumunona;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -733,8 +746,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NU28ZS92S7;
 				INFOPLIST_FILE = jumunona/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Jumunona;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -745,9 +763,14 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jumunona.app;
 				PRODUCT_NAME = jumunona;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
