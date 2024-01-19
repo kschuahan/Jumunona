@@ -63,5 +63,7 @@ export const RouteNames = {
   refund: AppString.refund,
   return_exchange: AppString.return_exchange,
   exchangeDetail: "Exchange Detail Screen",
-  subscribers_screen: "subscribers_screen"
+  subscribers_screen: "subscribers_screen",
+  walletScreen: AppString.wallet,
+  historyScreen: AppString.story
 };

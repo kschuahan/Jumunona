@@ -77,7 +77,9 @@ const ProfileScreen = (props: any) => {
             width={21}
             height={21}
             title={AppString.story}
-            onPress={() => { }}
+            onPress={() => {
+              navigation.navigate(RouteNames.historyScreen)
+            }}
             gap={4}
 
           />
@@ -86,7 +88,9 @@ const ProfileScreen = (props: any) => {
             width={21}
             height={21}
             title={AppString.wallet}
-            onPress={() => { }}
+            onPress={() => {
+              navigation.navigate(RouteNames.walletScreen)
+            }}
             gap={4}
 
           />
@@ -196,6 +200,9 @@ const ProfileScreen = (props: any) => {
             time=""
             subTitle="Ожидает оценки"
             buttonText={AppString.write}
+            onClick={() => {
+              navigation.navigate(RouteNames.review)
+            }}
           />
         </View>
       </View>
@@ -305,7 +312,10 @@ const MyOrder = ({ navigation }) => {
           />
         </View>
         <View style={{ marginBottom: 8, marginHorizontal: 1 }}>
-          <ProfileProduct />
+          <ProfileProduct onClick={() => {
+            navigation.navigate(RouteNames.cartConfirmOrder)
+
+          }} />
         </View>
       </View>
     </View>
@@ -317,6 +327,7 @@ const ProfileProduct = ({
   subTitle = AppString.left,
   time = '23 : 50 : 33',
   buttonText = AppString.pay,
+  onClick
 }) => {
   return (
     <View style={styles.profileProduct}>
@@ -345,7 +356,7 @@ const ProfileProduct = ({
           </Text>
         </View>
       </View>
-      <CommonButton text={buttonText} onClick={() => { }} />
+      <CommonButton text={buttonText} onClick={onClick} />
     </View>
   );
 };

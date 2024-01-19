@@ -793,7 +793,7 @@ const TextWithIcon = ({
 };
 
 export const RatingView = ({ rating = 3.5, count = 5,
-  size = undefined, ms = 3, Icon = OrangeStar,
+  size = 12, ms = 3, Icon = OrangeStar,
   EmptyStar = GreyStar, onClick = (number: number) => { }, disabled = true }) => {
   const ratingArray = [1, 2, 3, 4, 5];
   return (
