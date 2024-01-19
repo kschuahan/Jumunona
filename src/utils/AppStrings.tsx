@@ -236,5 +236,5 @@ export const AppString = {
   sucessfully: "Успешно",
   exchange_detail: "Детали обмена",
   exchange: "Обмен",
-
+  name_of_shop: "Название магазина"
 };

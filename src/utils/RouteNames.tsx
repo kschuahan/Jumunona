@@ -62,5 +62,6 @@ export const RouteNames = {
   select_return_region: AppString.select_your_region,
   refund: AppString.refund,
   return_exchange: AppString.return_exchange,
-  exchangeDetail: "Exchange Detail Screen"
+  exchangeDetail: "Exchange Detail Screen",
+  subscribers_screen: "subscribers_screen"
 };

@@ -68,7 +68,7 @@ const ProfileScreen = (props: any) => {
             width={21}
             height={21}
             title={AppString.subscription}
-            onPress={() => { }}
+            onPress={() => {navigation.navigate(RouteNames.subscribers_screen) }}
             gap={4}
 
           />

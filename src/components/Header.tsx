@@ -44,7 +44,7 @@ export const MenuLogo = ({ onClick = () => { } }) => {
 
 
 
-const SearchView = ({ placeholder = AppString.city_name }) => {
+export const SearchView = ({ placeholder = AppString.city_name }) => {
     const [search, setSearch] = useState('');
 
     return (
