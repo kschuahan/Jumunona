@@ -56,6 +56,8 @@ import { SelectReturnReason } from './src/screens/orders/SelectReturnReson';
 import { RefundScreen } from './src/screens/orders/Refund';
 import { ReturnAndExchangeScreen } from './src/screens/orders/ReturnAndExchange';
 import { ExchangeDetailScreen } from './src/screens/orders/ExchangeDetailScreen';
+import { WalletScreen } from './src/screens/ProfileSection/WalletScreen';
+import { HistoryScreen } from './src/screens/ProfileSection/History';
 
 const Stack = createNativeStackNavigator();
 
@@ -342,6 +344,18 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.exchangeDetail}
             component={ExchangeDetailScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name={RouteNames.walletScreen}
+            component={WalletScreen}
+            options={{ headerShown: false }}
+          />
+
+
+          <Stack.Screen
+            name={RouteNames.historyScreen}
+            component={HistoryScreen}
             options={{ headerShown: false }}
           />
 
