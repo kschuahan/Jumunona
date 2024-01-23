@@ -236,5 +236,9 @@ export const AppString = {
   sucessfully: "Успешно",
   exchange_detail: "Детали обмена",
   exchange: "Обмен",
-  name_of_shop: "Название магазина"
+  name_of_shop: "Название магазина",
+  body_data: "Данные о теле",
+  change_body_data: "Изменить данные о теле",
+  basic_data: "Основные данные",
+  please_fill_body_info: "Пожалуйста, заполните данные о теле"
 };

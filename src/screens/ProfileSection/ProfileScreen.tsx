@@ -127,7 +127,10 @@ const ProfileScreen = (props: any) => {
               height={21}
               color={colors.lightRed}
               title={AppString.body}
-              onPress={() => { }}
+              onPress={() => {  
+
+                props.navigation.navigate(RouteNames.bodyData)
+               }}
               gap={6}
 
             />

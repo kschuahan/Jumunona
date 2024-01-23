@@ -65,5 +65,7 @@ export const RouteNames = {
   exchangeDetail: "Exchange Detail Screen",
   subscribers_screen: "subscribers_screen",
   walletScreen: AppString.wallet,
-  historyScreen: AppString.story
+  historyScreen: AppString.story,
+  bodyData: "BodyData Screen",
+  editBodyData: "Edit BodyData Screen"
 };

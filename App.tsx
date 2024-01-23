@@ -59,6 +59,8 @@ import { ExchangeDetailScreen } from './src/screens/orders/ExchangeDetailScreen'
 import { SubscribersScreen } from './src/screens/ProfileSection/Subscribers/SubscribersScreen';
 import { WalletScreen } from './src/screens/ProfileSection/WalletScreen';
 import { HistoryScreen } from './src/screens/ProfileSection/History';
+import { BodyDataScreen } from './src/screens/ProfileSection/BodyDataScreen';
+import { EditBodyDataScreen } from './src/screens/ProfileSection/EditBodyDataScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -352,6 +354,8 @@ const App: React.FC = () => {
             component={SubscribersScreen}
             options={{ headerShown: false }}
           />
+
+          <Stack.Screen
             name={RouteNames.walletScreen}
             component={WalletScreen}
             options={{ headerShown: false }}
@@ -364,6 +368,17 @@ const App: React.FC = () => {
             options={{ headerShown: false }}
           />
 
+          <Stack.Screen
+            name={RouteNames.bodyData}
+            component={BodyDataScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name={RouteNames.editBodyData}
+            component={EditBodyDataScreen}
+            options={{ headerShown: false }}
+          />  
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

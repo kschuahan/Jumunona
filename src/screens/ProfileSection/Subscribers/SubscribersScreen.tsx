@@ -39,13 +39,13 @@ export const SubscribersScreen = ({ navigation }) => {
 
             <FlatList
 
-                data={[1, 2, 3, 4, 5,]}
+                data={[1, 2, 3, 4, 5,1, 2, 3, 4, 5,1, 2, 3, 4, 5,]}
                 renderItem={({ item, index }) =>
                     <ShopNameItem isEditable={isEditable} />
                 }
                 showsVerticalScrollIndicator={false}
             />
-            <BottomView isEditable={isEditable} />
+            { isEditable ? <BottomView /> : null }
         </View>
 
     )
@@ -203,7 +203,7 @@ const style = StyleSheet.create({
 });
 
 
-const BottomView = ({ isEditable }) => {
+const BottomView = ( ) => {
     return (
         <View
             style={{
