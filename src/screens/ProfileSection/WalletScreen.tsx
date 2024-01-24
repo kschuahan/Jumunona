@@ -150,7 +150,7 @@ export const WalletScreen = ({ navigation }) => {
 }
 
 
-const IconWithText = ({ title = 'Helpful', Icon = Unlike, onClick }) => {
+export const IconWithText = ({ title = 'Helpful', Icon = Unlike, onClick }) => {
 
     return <TouchableOpacity onPress={onClick}
         style={{ alignItems: 'center', flexDirection: 'row', gap: 10 }}>

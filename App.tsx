@@ -58,6 +58,7 @@ import { ReturnAndExchangeScreen } from './src/screens/orders/ReturnAndExchange'
 import { ExchangeDetailScreen } from './src/screens/orders/ExchangeDetailScreen';
 import { WalletScreen } from './src/screens/ProfileSection/WalletScreen';
 import { HistoryScreen } from './src/screens/ProfileSection/History';
+import { HelpAndFeedbackScreen } from './src/screens/ProfileSection/HelpAndFeedback';
 
 const Stack = createNativeStackNavigator();
 
@@ -356,6 +357,12 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.historyScreen}
             component={HistoryScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name={RouteNames.help_and_feedback}
+            component={HelpAndFeedbackScreen}
             options={{ headerShown: false }}
           />
 

@@ -64,5 +64,6 @@ export const RouteNames = {
   return_exchange: AppString.return_exchange,
   exchangeDetail: "Exchange Detail Screen",
   walletScreen: AppString.wallet,
-  historyScreen: AppString.story
+  historyScreen: AppString.story,
+  help_and_feedback: AppString.feedback_and_help
 };

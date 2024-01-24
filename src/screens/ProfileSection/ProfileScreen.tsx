@@ -1,5 +1,5 @@
 import { Text, View, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { styles } from '../../utils/AppStyles';
 import { imagesUrl } from '../../utils/AppIcons';
 import { colors } from '../../utils/AppColors';
@@ -32,15 +32,26 @@ import Address from '../../../assets/Icons/Address.svg';
 import help from '../../../assets/Icons/Help.svg';
 import Team from '../../../assets/Icons/Team.svg';
 import Reviews from '../../../assets/Icons/Reviews.svg';
+import { AgeBottomSheet } from './AgeBottomSheet';
+import { AddRoleBottomSheet } from './AddRoleBottomSheet';
 
 
 const ProfileScreen = (props: any) => {
   const navigation = props.navigation
+  const [ageShow, setAgeShow] = useState(false)
+  const [addRoleShow, setAddRoleShow] = useState(false)
+
   return (
-    <ScrollView
+    <ScrollView 
       contentContainerStyle={{ flex: 1 }}
       showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
+        <AgeBottomSheet isShow={ageShow} onClose={() => {
+          setAgeShow(false)
+        }} />
+        <AddRoleBottomSheet isShow={addRoleShow} onClose={() => {
+          setAddRoleShow(false)
+        }} />
         <Profile
           onClick={() => {
             props.navigation.navigate(RouteNames.setting);
@@ -159,7 +170,10 @@ const ProfileScreen = (props: any) => {
               height={21}
               color={colors.lightRed}
               title={AppString.help}
-              onPress={() => { }}
+              onPress={() => {
+                navigation.navigate(RouteNames.help_and_feedback)
+
+              }}
               gap={6}
 
             />
