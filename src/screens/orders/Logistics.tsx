@@ -2,7 +2,7 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native"
 import { CustomHeader } from "../../components/Header"
 import { styles } from "../../utils/AppStyles"
 import { AppString } from "../../utils/AppStrings"
-import { appIcons } from "../../utils/AppIcons"
+import { appIcons, imagesUrl } from "../../utils/AppIcons"
 import { colors } from "../../utils/AppColors"
 import CheckIcon from '../../../assets/Icons/CheckIcon.svg';
 import CheckOrange from '../../../assets/Icons/CheckWithOrnage.svg';

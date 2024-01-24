@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity } from "react-native"
+import { View, Text, FlatList, TouchableOpacity, Image, Pressable } from "react-native"
 import { CustomHeader } from "../../components/Header"
 import { AppString } from "../../utils/AppStrings"
 import { styles } from "../../utils/AppStyles"
@@ -7,8 +7,53 @@ import { ScrollView } from "react-native-virtualized-view";
 import { colors } from "../../utils/AppColors";
 import CautionIcon from '../../../assets/Icons/Caution.svg';
 import MasonryList from '@react-native-seoul/masonry-list';
+import { appIcons, chestImages, hipImages, shoulderImages, waistImages } from "../../utils/AppIcons";
+import { useState } from "react";
+import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
+import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 
+const basicData = [
+    {
+        name: "Имя",
+        value: "Я"
+    },
+    {
+        name: "Пол",
+        value: "Женский"
+    },
+    {
+        name: "Возраст",
+        value: "1992"
+    },
+    {
+        name: "Рост",
+        value: "182 CM"
+    },
+    {
+        name: "Вес",
+        value: "75 КГ"
+    },
+]
 
+const data = [
+    {
+        name: AppString.chest,
+        images: chestImages
+    },
+    {
+        name: AppString.shoulder_width,
+        images: shoulderImages
+    },
+    {
+        name: AppString.hip,
+        images: hipImages
+    },
+    {
+        name: AppString.waist,
+        images: waistImages
+    },
+   
+]
 export const EditBodyDataScreen = ({ navigation }) => {
     return (
         <View style={[styles.container, { padding: 0 }]}>
@@ -44,6 +89,9 @@ export const EditBodyDataScreen = ({ navigation }) => {
 
 
 const BasicDataFlatList = ({ }) => {
+
+    const [male, setMale] = useState(false)
+
     return (
         <FlatList
             style={{
@@ -51,7 +99,7 @@ const BasicDataFlatList = ({ }) => {
                 paddingHorizontal: 12,
                 borderRadius: 13
             }}
-            data={[1, 2, 3, 4]}
+            data={basicData}
             renderItem={({ item, index }) =>
                 <View
                     style={{
@@ -63,13 +111,55 @@ const BasicDataFlatList = ({ }) => {
                     <Text
                         style={[styles.textStyle, { color: "#333333", fontWeight: "500", fontSize: 15 }]}
                     >
-                        Имя
+                        {item.name}
                     </Text>
-                    <Text
-                        style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
-                    >
-                        Я
-                    </Text>
+                    {
+                        item.name == "Пол" ?
+                            <View style={{ flexDirection: "row", gap: 10 }}>
+                                <TouchableOpacity style={{
+                                    flexDirection: "row",
+                                    gap: 4
+                                }}
+                                onPress={() => {
+                                    setMale(true)
+                                }}
+                                >
+
+                                    {male ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
+                                    <Text
+                                        style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
+                                    >
+                                        {AppString.male}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    flexDirection: "row",
+                                    gap: 4
+                                }}
+                                onPress={() => {
+                                    setMale(false)
+                                }}
+                                >
+
+                                    {!male ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
+                                    <Text
+                                        style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
+                                    >
+                                        {AppString.female}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <TouchableOpacity 
+                                onPress={ () => {}}
+                            >
+                            <Text
+                                style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
+                            >
+                                {item.value}
+                            </Text>
+                            </TouchableOpacity>
+                    }
                 </View>
             }
             scrollEnabled={false}
@@ -81,6 +171,7 @@ const BasicDataFlatList = ({ }) => {
 }
 
 const BodyInforView = ({ }) => {
+
     return (
         <FlatList
             style={{
@@ -88,44 +179,60 @@ const BodyInforView = ({ }) => {
                 paddingHorizontal: 12,
                 borderRadius: 13
             }}
-            data={[1, 2, 3, 4]}
-            scrollEnabled={false}
+            data={data}
+            showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }) =>
-                <View
-                    style={{
-                        marginVertical: 13,
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                    }}
-                >
-                    <Text
-                        style={[styles.textStyle, { color: "#333333", fontWeight: "500", fontSize: 15 }]}
-                    >
-                        Ширина плеч {" "}
-                        <CautionIcon width={15} height={15} style={{ alignSelf: "center" }} />
-                    </Text>
-                    <Text
-                        style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
-                    >
-                        Я
-                    </Text>
+                <View>
 
-                    <MasonryList
-                        data={[1, 3, 2, 4, 5]}
-                        keyExtractor={item => {
-                            return item.id;
+                    <View
+                        style={{
+                            marginVertical: 13,
+                            flexDirection: "row",
+                            justifyContent: "space-between"
                         }}
-                        style={{ marginHorizontal: 7 }}
-                        numColumns={2}
-                        renderItem={({ item }) => {
-                            return <View>
+                    >
+                        <Text
+                            style={[styles.textStyle, { color: "#333333", fontWeight: "500", fontSize: 15 }]}
+                        >
+                            {item.name}{" "}
+                            <CautionIcon width={15} height={15} style={{ alignSelf: "center" }} />
+                        </Text>
+                        <Text
+                            style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
+                        >
+                            Я
+                        </Text>
 
-                            </View>
-                        }}
 
-                    />
+                    </View>
+                    <ImagesView images={item.images}/>
                 </View>
             }
         />
+    )
+}
+
+const ImagesView = ({ images}) => {
+
+    const [selectedItem, setSeleced] = useState<number>()
+
+    return (<FlatList
+        data={images}
+        keyExtractor={item => {
+            return item.toString();
+        }}
+        style={{ marginHorizontal: 7 }}
+        numColumns={3}
+        renderItem={({ item, index }) => {
+            console.warn(item)
+            return <Pressable style={{ flex: 1 / 3 }} onPress={() => { setSeleced(index) }}>
+                <Image source={item} style={{ height: 105, width: "95%", marginEnd: 10, marginVertical: 10 }} resizeMode="stretch" />
+                {selectedItem == index ?
+                    <View style={{ position: "absolute", height: 105, width: "95%", marginVertical: 10, backgroundColor: 'rgba(255, 118, 0, 0.08)', borderRadius: 13, borderColor: colors.lightOrange, borderWidth: 1, }} />
+                    : null}
+            </Pressable>
+        }}
+
+    />
     )
 }

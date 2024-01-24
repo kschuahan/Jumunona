@@ -5,7 +5,7 @@ import { AppString } from "../../utils/AppStrings"
 import { ScrollView } from "react-native-virtualized-view"
 import { colors } from "../../utils/AppColors"
 import { Text } from "react-native"
-import { appIcons } from "../../utils/AppIcons"
+import { appIcons, imagesUrl } from "../../utils/AppIcons"
 import ChatIcon from '../../../assets/Icons/ChatGreen.svg';
 import { RouteNames } from "../../utils/RouteNames"
 import CopyIcon from '../../../assets/Icons/CopyIcon.svg';

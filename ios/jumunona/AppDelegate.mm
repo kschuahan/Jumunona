@@ -11,11 +11,15 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
+  if (@available(iOS 13.0, *)) {
+          self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+      }
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
+  
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else

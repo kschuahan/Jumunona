@@ -14,7 +14,6 @@ import RootStackParamList from '../../utils/navigations';
 import { colors } from '../../utils/AppColors';
 import AboutUs from '../../../assets/Icons/AppLogo.svg';
 
-const logo = require('../../../assets/icon-512x512.png');
 
 
 type ForgotPasswordScreenNavigationProp = NativeStackNavigationProp<

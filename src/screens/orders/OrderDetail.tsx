@@ -7,7 +7,7 @@ import { colors } from "../../utils/AppColors"
 import { AppString } from "../../utils/AppStrings"
 import App from "../../../App"
 import PinDrop from '../../../assets/Icons/PinDrop.svg';
-import { appIcons } from "../../utils/AppIcons"
+import { appIcons, imagesUrl } from "../../utils/AppIcons"
 
 import ChevronFwdOutline from '../../../assets/Icons/chevronForwardOutline.svg';
 import DropDownMenu from '../../../assets/Icons/DropDownMenu.svg';

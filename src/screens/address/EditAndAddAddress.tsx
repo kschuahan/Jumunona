@@ -1,6 +1,6 @@
-import { Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Platform, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { styles } from "../../utils/AppStyles"
-import { LogoTitle } from "../../components/Header";
+import { BackLogo, LogoTitle } from "../../components/Header";
 import { AppString } from "../../utils/AppStrings";
 import { useEffect, useState } from "react";
 
@@ -41,36 +41,15 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
         }
     }, [])
 
+    return (
+    <View
+        style = {[styles.container, {padding: 0}]}
+    >
 
-    useEffect(() => {
-
-        navigation.setOptions({
-            headerTitle: () => <View style={{ marginBottom: -20 }}><LogoTitle title={AppString.changeAddress} /></View>,
-            headerRight: () => (
-
-                route.params ? <TouchableOpacity onPress={() => {
-
-                    setShow(true)
-                }} style={{ alignItems: 'center', marginBottom: -15 }}>
-                    <DeleteAddressIcon />
-                </TouchableOpacity> : null
-
-            ),
-
-            headerLeft: () => (
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                    style={{ alignItems: 'center', marginBottom: -25 }}>
-                    <ChevronBackOutlineIcon width={15} height={15} />
-                </TouchableOpacity>
-            ),
-        });
-    });
-
-
-    return <View style={[styles.container, { paddingHorizontal: 16, paddingVertical: 13 }]}>
+        <CustomHeader navigation={navigation} route={route} onRighButtonClick={() => { setShow(true)}} />
+   
+    
+    <View style={{ paddingHorizontal: 16, paddingVertical: 13 }}>
 
         <TextInputData value={name} onChangeText={(it: string) => {
             setName(it)
@@ -142,6 +121,8 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
 
         }} />
     </View>
+    </View>
+    )
 }
 
 
@@ -210,4 +191,30 @@ const TextInputData = ({ placeholder = "Имя получателя", value = ''
         }} /> : null}
 
     </TouchableOpacity>
+}
+
+const CustomHeader = ({ navigation, route, onRighButtonClick }) => {
+
+   return ( <View
+        style={{
+            elevation: 2,
+            paddingHorizontal: 13,
+            paddingEnd: 12,
+            backgroundColor: colors.white,
+            borderTopEndRadius: 0,
+            borderTopStartRadius: 0,
+            paddingTop: Platform.OS == 'ios' ? 20 : 20,
+            paddingBottom: 5,
+            marginBottom: 4
+        }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <BackLogo navigation={navigation} />
+            <LogoTitle title={AppString.changeAddress} />
+            {route.params ? <TouchableOpacity onPress={onRighButtonClick} style={{ alignItems: 'center' }}>
+                <DeleteAddressIcon />
+            </TouchableOpacity> : null
+}
+        </View>
+    </View>
+   )
 }

@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, Text, TouchableOpacity, View } from "react-native"
+import { Dimensions, FlatList, Platform, Text, TouchableOpacity, View } from "react-native"
 import { styles } from "../../utils/AppStyles"
 import React, { useEffect, useState, } from "react";
 import { AppString } from "../../utils/AppStrings";
@@ -7,7 +7,7 @@ import EditIcon from '../../../assets/Icons/editIcon.svg';
 import ChevronBackOutlineIcon from '../../../assets/Icons/chevronBackOutline.svg';
 import WhitePlus from '../../../assets/Icons/WhitePlus.svg';
 
-import { LogoTitle } from "../../components/Header";
+import { BackLogo, LogoTitle } from "../../components/Header";
 import { colors } from "../../utils/AppColors";
 import EditAddreess from '../../../assets/Icons/EditAddreess.svg';
 import { ScrollView } from "react-native-virtualized-view";
@@ -132,7 +132,7 @@ export const MyAddressesScreen = ({ navigation }) => {
                     isEditedButton = !isEditedButton
                     setisEdited(!isEdited)
 
-                }} style={{ alignItems: 'center', marginBottom: -15 }}>
+                }} style={{ alignItems: 'center' }}>
                     {isEdited ? <OrangeCheck /> : <EditIcon width={15} height={15} />}
                 </TouchableOpacity>
             ),
@@ -142,14 +142,23 @@ export const MyAddressesScreen = ({ navigation }) => {
                     onPress={() => {
                         navigation.goBack();
                     }}
-                    style={{ alignItems: 'center', marginBottom: -15 }}>
+                    style={{ alignItems: "flex-end", flexDirection: "column" }}>
                     <ChevronBackOutlineIcon width={15} height={15} />
                 </TouchableOpacity>
             ),
         });
     });
 
-    return <View style={[styles.container, { paddingTop: 9, paddingHorizontal: 6, paddingBottom: 78 }]}>
+    return <View style={[styles.container, {padding: 0}]} >
+        <CustomHeader navigation={navigation} isEdited={isEdited} onRighButtonClick = { () => {
+             if (isEdited) {
+                navigation.goBack()
+            }
+            isEditedButton = !isEditedButton
+            setisEdited(!isEdited)
+        }} />
+        <View style ={ { paddingTop: 9, paddingHorizontal: 6, paddingBottom: 78 }}>
+        
         <FlatList
             showsVerticalScrollIndicator={false}
             data={addressList}
@@ -205,6 +214,7 @@ export const MyAddressesScreen = ({ navigation }) => {
             setShow(false)
 
         }} />
+    </View>
     </View>
 }
 
@@ -341,8 +351,6 @@ const AddressInflate = ({ item, onClick }) => {
     </View>
 }
 
-
-
 const RadioButtons = ({ isCheck = false, onClick }) => {
     return true ? <TouchableOpacity onPress={onClick}>{isCheck ? (
         <CheckmarkCircle width={17} height={17} color={colors.lightOrange} />
@@ -350,3 +358,28 @@ const RadioButtons = ({ isCheck = false, onClick }) => {
         <EllipsisHorizontalNormal width={17} height={17} />
     )}</TouchableOpacity> : null
 }
+
+const CustomHeader = ({ navigation, isEdited, onRighButtonClick }) => {
+
+    return ( <View
+         style={{
+             elevation: 2,
+             paddingHorizontal: 13,
+             paddingEnd: 12,
+             backgroundColor: colors.white,
+             borderTopEndRadius: 0,
+             borderTopStartRadius: 0,
+             paddingTop: Platform.OS == 'ios' ? 20 : 20,
+             paddingBottom: 5,
+             marginBottom: 4
+         }}>
+         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+             <BackLogo navigation={navigation} />
+             <LogoTitle title={AppString.my_addresses} />
+             <TouchableOpacity onPress={onRighButtonClick} style={{ alignItems: 'center' }}>
+                    {isEdited ? <OrangeCheck /> : <EditIcon width={15} height={15} />}
+                </TouchableOpacity>
+         </View>
+     </View>
+    )
+ }

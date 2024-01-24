@@ -1162,7 +1162,7 @@ const RelatedProducts = ({ onclick }) => {
                 onclick();
               }}>
               <Image
-                source={item.imageURL}
+                source={appIcons.shoeImageURL}
                 style={{
                   height: 265,
                   paddingHorizontal: 1,

@@ -24,8 +24,6 @@ import ChevronDownOutlineIcon from '../../../assets/Icons/chevronDownOutlline.sv
 import SearchIcon from '../../../assets/Icons/searchIcon.svg';
 import { CustomHeaderWithoutBackgroundSearch } from '../../components/Header';
 
-const shoeImageURL = require('../../../assets/shoe.jpg');
-
 const categoryData = [
   { id: 1, desc: 'Jackets' },
   { id: 2, desc: 'Tops' },
@@ -44,52 +42,52 @@ const categoryData = [
   const data = [
     {
       id: 1,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
       id: 2,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
       id: 3,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
       id: 4,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
       id: 5,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
       id: 6,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
       id: 7,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
       id: 8,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
       id: 9,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
       id: 10,
-      imageURL: shoeImageURL,
+      imageURL: appIcons.shoeImageURL,
       desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
   ];
@@ -268,7 +266,7 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
                     navigation.navigate(RouteNames.product_detail);
                   }}>
                   <Image
-                    source={item.imageURL}
+                    source={appIcons.shoeImageURL}
                     style={{
                       height: 265,
                       paddingHorizontal: 1,

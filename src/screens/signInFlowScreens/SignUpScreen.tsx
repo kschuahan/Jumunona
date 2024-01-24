@@ -11,7 +11,6 @@ import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../../utils/AppColors';
 
-const logo = require('../../../assets/icon-512x512.png');
 import AboutUs from '../../../assets/Icons/AppLogo.svg';
 import { RouteNames } from '../../utils/RouteNames';
 

@@ -22,6 +22,7 @@ import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 // import HoodieIcon from '../../assets/Icons/hoodieIcon.svg';
 import ImageIcon from '../../assets/Icons/image-outline.svg';
 import { RouteNames } from '../utils/RouteNames';
+import { appIcons } from '../utils/AppIcons';
 
 interface Category {
   id: number;
@@ -58,57 +59,55 @@ const mensCategoryData: Category[] = [
   { id: 9, desc: '西装' },
   { id: 10, desc: 'More...' },
 ];
-const shoeImageURL = require('../../assets/shoe.jpg');
-const china = require('../../assets/china.png');
 const data: Product[] = [
   {
     id: 1,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 2,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 3,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 4,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 5,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 6,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 7,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 8,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 9,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 10,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
 ];
@@ -254,7 +253,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
 
                 >
                   <Image
-                    source={item.imageURL}
+                    source={appIcons.shoeImageURL}
                     style={{
                       height: 265,
                       paddingHorizontal: 1,
@@ -274,7 +273,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                       paddingLeft: 7,
                     }}>
                     <Image
-                      source={china}
+                      source={appIcons.china}
                       style={{ height: 15, width: 15, marginTop: 3 }}
                     />
                     <Text

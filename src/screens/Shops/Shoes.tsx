@@ -17,7 +17,7 @@ import { AppString } from "../../utils/AppStrings"
 import Star from '../../../assets/Icons/Star.svg';
 import Cube from '../../../assets/Icons/Cube.svg';
 import Profile from '../../../assets/Icons/Profile.svg';
-import { appIcons } from "../../utils/AppIcons"
+import { appIcons, imagesUrl } from "../../utils/AppIcons"
 
 
 const sortBy = [
@@ -25,59 +25,58 @@ const sortBy = [
     { id: 2, desc: 'Хиты' },
     { id: 3, desc: 'Цена' },
 ];
-const shoeImageURL = require('../../../assets/shoe.jpg');
 
 
 
 const data = [
     {
         id: 1,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
         id: 2,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
         id: 3,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
         id: 4,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
         id: 5,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
         id: 6,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
         id: 7,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
         id: 8,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
         id: 9,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
     {
         id: 10,
-        imageURL: shoeImageURL,
+        imageURL: appIcons.shoeImageURL,
         desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
     },
 ];
@@ -113,7 +112,7 @@ export const ShopsScreen = ({ navigation }) => {
                         navigation.navigate(RouteNames.product_detail);
                     }}>
                     <Image
-                        source={item.imageURL}
+                        source={appIcons.shoeImageURL}
                         style={{
                             height: 255,
                             paddingHorizontal: 1,

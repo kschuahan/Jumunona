@@ -12,7 +12,7 @@ import { ScrollView } from 'react-native-virtualized-view';
 import React, { useEffect, useState } from 'react';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/chevronForwardOutline.svg';
 import EditIcon from '../../../assets/Icons/editIcon.svg';
-import { appIcons } from '../../utils/AppIcons';
+import { appIcons, imagesUrl } from '../../utils/AppIcons';
 import { colors } from '../../utils/AppColors';
 
 import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
@@ -406,7 +406,7 @@ const RelatedProducts = ({ onclick }) => {
                 onclick();
               }}>
               <Image
-                source={item.imageURL}
+                source={appIcons.shoeImageURL}
                 style={{
                   height: 265,
                   paddingHorizontal: 1,

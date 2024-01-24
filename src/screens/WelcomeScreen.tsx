@@ -1,12 +1,12 @@
 import {StyleSheet, Image, View, Text} from 'react-native';
 import React, {useEffect} from 'react';
 import {RouteNames} from '../utils/RouteNames';
+import { appIcons } from '../utils/AppIcons';
 
 interface Props {
   navigation: any;
 }
 
-const logo = require('../../assets/icon-512x512.png');
 const WelcomeScreen: React.FC<Props> = ({navigation: navigation}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -17,7 +17,7 @@ const WelcomeScreen: React.FC<Props> = ({navigation: navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={logo} style={styles.logo} />
+        <Image source={appIcons.imgLogo} style={styles.logo} />
       </View>
       <Text style={styles.text1}>Jumunona</Text>
       <Text style={styles.text2}>Jumunona e-Commerce Co. Ltd.</Text>

@@ -274,13 +274,13 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.myAddress}
             component={MyAddressesScreen}
-          // options={{ headerShown: false }}
+            options={{ headerShown: false }}
 
           />
           <Stack.Screen
             name={RouteNames.addAndEditpassword}
             component={EditAndAddAddressScreen}
-          // options={{ headerShown: false }}
+           options={{ headerShown: false }}
           />
           <Stack.Screen
             name={RouteNames.cartConfirmOrder}

@@ -3,7 +3,7 @@ import { CustomHeader } from "../../components/Header"
 import { styles } from "../../utils/AppStyles"
 import { AppString } from "../../utils/AppStrings"
 import { colors } from "../../utils/AppColors"
-import { appIcons } from "../../utils/AppIcons"
+import { appIcons, imagesUrl } from "../../utils/AppIcons"
 import App from "../../../App"
 import ReturnIcon from '../../../assets/Icons/ReturnIcon.svg';
 

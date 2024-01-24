@@ -7,7 +7,7 @@ import { AppString } from "../../utils/AppStrings"
 import React, { useEffect, useState } from "react"
 
 import SearchIcon from '../../../assets/Icons/searchIcon.svg';
-import { appIcons } from "../../utils/AppIcons"
+import { appIcons, imagesUrl } from "../../utils/AppIcons"
 import ChevronFwdOutline from '../../../assets/Icons/chevronForwardOutline.svg';
 import { RouteNames } from "../../utils/RouteNames"
 import { data } from "../Product/ProductDetailScreen"
@@ -196,7 +196,7 @@ export const RelatedProducts = ({ onclick }) => {
                                 onclick();
                             }}>
                             <Image
-                                source={item.imageURL}
+                                source={appIcons.shoeImageURL}
                                 style={{
                                     height: 265,
                                     paddingHorizontal: 1,

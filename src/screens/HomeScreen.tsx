@@ -20,6 +20,7 @@ import { fontFamily } from '../utils/Fonts';
 
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import ImageOutline from '../../assets/Icons/image-outline.svg';
+import { appIcons } from '../utils/AppIcons';
 
 interface Product {
   id: number;
@@ -31,56 +32,55 @@ interface Category {
   desc: string;
 }
 const numColumns = 5;
-const shoeImageURL = require('../../assets/shoe.jpg');
 const data: Product[] = [
   {
     id: 1,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 2,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 3,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 4,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 5,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 6,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 7,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 8,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 9,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
   {
     id: 10,
-    imageURL: shoeImageURL,
+    imageURL: appIcons.shoeImageURL,
     desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
 ];
@@ -99,7 +99,6 @@ const categoryData: Category[] = [
   // { id: 11, desc: "Accesso" },
   // { id: 12, desc: "Make-Up" },
 ];
-const china = require('../../assets/china.png');
 
 const HeaderItem = ({ onSearchClick }) => (
   <View style={styles.header}>
@@ -205,7 +204,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
                     navigation.navigate(RouteNames.product_detail);
                   }}>
                   <Image
-                    source={item.imageURL}
+                    source={appIcons.shoeImageURL}
                     style={[
                       styles.gridViewItemImage,
                       { height: item.id === 1 ? 220 : 255 },
@@ -218,7 +217,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
                       alignItems: 'center',
                       paddingLeft: 7,
                     }}>
-                    <Image source={china} style={{ height: 15, width: 15 }} />
+                    <Image source={appIcons.china} style={{ height: 15, width: 15 }} />
                     <Text
                       style={{
                         marginLeft: 4,

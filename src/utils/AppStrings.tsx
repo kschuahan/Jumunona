@@ -240,5 +240,11 @@ export const AppString = {
   body_data: "Данные о теле",
   change_body_data: "Изменить данные о теле",
   basic_data: "Основные данные",
-  please_fill_body_info: "Пожалуйста, заполните данные о теле"
+  please_fill_body_info: "Пожалуйста, заполните данные о теле",
+  male: "Мужской",
+  female: "Женский",
+  shoulder_width: "Ширина плеч",
+  chest: "Обхват груди",
+  hip: "Обхват бедер",
+  waist: "Обхват талии"
 };

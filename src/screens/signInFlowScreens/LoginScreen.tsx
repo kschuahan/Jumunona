@@ -13,7 +13,6 @@ import { RouteNames } from '../../utils/RouteNames';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import RootStackParamList from '../../utils/navigations';
 import { colors } from '../../utils/AppColors';
-const logo = require('../../../assets/icon-512x512.png');
 import AboutUs from '../../../assets/Icons/AppLogo.svg';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<

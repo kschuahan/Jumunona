@@ -3,7 +3,7 @@ import { CustomHeader } from "../../components/Header"
 import { AppString } from "../../utils/AppStrings"
 import { styles } from "../../utils/AppStyles"
 import { colors } from "../../utils/AppColors"
-import { appIcons } from "../../utils/AppIcons"
+import { appIcons, imagesUrl } from "../../utils/AppIcons"
 import { RatingView } from "../Product/ProductDetailScreen"
 
 import LightStarOrange from '../../../assets/Icons/LightStarOrange.svg';
