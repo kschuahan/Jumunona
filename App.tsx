@@ -61,6 +61,7 @@ import { WalletScreen } from './src/screens/ProfileSection/WalletScreen';
 import { HistoryScreen } from './src/screens/ProfileSection/History';
 import { BodyDataScreen } from './src/screens/ProfileSection/BodyDataScreen';
 import { EditBodyDataScreen } from './src/screens/ProfileSection/EditBodyDataScreen';
+import { HelpAndFeedbackScreen } from './src/screens/ProfileSection/HelpAndFeedback';
 
 const Stack = createNativeStackNavigator();
 
@@ -379,6 +380,12 @@ const App: React.FC = () => {
             component={EditBodyDataScreen}
             options={{ headerShown: false }}
           />  
+           <Stack.Screen
+            name={RouteNames.help_and_feedback}
+            component={HelpAndFeedbackScreen}
+            options={{ headerShown: false }}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

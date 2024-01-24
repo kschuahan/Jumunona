@@ -67,5 +67,6 @@ export const RouteNames = {
   walletScreen: AppString.wallet,
   historyScreen: AppString.story,
   bodyData: "BodyData Screen",
-  editBodyData: "Edit BodyData Screen"
+  editBodyData: "Edit BodyData Screen",
+  help_and_feedback: AppString.feedback_and_help
 };

@@ -213,28 +213,37 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
             }}
             renderItem={({ item }) => {
               return (
-                <TouchableOpacity
-                  onPress={() => { }}
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    paddingStart: 10.5,
-                    paddingEnd: 18.4,
-                    marginRight: 8,
-                    backgroundColor: '#F6F6F6',
-                    borderRadius: 20,
-                    height: 32,
-                  }}>
-                  <Text
+                <View>
+                  <TouchableOpacity
+                    onPress={() => { }}
                     style={{
-                      fontSize: 13,
-                      color: colors.black666666,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      paddingStart: 10.5,
+                      paddingEnd: 18.4,
+                      marginRight: 8,
+                      backgroundColor: '#F6F6F6',
+                      borderRadius: 20,
+                      height: 32,
                     }}>
-                    {item.desc}
-                  </Text>
-                  <CaretDownIcon width={8} height={8} style={{ marginLeft: 4 }} />
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        color: colors.black666666,
+                      }}>
+                      {item.desc}
+                    </Text>
+                    <CaretDownIcon width={8} height={8} style={{ marginLeft: 4 }} />
+                  </TouchableOpacity>
+
+                  <FlatList data={[]}
+
+                    renderItem={({ item, index }) => <TouchableOpacity>
+
+                    </TouchableOpacity>}
+                  />
+                </View>
               );
             }}
           />

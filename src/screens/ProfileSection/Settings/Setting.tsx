@@ -68,7 +68,10 @@ export const SettingScreen = ({ navigation }) => {
             <TextWithIcon
               padding={13}
               title={AppString.feedback_and_help}
-              onClick={() => { }}
+              onClick={() => { 
+
+                navigation.navigate(RouteNames.help_and_feedback)
+              }}
             />
           </View>
 
