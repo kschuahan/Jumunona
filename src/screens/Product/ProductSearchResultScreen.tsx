@@ -23,6 +23,9 @@ import CaretDownIcon from '../../../assets/Icons/DropDown.svg';
 import ChevronDownOutlineIcon from '../../../assets/Icons/chevronDownOutlline.svg';
 import SearchIcon from '../../../assets/Icons/searchIcon.svg';
 import { CustomHeaderWithoutBackgroundSearch } from '../../components/Header';
+import CheckmarkOutline from '../../../assets/Icons/CheckOrange.svg';
+import { fontFamily } from '../../utils/Fonts';
+import { AppString } from '../../utils/AppStrings';
 
 const shoeImageURL = require('../../../assets/shoe.jpg');
 
@@ -94,6 +97,10 @@ const data = [
   },
 ];
 export const ProductSearchResultScreen = ({ navigation, route }) => {
+
+  const [select, setSelect] = useState(-1)
+  const [selectUpdate, setSelectUpdate] = useState(-1)
+
   useEffect(() => {
     navigation.setOptions({
       headerTitle: '',
@@ -203,21 +210,24 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
           style={{
             backgroundColor: colors.white,
             paddingTop: 15.5,
-            paddingHorizontal: 8,
             width: Dimensions.get('window').width,
           }}>
           <FlatList
             data={filter}
             showsHorizontalScrollIndicator={false}
             horizontal
+            style={{ marginHorizontal: 8 }}
             keyExtractor={item => {
               return item.id.toString();
             }}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
               return (
                 <View>
                   <TouchableOpacity
-                    onPress={() => { }}
+                    onPress={() => {
+                      setSelect(index)
+                      setSelectUpdate(-1)
+                    }}
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -226,7 +236,9 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
                       paddingEnd: 18.4,
                       marginRight: 8,
                       backgroundColor: '#F6F6F6',
-                      borderRadius: 20,
+                      borderRadius: select == index ? 0 : 20,
+                      borderTopRightRadius: 20,
+                      borderTopLeftRadius: 20,
                       height: 32,
                     }}>
                     <Text
@@ -239,17 +251,76 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
                     <CaretDownIcon width={8} height={8} style={{ marginLeft: 4 }} />
                   </TouchableOpacity>
 
-                  <FlatList data={[]}
-
-                    renderItem={({ item, index }) => <TouchableOpacity>
-
-                    </TouchableOpacity>}
-                  />
+                  {select == index ? <View style={{
+                    backgroundColor: "#F6F6F6",
+                    height: 8, borderTopRightRadius: 15,
+                    borderTopLeftRadius: 15, marginTop: -4, marginRight: 6,
+                    marginStart: -2
+                  }} />
+                    : null}
                 </View>
               );
             }}
           />
+          {select != -1 ? <View>
+            <FlatList data={['Китай', 'Таджикистан', 'Турция']}
+              numColumns={2}
+              style={{
+                backgroundColor: '#F6F6F6',
+                padding: 15,
+                borderTopRightRadius: 13,
+                borderTopLeftRadius: 13,
+                paddingTop: 0
+
+              }}
+              renderItem={({ item, index }) => <TouchableOpacity
+                onPress={() => {
+                  setSelectUpdate(index)
+
+                }}
+                style={{
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  flex: 0.5,
+                  marginTop: 15
+                }}>
+
+                {select == 0 ? <Image source={appIcons.china} style={{ height: 15, width: 15, borderRadius: 8 }} /> : null}
+                <Text style={[styles.textStyle, {
+                  marginStart: 4,
+                  fontSize: 13,
+                  color: selectUpdate == index ? colors.lightOrange : colors.balc111111
+                }]}>{item}</Text>
+                {
+                  selectUpdate == index ? <CheckmarkOutline
+                    width={11}
+                    height={9}
+                    style={{ marginStart: 2 }} /> : null
+                }
+              </TouchableOpacity>
+
+              }
+            />
+
+            <View style={{
+              justifyContent: 'center', alignItems: 'center',
+              flexDirection: 'row', paddingHorizontal: 12, marginTop: 6
+            }}>
+              <CommonButton startorange='#FCD82F' endColor='#FDCA30'
+                text={AppString.reset} onClick={() => {
+
+                }} />
+              <CommonButton startorange='#FE8C00'
+                endColor='#FC4A1A'
+                borderBottomStartRadius={0} borderBottomEndRadius={20}
+                borderTopEndRadius={20} borderTopStartRadius={0}
+                onClick={() => {
+
+                }} />
+            </View>
+          </View> : null}
         </View>
+
 
         <View style={[style.productsGrid]}>
           <MasonryList
@@ -434,6 +505,47 @@ const CategoriesList = ({ navigation }) => {
         )}
       />
     </View>
+  );
+};
+
+
+
+const CommonButton = ({
+  text = AppString.ok,
+  endColor = colors.endOrange,
+  startorange = colors.startOrange,
+  onClick,
+  borderTopEndRadius = 0,
+  borderTopStartRadius = 20,
+  borderBottomEndRadius = 0,
+  borderBottomStartRadius = 20
+}) => {
+  return (
+    <TouchableOpacity style={{
+      width: '50%',
+    }} onPress={onClick}>
+      <LinearGradient
+        colors={[startorange, endColor]}
+        start={{ x: 0.4, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{
+          borderTopLeftRadius: borderTopStartRadius,
+          borderTopRightRadius: borderTopEndRadius,
+          borderBottomRightRadius: borderBottomEndRadius,
+          borderBottomLeftRadius: borderBottomStartRadius,
+          height: 34,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+        <Text
+          style={[
+            styles.textStyle,
+            { color: colors.white, fontWeight: 'bold', fontSize: 14 },
+          ]}>
+          {text}
+        </Text>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 
