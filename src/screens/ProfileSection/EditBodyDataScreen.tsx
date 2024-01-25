@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, Image, Pressable } from "react-native"
+import { View, Text, FlatList, TouchableOpacity, Image, Pressable, Dimensions } from "react-native"
 import { CustomHeader } from "../../components/Header"
 import { AppString } from "../../utils/AppStrings"
 import { styles } from "../../utils/AppStyles"
@@ -6,11 +6,14 @@ import GrayCautionIcon from '../../../assets/Icons/GrayCaution.svg';
 import { ScrollView } from "react-native-virtualized-view";
 import { colors } from "../../utils/AppColors";
 import CautionIcon from '../../../assets/Icons/Caution.svg';
-import MasonryList from '@react-native-seoul/masonry-list';
-import { appIcons, chestImages, hipImages, shoulderImages, waistImages } from "../../utils/AppIcons";
+import { chestImages, hipImages, shoulderImages, waistImages } from "../../utils/AppIcons";
 import { useState } from "react";
 import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
+import { AgeBottomSheet } from './AgeBottomSheet';
+import { AddRoleBottomSheet } from './AddRoleBottomSheet';
+import LinearGradient from "react-native-linear-gradient";
+
 
 const basicData = [
     {
@@ -52,15 +55,18 @@ const data = [
         name: AppString.waist,
         images: waistImages
     },
-   
+
 ]
 export const EditBodyDataScreen = ({ navigation }) => {
+
+    const [ageShow, setAgeShow] = useState(false)
+    const [addRoleShow, setAddRoleShow] = useState(false)
     return (
         <View style={[styles.container, { padding: 0 }]}>
             <CustomHeader navigation={navigation} title={AppString.change_body_data} />
-            <ScrollView style={{ paddingHorizontal: 12 }}>
+            <ScrollView style={{ paddingHorizontal: 12 , marginBottom: 60}}>
                 <View
-                    style={{ flexDirection: "row", marginTop: 16, marginBottom: 6, gap: 5 }}
+                    style={{ flexDirection: "row", marginTop: 16, marginBottom: 6, gap: 6 }}
                 >
                     <GrayCautionIcon style={{ marginTop: 2 }} />
                     <Text
@@ -75,20 +81,30 @@ export const EditBodyDataScreen = ({ navigation }) => {
                 >
                     {AppString.basic_data}
                 </Text>
-                <BasicDataFlatList />
+                <BasicDataFlatList onShowAgeDropdown={() => {
+                    setAgeShow(true)
+                }} />
                 <Text
                     style={[styles.textStyle, { color: "#14100D", fontWeight: "500", fontSize: 17, marginHorizontal: 10, marginBottom: 6, marginTop: 22 }]}
                 >
                     {AppString.please_fill_body_info}
                 </Text>
-                <BodyInforView />
+                <BodyInforView onDetailClick={() => { setAddRoleShow(true) }} />
             </ScrollView>
+
+            <BottomButton onClick={() => {navigation.goBack()}} />
+            <AgeBottomSheet isShow={ageShow} onClose={() => {
+                setAgeShow(false)
+            }} />
+            <AddRoleBottomSheet isShow={addRoleShow} onClose={() => {
+                setAddRoleShow(false)
+            }} />
         </View>
     )
 }
 
 
-const BasicDataFlatList = ({ }) => {
+const BasicDataFlatList = ({ onShowAgeDropdown }) => {
 
     const [male, setMale] = useState(false)
 
@@ -120,9 +136,9 @@ const BasicDataFlatList = ({ }) => {
                                     flexDirection: "row",
                                     gap: 4
                                 }}
-                                onPress={() => {
-                                    setMale(true)
-                                }}
+                                    onPress={() => {
+                                        setMale(true)
+                                    }}
                                 >
 
                                     {male ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
@@ -136,9 +152,9 @@ const BasicDataFlatList = ({ }) => {
                                     flexDirection: "row",
                                     gap: 4
                                 }}
-                                onPress={() => {
-                                    setMale(false)
-                                }}
+                                    onPress={() => {
+                                        setMale(false)
+                                    }}
                                 >
 
                                     {!male ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
@@ -150,14 +166,18 @@ const BasicDataFlatList = ({ }) => {
                                 </TouchableOpacity>
                             </View>
                             :
-                            <TouchableOpacity 
-                                onPress={ () => {}}
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (item.name == "Возраст") {
+                                        onShowAgeDropdown()
+                                    }
+                                }}
                             >
-                            <Text
-                                style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
-                            >
-                                {item.value}
-                            </Text>
+                                <Text
+                                    style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
+                                >
+                                    {item.value}
+                                </Text>
                             </TouchableOpacity>
                     }
                 </View>
@@ -170,7 +190,7 @@ const BasicDataFlatList = ({ }) => {
     )
 }
 
-const BodyInforView = ({ }) => {
+const BodyInforView = ({ onDetailClick }) => {
 
     return (
         <FlatList
@@ -195,7 +215,9 @@ const BodyInforView = ({ }) => {
                             style={[styles.textStyle, { color: "#333333", fontWeight: "500", fontSize: 15 }]}
                         >
                             {item.name}{" "}
-                            <CautionIcon width={15} height={15} style={{ alignSelf: "center" }} />
+                            <TouchableOpacity onPress={onDetailClick} >
+                                <CautionIcon width={15} height={15} />
+                            </TouchableOpacity>
                         </Text>
                         <Text
                             style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
@@ -205,14 +227,14 @@ const BodyInforView = ({ }) => {
 
 
                     </View>
-                    <ImagesView images={item.images}/>
+                    <ImagesView images={item.images} />
                 </View>
             }
         />
     )
 }
 
-const ImagesView = ({ images}) => {
+const ImagesView = ({ images }) => {
 
     const [selectedItem, setSeleced] = useState<number>()
 
@@ -234,5 +256,51 @@ const ImagesView = ({ images}) => {
         }}
 
     />
+    )
+}
+
+const BottomButton = ({ onClick }) => {
+
+    return (<View
+        style={{
+            backgroundColor: colors.white,
+            position: 'absolute',
+            bottom: 0,
+            width: Dimensions.get('window').width,
+            paddingVertical: 12,
+            paddingTop: 6,
+            paddingHorizontal: 10,
+            borderTopStartRadius: 13,
+            borderTopEndRadius: 13,
+            shadowColor: colors.black,
+            elevation: 10,
+            borderBlockColor: colors.whiteF7F7F7,
+        }}>
+
+        <TouchableOpacity onPress={onClick}>
+            <LinearGradient
+                colors={[colors.startOrange, colors.endOrange,
+                ]}
+                start={{ x: 0.4, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{
+                    borderRadius: 20,
+                    height: 40,
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row'
+                }}>
+                <Text
+                    style={[
+                        styles.textStyle,
+                        { color: colors.white, fontWeight: '400', fontSize: 16, marginStart: 9 },
+                    ]}>
+                    {AppString.save}
+                </Text>
+            </LinearGradient>
+        </TouchableOpacity>
+
+    </View>
     )
 }

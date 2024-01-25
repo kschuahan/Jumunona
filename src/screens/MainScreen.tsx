@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { colors } from '../utils/AppColors';
@@ -36,7 +36,7 @@ const MainScreen: React.FC = ({ }) => {
       inactiveColor={colors.lightOrange}
       barStyle={{
         backgroundColor: colors.white,
-        height: 78,
+        height: Platform.OS == "ios" ? 60 : 78,
         elevation: 40,
         borderTopLeftRadius: 13,
         borderTopRightRadius: 13,

@@ -8,8 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --assets-dest ios --dev=false --platform='ios'"
-
+    "build:ios": "react-native bundle --minify --entry-file index.js --platform ios --dev false --bundle-output ./ios/main.jsbundle --assets-dest ./ios"
   },
   "dependencies": {
     "@react-native-community/netinfo": "^11.2.1",

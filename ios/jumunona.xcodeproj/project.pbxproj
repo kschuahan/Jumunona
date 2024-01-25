@@ -37,6 +37,7 @@
 		2250E07CAB19401C9A5576E6 /* sheildCheckmark.svg in Resources */ = {isa = PBXBuildFile; fileRef = 399EE91D6A2841FFAD9110EA /* sheildCheckmark.svg */; };
 		25F60382A6844EFBA3237D37 /* Team.svg in Resources */ = {isa = PBXBuildFile; fileRef = CA40795B84A44339B94F0B9F /* Team.svg */; };
 		268A87A62B60D76A00467457 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 268A87A52B60D76A00467457 /* main.jsbundle */; };
+		26B55BC32B6145F600E302E2 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 26B55BC22B6145F600E302E2 /* assets */; };
 		2AE416661CBF473589819130 /* chevronForwardOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = 31965E1E0078405BAC69C33C /* chevronForwardOutline.svg */; };
 		2B1E997C80AB4298919D7DED /* terminalOutline.svg in Resources */ = {isa = PBXBuildFile; fileRef = FCEB4AE3391340C983B417CF /* terminalOutline.svg */; };
 		2E07E7E9C1F146D4B377C723 /* Guaranty.svg in Resources */ = {isa = PBXBuildFile; fileRef = 5EF5D0F08E2C437592476AD0 /* Guaranty.svg */; };
@@ -227,6 +228,7 @@
 		23BC6A57D4264F24A366E488 /* tex.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = tex.svg; path = ../assets/Icons/tex.svg; sourceTree = "<group>"; };
 		25253A4BCBAC430390DA32C5 /* MobileIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MobileIcon.svg; path = ../assets/Icons/MobileIcon.svg; sourceTree = "<group>"; };
 		268A87A52B60D76A00467457 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		26B55BC22B6145F600E302E2 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		2C6977506D90423CBA37705A /* AddWhite.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AddWhite.svg; path = ../assets/Icons/AddWhite.svg; sourceTree = "<group>"; };
 		2CEFC72E506A415188AF33A1 /* EmptyStar.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EmptyStar.svg; path = ../assets/Icons/EmptyStar.svg; sourceTree = "<group>"; };
 		2DBAD73E118F49DEB2B8D0C3 /* scaleIcon.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = scaleIcon.svg; path = ../assets/Icons/scaleIcon.svg; sourceTree = "<group>"; };
@@ -644,6 +646,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				26B55BC22B6145F600E302E2 /* assets */,
 				268A87A52B60D76A00467457 /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* jumunona */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -772,6 +775,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26B55BC32B6145F600E302E2 /* assets in Resources */,
 				268A87A62B60D76A00467457 /* main.jsbundle in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,

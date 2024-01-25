@@ -32,26 +32,17 @@ import Address from '../../../assets/Icons/Address.svg';
 import help from '../../../assets/Icons/Help.svg';
 import Team from '../../../assets/Icons/Team.svg';
 import Reviews from '../../../assets/Icons/Reviews.svg';
-import { AgeBottomSheet } from './AgeBottomSheet';
-import { AddRoleBottomSheet } from './AddRoleBottomSheet';
-
 
 const ProfileScreen = (props: any) => {
   const navigation = props.navigation
-  const [ageShow, setAgeShow] = useState(false)
-  const [addRoleShow, setAddRoleShow] = useState(false)
+
 
   return (
     <ScrollView 
       contentContainerStyle={{ flex: 1 }}
       showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <AgeBottomSheet isShow={ageShow} onClose={() => {
-          setAgeShow(false)
-        }} />
-        <AddRoleBottomSheet isShow={addRoleShow} onClose={() => {
-          setAddRoleShow(false)
-        }} />
+        
         <Profile
           onClick={() => {
             props.navigation.navigate(RouteNames.setting);
