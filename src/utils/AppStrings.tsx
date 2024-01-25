@@ -3,6 +3,7 @@ export const AppString = {
   contact_to_seller: 'Связаться с продавцом',
   noteColon: 'Примечание:',
   AppName: 'Jumunona',
+  reset: 'Сбросить',
   officeial_return_service: 'Официальный сервис возврата',
   request_can_be_cancel_anytime: 'Запрос можно отменять в любое время',
   I_want_to_return_the_monwy: 'Я хочу вернуть деньги',
