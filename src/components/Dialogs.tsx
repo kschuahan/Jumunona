@@ -7,6 +7,8 @@ import {
   TextInput,
   Pressable,
   Image,
+  ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { styles } from '../utils/AppStyles';
 import { AppString } from '../utils/AppStrings';
@@ -226,7 +228,7 @@ export const LeaveCommentPopup = ({ isShow = false, onCancel }) => {
             {
               justifyContent: 'center',
               alignContent: 'center',
-              width:'95%'
+              width: '95%'
             },
           ]}>
           <TitleWithImages />
@@ -258,7 +260,7 @@ export const LeaveCommentPopup = ({ isShow = false, onCancel }) => {
               justifyContent: 'center',
               alignContent: 'center',
               marginTop: 13,
-              width:'95%'
+              width: '95%'
 
             },
           ]}>
@@ -812,3 +814,64 @@ export const DeleteBodyData = ({ isShow = false, onConfirm, onCancel }) => {
     </Modal>
   );
 };
+
+
+
+export const ProgressView = () => {
+  return <View style={[styles.centeredView, { marginHorizontal: 0 }]}>
+    <ActivityIndicator size={Platform.OS == "ios" ? "large" : 70} color={colors.lightOrange} />
+    {/* <Text style={[style.textStyle, {textAlign:'center'}]}>Loading...</Text> */}
+
+  </View>
+}
+
+
+
+export const RetryWhenErrorOccur = ({ data, isRetry = true, onClick }) => {
+
+
+  return <View style={[styles.centerContent, { gap: 10 }]}>
+
+    <Text style={[styles.textStyle,
+    { fontWeight: 'bold', fontSize: 18, textAlign: 'center' }]}>{data && data.data ? data.data.toString() : ""}</Text>
+    {isRetry ?
+      <CommonButton onClick={onClick} /> : null}
+
+
+  </View>
+
+}
+
+
+const CommonButton = ({
+  text = AppString.pay,
+  endColor = colors.endOrange,
+  startorange = colors.startOrange,
+  onClick,
+}) => {
+  return (
+    <TouchableOpacity onPress={onClick}>
+      <LinearGradient
+        colors={[startorange, endColor]}
+        start={{ x: 0.4, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{
+          paddingStart: 9.5,
+          paddingEnd: 5.01,
+          paddingVertical: 6,
+          borderRadius: 1000,
+          height: 28,
+          marginEnd: 10,
+        }}>
+        <Text
+          style={[
+            styles.textStyle,
+            { color: colors.white, fontSize: 14, fontWeight: '500' },
+          ]}>
+          {text}
+        </Text>
+      </LinearGradient>
+    </TouchableOpacity>
+  );
+};
+

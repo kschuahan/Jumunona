@@ -10,6 +10,21 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.whiteF6F6F6
 
   },
+  centerContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    flex: 1,
+    backgroundColor: colors.whiteF6F6F6,
+    padding: 10,
+
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    marginHorizontal: 10
+  },
   profileProduct: {
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -15,12 +15,21 @@ import MasonryList from '@react-native-seoul/masonry-list';
 import { dimensions } from '../utils/sizes';
 import { RouteNames } from '../utils/RouteNames';
 import { colors } from '../utils/AppColors';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { fontFamily } from '../utils/Fonts';
 
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import ImageOutline from '../../assets/Icons/image-outline.svg';
 import { appIcons } from '../utils/AppIcons';
+import { getAPICall } from '../Netowork/Apis';
+import { products } from '../Netowork/Constants';
+import { ProgressView, RetryWhenErrorOccur } from '../components/Dialogs';
+
+interface CommonModal {
+  isSuccess: boolean,
+  data: any
+}
+
 
 interface Product {
   id: number;
@@ -32,7 +41,7 @@ interface Category {
   desc: string;
 }
 const numColumns = 5;
-const data: Product[] = [
+const dataResponse: Product[] = [
   {
     id: 1,
     imageURL: appIcons.shoeImageURL,
@@ -177,7 +186,24 @@ const MainCategoriesItem = ({ navigation }) => (
 );
 
 const HomeScreen: React.FC = ({ navigation }) => {
-  return (
+
+  const [data, setData] = useState<CommonModal>()
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    callAPI()
+
+  }, [])
+
+  const callAPI = () => {
+    getAPICall(products.getProducts + `1`, (res: any) => {
+      setLoading(false)
+      setData(res)
+    })
+  }
+
+  return ((data && data.isSuccess) ?
     <View style={styles.container}>
       <HeaderItem
         onSearchClick={() => {
@@ -190,13 +216,13 @@ const HomeScreen: React.FC = ({ navigation }) => {
         <MainCategoriesItem navigation={navigation} />
         <View style={styles.grid}>
           <MasonryList
-            data={data}
+            data={dataResponse}
             keyExtractor={item => {
               return item.id;
             }}
             style={{ marginHorizontal: 7 }}
             numColumns={2}
-            renderItem={({ item }) => {
+            renderItem={({ item, i }) => {
               return (
                 <Pressable
                   style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
@@ -207,7 +233,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
                     source={appIcons.shoeImageURL}
                     style={[
                       styles.gridViewItemImage,
-                      { height: item.id === 1 ? 220 : 255 },
+                      { height: i % 3 != 1 ? 240 : 277 },
                     ]}
                   />
                   <View
@@ -274,7 +300,10 @@ const HomeScreen: React.FC = ({ navigation }) => {
           />
         </View>
       </ScrollView>
-    </View>
+    </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+      setData(undefined)
+      callAPI()
+    }} />
   );
 };
 

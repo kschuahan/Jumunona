@@ -26,6 +26,7 @@ import { CustomHeaderWithoutBackgroundSearch } from '../../components/Header';
 import CheckmarkOutline from '../../../assets/Icons/CheckOrange.svg';
 import { fontFamily } from '../../utils/Fonts';
 import { AppString } from '../../utils/AppStrings';
+import FilterBottomSheet from './FilterBottomSheet';
 
 const categoryData = [
   { id: 1, desc: 'Jackets' },
@@ -42,62 +43,63 @@ const categoryData = [
   { id: 12, desc: 'Make-Up' },
 ];
 
-  const data = [
-    {
-      id: 1,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-    {
-      id: 2,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-    {
-      id: 3,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-    {
-      id: 4,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-    {
-      id: 5,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-    {
-      id: 6,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-    {
-      id: 7,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-    {
-      id: 8,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-    {
-      id: 9,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-    {
-      id: 10,
-      imageURL: appIcons.shoeImageURL,
-      desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    },
-  ];
+const data = [
+  {
+    id: 1,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 2,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 3,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 4,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 5,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 6,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 7,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 8,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 9,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 10,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+];
 export const ProductSearchResultScreen = ({ navigation, route }) => {
 
   const [select, setSelect] = useState(-1)
   const [selectUpdate, setSelectUpdate] = useState(-1)
+  const [showFilter, setShowFilter] = useState(false)
 
   useEffect(() => {
     navigation.setOptions({
@@ -196,12 +198,14 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
               );
             }}
           />
-          <FunnelGrayOutlineIcon
-            width={15}
-            height={15}
-            color={colors.black666666}
-            style={{ marginTop: 10 }}
-          />
+          <TouchableOpacity onPress={() => {
+            setShowFilter(true)
+          }}><FunnelGrayOutlineIcon
+              width={15}
+              height={15}
+              color={colors.black666666}
+              style={{ marginTop: 10 }}
+            /></TouchableOpacity>
         </View>
 
         <View
@@ -416,6 +420,9 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
           />
         </View>
       </View>
+      <FilterBottomSheet isShow={showFilter} onClose={() => {
+        setShowFilter(false)
+      }} />
     </View>
 
   );
@@ -508,7 +515,7 @@ const CategoriesList = ({ navigation }) => {
 
 
 
-const CommonButton = ({
+export const CommonButton = ({
   text = AppString.ok,
   endColor = colors.endOrange,
   startorange = colors.startOrange,

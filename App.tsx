@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { Dimensions, StatusBar, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Dimensions, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { RouteNames } from './src/utils/RouteNames';
@@ -281,7 +280,7 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.addAndEditpassword}
             component={EditAndAddAddressScreen}
-           options={{ headerShown: false }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name={RouteNames.cartConfirmOrder}
@@ -379,8 +378,8 @@ const App: React.FC = () => {
             name={RouteNames.editBodyData}
             component={EditBodyDataScreen}
             options={{ headerShown: false }}
-          />  
-           <Stack.Screen
+          />
+          <Stack.Screen
             name={RouteNames.help_and_feedback}
             component={HelpAndFeedbackScreen}
             options={{ headerShown: false }}
