@@ -17,11 +17,17 @@ export const apiUrls = {
 }
 
 export const modules = {
-    productModule: '/app/products/'
+    productModule: '/app/products/',
+    categoryModule: '/app/categories/'
+
 }
 
 export const userManagementModule = {
 
+}
+
+export const categoriesModule = {
+    getCategories: `${modules.categoryModule}getCategories`
 }
 
 export const products = {

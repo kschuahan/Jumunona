@@ -23,6 +23,7 @@ import { imagesUrl } from '../utils/AppIcons';
 import CheckGreen from '../../assets/Icons/CheckGreen.svg';
 import CloseIconRed from '../../assets/Icons/CloseIconRed.svg';
 import { RadioButtons } from '../screens/Cart/CartScreen';
+import Internet from '../../assets/Icons/Internet.svg';
 
 export const VerifyDeleteAccountDialog = ({
   isShow = false,
@@ -817,8 +818,8 @@ export const DeleteBodyData = ({ isShow = false, onConfirm, onCancel }) => {
 
 
 
-export const ProgressView = () => {
-  return <View style={[styles.centeredView, { marginHorizontal: 0 }]}>
+export const ProgressView = ({ ht = '100%' }) => {
+  return <View style={[styles.centeredView, { marginHorizontal: 0, height: ht, paddingVertical: 20 }]}>
     <ActivityIndicator size={Platform.OS == "ios" ? "large" : 70} color={colors.lightOrange} />
     {/* <Text style={[style.textStyle, {textAlign:'center'}]}>Loading...</Text> */}
 
@@ -827,13 +828,17 @@ export const ProgressView = () => {
 
 
 
-export const RetryWhenErrorOccur = ({ data, isRetry = true, onClick }) => {
+export const RetryWhenErrorOccur = ({ data, isRetry = true, ht = "100%", onClick }) => {
 
 
-  return <View style={[styles.centerContent, { gap: 10 }]}>
+  return <View style={[styles.centerContent, { gap: 10, height: ht }]}>
 
+    {ht == '100%' ? <Internet /> : null}
     <Text style={[styles.textStyle,
-    { fontWeight: 'bold', fontSize: 18, textAlign: 'center' }]}>{data && data.data ? data.data.toString() : ""}</Text>
+    {
+      fontWeight: 'bold', fontSize: 18,
+      textAlign: 'center'
+    }]}>{data && data.data ? data.data.toString() : ""}</Text>
     {isRetry ?
       <CommonButton onClick={onClick} /> : null}
 
@@ -856,12 +861,11 @@ const CommonButton = ({
         start={{ x: 0.4, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={{
-          paddingStart: 9.5,
-          paddingEnd: 5.01,
-          paddingVertical: 6,
-          borderRadius: 1000,
-          height: 28,
-          marginEnd: 10,
+          paddingHorizontal: 20,
+          borderRadius: 40,
+          height: 35,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
         <Text
           style={[

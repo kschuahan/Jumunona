@@ -8,6 +8,7 @@ import {
   Image,
   FlatList,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import { ScrollView } from 'react-native-virtualized-view';
 import LinearGradient from 'react-native-linear-gradient';
@@ -22,15 +23,21 @@ import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import ImageOutline from '../../assets/Icons/image-outline.svg';
 import { appIcons } from '../utils/AppIcons';
 import { getAPICall } from '../Netowork/Apis';
-import { products } from '../Netowork/Constants';
+import { categoriesModule, products } from '../Netowork/Constants';
 import { ProgressView, RetryWhenErrorOccur } from '../components/Dialogs';
+import { SvgUri } from 'react-native-svg';
 
 interface CommonModal {
   isSuccess: boolean,
   data: any
 }
 
-
+interface PagingData {
+  total: number,
+  remaining: number,
+  current: number,
+  pages: number
+}
 interface Product {
   id: number;
   imageURL: string | any;
@@ -128,24 +135,27 @@ const HeaderItem = ({ onSearchClick }) => (
   </View>
 );
 
-const MainCategoriesItem = ({ navigation }) => (
-  <View style={{ width: '100%' }}>
+const MainCategoriesItem = ({ navigation, data }) => {
+
+
+
+  return data && data.isSuccess ? <View style={{ width: '100%' }}>
     <FlatList
       style={styles.categories}
       scrollEnabled={false}
-      data={categoryData}
+      data={data.data.data}
       keyExtractor={item => {
-        return item.id.toString();
+        return item._id.toString();
       }}
-      numColumns={5}
+      numColumns={4}
       renderItem={({ item, index }) => {
         return (
-          <View
+          <View 
             style={{
-              flex: 1,
+              flex: 1/4,
               justifyContent: 'center',
             }}>
-            {item.id === 10 ? (
+            {index == 10 ? (
               <TouchableOpacity onPress={() => {
                 navigation.navigate(RouteNames.categories)
 
@@ -166,15 +176,17 @@ const MainCategoriesItem = ({ navigation }) => (
                 navigation.navigate(RouteNames.product_search_screen)
 
               }} style={{ alignItems: 'center' }}>
-                <ImageOutline width={50} height={38} />
+                {item.image == "" ? <ImageOutline width={50} height={38} /> :
+                  <Image source={{ uri: item.image }} height={38} width={50} />}
                 <Text
                   style={{
                     fontSize: 13,
                     fontWeight: '400',
                     color: colors.black,
                     paddingBottom: 10,
+                    textAlign:'center'
                   }}>
-                  {item.desc}
+                  {item.categoryName}
                 </Text>
               </TouchableOpacity>
             )}
@@ -182,126 +194,169 @@ const MainCategoriesItem = ({ navigation }) => (
         );
       }}
     />
-  </View>
-);
+  </View> : null
+};
 
 const HomeScreen: React.FC = ({ navigation }) => {
 
   const [data, setData] = useState<CommonModal>()
+  const [pagingData, setPagingData] = useState<PagingData>()
+
   const [loading, setLoading] = useState(false)
+  const [dataArray, setArrayData] = useState<Array<any>>([])
+  const [categoryData, setCategoryData] = useState<CommonModal>()
 
   useEffect(() => {
-    setLoading(true)
+    callCategoryAPI()
     callAPI()
-
   }, [])
 
-  const callAPI = () => {
-    getAPICall(products.getProducts + `1`, (res: any) => {
+  const callAPI = (page = 1) => {
+    setLoading(true)
+
+    getAPICall(products.getProducts + `${page}`, (res: any) => {
+      if (res.isSuccess) {
+        setPagingData(res.data.data.pages)
+        setArrayData([...dataArray, ...res.data.data.products])
+      }
       setLoading(false)
       setData(res)
     })
   }
 
-  return ((data && data.isSuccess) ?
+  const featchMore = () => {
+    if (data?.isSuccess && pagingData && pagingData?.pages > pagingData?.current) {
+      callAPI(pagingData.current + 1)
+    }
+  }
+
+
+
+
+
+
+  const callCategoryAPI = () => {
+
+    getAPICall(categoriesModule.getCategories, (res: any) => {
+
+      setCategoryData(res)
+    })
+  }
+
+  return (dataArray && pagingData ?
     <View style={styles.container}>
       <HeaderItem
         onSearchClick={() => {
           navigation.navigate(RouteNames.product_search_screen, { isRoute: true })
         }}
       />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={styles.scrollView}>
-        <MainCategoriesItem navigation={navigation} />
-        <View style={styles.grid}>
-          <MasonryList
-            data={dataResponse}
-            keyExtractor={item => {
-              return item.id;
-            }}
-            style={{ marginHorizontal: 7 }}
-            numColumns={2}
-            renderItem={({ item, i }) => {
-              return (
-                <Pressable
-                  style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
-                  onPress={() => {
-                    navigation.navigate(RouteNames.product_detail);
+      <View style={styles.grid}>
+        <FlatList
+          data={dataArray}
+          keyExtractor={item => {
+            return item._id;
+          }}
+          ListFooterComponent={
+            loading ? <ProgressView ht={undefined} /> : data?.isSuccess ? null :
+              <RetryWhenErrorOccur ht={120} data={data} onClick={() => {
+
+                callAPI(pagingData.current + 1)
+              }} />
+          }
+          onEndReached={featchMore}
+          onEndReachedThreshold={0.1}
+          ListHeaderComponent={
+            <MainCategoriesItem navigation={navigation} data={categoryData} />
+          }
+          showsVerticalScrollIndicator={false}
+          style={{ marginHorizontal: 7 }}
+          numColumns={2}
+          renderItem={({ item, i }) => {
+            return (
+              <Pressable
+                style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
+                onPress={() => {
+                  navigation.navigate(RouteNames.product_detail);
+                }}>
+                <Image
+                  source={appIcons.shoeImageURL}
+                  style={[
+                    styles.gridViewItemImage,
+                    { height: i % 3 != 1 ? 240 : 277 },
+                  ]}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    paddingLeft: 7,
                   }}>
-                  <Image
-                    source={appIcons.shoeImageURL}
-                    style={[
-                      styles.gridViewItemImage,
-                      { height: i % 3 != 1 ? 240 : 277 },
-                    ]}
-                  />
-                  <View
+                  {/* <SvgUri style={{ borderRadius: 8, overflow: 'hidden' }}
+                    height={15} width={15} uri={item.country_flag} /> */}
+                  <Image source={appIcons.china} style={{ borderRadius: 8, height: 15, width: 15 }} />
+                  <Text
                     style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      paddingLeft: 7,
-                    }}>
-                    <Image source={appIcons.china} style={{ height: 15, width: 15 }} />
+                      marginLeft: 4,
+                      fontSize: 13,
+                      paddingBottom: 1,
+                      fontWeight: '500',
+                      color: colors.black
+                    }}
+                    numberOfLines={1}>
+                    {
+                      item.name
+                    }
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingLeft: 8,
+                    marginTop: 3,
+                    justifyContent: 'space-between'
+                  }}>
+                  <View style={{ flexDirection: 'row' }}>
                     <Text
                       style={{
-                        marginLeft: 4,
-                        fontSize: 13,
-                        paddingBottom: 1,
-                        fontWeight: '500',
-                        color: colors.black
-                      }}
-                      numberOfLines={1}>
-                      Футболка
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      paddingLeft: 8,
-                      marginTop: 3,
-                    }}>
-                    <View style={{ flexDirection: 'row', width: '30%' }}>
-                      <Text
-                        style={{
-                          fontSize: 17,
-                          color: '#ff7600',
-                          fontFamily: fontFamily.bold,
-                        }}>
-                        999
-                      </Text>
-                      <Text
-                        style={{
-                          paddingTop: 6,
-                          color: '#ff7600',
-                          fontSize: 12,
-                          fontFamily: fontFamily.bold,
-                        }}>
-                        c.
-                      </Text>
-                    </View>
-                    <Text
-                      numberOfLines={1}
-                      style={{
-                        width: '70%',
-                        color: '#AAAAAA',
-                        paddingTop: 3,
-                        marginTop: 4,
-                        fontSize: 10.5,
-                        fontFamily: fontFamily.regular,
+                        fontSize: 17,
+                        color: '#ff7600',
+                        fontFamily: fontFamily.bold,
                       }}>
-                      {item.desc}
+                      {item.price ? item.price : '58'}
+                    </Text>
+                    <Text
+                      style={{
+                        paddingTop: 6,
+                        color: '#ff7600',
+                        fontSize: 12,
+                        fontFamily: fontFamily.bold,
+                      }}>
+                      c.
                     </Text>
                   </View>
-                </Pressable>
-              );
-            }}
-          />
-        </View>
-      </ScrollView>
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      color: '#AAAAAA',
+                      paddingTop: 3,
+                      marginTop: 4,
+                      fontSize: 10.5,
+                      marginEnd: 15,
+                      fontFamily: fontFamily.regular,
+                    }}>
+                    {`${item.views}+просмотров`}
+                  </Text>
+                </View>
+              </Pressable>
+            );
+          }}
+        />
+      </View>
     </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
       setData(undefined)
+      setCategoryData(undefined)
+      callCategoryAPI()
       callAPI()
     }} />
   );
@@ -365,7 +420,7 @@ const styles = StyleSheet.create({
   categories: {
     borderRadius: 13,
     backgroundColor: '#ffffff',
-    marginHorizontal: 12,
+    marginHorizontal: 4,
     marginBottom: 8,
     marginTop: 4,
     paddingHorizontal: 2,
@@ -393,6 +448,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4.5,
     marginVertical: 4.5,
     width: 'auto',
+    flex: 0.5
   },
   gridViewItemImage: {
     paddingHorizontal: 1,
