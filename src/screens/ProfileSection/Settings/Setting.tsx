@@ -18,6 +18,8 @@ import EllipsisHorizontal from '../../../../assets/Icons/ellipsis-horizontal.svg
 import ChevronBackOutline from '../../../../assets/Icons/chevronBackOutline.svg';
 import ChevronFwdOutline from '../../../../assets/Icons/chevronForwardOutline.svg';
 import { BackLogo, CustomHeader, LogoTitle, MenuLogo } from '../../../components/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AsyncStorageKeys } from '../../../utils/AsyncStorage';
 
 export const SettingScreen = ({ navigation }) => {
   // useEffect(() => {
@@ -132,6 +134,7 @@ export const SettingScreen = ({ navigation }) => {
                     {
                       text: 'OK',
                       onPress: () => {
+                        AsyncStorage.removeItem(AsyncStorageKeys.authToken)
                         navigation.reset({
                           index: 0,
                           routes: [{ name: RouteNames.login }],

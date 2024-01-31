@@ -18,8 +18,8 @@ export const apiUrls = {
 
 export const modules = {
     productModule: '/app/products/',
-    categoryModule: '/app/categories/'
-
+    categoryModule: '/app/categories/',
+    authModule: '/auth/'
 }
 
 export const userManagementModule = {
@@ -32,4 +32,11 @@ export const categoriesModule = {
 
 export const products = {
     getProducts: modules.productModule + 'getProducts?page='
+}
+
+export const AuthAPIs = {
+    login:  modules.authModule + 'login',
+    signUp: modules.authModule + 'register',
+    sendOtp:  modules.authModule + 'sendOtp',
+    forgotPassword: modules.authModule + 'forgotPassword'
 }

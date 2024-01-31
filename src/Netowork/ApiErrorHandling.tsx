@@ -35,6 +35,10 @@ export const apiErrorHandling = (status: any, onClick) => {
                     message = status.response.data ? status.response.data : AppString.check_your_internet_connection
                     break
                 }
+                case 500: {
+                    message = status.response.data.message ? status.response.data.message  : AppString.check_your_internet_connection
+                    break
+                }
                 default: {
                     message = AppString.something_is_wrong
                     break
@@ -88,7 +92,7 @@ export const apiSucessErrorHandling = (response: any, onSucess: any, isToast = t
             } else {
                 if (response.status == 200) {
                     message = response.data.message
-                    onSucess(false)
+                    onSucess(true)
                 } else {
                     message = response.statusText
                     onSucess(false)

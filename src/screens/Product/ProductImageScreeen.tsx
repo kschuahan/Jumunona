@@ -1,4 +1,4 @@
-import {Modal, TouchableOpacity} from 'react-native';
+import {Modal, Pressable, SafeAreaView, StatusBar, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {imagesUrl} from '../../utils/AppIcons';
 import {colors} from '../../utils/AppColors';
@@ -32,11 +32,11 @@ const ProductImageScreeen = ({isShow = false, onClose, pos = 1}) => {
       transparent={true}
       animationType="slide"
       onRequestClose={onClose}>
-      <ImageViewer imageUrls={images} index={pos} />
+      <SafeAreaView style={{flex:1, backgroundColor: colors.black}}>
+     <StatusBar barStyle={"light-content"} />
+      
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          top: 30,
           start: 16,
           backgroundColor: colors.black333333,
           borderRadius: 20,
@@ -44,10 +44,13 @@ const ProductImageScreeen = ({isShow = false, onClose, pos = 1}) => {
           width: 29,
           alignItems: 'center',
           justifyContent: 'center',
+          zIndex: 1
         }}
         onPress={onClose}>
         <CloseIcon color={colors.white} width={29} height={29} />
       </TouchableOpacity>
+      <ImageViewer style={{marginTop: -60}} imageUrls={images} index={pos} />
+      </SafeAreaView>
     </Modal>
   );
 };

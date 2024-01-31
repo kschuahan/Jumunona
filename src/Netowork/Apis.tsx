@@ -3,13 +3,16 @@ import { apiErrorHandling, apiSucessErrorHandling } from "./ApiErrorHandling"
 import { axiosClient } from "./AxiosClient"
 
 import { Alert, Platform } from "react-native"
+import { AsyncStorageKeys, getValue } from "../utils/AsyncStorage"
 
 
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjIzYWQ0MmExYWZmYjIyZTU1NjAyNiIsImlhdCI6MTcwNjE4MzIwMSwiZXhwIjoxNzA4Nzc1MjAxfQ.AjJCJKGKqt2ZtjldKb0QGg8CaNJaakYxIMcYz7DB3Qc'
+// const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjIzYWQ0MmExYWZmYjIyZTU1NjAyNiIsImlhdCI6MTcwNjE4MzIwMSwiZXhwIjoxNzA4Nzc1MjAxfQ.AjJCJKGKqt2ZtjldKb0QGg8CaNJaakYxIMcYz7DB3Qc'
 
 export const getAPICall = async (endPoint: any, onResponse: any,
   item: any = undefined, authToken = true) => {
 
+    const token = await getValue(AsyncStorageKeys.authToken)
+    console.log("token", token)
   await axiosClient(authToken ? token : undefined).get(endPoint, { params: item })
     .then((response: any) => {
 
@@ -28,6 +31,8 @@ export const getAPICall = async (endPoint: any, onResponse: any,
 export const postAPICall = async (item: any, endPoint: any, authToken = true, onResponse: any) => {
 
   // let token = await getValue(AsyncStorageKeys.authToken)
+   const token = await getValue(AsyncStorageKeys.authToken)
+   console.log("token", token)
   await axiosClient(authToken ? token : undefined).post(endPoint, item).then((response: any) => {
     console.log("ffffff", response);
     apiSucessErrorHandling(response, (isSuccess: boolean) => {

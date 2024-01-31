@@ -11,6 +11,7 @@
     "build:ios": "react-native bundle --minify --entry-file index.js --platform ios --dev false --bundle-output ./ios/main.jsbundle --assets-dest ./ios"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-native-community/netinfo": "^11.2.1",
     "@react-native-seoul/masonry-list": "^1.4.2",
     "@react-navigation/bottom-tabs": "^6.5.11",
