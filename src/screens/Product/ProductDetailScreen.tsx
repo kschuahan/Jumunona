@@ -52,6 +52,11 @@ import Guaranty from '../../../assets/Icons/Guaranty.svg';
 import Sizes from '../../../assets/Icons/Sizes.svg';
 import ColorIcon from '../../../assets/Icons/ColorIcon.svg';
 import StarRating from 'react-native-star-rating-widget';
+import { getAPICall } from '../../Netowork/Apis';
+import { CommonModal } from '../HomeScreen';
+import { products } from '../../Netowork/Constants';
+import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
+import { getCharachterstics } from '../../utils/DataManipulation';
 
 const shoeImageURL = appIcons.shoeImageURL;
 const china = appIcons.china;
@@ -123,12 +128,33 @@ const postionsArray: Position[] = [
   },
 ];
 
-export const ProductDetailScreen = ({ navigation }) => {
+export const ProductDetailScreen = ({ navigation, route }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [butShow, setBuyShow] = useState(false);
   const [guranty, setOnGauranty] = useState(false);
 
   const [addShow, setAddShow] = useState(false);
+
+
+
+
+  const [data, setData] = useState<CommonModal>()
+
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    callAPI()
+  }, [])
+
+  const callAPI = () => {
+    setLoading(true)
+    const id = route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
+
+    getAPICall(products.getProductDetails + `${id}`, (res: any) => {
+      setLoading(false)
+      setData(res)
+    })
+  }
 
   const handleViewableItemsChanged = useRef(({ viewableItems, changed }) => {
     if (changed && changed.length > 0) {
@@ -230,7 +256,7 @@ export const ProductDetailScreen = ({ navigation }) => {
   const [showImages, setShowImages] = useState(-1);
 
   return (
-    <View style={{ flex: 1 }}>
+    data && data.data && data.isSuccess ? <View style={{ flex: 1 }}>
       <ScrollView
         ref={scrollRef}
         showsVerticalScrollIndicator={false}
@@ -292,8 +318,8 @@ export const ProductDetailScreen = ({ navigation }) => {
             </Text>
           </View>
 
-          <ProductDetails />
-          <ProductDesclamenation isGauranty={guranty} onGauranctCancle={() => {
+          <ProductDetails item={data.data.data} />
+          <ProductDesclamenation item={data.data.data} isGauranty={guranty} onGauranctCancle={() => {
             setOnGauranty(false)
           }} />
           <View style={{ paddingHorizontal: 9 }}>
@@ -309,9 +335,9 @@ export const ProductDetailScreen = ({ navigation }) => {
               setShowImages(index);
             }}
           />
-          <RelatedProducts
-            onclick={() => {
-              navigation.push(RouteNames.product_detail);
+          <RelatedProducts item={data.data.recommendedProducts}
+            onclick={(item: any) => {
+              navigation.push(RouteNames.product_detail, { id: item._id });
             }}
           />
         </View>
@@ -484,7 +510,10 @@ export const ProductDetailScreen = ({ navigation }) => {
           setOnGauranty(true)
         }}
       />
-    </View>
+    </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+      setData(undefined)
+      callAPI()
+    }} />
   );
 };
 // MARK: - Review Section
@@ -653,7 +682,7 @@ const CommonButton = ({
   );
 };
 
-const ProductDesclamenation = ({ isGauranty = false, onGauranctCancle }) => {
+const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle }) => {
   const [showColorSize, setShowColorSize] = useState(false);
   const [showGurantees, setShowGurantees] = useState(isGauranty);
 
@@ -705,7 +734,7 @@ const ProductDesclamenation = ({ isGauranty = false, onGauranctCancle }) => {
       />
       <TextWithIcon
         Icon={Chars}
-        title="Бренд • Материал • Метод обработки"
+        title={getCharachterstics(item.attributes.ruAttribute)}
         onClick={() => {
           setShowCharacterstics(true);
         }}
@@ -734,6 +763,7 @@ const ProductDesclamenation = ({ isGauranty = false, onGauranctCancle }) => {
         }}
       />
       <CharacterSticsScreen
+        data={item.attributes.ruAttribute}
         isShow={showCharacterstics}
         onClose={() => {
           setShowCharacterstics(false);
@@ -1083,7 +1113,7 @@ const ProductImages = ({ onClick }) => {
   );
 };
 
-const RelatedProducts = ({ onclick }) => {
+const RelatedProducts = ({ item, onclick }) => {
   return (
     <View style={{ marginBottom: 100, paddingStart: 9 }}>
       <View
@@ -1139,9 +1169,9 @@ const RelatedProducts = ({ onclick }) => {
         />
       </View>
       <FlatList
-        data={data}
+        data={item}
         keyExtractor={item => {
-          return item.id.toString();
+          return item._id.toString();
         }}
         scrollEnabled={false}
         numColumns={2}
@@ -1159,7 +1189,7 @@ const RelatedProducts = ({ onclick }) => {
                 marginTop: 8,
               }}
               onPress={() => {
-                onclick();
+                onclick(item)
               }}>
               <Image
                 source={appIcons.shoeImageURL}
@@ -1190,31 +1220,34 @@ const RelatedProducts = ({ onclick }) => {
                 <Text
                   style={{
                     marginLeft: 4,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: '500',
                     color: colors.black
                   }}
                   numberOfLines={1}>
-                  Футболка
+                  {item.name ? item.name : 'Футболка'}
                 </Text>
               </View>
               <View
-                style={{ flexDirection: 'row', paddingLeft: 8, paddingTop: 4 }}>
+                style={{
+                  flexDirection: 'row', paddingLeft: 8, paddingTop: 4,
+                  justifyContent: 'space-between'
+                }}>
                 <View style={{ flexDirection: 'row', width: '30%' }}>
                   <Text
                     style={{
                       fontSize: 17,
                       color: '#ff7600',
-                      fontFamily: 'SegoeUI',
+                      fontWeight: 'bold'
                     }}>
-                    999
+                    {item.price ? item.price : "999"}
                   </Text>
                   <Text
                     style={{
                       paddingTop: 6,
                       color: '#ff7600',
-                      fontSize: 12,
-                      fontFamily: 'SegoeUI',
+                      fontSize: 11,
+                      fontWeight: '400'
                     }}>
                     c.
                   </Text>
@@ -1222,12 +1255,13 @@ const RelatedProducts = ({ onclick }) => {
                 <Text
                   numberOfLines={1}
                   style={{
-                    width: '70%',
                     color: '#AAAAAA',
                     paddingTop: 3,
-                    fontFamily: 'SegoeUI',
+
+                    fontWeight: '400',
+                    fontSize: 11
                   }}>
-                  {item.desc}
+                  {`${item.views}${AppString.views}`}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -1238,7 +1272,7 @@ const RelatedProducts = ({ onclick }) => {
   );
 };
 
-const ProductDetails = () => {
+const ProductDetails = ({ item }) => {
   return (
     <View
       style={{
@@ -1264,7 +1298,7 @@ const ProductDetails = () => {
               styles.textStyle,
               { fontSize: 21, color: colors.lightOrange },
             ]}>
-            {'178с.'}
+            {item.price ? item.price : '178с.'}с.
           </Text>
           <Text
             style={[
@@ -1275,7 +1309,7 @@ const ProductDetails = () => {
                 textDecorationLine: 'line-through',
               },
             ]}>
-            {'178с.'}
+            {item.price ? item.price : '178с.'}с.
           </Text>
         </View>
         <RatingView />
@@ -1295,7 +1329,7 @@ const ProductDetails = () => {
             }}
             resizeMode="cover"
           />{' '}
-          {'ORT Product name子子子子子子子子子子子子男 子子子子子子子子'}
+          {item.productName}
         </Text>
       </View>
 
@@ -1306,11 +1340,11 @@ const ProductDetails = () => {
             fontSize: 13,
             color: colors.grey,
             alignSelf: 'flex-end',
-            marginTop: -20,
+            marginTop: 2,
             paddingBottom: 6,
           },
         ]}>
-        {'продано 15'}
+        {`продано ${item.soldUnits ? item.soldUnits : '15'}`}
       </Text>
     </View>
   );

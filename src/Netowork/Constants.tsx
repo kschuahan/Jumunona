@@ -22,9 +22,6 @@ export const modules = {
     authModule: '/auth/'
 }
 
-export const userManagementModule = {
-
-}
 
 export const categoriesModule = {
     getCategories: `${modules.categoryModule}getCategories`
@@ -32,12 +29,13 @@ export const categoriesModule = {
 
 export const products = {
     getProducts: modules.productModule + 'getProducts?page=',
-    getFavourite: modules.productModule + 'getFavoriteProducts'
+    getFavourite: modules.productModule + 'getFavoriteProducts',
+    getProductDetails: modules.productModule + 'getProductDetails?productId='
 }
 
 export const AuthAPIs = {
-    login:  modules.authModule + 'login',
+    login: modules.authModule + 'login',
     signUp: modules.authModule + 'register',
-    sendOtp:  modules.authModule + 'sendOtp',
+    sendOtp: modules.authModule + 'sendOtp',
     forgotPassword: modules.authModule + 'forgotPassword'
 }
