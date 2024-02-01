@@ -31,7 +31,8 @@ export const categoriesModule = {
 }
 
 export const products = {
-    getProducts: modules.productModule + 'getProducts?page='
+    getProducts: modules.productModule + 'getProducts?page=',
+    getFavourite: modules.productModule + 'getFavoriteProducts'
 }
 
 export const AuthAPIs = {
