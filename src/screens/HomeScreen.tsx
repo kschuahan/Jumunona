@@ -26,8 +26,9 @@ import { getAPICall } from '../Netowork/Apis';
 import { categoriesModule, products } from '../Netowork/Constants';
 import { ProgressView, RetryWhenErrorOccur } from '../components/Dialogs';
 import { SvgUri } from 'react-native-svg';
+import { AppString } from '../utils/AppStrings';
 
-interface CommonModal {
+export interface CommonModal {
   isSuccess: boolean,
   data: any
 }
@@ -143,19 +144,18 @@ const MainCategoriesItem = ({ navigation, data }) => {
     <FlatList
       style={styles.categories}
       scrollEnabled={false}
-      data={data.data.data}
+      data={data.data.data.slice(0, data.data.data.lenght > 9 ? 9 : data.data.data.lenght)}
       keyExtractor={item => {
         return item._id.toString();
       }}
-      numColumns={4}
+      numColumns={5}
       renderItem={({ item, index }) => {
         return (
-          <View 
+          <View
             style={{
-              flex: 1/4,
-              justifyContent: 'center',
+              flex: 1 / 5,
             }}>
-            {index == 10 ? (
+            {index == 9 ? (
               <TouchableOpacity onPress={() => {
                 navigation.navigate(RouteNames.categories)
 
@@ -184,7 +184,7 @@ const MainCategoriesItem = ({ navigation, data }) => {
                     fontWeight: '400',
                     color: colors.black,
                     paddingBottom: 10,
-                    textAlign:'center'
+                    textAlign: 'center'
                   }}>
                   {item.categoryName}
                 </Text>
@@ -251,7 +251,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
         }}
       />
       <View style={styles.grid}>
-        <FlatList
+        <MasonryList
           data={dataArray}
           keyExtractor={item => {
             return item._id;
@@ -276,7 +276,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
               <Pressable
                 style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
                 onPress={() => {
-                  navigation.navigate(RouteNames.product_detail);
+                  navigation.navigate(RouteNames.product_detail, { id: item._id });
                 }}>
                 <Image
                   source={appIcons.shoeImageURL}
@@ -301,6 +301,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
                       fontSize: 13,
                       paddingBottom: 1,
                       fontWeight: '500',
+                      paddingEnd:12,
                       color: colors.black
                     }}
                     numberOfLines={1}>
@@ -345,7 +346,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
                       marginEnd: 15,
                       fontFamily: fontFamily.regular,
                     }}>
-                    {`${item.views}+просмотров`}
+                    {`${item.views}${AppString.views}`}
                   </Text>
                 </View>
               </Pressable>

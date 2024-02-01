@@ -95,7 +95,8 @@ const SignUpScreen: React.FC = ({ navigation, route }) => {
       setLoading(true)
       postAPICall(
         {
-          phoneNumber: '91' + mobile
+          phoneNumber: '91' + mobile,
+          isRegister:true
         },
         AuthAPIs.sendOtp,
         false,

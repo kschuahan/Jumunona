@@ -85,7 +85,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation 
         (res: any) => {
           Alert.alert(res.data.message ? res.data.message : res.data)
           if (res.isSuccess) {
-            Alert.alert(res.data.message ? res.data.message : res.data, "",  [{text: 'OK', onPress: () => { navigation.replace('Login');}}])
+            Alert.alert(res.data.message ? res.data.message : res.data, "", [{ text: 'OK', onPress: () => { navigation.replace('Login'); } }])
           } else {
             Alert.alert(res.data.message ? res.data.message : res.data)
           }
@@ -103,7 +103,8 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation 
       setLoading(true)
       postAPICall(
         {
-          phoneNumber: '91' + mobile
+          phoneNumber: '91' + mobile,
+          isRegister: false
         },
         AuthAPIs.sendOtp,
         false,
@@ -314,7 +315,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation 
         </View>
         <View style={styles.termsText}></View>
         <View style={styles.buttonsView}>
-          <TouchableOpacity onPress={() => {resetPass() }}>
+          <TouchableOpacity onPress={() => { resetPass() }}>
             <LinearGradient
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
