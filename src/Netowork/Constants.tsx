@@ -22,6 +22,11 @@ export const modules = {
     authModule: '/auth/'
 }
 
+export const otherModule = {
+    getTermsCondition: '/app/getTermsCondition',
+    getPrivacyPolicy: '/app/getPrivacyPolicy'
+}
+
 
 export const categoriesModule = {
     getCategories: `${modules.categoryModule}getCategories`
