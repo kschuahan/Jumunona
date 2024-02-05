@@ -32,9 +32,12 @@ export const categoriesModule = {
     getCategories: `${modules.categoryModule}getCategories`
 }
 
-export const products = {
+export const ProductAPIs = {
     getProducts: modules.productModule + 'getProducts?page=',
-    getProductDetails: modules.productModule + 'getProductDetails?productId='
+    getFavourite: modules.productModule + 'getFavoriteProducts?categoryId=',
+    getProductDetails: modules.productModule + 'getProductDetails?productId=',
+    favoriteProduct: modules.productModule + "favoriteProduct",
+    removeFavourite: modules.productModule + "removeFavoriteProduct"
 }
 
 export const AuthAPIs = {

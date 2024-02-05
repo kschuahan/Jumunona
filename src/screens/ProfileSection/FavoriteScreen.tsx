@@ -7,8 +7,9 @@ import {
   TextInput,
   FlatList,
   Platform,
+  Dimensions,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styles } from '../../utils/AppStyles';
 import { imagesUrl } from '../../utils/AppIcons';
 import { colors } from '../../utils/AppColors';
@@ -16,6 +17,7 @@ import { AppString } from '../../utils/AppStrings';
 import { Card } from 'react-native-paper';
 import { useState } from 'react';
 import { fontFamily } from '../../utils/Fonts';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
@@ -25,6 +27,10 @@ import CreateOutline from '../../../assets/Icons/EditItem.svg';
 import SearchIcon from '../../../assets/Icons/searchIcon.svg';
 import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
+import { getAPICall, postAPICall } from '../../Netowork/Apis';
+import { ProductAPIs, categoriesModule } from '../../Netowork/Constants';
+import { CenterProgressView } from '../../components/Dialogs';
+import { CommonModal } from '../HomeScreen';
 
 const categories = ['New', 'Womens', 'Mens', '内衣', '鞋靴', '箱包', '美妆'];
 const products = [
@@ -42,10 +48,72 @@ const products = [
   { title: 'v 29.9', isSelected: false },
 ];
 
+
 export const FavoriteScreen = ({ navigation }) => {
   const [pos, setPos] = useState(0);
+  const [edit, setEditing] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [favlist, setFavList] = useState<Array<any>>([])
+  const [categoryData, setCategoryData] = useState<CommonModal>()
+  const [selectedCategory, setSelectedCategory] = useState("")
+  const [reloadFav, setReload] = useState(false)
+  const [selectAll, setSelectAll] = useState(false)
 
-  const [select, setSelect] = useState(false);
+  useEffect(() => {
+    callCategoryAPI()
+    getFavList()
+  }, [])
+
+
+
+  const getFavList = () => {
+    setLoading(true)
+    getAPICall(ProductAPIs.getFavourite + selectedCategory, (res: any) => {
+      if (res.isSuccess) {
+        if (res.data.data) {
+
+          let data = res.data.data.map(it => {
+            return { data: it, isSelected: false }
+          })
+          setFavList(data)
+        } else {
+          setFavList([])
+        }
+      } else {
+        setFavList([])
+      }
+      setSelectAll(false)
+      setLoading(false)
+    })
+  }
+
+  const callCategoryAPI = () => {
+
+    getAPICall(categoriesModule.getCategories, (res: any) => {
+      if (res.data.data != undefined) {
+        if (res.data.data.length > 0) {
+          const allCategory = { _id: "", categoryName: "Все" }
+          res.data.data.splice(0, 0, allCategory)
+        }
+      }
+      setCategoryData(res)
+
+    })
+  }
+
+  const removeFav = (ids: Array<any>) => {
+    setLoading(true)
+    postAPICall( {productId: ids},
+      ProductAPIs.removeFavourite, true,
+      (res: any) => {
+        if (res.isSuccess) {
+          setFavList(favlist.filter(it => { return !ids.includes(it.data._id)}))
+          setReload(!reloadFav)
+        }
+        setLoading(false)
+
+      })
+  }
 
   return (
     <View
@@ -87,10 +155,10 @@ export const FavoriteScreen = ({ navigation }) => {
           </Text>
           <TouchableOpacity
             onPress={() => {
-              //setSelect(!select)
+              setEditing(!edit)
             }}
             style={{ alignItems: 'center' }}>
-            {select ? (
+            {edit ? (
               <CheckmarkOutline
                 width={19}
                 height={14}
@@ -122,90 +190,202 @@ export const FavoriteScreen = ({ navigation }) => {
             marginTop: -4,
           },
         ]}>
-        <FlatList
-          style={{ width: '30%', backgroundColor: colors.whiteF7F7F7 }}
-          data={categories}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity
-              onPress={() => {
-                setPos(index);
-              }}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginVertical: 15,
-              }}>
-              <Text
-                style={[
-                  styles.textStyle,
-                  {
-                    fontSize: 16,
-                    color: pos == index ? colors.lightOrange : colors.grey,
-                  },
-                ]}>
-                {item}
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
-
-        <FlatList
-          style={{ width: '80%', marginTop: 8, marginStart: 10 }}
-          data={products}
-          keyExtractor={item => {
-            return item.toString();
-          }}
-          numColumns={3}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity
-              style={{
-                flex: 1 / 3,
-                justifyContent: 'flex-start',
-                alignItems: 'flex-start',
-                marginBottom: 20,
-              }}>
-              <Image
-                source={{ uri: imagesUrl.shoes }}
-                style={{ height: 80, width: 80, borderRadius: 5 }}
-              />
-              <Text
-                style={[
-                  styles.textStyle,
-                  { fontSize: 14, color: colors.lightOrange, marginTop: 2 },
-                ]}>
-                {item.title}
-              </Text>
-              {select ? (
-                <TouchableOpacity
-                  onPress={() => { }}
-                  style={{ position: 'absolute', end: 10, top: 2 }}>
-                  {item.isSelected ? (
-                    <CheckmarkCircle
-                      width={17}
-                      height={17}
-                      color={colors.endOrange}
+        {categoryData && categoryData.isSuccess ?
+          <FlatList
+            style={{ width: '30%', backgroundColor: colors.whiteF7F7F7 }}
+            data={categoryData.data.data}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setPos(index);
+                  setSelectedCategory(item._id)
+                  getFavList()
+                }}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginVertical: 15,
+                  marginHorizontal: 8
+                }}>
+                <Text
+                  style={[
+                    styles.textStyle,
+                    {
+                      fontSize: 16,
+                      color: pos == index ? colors.lightOrange : colors.grey, textAlign: "center"
+                    },
+                  ]}>
+                  {item.categoryName}
+                </Text>
+              </TouchableOpacity>
+            )}
+          /> : null}
+        {favlist.length > 0 || loading ?
+          <FlatList
+            style={{ width: '80%', marginTop: 8, marginStart: 10 }}
+            data={favlist}
+            keyExtractor={item => {
+              return item.data._id.toString();
+            }}
+            numColumns={3}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                style={{
+                  flex: 1 / 3,
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                  marginBottom: 20,
+                }}>
+                <Image
+                  source={{ uri: imagesUrl.shoes }}
+                  style={{ height: 80, width: 80, borderRadius: 5 }}
+                />
+                <Text
+                  style={[
+                    styles.textStyle,
+                    { fontSize: 14, color: colors.lightOrange, marginTop: 2 },
+                  ]}>
+                  ¥ {item.data.price}
+                </Text>
+                {edit ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      favlist[index].isSelected = !favlist[index].isSelected
+                      if (!favlist[index].isSelected && selectAll) {
+                        setSelectAll(false)
+                      }
+                      setReload(!reloadFav)
+                    }}
+                    style={{ position: 'absolute', end: 10, top: 2 }}>
+                    {item.isSelected ? (
+                      <CheckmarkCircle
+                        width={17}
+                        height={17}
+                        color={colors.endOrange}
+                      />
+                    ) : (
+                      <EllipsisHorizontalNormal
+                        width={17}
+                        height={17}
+                        color={colors.white}
+                      />
+                    )}
+                    <Ionicons
+                      name={
+                        item.isSelected ? 'checkmark-circle' : 'ellipse-outline'
+                      }
+                      size={17}
+                      color={item.isSelected ? colors.endOrange : colors.white}
                     />
-                  ) : (
-                    <EllipsisHorizontalNormal
-                      width={17}
-                      height={17}
-                      color={colors.white}
-                    />
-                  )}
-                  {/* <Ionicons
-                    name={
-                      item.isSelected ? 'checkmark-circle' : 'ellipse-outline'
-                    }
-                    size={17}
-                    color={item.isSelected ? colors.endOrange : colors.white}
-                  /> */}
-                </TouchableOpacity>
-              ) : null}
-            </TouchableOpacity>
-          )}
-        />
+                  </TouchableOpacity>
+                ) : null}
+              </TouchableOpacity>
+            )}
+          /> :
+          <Text
+            style={[
+              styles.textStyle,
+              { fontSize: 14, width: '70%', marginHorizontal: 8, color: colors.lightOrange, textAlign: "center", alignSelf: "center", },
+            ]}>
+            No products in your favourite list.
+          </Text>
+        }
       </View>
-    </View>
+
+      {/* Bottom View */}
+
+      {edit ?
+        <View
+          style={{
+            height: 80,
+            paddingTop: 10,
+            paddingLeft: 25,
+            paddingRight: 11,
+            borderTopLeftRadius: 13,
+            borderTopRightRadius: 13,
+            shadowColor: "#0000000D",
+            shadowOpacity: 1,
+            shadowOffset: { width: 0, height: -3 },
+            backgroundColor: colors.white,
+
+          }}
+        >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', alignContent: 'center' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <RadioButtons isCheck={selectAll} onClick={() => {
+                setSelectAll(!selectAll)
+                if (favlist != undefined) {
+                  const newList = favlist.map( it => {
+
+                    it.isSelected = !selectAll
+                    return it
+                  })
+                 
+                  setFavList(newList)
+                  setReload(!reloadFav)
+                }
+              }} />
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: '#8b8b8b',
+                  fontFamily: '400',
+                  marginStart: 4
+                }}>
+                {AppString.choose_all}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 12 }}>
+              <TouchableOpacity
+                style={{
+                  height: 34,
+                  borderRadius: 17,
+                  borderWidth: 1,
+                  borderColor: "#CCCCCC",
+                  paddingLeft: 16,
+                  paddingRight: 10,
+                  justifyContent: "center"
+                }}
+              >
+                <Text
+                  style={[styles.textStyle, { fontSize: 14, fontWeight: "400", color: colors.balc111111, }]}
+                >
+                  {AppString.add_to_cart}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  height: 34,
+                  borderRadius: 17,
+                  borderWidth: 1,
+                  borderColor: colors.lightOrange,
+                  paddingLeft: 16,
+                  paddingRight: 10,
+                  justifyContent: "center"
+                }}
+                onPress={ () => {
+                  const ids = favlist.filter( it => {
+                    return it.isSelected
+                  }).flatMap( it => {
+                      return it.data._id 
+                  })
+                  removeFav(ids)
+                  console.warn(ids)
+                }}
+              >
+                <Text
+                  style={[styles.textStyle, { fontSize: 14, fontWeight: "400", color: colors.lightOrange, }]}
+                >
+                  {AppString.delete}
+                </Text>
+              </TouchableOpacity>
+
+            </View>
+          </View>
+        </View> : null
+      }
+      {loading ? <CenterProgressView /> : null}
+    </View >
   );
 };
 
@@ -251,3 +431,11 @@ const style = StyleSheet.create({
     paddingVertical: 0
   },
 });
+
+export const RadioButtons = ({ isCheck = false, onClick, size = 22 }) => {
+  return true ? <TouchableOpacity onPress={onClick}>{isCheck ? (
+    <CheckmarkCircle width={size} height={size} color={colors.lightOrange} />
+  ) : (
+    <EllipsisHorizontalNormal width={size} height={size} />
+  )}</TouchableOpacity> : null
+}

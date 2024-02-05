@@ -23,7 +23,7 @@ import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import ImageOutline from '../../assets/Icons/image-outline.svg';
 import { appIcons } from '../utils/AppIcons';
 import { getAPICall } from '../Netowork/Apis';
-import { categoriesModule, products } from '../Netowork/Constants';
+import { categoriesModule, ProductAPIs } from '../Netowork/Constants';
 import { ProgressView, RetryWhenErrorOccur } from '../components/Dialogs';
 import { SvgUri } from 'react-native-svg';
 import { AppString } from '../utils/AppStrings';
@@ -214,7 +214,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
   const callAPI = (page = 1) => {
     setLoading(true)
 
-    getAPICall(products.getProducts + `${page}`, (res: any) => {
+    getAPICall(ProductAPIs.getProducts + `${page}`, (res: any) => {
       if (res.isSuccess) {
         setPagingData(res.data.data.pages)
         setArrayData([...dataArray, ...res.data.data.products])
