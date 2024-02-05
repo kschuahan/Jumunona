@@ -9,14 +9,12 @@ import {
   StyleSheet,
   TextInput,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useEffect, useRef, useState } from 'react';
 import { AppString } from '../../utils/AppStrings';
-import { fontFamily } from '../../utils/Fonts';
 import { colors } from '../../utils/AppColors';
 import { appIcons, imagesUrl, productImages } from '../../utils/AppIcons';
-import { dimensions } from '../../utils/sizes';
 import LinearGradient from 'react-native-linear-gradient';
 import { onShare } from '../../utils/Common';
 import SelectProductSizeColorScreen from './SelectProductSizeColorScreen';
@@ -46,15 +44,13 @@ import OrangeStar from '../../../assets/Icons/OrangeStar.svg';
 import Cube from '../../../assets/Icons/Cube.svg';
 import Profile from '../../../assets/Icons/Profile.svg';
 
-import { AirbnbRating, Rating } from 'react-native-ratings';
 import Chars from '../../../assets/Icons/Chars.svg';
 import Guaranty from '../../../assets/Icons/Guaranty.svg';
 import Sizes from '../../../assets/Icons/Sizes.svg';
 import ColorIcon from '../../../assets/Icons/ColorIcon.svg';
-import StarRating from 'react-native-star-rating-widget';
-import { getAPICall } from '../../Netowork/Apis';
+import { getAPICall, postAPICall } from '../../Netowork/Apis';
 import { CommonModal } from '../HomeScreen';
-import { products } from '../../Netowork/Constants';
+import { ProductAPIs } from '../../Netowork/Constants';
 import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 import { getCharachterstics } from '../../utils/DataManipulation';
 
@@ -132,27 +128,45 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [butShow, setBuyShow] = useState(false);
   const [guranty, setOnGauranty] = useState(false);
-
   const [addShow, setAddShow] = useState(false);
-
-
-
-
   const [data, setData] = useState<CommonModal>()
-
   const [loading, setLoading] = useState(false)
+  const [favLoading, setFavLoading] = useState(false)
 
   useEffect(() => {
     callAPI()
   }, [])
 
+  const addFav = () => {
+    setFavLoading(true)
+    postAPICall({ productId: route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7' },
+      ProductAPIs.favoriteProduct, true,
+      (res: any) => {
+        setFavLoading(false)
+        setFavourite(!isFav);
+      })
+  }
+
+  const removeFav = () => {
+    setFavLoading(true)
+    postAPICall({ productId: [route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'] },
+      ProductAPIs.removeFavourite, true,
+      (res: any) => {
+        setFavLoading(false)
+        setFavourite(!isFav);
+      })
+  }
+
   const callAPI = () => {
     setLoading(true)
     const id = route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
 
-    getAPICall(products.getProductDetails + `${id}`, (res: any) => {
+    getAPICall(ProductAPIs.getProductDetails + `${id}`, (res: any) => {
       setLoading(false)
       setData(res)
+      if (res.data) {
+        setFavourite(res.data.data.isFavourite)
+      }
     })
   }
 
@@ -220,7 +234,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   const [currentPosition, setCurrentPosition] = useState(0);
   const [selectPosition, setSelectPosition] = useState(0);
 
-  const [like, setLike] = useState(false);
+  const [isFav, setFavourite] = useState(false);
   const scrollRef = useRef<ScrollView>()
   const handleScroll = (event: Object) => {
     //  console.log(event.nativeEvent.contentOffset.y);
@@ -447,25 +461,32 @@ export const ProductDetailScreen = ({ navigation, route }) => {
             style={{ alignItems: 'center', marginStart: -20 }}>
             <ChatbubbleEllipsisOutline width={24} height={24} />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setLike(!like);
-            }}
-            style={{
-              alignItems: 'center',
-              marginStart: -20,
-            }}>
-            {like ? (
-              <HeartRed width={24} height={24} />
-            ) : (
-              <HeartOutline width={24} height={24} />
-            )}
-            {/* <Ionicons
+          {
+            favLoading ? <ActivityIndicator size={"small"} style={{ alignSelf: 'center', justifyContent: "center", alignItems: "center", marginStart: -20, }} color={colors.lightOrange} /> :
+              <TouchableOpacity
+                onPress={() => {
+                  if (isFav) {
+                    removeFav()
+                  } else {
+                    addFav()
+                  }
+                }}
+                style={{
+                  alignItems: 'center',
+                  marginStart: -20,
+                }}>
+                {isFav ? (
+                  <HeartRed width={24} height={24} />
+                ) : (
+                  <HeartOutline width={24} height={24} />
+                )}
+                {/* <Ionicons
               name={like ? 'heart' : 'heart-outline'}
               size={24}
               color={like ? colors.lightRed : colors.grey}
             /> */}
-          </TouchableOpacity>
+              </TouchableOpacity>
+          }
         </View>
 
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
