@@ -279,7 +279,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
                   navigation.navigate(RouteNames.product_detail, { id: item._id });
                 }}>
                 <Image
-                  source={appIcons.shoeImageURL}
+                  source={item.images != '' ? { uri: item.images } : appIcons.shoeImageURL}
                   style={[
                     styles.gridViewItemImage,
                     { height: i % 3 != 1 ? 240 : 277 },
@@ -294,14 +294,15 @@ const HomeScreen: React.FC = ({ navigation }) => {
                   }}>
                   {/* <SvgUri style={{ borderRadius: 8, overflow: 'hidden' }}
                     height={15} width={15} uri={item.country_flag} /> */}
-                  <Image source={appIcons.china} style={{ borderRadius: 8, height: 15, width: 15 }} />
+                  <Image source={appIcons.china}
+                    style={{ borderRadius: 8, height: 15, width: 15 }} />
                   <Text
                     style={{
                       marginLeft: 4,
                       fontSize: 13,
                       paddingBottom: 1,
                       fontWeight: '500',
-                      paddingEnd:12,
+                      paddingEnd: 12,
                       color: colors.black
                     }}
                     numberOfLines={1}>

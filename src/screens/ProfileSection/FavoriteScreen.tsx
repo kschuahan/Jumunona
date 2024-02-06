@@ -29,8 +29,10 @@ import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 import { getAPICall, postAPICall } from '../../Netowork/Apis';
 import { ProductAPIs, categoriesModule } from '../../Netowork/Constants';
-import { CenterProgressView } from '../../components/Dialogs';
+import { CenterProgressView, ClearChatPopup } from '../../components/Dialogs';
 import { CommonModal } from '../HomeScreen';
+import { RouteNames } from '../../utils/RouteNames';
+import CircleGreyDot from '../../../assets/Icons/CircleGreyDot.svg';
 
 const categories = ['New', 'Womens', 'Mens', '内衣', '鞋靴', '箱包', '美妆'];
 const products = [
@@ -58,6 +60,7 @@ export const FavoriteScreen = ({ navigation }) => {
   const [selectedCategory, setSelectedCategory] = useState("")
   const [reloadFav, setReload] = useState(false)
   const [selectAll, setSelectAll] = useState(false)
+  const [show, isShow] = useState(false)
 
   useEffect(() => {
     callCategoryAPI()
@@ -103,11 +106,12 @@ export const FavoriteScreen = ({ navigation }) => {
 
   const removeFav = (ids: Array<any>) => {
     setLoading(true)
-    postAPICall( {productId: ids},
+    postAPICall({ productId: ids },
       ProductAPIs.removeFavourite, true,
       (res: any) => {
         if (res.isSuccess) {
-          setFavList(favlist.filter(it => { return !ids.includes(it.data._id)}))
+          setEditing(!edit)
+          setFavList(favlist.filter(it => { return !ids.includes(it.data._id) }))
           setReload(!reloadFav)
         }
         setLoading(false)
@@ -180,7 +184,7 @@ export const FavoriteScreen = ({ navigation }) => {
         </View>
         <SearchView />
       </Card>
-      <View
+      {<View
         style={[
           styles.container,
           {
@@ -230,6 +234,10 @@ export const FavoriteScreen = ({ navigation }) => {
             numColumns={3}
             renderItem={({ item, index }) => (
               <TouchableOpacity
+                onPress={() => {
+                  navigation.push(RouteNames.product_detail, { id: item.data._id });
+
+                }}
                 style={{
                   flex: 1 / 3,
                   justifyContent: 'flex-start',
@@ -237,7 +245,7 @@ export const FavoriteScreen = ({ navigation }) => {
                   marginBottom: 20,
                 }}>
                 <Image
-                  source={{ uri: imagesUrl.shoes }}
+                  source={{ uri: item.data.images != '' ? item.data.images : imagesUrl.shoes }}
                   style={{ height: 80, width: 80, borderRadius: 5 }}
                 />
                 <Text
@@ -256,7 +264,7 @@ export const FavoriteScreen = ({ navigation }) => {
                       }
                       setReload(!reloadFav)
                     }}
-                    style={{ position: 'absolute', end: 10, top: 2 }}>
+                    style={{ position: 'absolute', end: 15, top: 2 }}>
                     {item.isSelected ? (
                       <CheckmarkCircle
                         width={17}
@@ -290,7 +298,7 @@ export const FavoriteScreen = ({ navigation }) => {
             No products in your favourite list.
           </Text>
         }
-      </View>
+      </View>}
 
       {/* Bottom View */}
 
@@ -315,12 +323,12 @@ export const FavoriteScreen = ({ navigation }) => {
               <RadioButtons isCheck={selectAll} onClick={() => {
                 setSelectAll(!selectAll)
                 if (favlist != undefined) {
-                  const newList = favlist.map( it => {
+                  const newList = favlist.map(it => {
 
                     it.isSelected = !selectAll
                     return it
                   })
-                 
+
                   setFavList(newList)
                   setReload(!reloadFav)
                 }
@@ -363,13 +371,15 @@ export const FavoriteScreen = ({ navigation }) => {
                   paddingRight: 10,
                   justifyContent: "center"
                 }}
-                onPress={ () => {
-                  const ids = favlist.filter( it => {
+                onPress={() => {
+                  const ids = favlist.filter(it => {
                     return it.isSelected
-                  }).flatMap( it => {
-                      return it.data._id 
+                  }).flatMap(it => {
+                    return it.data._id
                   })
-                  removeFav(ids)
+                  if (ids.length > 0) {
+                    isShow(true)
+                  }
                   console.warn(ids)
                 }}
               >
@@ -385,6 +395,19 @@ export const FavoriteScreen = ({ navigation }) => {
         </View> : null
       }
       {loading ? <CenterProgressView /> : null}
+
+      <ClearChatPopup title='are you sure you want to remove the products'
+        isShow={show} onConfirm={() => {
+          const ids = favlist.filter(it => {
+            return it.isSelected
+          }).flatMap(it => {
+            return it.data._id
+          })
+          removeFav(ids)
+          isShow(false)
+        }} onCancel={() => {
+          isShow(false)
+        }} />
     </View >
   );
 };

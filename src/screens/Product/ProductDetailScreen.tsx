@@ -10,6 +10,7 @@ import {
   TextInput,
   Dimensions,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { AppString } from '../../utils/AppStrings';
@@ -132,6 +133,10 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   const [data, setData] = useState<CommonModal>()
   const [loading, setLoading] = useState(false)
   const [favLoading, setFavLoading] = useState(false)
+  const [images, setImages] = useState(data && data.data.data
+    && data.data.data.productImages &&
+    data.data.data.productImages.length > 0 ?
+    data.data.data.productImages : productImages)
 
   useEffect(() => {
     callAPI()
@@ -165,6 +170,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
       setLoading(false)
       setData(res)
       if (res.data) {
+        setImages(res.data.data.productImages.length ? res.data.data.productImages : productImages)
         setFavourite(res.data.data.isFavourite)
       }
     })
@@ -285,7 +291,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
               snapToAlignment="center"
               pagingEnabled={true}
               showsHorizontalScrollIndicator={false}
-              data={productImages}
+              data={images}
               decelerationRate={'normal'}
               scrollEventThrottle={16}
               onViewableItemsChanged={handleViewableItemsChanged.current}
@@ -328,7 +334,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
                   borderRadius: 12,
                 },
               ]}>
-              {activeIndex + 1 + '/' + productImages.length}
+              {activeIndex + 1 + '/' + images.length}
             </Text>
           </View>
 
@@ -345,6 +351,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
             <ShopView navigation={navigation} />
           </View>
           <ProductImages
+            images={images}
             onClick={(index: number) => {
               setShowImages(index);
             }}
@@ -506,6 +513,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
         </View>
       </View>
       <ProductImageScreeen
+        data={images}
         isShow={showImages != -1}
         pos={showImages != -1 ? showImages : 0}
         onClose={() => {
@@ -1080,7 +1088,7 @@ const ShopFeaturedProduct = ({ onClick }) => {
   );
 };
 
-const ProductImages = ({ onClick }) => {
+const ProductImages = ({ images, onClick }) => {
   return (
     <View>
 
@@ -1118,14 +1126,14 @@ const ProductImages = ({ onClick }) => {
           }}
         />
       </View>
-      {imagesArray.map((item, index) => (
+      {images.map((item, index) => (
         <TouchableOpacity
           onPress={() => {
             onClick(index);
           }}
           style={{ paddingBottom: 8 }}>
           <Image
-            source={{ uri: imagesUrl.shoes }}
+            source={{ uri: item }}
             style={{ width: '100%', height: 385 }}
           />
         </TouchableOpacity>
@@ -1213,7 +1221,7 @@ const RelatedProducts = ({ item, onclick }) => {
                 onclick(item)
               }}>
               <Image
-                source={appIcons.shoeImageURL}
+                source={item.images != '' ? { uri: item.images } : appIcons.shoeImageURL}
                 style={{
                   height: 265,
                   paddingHorizontal: 1,
