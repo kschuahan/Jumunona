@@ -37,17 +37,13 @@ export const productImages = [
   imagesUrl.shoes,
 ];
 
-export const chestImages = [
-  appIcons.chest1, appIcons.chest2, appIcons.chest3,
-]
+export const chestImages = [appIcons.chest1, appIcons.chest2, appIcons.chest3];
 export const shoulderImages = [
-  appIcons.shoulder1, appIcons.shoulder2, appIcons.shoulder3,
-]
+  appIcons.shoulder1,
+  appIcons.shoulder2,
+  appIcons.shoulder3,
+];
 
-export const hipImages = [
-  appIcons.hip1, appIcons.hip2, appIcons.hip3,
-]
+export const hipImages = [appIcons.hip1, appIcons.hip2, appIcons.hip3];
 
-export const waistImages = [
-  appIcons.waist1, appIcons.waist2, appIcons.waist3
-]
+export const waistImages = [appIcons.waist1, appIcons.waist2, appIcons.waist3];

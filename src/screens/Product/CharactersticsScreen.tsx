@@ -20,7 +20,7 @@ const charachterList = [
   { title: '版型', subTitle: '宽松型', ms: 55 },
   { title: '服饰工艺', subTitle: '水洗', ms: 28 },
 ];
-const CharacterSticsScreen = ({ isShow = false, data, onClose }) => {
+const CharacterSticsScreen = ({ isShow = false, onClose }) => {
   return (
     <Modal
       transparent={true}
@@ -56,20 +56,20 @@ const CharacterSticsScreen = ({ isShow = false, data, onClose }) => {
 
           <FlatList
             style={{ marginBottom: 60 }}
-            data={data}
+            data={charachterList}
             keyExtractor={item => {
-              return item.key.toString();
+              return item.title.toString();
             }}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <View>
-                <View style={{ flexDirection: 'row', paddingVertical: 12, gap: item.ms ? item.ms : 22 }}>
+                <View style={{ flexDirection: 'row', paddingVertical: 12, gap: item.ms }}>
                   <Text
                     style={[
                       styles.textStyle,
                       { fontSize: 14, color: colors.grey9D9D9D },
                     ]}>
-                    {item.key}
+                    {item.title}
                   </Text>
                   <Text
                     style={[
@@ -79,7 +79,7 @@ const CharacterSticsScreen = ({ isShow = false, data, onClose }) => {
                         color: colors.blacl5B5B5B,
                       },
                     ]}>
-                    {item.value}
+                    {item.subTitle}
                   </Text>
                 </View>
 

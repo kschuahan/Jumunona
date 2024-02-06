@@ -9,13 +9,14 @@ import {
   StyleSheet,
   TextInput,
   Dimensions,
-  ActivityIndicator,
-  StatusBar,
 } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useEffect, useRef, useState } from 'react';
 import { AppString } from '../../utils/AppStrings';
+import { fontFamily } from '../../utils/Fonts';
 import { colors } from '../../utils/AppColors';
 import { appIcons, imagesUrl, productImages } from '../../utils/AppIcons';
+import { dimensions } from '../../utils/sizes';
 import LinearGradient from 'react-native-linear-gradient';
 import { onShare } from '../../utils/Common';
 import SelectProductSizeColorScreen from './SelectProductSizeColorScreen';
@@ -45,15 +46,12 @@ import OrangeStar from '../../../assets/Icons/OrangeStar.svg';
 import Cube from '../../../assets/Icons/Cube.svg';
 import Profile from '../../../assets/Icons/Profile.svg';
 
+import { AirbnbRating, Rating } from 'react-native-ratings';
 import Chars from '../../../assets/Icons/Chars.svg';
 import Guaranty from '../../../assets/Icons/Guaranty.svg';
 import Sizes from '../../../assets/Icons/Sizes.svg';
 import ColorIcon from '../../../assets/Icons/ColorIcon.svg';
-import { getAPICall, postAPICall } from '../../Netowork/Apis';
-import { CommonModal } from '../HomeScreen';
-import { ProductAPIs } from '../../Netowork/Constants';
-import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
-import { getCharachterstics } from '../../utils/DataManipulation';
+import StarRating from 'react-native-star-rating-widget';
 
 const shoeImageURL = appIcons.shoeImageURL;
 const china = appIcons.china;
@@ -125,56 +123,12 @@ const postionsArray: Position[] = [
   },
 ];
 
-export const ProductDetailScreen = ({ navigation, route }) => {
+export const ProductDetailScreen = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [butShow, setBuyShow] = useState(false);
   const [guranty, setOnGauranty] = useState(false);
+
   const [addShow, setAddShow] = useState(false);
-  const [data, setData] = useState<CommonModal>()
-  const [loading, setLoading] = useState(false)
-  const [favLoading, setFavLoading] = useState(false)
-  const [images, setImages] = useState(data && data.data.data
-    && data.data.data.productImages &&
-    data.data.data.productImages.length > 0 ?
-    data.data.data.productImages : productImages)
-
-  useEffect(() => {
-    callAPI()
-  }, [])
-
-  const addFav = () => {
-    setFavLoading(true)
-    postAPICall({ productId: route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7' },
-      ProductAPIs.favoriteProduct, true,
-      (res: any) => {
-        setFavLoading(false)
-        setFavourite(!isFav);
-      })
-  }
-
-  const removeFav = () => {
-    setFavLoading(true)
-    postAPICall({ productId: [route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'] },
-      ProductAPIs.removeFavourite, true,
-      (res: any) => {
-        setFavLoading(false)
-        setFavourite(!isFav);
-      })
-  }
-
-  const callAPI = () => {
-    setLoading(true)
-    const id = route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
-
-    getAPICall(ProductAPIs.getProductDetails + `${id}`, (res: any) => {
-      setLoading(false)
-      setData(res)
-      if (res.data) {
-        setImages(res.data.data.productImages.length ? res.data.data.productImages : productImages)
-        setFavourite(res.data.data.isFavourite)
-      }
-    })
-  }
 
   const handleViewableItemsChanged = useRef(({ viewableItems, changed }) => {
     if (changed && changed.length > 0) {
@@ -240,7 +194,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   const [currentPosition, setCurrentPosition] = useState(0);
   const [selectPosition, setSelectPosition] = useState(0);
 
-  const [isFav, setFavourite] = useState(false);
+  const [like, setLike] = useState(false);
   const scrollRef = useRef<ScrollView>()
   const handleScroll = (event: Object) => {
     //  console.log(event.nativeEvent.contentOffset.y);
@@ -276,7 +230,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   const [showImages, setShowImages] = useState(-1);
 
   return (
-    data && data.data && data.isSuccess ? <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView
         ref={scrollRef}
         showsVerticalScrollIndicator={false}
@@ -291,7 +245,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
               snapToAlignment="center"
               pagingEnabled={true}
               showsHorizontalScrollIndicator={false}
-              data={images}
+              data={productImages}
               decelerationRate={'normal'}
               scrollEventThrottle={16}
               onViewableItemsChanged={handleViewableItemsChanged.current}
@@ -334,12 +288,12 @@ export const ProductDetailScreen = ({ navigation, route }) => {
                   borderRadius: 12,
                 },
               ]}>
-              {activeIndex + 1 + '/' + images.length}
+              {activeIndex + 1 + '/' + productImages.length}
             </Text>
           </View>
 
-          <ProductDetails item={data.data.data} />
-          <ProductDesclamenation item={data.data.data} isGauranty={guranty} onGauranctCancle={() => {
+          <ProductDetails />
+          <ProductDesclamenation isGauranty={guranty} onGauranctCancle={() => {
             setOnGauranty(false)
           }} />
           <View style={{ paddingHorizontal: 9 }}>
@@ -351,14 +305,13 @@ export const ProductDetailScreen = ({ navigation, route }) => {
             <ShopView navigation={navigation} />
           </View>
           <ProductImages
-            images={images}
             onClick={(index: number) => {
               setShowImages(index);
             }}
           />
-          <RelatedProducts item={data.data.recommendedProducts}
-            onclick={(item: any) => {
-              navigation.push(RouteNames.product_detail, { id: item._id });
+          <RelatedProducts
+            onclick={() => {
+              navigation.push(RouteNames.product_detail);
             }}
           />
         </View>
@@ -468,32 +421,25 @@ export const ProductDetailScreen = ({ navigation, route }) => {
             style={{ alignItems: 'center', marginStart: -20 }}>
             <ChatbubbleEllipsisOutline width={24} height={24} />
           </TouchableOpacity>
-          {
-            favLoading ? <ActivityIndicator size={"small"} style={{ alignSelf: 'center', justifyContent: "center", alignItems: "center", marginStart: -20, }} color={colors.lightOrange} /> :
-              <TouchableOpacity
-                onPress={() => {
-                  if (isFav) {
-                    removeFav()
-                  } else {
-                    addFav()
-                  }
-                }}
-                style={{
-                  alignItems: 'center',
-                  marginStart: -20,
-                }}>
-                {isFav ? (
-                  <HeartRed width={24} height={24} />
-                ) : (
-                  <HeartOutline width={24} height={24} />
-                )}
-                {/* <Ionicons
+          <TouchableOpacity
+            onPress={() => {
+              setLike(!like);
+            }}
+            style={{
+              alignItems: 'center',
+              marginStart: -20,
+            }}>
+            {like ? (
+              <HeartRed width={24} height={24} />
+            ) : (
+              <HeartOutline width={24} height={24} />
+            )}
+            {/* <Ionicons
               name={like ? 'heart' : 'heart-outline'}
               size={24}
               color={like ? colors.lightRed : colors.grey}
             /> */}
-              </TouchableOpacity>
-          }
+          </TouchableOpacity>
         </View>
 
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -513,7 +459,6 @@ export const ProductDetailScreen = ({ navigation, route }) => {
         </View>
       </View>
       <ProductImageScreeen
-        data={images}
         isShow={showImages != -1}
         pos={showImages != -1 ? showImages : 0}
         onClose={() => {
@@ -539,10 +484,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
           setOnGauranty(true)
         }}
       />
-    </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
-      setData(undefined)
-      callAPI()
-    }} />
+    </View>
   );
 };
 // MARK: - Review Section
@@ -711,7 +653,7 @@ const CommonButton = ({
   );
 };
 
-const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle }) => {
+const ProductDesclamenation = ({ isGauranty = false, onGauranctCancle }) => {
   const [showColorSize, setShowColorSize] = useState(false);
   const [showGurantees, setShowGurantees] = useState(isGauranty);
 
@@ -763,7 +705,7 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle }) =
       />
       <TextWithIcon
         Icon={Chars}
-        title={getCharachterstics(item.attributes.ruAttribute)}
+        title="Бренд • Материал • Метод обработки"
         onClick={() => {
           setShowCharacterstics(true);
         }}
@@ -792,7 +734,6 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle }) =
         }}
       />
       <CharacterSticsScreen
-        data={item.attributes.ruAttribute}
         isShow={showCharacterstics}
         onClose={() => {
           setShowCharacterstics(false);
@@ -1088,7 +1029,7 @@ const ShopFeaturedProduct = ({ onClick }) => {
   );
 };
 
-const ProductImages = ({ images, onClick }) => {
+const ProductImages = ({ onClick }) => {
   return (
     <View>
 
@@ -1126,14 +1067,14 @@ const ProductImages = ({ images, onClick }) => {
           }}
         />
       </View>
-      {images.map((item, index) => (
+      {imagesArray.map((item, index) => (
         <TouchableOpacity
           onPress={() => {
             onClick(index);
           }}
           style={{ paddingBottom: 8 }}>
           <Image
-            source={{ uri: item }}
+            source={{ uri: imagesUrl.shoes }}
             style={{ width: '100%', height: 385 }}
           />
         </TouchableOpacity>
@@ -1142,7 +1083,7 @@ const ProductImages = ({ images, onClick }) => {
   );
 };
 
-const RelatedProducts = ({ item, onclick }) => {
+const RelatedProducts = ({ onclick }) => {
   return (
     <View style={{ marginBottom: 100, paddingStart: 9 }}>
       <View
@@ -1198,9 +1139,9 @@ const RelatedProducts = ({ item, onclick }) => {
         />
       </View>
       <FlatList
-        data={item}
+        data={data}
         keyExtractor={item => {
-          return item._id.toString();
+          return item.id.toString();
         }}
         scrollEnabled={false}
         numColumns={2}
@@ -1218,10 +1159,10 @@ const RelatedProducts = ({ item, onclick }) => {
                 marginTop: 8,
               }}
               onPress={() => {
-                onclick(item)
+                onclick();
               }}>
               <Image
-                source={item.images != '' ? { uri: item.images } : appIcons.shoeImageURL}
+                source={appIcons.shoeImageURL}
                 style={{
                   height: 265,
                   paddingHorizontal: 1,
@@ -1249,34 +1190,31 @@ const RelatedProducts = ({ item, onclick }) => {
                 <Text
                   style={{
                     marginLeft: 4,
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: '500',
                     color: colors.black
                   }}
                   numberOfLines={1}>
-                  {item.name ? item.name : 'Футболка'}
+                  Футболка
                 </Text>
               </View>
               <View
-                style={{
-                  flexDirection: 'row', paddingLeft: 8, paddingTop: 4,
-                  justifyContent: 'space-between'
-                }}>
+                style={{ flexDirection: 'row', paddingLeft: 8, paddingTop: 4 }}>
                 <View style={{ flexDirection: 'row', width: '30%' }}>
                   <Text
                     style={{
                       fontSize: 17,
                       color: '#ff7600',
-                      fontWeight: 'bold'
+                      fontFamily: 'SegoeUI',
                     }}>
-                    {item.price ? item.price : "999"}
+                    999
                   </Text>
                   <Text
                     style={{
                       paddingTop: 6,
                       color: '#ff7600',
-                      fontSize: 11,
-                      fontWeight: '400'
+                      fontSize: 12,
+                      fontFamily: 'SegoeUI',
                     }}>
                     c.
                   </Text>
@@ -1284,13 +1222,12 @@ const RelatedProducts = ({ item, onclick }) => {
                 <Text
                   numberOfLines={1}
                   style={{
+                    width: '70%',
                     color: '#AAAAAA',
                     paddingTop: 3,
-
-                    fontWeight: '400',
-                    fontSize: 11
+                    fontFamily: 'SegoeUI',
                   }}>
-                  {`${item.views}${AppString.views}`}
+                  {item.desc}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -1301,7 +1238,7 @@ const RelatedProducts = ({ item, onclick }) => {
   );
 };
 
-const ProductDetails = ({ item }) => {
+const ProductDetails = () => {
   return (
     <View
       style={{
@@ -1327,7 +1264,7 @@ const ProductDetails = ({ item }) => {
               styles.textStyle,
               { fontSize: 21, color: colors.lightOrange },
             ]}>
-            {item.price ? item.price : '178с.'}с.
+            {'178с.'}
           </Text>
           <Text
             style={[
@@ -1338,7 +1275,7 @@ const ProductDetails = ({ item }) => {
                 textDecorationLine: 'line-through',
               },
             ]}>
-            {item.price ? item.price : '178с.'}с.
+            {'178с.'}
           </Text>
         </View>
         <RatingView />
@@ -1358,7 +1295,7 @@ const ProductDetails = ({ item }) => {
             }}
             resizeMode="cover"
           />{' '}
-          {item.productName}
+          {'ORT Product name子子子子子子子子子子子子男 子子子子子子子子'}
         </Text>
       </View>
 
@@ -1369,11 +1306,11 @@ const ProductDetails = ({ item }) => {
             fontSize: 13,
             color: colors.grey,
             alignSelf: 'flex-end',
-            marginTop: 2,
+            marginTop: -20,
             paddingBottom: 6,
           },
         ]}>
-        {`продано ${item.soldUnits ? item.soldUnits : '15'}`}
+        {'продано 15'}
       </Text>
     </View>
   );

@@ -8,116 +8,34 @@ import {
   Image,
   FlatList,
   Pressable,
-  ActivityIndicator,
 } from 'react-native';
-import { ScrollView } from 'react-native-virtualized-view';
 import LinearGradient from 'react-native-linear-gradient';
+import {RouteNames} from '../utils/RouteNames';
+import {colors} from '../utils/AppColors';
+import React, {useEffect, useState} from 'react';
+import {fontFamily} from '../utils/Fonts';
 import MasonryList from '@react-native-seoul/masonry-list';
-import { dimensions } from '../utils/sizes';
-import { RouteNames } from '../utils/RouteNames';
-import { colors } from '../utils/AppColors';
-import React, { useEffect, useState } from 'react';
-import { fontFamily } from '../utils/Fonts';
-
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import ImageOutline from '../../assets/Icons/image-outline.svg';
-import { appIcons } from '../utils/AppIcons';
-import { getAPICall } from '../Netowork/Apis';
-import { categoriesModule, ProductAPIs } from '../Netowork/Constants';
-import { ProgressView, RetryWhenErrorOccur } from '../components/Dialogs';
-import { SvgUri } from 'react-native-svg';
-import { AppString } from '../utils/AppStrings';
+import {appIcons} from '../utils/AppIcons';
+import {getAPICall} from '../Netowork/Apis';
+import {categoriesModule, products} from '../Netowork/Constants';
+import {ProgressView, RetryWhenErrorOccur} from '../components/Dialogs';
 
-export interface CommonModal {
-  isSuccess: boolean,
-  data: any
+interface CommonModal {
+  isSuccess: boolean;
+  data: any;
 }
 
 interface PagingData {
-  total: number,
-  remaining: number,
-  current: number,
-  pages: number
-}
-interface Product {
-  id: number;
-  imageURL: string | any;
-  desc: string;
-}
-interface Category {
-  id: number;
-  desc: string;
+  total: number;
+  remaining: number;
+  current: number;
+  pages: number;
 }
 const numColumns = 5;
-const dataResponse: Product[] = [
-  {
-    id: 1,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 2,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 3,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 4,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 5,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 6,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 7,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 8,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 9,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 10,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-];
 
-const categoryData: Category[] = [
-  { id: 1, desc: 'Men' },
-  { id: 2, desc: 'Women' },
-  { id: 3, desc: 'Child' },
-  { id: 4, desc: 'Shoes' },
-  { id: 5, desc: 'Bags' },
-  { id: 6, desc: 'Electro' },
-  { id: 7, desc: 'Auto' },
-  { id: 8, desc: 'Home' },
-  { id: 9, desc: 'Beauty' },
-  { id: 10, desc: 'Suits' },
-  // { id: 11, desc: "Accesso" },
-  // { id: 12, desc: "Make-Up" },
-];
-
-const HeaderItem = ({ onSearchClick }) => (
+const HeaderItem = ({onSearchClick}: {onSearchClick: () => void}) => (
   <View style={styles.header}>
     <TextInput
       style={styles.searchBox}
@@ -127,8 +45,8 @@ const HeaderItem = ({ onSearchClick }) => (
     <TouchableOpacity style={styles.button} onPress={onSearchClick}>
       <LinearGradient
         colors={['#FF7600', '#FC4A1A']}
-        start={{ x: 0.4, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        start={{x: 0.4, y: 0}}
+        end={{x: 1, y: 1}}
         style={styles.linearGradient}>
         <Text style={styles.searchButtonText}>Поиск</Text>
       </LinearGradient>
@@ -136,118 +54,124 @@ const HeaderItem = ({ onSearchClick }) => (
   </View>
 );
 
-const MainCategoriesItem = ({ navigation, data }) => {
-
-
-
-  return data && data.isSuccess ? <View style={{ width: '100%' }}>
-    <FlatList
-      style={styles.categories}
-      scrollEnabled={false}
-      data={data.data.data.slice(0, data.data.data.lenght > 9 ? 9 : data.data.data.lenght)}
-      keyExtractor={item => {
-        return item._id.toString();
-      }}
-      numColumns={5}
-      renderItem={({ item, index }) => {
-        return (
-          <View
-            style={{
-              flex: 1 / 5,
-            }}>
-            {index == 9 ? (
-              <TouchableOpacity onPress={() => {
-                navigation.navigate(RouteNames.categories)
-
-              }} style={{ alignItems: 'center' }}>
-                <EllipsisHorizontal width={24} height={38} />
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: colors.black,
-                    paddingBottom: 10,
-                    fontWeight: '400'
-                  }}>
-                  ещё
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={() => {
-                navigation.navigate(RouteNames.product_search_screen)
-
-              }} style={{ alignItems: 'center' }}>
-                {item.image == "" ? <ImageOutline width={50} height={38} /> :
-                  <Image source={{ uri: item.image }} height={38} width={50} />}
-                <Text
-                  style={{
-                    fontSize: 13,
-                    fontWeight: '400',
-                    color: colors.black,
-                    paddingBottom: 10,
-                    textAlign: 'center'
-                  }}>
-                  {item.categoryName}
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        );
-      }}
-    />
-  </View> : null
+const MainCategoriesItem = ({navigation, data}) => {
+  return data && data.isSuccess ? (
+    <View style={{width: '100%'}}>
+      <FlatList
+        numberOfLines={1}
+        style={styles.categories}
+        scrollEnabled={false}
+        data={data.data.data
+          .slice(0, 10)
+          .sort((a: any, b: any) => a.homeIndex - b.homeIndex)}
+        keyExtractor={item => {
+          return item._id.toString();
+        }}
+        numColumns={5}
+        renderItem={({item, index}) => {
+          return (
+            <View
+              style={{
+                flex: 1 / 4,
+                justifyContent: 'center',
+              }}>
+              {index === 9 ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(RouteNames.categories);
+                  }}
+                  style={{alignItems: 'center'}}>
+                  <EllipsisHorizontal width={24} height={38} />
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: colors.black,
+                      paddingBottom: 10,
+                      fontWeight: '400',
+                    }}>
+                    ещё
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(RouteNames.product_search_screen);
+                  }}
+                  style={{alignItems: 'center'}}>
+                  {!item.image ? (
+                    <ImageOutline width={50} height={38} />
+                  ) : (
+                    <Image source={{uri: item.image}} height={38} width={50} />
+                  )}
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      fontSize: 13,
+                      fontWeight: '400',
+                      color: colors.black,
+                      paddingBottom: 10,
+                      textAlign: 'center',
+                    }}>
+                    {item.categoryName}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          );
+        }}
+      />
+    </View>
+  ) : null;
 };
 
-const HomeScreen: React.FC = ({ navigation }) => {
-
-  const [data, setData] = useState<CommonModal>()
-  const [pagingData, setPagingData] = useState<PagingData>()
-
-  const [loading, setLoading] = useState(false)
-  const [dataArray, setArrayData] = useState<Array<any>>([])
-  const [categoryData, setCategoryData] = useState<CommonModal>()
+const HomeScreen: React.FC = ({navigation}) => {
+  const [data, setData] = useState<CommonModal>();
+  const [pagingData, setPagingData] = useState<PagingData>();
+  const [loading, setLoading] = useState(false);
+  const [dataArray, setDataArray] = useState<Array<any>>([]);
+  const [categoryData, setCategoryData] = useState<CommonModal>();
 
   useEffect(() => {
-    callCategoryAPI()
-    callAPI()
-  }, [])
+    callCategoryAPI();
+    callAPI();
+  }, []);
 
   const callAPI = (page = 1) => {
-    setLoading(true)
+    setLoading(true);
 
-    getAPICall(ProductAPIs.getProducts + `${page}`, (res: any) => {
+    getAPICall(products.getProducts + `${page}`, (res: any) => {
       if (res.isSuccess) {
-        setPagingData(res.data.data.pages)
-        setArrayData([...dataArray, ...res.data.data.products])
+        setPagingData(res.data.data.pages);
+        setDataArray([...dataArray, ...res.data.data.products]);
       }
-      setLoading(false)
-      setData(res)
-    })
-  }
+      setLoading(false);
+      setData(res);
+    });
+  };
 
-  const featchMore = () => {
-    if (data?.isSuccess && pagingData && pagingData?.pages > pagingData?.current) {
-      callAPI(pagingData.current + 1)
+  const fetchMore = () => {
+    if (
+      data?.isSuccess &&
+      pagingData &&
+      pagingData?.pages > pagingData?.current
+    ) {
+      callAPI(pagingData.current + 1);
     }
-  }
-
-
-
-
-
+  };
 
   const callCategoryAPI = () => {
+    getAPICall(categoriesModule.getHomePageCategories, (res: any) => {
+      setCategoryData(res);
+    });
+  };
 
-    getAPICall(categoriesModule.getCategories, (res: any) => {
-
-      setCategoryData(res)
-    })
-  }
-
-  return (dataArray && pagingData ?
+  return dataArray && pagingData ? (
     <View style={styles.container}>
       <HeaderItem
         onSearchClick={() => {
-          navigation.navigate(RouteNames.product_search_screen, { isRoute: true })
+          navigation.navigate(RouteNames.product_search_screen, {
+            isRoute: true,
+          });
         }}
       />
       <View style={styles.grid}>
@@ -257,32 +181,39 @@ const HomeScreen: React.FC = ({ navigation }) => {
             return item._id;
           }}
           ListFooterComponent={
-            loading ? <ProgressView ht={undefined} /> : data?.isSuccess ? null :
-              <RetryWhenErrorOccur ht={120} data={data} onClick={() => {
-
-                callAPI(pagingData.current + 1)
-              }} />
+            loading ? (
+              <ProgressView ht={undefined} />
+            ) : data?.isSuccess ? null : (
+              <RetryWhenErrorOccur
+                ht={120}
+                // ht={'120'} //Edited by Bharat on 29/01/2024
+                data={data}
+                onClick={() => {
+                  callAPI(pagingData.current + 1);
+                }}
+              />
+            )
           }
-          onEndReached={featchMore}
+          onEndReached={fetchMore}
           onEndReachedThreshold={0.1}
           ListHeaderComponent={
             <MainCategoriesItem navigation={navigation} data={categoryData} />
           }
           showsVerticalScrollIndicator={false}
-          style={{ marginHorizontal: 7 }}
+          style={{marginHorizontal: 7}}
           numColumns={2}
-          renderItem={({ item, i }) => {
+          renderItem={({item, i}) => {
             return (
               <Pressable
-                style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
+                style={[styles.gridViewItemStyle, {paddingBottom: 8}]}
                 onPress={() => {
-                  navigation.navigate(RouteNames.product_detail, { id: item._id });
+                  navigation.navigate(RouteNames.product_detail);
                 }}>
                 <Image
-                  source={item.images != '' ? { uri: item.images } : appIcons.shoeImageURL}
+                  source={appIcons.shoeImageURL}
                   style={[
                     styles.gridViewItemImage,
-                    { height: i % 3 != 1 ? 240 : 277 },
+                    {height: i % 3 != 1 ? 240 : 277},
                   ]}
                 />
                 <View
@@ -294,21 +225,20 @@ const HomeScreen: React.FC = ({ navigation }) => {
                   }}>
                   {/* <SvgUri style={{ borderRadius: 8, overflow: 'hidden' }}
                     height={15} width={15} uri={item.country_flag} /> */}
-                  <Image source={appIcons.china}
-                    style={{ borderRadius: 8, height: 15, width: 15 }} />
+                  <Image
+                    source={appIcons.china}
+                    style={{borderRadius: 8, height: 15, width: 15}}
+                  />
                   <Text
                     style={{
                       marginLeft: 4,
                       fontSize: 13,
                       paddingBottom: 1,
                       fontWeight: '500',
-                      paddingEnd: 12,
-                      color: colors.black
+                      color: colors.black,
                     }}
                     numberOfLines={1}>
-                    {
-                      item.name
-                    }
+                    {item.name}
                   </Text>
                 </View>
                 <View
@@ -316,9 +246,9 @@ const HomeScreen: React.FC = ({ navigation }) => {
                     flexDirection: 'row',
                     paddingLeft: 8,
                     marginTop: 3,
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
                   }}>
-                  <View style={{ flexDirection: 'row' }}>
+                  <View style={{flexDirection: 'row'}}>
                     <Text
                       style={{
                         fontSize: 17,
@@ -347,7 +277,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
                       marginEnd: 15,
                       fontFamily: fontFamily.regular,
                     }}>
-                    {`${item.views}${AppString.views}`}
+                    {`${item.views}+просмотров`}
                   </Text>
                 </View>
               </Pressable>
@@ -355,12 +285,19 @@ const HomeScreen: React.FC = ({ navigation }) => {
           }}
         />
       </View>
-    </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
-      setData(undefined)
-      setCategoryData(undefined)
-      callCategoryAPI()
-      callAPI()
-    }} />
+    </View>
+  ) : loading ? (
+    <ProgressView />
+  ) : (
+    <RetryWhenErrorOccur
+      data={data}
+      onClick={() => {
+        setData(undefined);
+        setCategoryData(undefined);
+        callCategoryAPI();
+        callAPI();
+      }}
+    />
   );
 };
 
@@ -393,7 +330,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingLeft: 12,
     fontFamily: fontFamily.regular,
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   button: {
     marginLeft: -82.5,
@@ -450,7 +387,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4.5,
     marginVertical: 4.5,
     width: 'auto',
-    flex: 0.5
+    flex: 0.5,
   },
   gridViewItemImage: {
     paddingHorizontal: 1,

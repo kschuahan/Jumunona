@@ -1,58 +1,72 @@
-import axios from "axios"
-import { apiErrorHandling, apiSucessErrorHandling } from "./ApiErrorHandling"
-import { axiosClient } from "./AxiosClient"
+import {apiSucessHandling, apiErrorHandling} from './ApiErrorSuccessHandling';
+import {axiosClient} from './AxiosClient';
 
-import { Alert, Platform } from "react-native"
-import { AsyncStorageKeys, getValue } from "../utils/AsyncStorage"
+import {Alert, Platform} from 'react-native';
 
+const token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Yjg5NTY2Mjg4NzNhNDY3MTI3ZTdjNSIsImlhdCI6MTcwNjU5NjE5MywiZXhwIjoxNzA5MTg4MTkzfQ.o_AiFA2tjUFkOg-J0n7Ets_5FHN89mLpwCr89w2Q40U';
 
-// const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjIzYWQ0MmExYWZmYjIyZTU1NjAyNiIsImlhdCI6MTcwNjE4MzIwMSwiZXhwIjoxNzA4Nzc1MjAxfQ.AjJCJKGKqt2ZtjldKb0QGg8CaNJaakYxIMcYz7DB3Qc'
-
-export const getAPICall = async (endPoint: any, onResponse: any,
-  item: any = undefined, authToken = true) => {
-
-    const token = await getValue(AsyncStorageKeys.authToken)
-    console.log("token", token)
-  await axiosClient(authToken ? token : undefined).get(endPoint, { params: item })
+export const getAPICall = async (
+  endPoint: any,
+  onResponse: any,
+  item: any = undefined,
+  authToken = true,
+) => {
+  await axiosClient(authToken ? token : undefined)
+    .get(endPoint, {params: item})
     .then((response: any) => {
-
-      apiSucessErrorHandling(response, (isSuccess: boolean) => {
-        console.log("suc", isSuccess, response.data);
-        onResponse({ isSuccess: isSuccess, data: isSuccess ? response.data : response.message })
-      })
-    }).catch((error: any) => {
-      apiErrorHandling(error, ((message: any) => {
-        console.log("suc", error.message);
-        onResponse({ isSuccess: false, data: message })
-      }))
+      apiSucessHandling(response, (isSuccess: boolean) => {
+        // console.log('suc', isSuccess, response.data);
+        onResponse({
+          isSuccess: isSuccess,
+          data: isSuccess ? response.data : response.message,
+        });
+      });
     })
-}
+    .catch((error: any) => {
+      apiErrorHandling(error, (message: any) => {
+        // console.log('suc', error.message);
+        onResponse({isSuccess: false, data: message});
+      });
+    });
+};
 
-export const postAPICall = async (item: any, endPoint: any, authToken = true, onResponse: any) => {
-
+export const postAPICall = async (
+  item: any,
+  endPoint: any,
+  authToken = true,
+  onResponse: any,
+) => {
   // let token = await getValue(AsyncStorageKeys.authToken)
-   const token = await getValue(AsyncStorageKeys.authToken)
-   console.log("token", token)
-  await axiosClient(authToken ? token : undefined).post(endPoint, item).then((response: any) => {
-    console.log("ffffff", response);
-    apiSucessErrorHandling(response, (isSuccess: boolean) => {
-      console.log("suc", isSuccess, response.data);
-      onResponse({ isSuccess: isSuccess, data: isSuccess ? response.data : response.data.message ? response.data.message : response.data })
+  await axiosClient(authToken ? token : undefined)
+    .post(endPoint, item)
+    .then((response: any) => {
+      console.log('ffffff', response);
+      apiSucessHandling(response, (isSuccess: boolean) => {
+        // console.log('suc', isSuccess, response.data);
+        onResponse({
+          isSuccess: isSuccess,
+          data: isSuccess
+            ? response.data
+            : response.data.message
+            ? response.data.message
+            : response.data,
+        });
+      });
     })
-  }).catch((error: any) => {
-    apiErrorHandling(error, ((message: any) => {
-      console.log("suc error", error.message);
-      onResponse({ success: false, data: message })
-    }))
-  })
-}
+    .catch((error: any) => {
+      apiErrorHandling(error, (message: any) => {
+        // console.log('suc error', error.message);
+        onResponse({success: false, data: message});
+      });
+    });
+};
 
 // export const postMultipartData = async (file: FileModal, item: any, endPoint: any, authToken = true, onResponse) => {
 
 //   let token = await getValue(AsyncStorageKeys.authToken)
 
 //   let formData = createFormData(file, item)
-
 
 //   await axiosClient("").post(endPoint, formData, {
 //     headers: {
@@ -61,7 +75,7 @@ export const postAPICall = async (item: any, endPoint: any, authToken = true, on
 //     }
 //   }).then(response => {
 //     console.log("fffffdsfljskfjklsjdlfjlsjfdjsdjfklsdflff", response);
-//     apiSucessErrorHandling(response, (isSuccess: boolean) => {
+//     apiSucessHandling(response, (isSuccess: boolean) => {
 //       console.log("suc", isSuccess, response.data);
 //       onResponse({ isSuccess: isSuccess, data: isSuccess ? response.data : response.message })
 //       if (!isSuccess) {
@@ -78,7 +92,6 @@ export const postAPICall = async (item: any, endPoint: any, authToken = true, on
 //     }))
 //   })
 // }
-
 
 // export const createFormData = (file: FileModal, body: any) => {
 //   const data = new FormData();
