@@ -6,14 +6,19 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { RouteNames } from '../../utils/RouteNames';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import RootStackParamList from '../../utils/navigations';
 import { colors } from '../../utils/AppColors';
 import AboutUs from '../../../assets/Icons/AppLogo.svg';
+import { CenterProgressView } from '../../components/Dialogs';
+import { postAPICall } from '../../Netowork/Apis';
+import { AuthAPIs } from '../../Netowork/Constants';
+import { AsyncStorageKeys, saveValue } from '../../utils/AsyncStorage';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -25,104 +30,201 @@ interface LoginScreenProps {
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+
+  const [mobile, setMobile] = useState('');
+  const [password, setPassword] = useState('');
+  const [mobileErr, setMobileErr] = useState('');
+  const [passErr, setPassErr] = useState('');
+  const [loading, setLoading] = useState(false)
+
+  const validate = () => {
+    var isValid = true
+    if (mobile.length < 10) {
+      setMobileErr("Enter valid mobile no.")
+      isValid = false
+    } else {
+      setMobileErr('')
+    }
+    if (password.length < 8) {
+      setPassErr("Enter valid password.")
+      isValid = false
+    }  else {
+      setPassErr('')
+    }
+    return isValid
+  }
+
+  const login = () => {
+    if (validate()) {
+      setLoading(true)
+      postAPICall(
+        {
+          phoneNumber: '91' + mobile,
+          password: password,
+       
+        },
+        AuthAPIs.login,
+        false,
+        (res: any) => {
+        console.warn(res.data.accessToken)
+          if (res.isSuccess) {
+            if (res.data.accessToken) {
+            saveValue(AsyncStorageKeys.authToken, res.data.accessToken)
+            navigation.replace("Main");
+            } else {
+              Alert.alert(res.data)
+            }
+          } else {
+            Alert.alert(res.data)
+          }
+          setLoading(false)
+        }
+      )
+    }
+  }
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.top}>
-        <Text
-          style={{
-            fontSize: 21,
-            fontWeight: "400",
-            paddingBottom: 24,
-          }}
-        >
-          Вход
-        </Text>
-        <AboutUs
-          style={{ marginTop: 16, borderRadius: 24 }}
-        />
-        <Text
-          style={{
-            fontSize: 18,
-            fontFamily: "SegoeUIBold",
-            color: "#FF7600",
-            paddingTop: 8,
-          }}
-        >
-          Jumunona
-        </Text>
-      </View>
-      <View style={styles.middle}>
-        <View style={{ marginHorizontal: 12 }}>
-          <View
-            style={{ flexDirection: "row", width: "100%", marginBottom: 13 }}
+    <View style={styles.container}>
+      <ScrollView style={styles.container}>
+        <View style={styles.top}>
+          <Text
+            style={{
+              fontSize: 21,
+              fontWeight: "400",
+              paddingBottom: 24,
+            }}
           >
-            <LinearGradient
-              colors={["#ff7600", "#ffc500"]}
-              start={{ x: 0.4, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={{
-                width: "40%",
-                height: 34,
-                borderRadius: 24,
-                paddingLeft: 8,
-              }}
+            Вход
+          </Text>
+          <AboutUs
+            style={{ marginTop: 16, borderRadius: 24 }}
+          />
+          <Text
+            style={{
+              fontSize: 18,
+              fontFamily: "SegoeUIBold",
+              color: "#FF7600",
+              paddingTop: 8,
+            }}
+          >
+            Jumunona
+          </Text>
+        </View>
+        <View style={styles.middle}>
+          <View style={{ marginHorizontal: 12 }}>
+            <View
+              style={{ width: "100%", marginBottom: 13 }}
             >
-              <Text style={styles._992}>+992</Text>
+              <View
+                style={{ flexDirection: "row", width: "100%" }}
+              >
+                <LinearGradient
+                  colors={["#ff7600", "#ffc500"]}
+                  start={{ x: 0.4, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{
+                    width: "40%",
+                    height: 34,
+                    borderRadius: 24,
+                    paddingLeft: 8,
+                  }}
+                >
+                  <Text style={styles._992}>+992</Text>
 
-              {/* <TextInput placeholder="+91" style={{flex:1, justifyContent:'center', alignItems:'center'}}/> */}
-            </LinearGradient>
+                  {/* <TextInput placeholder="+91" style={{flex:1, justifyContent:'center', alignItems:'center'}}/> */}
+                </LinearGradient>
 
-            <TextInput
-              placeholder="Введите ваш номер телефона"
-              style={styles.mobileTextInput}
-            ></TextInput>
-          </View>
-          <View>
-            <TextInput
-              placeholder="Введите свой пароль"
-              style={styles.passwordTextInput}
-            ></TextInput>
+                <TextInput
+                  onChangeText={text => {
+                    setMobile(text);
+                  }}
+                  value={mobile}
+                  placeholder="Введите ваш номер телефона"
+                  style={styles.mobileTextInput}
+                ></TextInput>
+               
+              </View>
+              {
+                  mobileErr.length > 0
+                    ? <Text
+                      style={{
+                        color: colors.lightRed,
+                        fontSize: 14,
+                        fontWeight: '400',
+                        paddingStart: 8
+                      }}>
+                      {mobileErr}
+                    </Text>
+                    : null
+
+                }
+
+            </View>
+            <View style = {{ marginBottom: 13,}}>
+              <TextInput
+                placeholder="Введите свой пароль"
+                style={styles.passwordTextInput}
+                onChangeText={text => {
+                  setPassword(text);
+                }}
+                value={password}
+              ></TextInput>
+              {
+                passErr.length > 0
+                  ? <Text
+                    style={{
+                      color: colors.lightRed,
+                      fontSize: 14,
+                      fontWeight: '400',
+                      paddingStart: 8
+                    }}>
+                    {passErr}
+                  </Text>
+                  : null
+              }
+            </View>
           </View>
         </View>
-      </View>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.replace("Main");
-        }}
-        style={styles.loginButton}
-      >
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          colors={["#ffc500", "#FC4A1A"]}
-          style={styles.buttonGradient}
+        <TouchableOpacity
+          onPress={() => {
+            login()
+          }}
+          style={styles.loginButton}
         >
-          <Text
-            style={{ fontSize: 16, color: "#fff", fontWeight: "bold" }}
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            colors={["#ffc500", "#FC4A1A"]}
+            style={styles.buttonGradient}
           >
-            Войти
+            <Text
+              style={{ fontSize: 16, color: "#fff", fontWeight: "bold" }}
+            >
+              Войти
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+        <View style={styles.bottom}>
+          <Text
+            onPress={() => {
+              navigation.replace("ForgotPassword");
+            }}
+            style={{ fontWeight: "600", fontSize: 12, color: '#3D3D3D' }}
+          >
+            Забыли пароль?
           </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-      <View style={styles.bottom}>
-        <Text
-          onPress={() => {
-            navigation.replace("ForgotPassword");
-          }}
-          style={{ fontWeight: "600", fontSize: 12, color: '#3D3D3D' }}
-        >
-          Забыли пароль?
-        </Text>
-        <Text
-          onPress={() => {
-            navigation.replace("Signup");
-          }}
-          style={{ fontWeight: "600", fontSize: 12, color: '#3D3D3D' }}
-        >
-          Зарегистрироваться
-        </Text>
-      </View>
-    </ScrollView>
+          <Text
+            onPress={() => {
+              navigation.replace("Signup");
+            }}
+            style={{ fontWeight: "600", fontSize: 12, color: '#3D3D3D' }}
+          >
+            Зарегистрироваться
+          </Text>
+        </View>
+      </ScrollView>
+      {loading ? <CenterProgressView /> : null}
+    </View>
   );
 };
 
@@ -181,7 +283,7 @@ const styles = StyleSheet.create({
     height: 34,
     borderRadius: 24,
     paddingLeft: 16,
-    marginBottom: 13,
+   
     fontFamily: "SegoeUI",
     fontSize: 14,
     paddingVertical: 0

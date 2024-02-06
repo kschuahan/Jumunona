@@ -8,21 +8,27 @@ import {
   Image,
   FlatList,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
+import {ScrollView} from 'react-native-virtualized-view';
 import LinearGradient from 'react-native-linear-gradient';
+import MasonryList from '@react-native-seoul/masonry-list';
+import {dimensions} from '../utils/sizes';
 import {RouteNames} from '../utils/RouteNames';
 import {colors} from '../utils/AppColors';
 import React, {useEffect, useState} from 'react';
 import {fontFamily} from '../utils/Fonts';
-import MasonryList from '@react-native-seoul/masonry-list';
+
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import ImageOutline from '../../assets/Icons/image-outline.svg';
 import {appIcons} from '../utils/AppIcons';
 import {getAPICall} from '../Netowork/Apis';
-import {categoriesModule, products} from '../Netowork/Constants';
+import {categoriesModule, ProductAPIs} from '../Netowork/Constants';
 import {ProgressView, RetryWhenErrorOccur} from '../components/Dialogs';
+import {SvgUri} from 'react-native-svg';
+import {AppString} from '../utils/AppStrings';
 
-interface CommonModal {
+export interface CommonModal {
   isSuccess: boolean;
   data: any;
 }
@@ -33,9 +39,85 @@ interface PagingData {
   current: number;
   pages: number;
 }
+interface Product {
+  id: number;
+  imageURL: string | any;
+  desc: string;
+}
+interface Category {
+  id: number;
+  desc: string;
+}
 const numColumns = 5;
+const dataResponse: Product[] = [
+  {
+    id: 1,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 2,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 3,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 4,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 5,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 6,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 7,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 8,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 9,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+  {
+    id: 10,
+    imageURL: appIcons.shoeImageURL,
+    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+  },
+];
 
-const HeaderItem = ({onSearchClick}: {onSearchClick: () => void}) => (
+const categoryData: Category[] = [
+  {id: 1, desc: 'Men'},
+  {id: 2, desc: 'Women'},
+  {id: 3, desc: 'Child'},
+  {id: 4, desc: 'Shoes'},
+  {id: 5, desc: 'Bags'},
+  {id: 6, desc: 'Electro'},
+  {id: 7, desc: 'Auto'},
+  {id: 8, desc: 'Home'},
+  {id: 9, desc: 'Beauty'},
+  {id: 10, desc: 'Suits'},
+  // { id: 11, desc: "Accesso" },
+  // { id: 12, desc: "Make-Up" },
+];
+
+const HeaderItem = ({onSearchClick}) => (
   <View style={styles.header}>
     <TextInput
       style={styles.searchBox}
@@ -58,7 +140,6 @@ const MainCategoriesItem = ({navigation, data}) => {
   return data && data.isSuccess ? (
     <View style={{width: '100%'}}>
       <FlatList
-        numberOfLines={1}
         style={styles.categories}
         scrollEnabled={false}
         data={data.data.data
@@ -72,10 +153,9 @@ const MainCategoriesItem = ({navigation, data}) => {
           return (
             <View
               style={{
-                flex: 1 / 4,
-                justifyContent: 'center',
+                flex: 1 / 5,
               }}>
-              {index === 9 ? (
+              {index == 9 ? (
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate(RouteNames.categories);
@@ -98,13 +178,12 @@ const MainCategoriesItem = ({navigation, data}) => {
                     navigation.navigate(RouteNames.product_search_screen);
                   }}
                   style={{alignItems: 'center'}}>
-                  {!item.image ? (
+                  {item.image == '' ? (
                     <ImageOutline width={50} height={38} />
                   ) : (
                     <Image source={{uri: item.image}} height={38} width={50} />
                   )}
                   <Text
-                    numberOfLines={1}
                     style={{
                       fontSize: 13,
                       fontWeight: '400',
@@ -127,8 +206,9 @@ const MainCategoriesItem = ({navigation, data}) => {
 const HomeScreen: React.FC = ({navigation}) => {
   const [data, setData] = useState<CommonModal>();
   const [pagingData, setPagingData] = useState<PagingData>();
+
   const [loading, setLoading] = useState(false);
-  const [dataArray, setDataArray] = useState<Array<any>>([]);
+  const [dataArray, setArrayData] = useState<Array<any>>([]);
   const [categoryData, setCategoryData] = useState<CommonModal>();
 
   useEffect(() => {
@@ -139,17 +219,17 @@ const HomeScreen: React.FC = ({navigation}) => {
   const callAPI = (page = 1) => {
     setLoading(true);
 
-    getAPICall(products.getProducts + `${page}`, (res: any) => {
+    getAPICall(ProductAPIs.getProducts + `${page}`, (res: any) => {
       if (res.isSuccess) {
         setPagingData(res.data.data.pages);
-        setDataArray([...dataArray, ...res.data.data.products]);
+        setArrayData([...dataArray, ...res.data.data.products]);
       }
       setLoading(false);
       setData(res);
     });
   };
 
-  const fetchMore = () => {
+  const featchMore = () => {
     if (
       data?.isSuccess &&
       pagingData &&
@@ -186,7 +266,6 @@ const HomeScreen: React.FC = ({navigation}) => {
             ) : data?.isSuccess ? null : (
               <RetryWhenErrorOccur
                 ht={120}
-                // ht={'120'} //Edited by Bharat on 29/01/2024
                 data={data}
                 onClick={() => {
                   callAPI(pagingData.current + 1);
@@ -194,7 +273,7 @@ const HomeScreen: React.FC = ({navigation}) => {
               />
             )
           }
-          onEndReached={fetchMore}
+          onEndReached={featchMore}
           onEndReachedThreshold={0.1}
           ListHeaderComponent={
             <MainCategoriesItem navigation={navigation} data={categoryData} />
@@ -207,10 +286,16 @@ const HomeScreen: React.FC = ({navigation}) => {
               <Pressable
                 style={[styles.gridViewItemStyle, {paddingBottom: 8}]}
                 onPress={() => {
-                  navigation.navigate(RouteNames.product_detail);
+                  navigation.navigate(RouteNames.product_detail, {
+                    id: item._id,
+                  });
                 }}>
                 <Image
-                  source={appIcons.shoeImageURL}
+                  source={
+                    item.images != ''
+                      ? {uri: item.images}
+                      : appIcons.shoeImageURL
+                  }
                   style={[
                     styles.gridViewItemImage,
                     {height: i % 3 != 1 ? 240 : 277},
@@ -235,6 +320,7 @@ const HomeScreen: React.FC = ({navigation}) => {
                       fontSize: 13,
                       paddingBottom: 1,
                       fontWeight: '500',
+                      paddingEnd: 12,
                       color: colors.black,
                     }}
                     numberOfLines={1}>
@@ -277,7 +363,7 @@ const HomeScreen: React.FC = ({navigation}) => {
                       marginEnd: 15,
                       fontFamily: fontFamily.regular,
                     }}>
-                    {`${item.views}+просмотров`}
+                    {`${item.views}${AppString.views}`}
                   </Text>
                 </View>
               </Pressable>

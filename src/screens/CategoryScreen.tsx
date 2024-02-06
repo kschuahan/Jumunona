@@ -23,7 +23,7 @@ import ImageIcon from '../../assets/Icons/image-outline.svg';
 import {RouteNames} from '../utils/RouteNames';
 import {appIcons} from '../utils/AppIcons';
 import {getAPICall} from '../Netowork/Apis';
-import {categoriesModule, products} from '../Netowork/Constants';
+import {categoriesModule, ProductAPIs} from '../Netowork/Constants';
 import {ProgressView, RetryWhenErrorOccur} from '../components/Dialogs';
 
 interface CommonModal {
@@ -72,7 +72,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
   };
   const callAPI = (page = 1) => {
     setLoading(true);
-    getAPICall(products.getProducts + `${page}`, (response: any) => {
+    getAPICall(ProductAPIs.getProducts + `${page}`, (response: any) => {
       if (response.isSuccess) {
         setPagingData(response.data.data.pages);
         setProductsDataArray([

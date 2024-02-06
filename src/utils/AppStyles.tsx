@@ -1,11 +1,14 @@
-import {Dimensions, Platform, StyleSheet} from 'react-native';
-import {colors} from './AppColors';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
+import { colors } from './AppColors';
+import { fontFamily } from './Fonts';
+import { dimensions } from './sizes';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: colors.whiteF6F6F6,
+    backgroundColor: colors.whiteF6F6F6
+
   },
   centerContent: {
     justifyContent: 'center',
@@ -14,12 +17,13 @@ export const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.whiteF6F6F6,
     padding: 10,
+
   },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    marginHorizontal: 10,
+    marginHorizontal: 10
   },
   profileProduct: {
     flexDirection: 'row',
@@ -77,7 +81,7 @@ export const styles = StyleSheet.create({
   },
 
   primaryCategories: {
-    flexDirection: 'row',
+    flexDirection: "row",
     width: Dimensions.get('window').width,
     height: 35,
     gap: 6,
@@ -88,16 +92,17 @@ export const styles = StyleSheet.create({
     paddingTop: 5,
     paddingLeft: 16,
     flex: 0.9,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderTopLeftRadius: 13,
   },
   downArrowButton: {
-    flexDirection: 'row',
-    height: '100%',
+    flexDirection: "row",
+    height: "100%",
     flex: 0.1,
     borderTopRightRadius: 13,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-  },
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffffff",
+
+  }
 });
