@@ -1,5 +1,9 @@
+
+
+
+
 export const localEnum = {
-  development: 'development',
-  testing: '',
-  production: '',
-};
+    development: 'development',
+    testing: '',
+    production: ''
+}

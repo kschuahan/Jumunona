@@ -1,4 +1,4 @@
-import {AppString} from './AppStrings';
+import { AppString } from './AppStrings';
 
 export const RouteNames = {
   home: 'Home',
@@ -44,13 +44,13 @@ export const RouteNames = {
   shopchatScreenUsersList: 'shop Chat Screen User List',
 
   product_search_screen: 'product_search_screen',
-  categories: 'Categories Screen',
+  categories: "Categories Screen",
   chatSetting: AppString.chatSettings,
   shopSettings: 'Shop Settings',
   myAddress: AppString.my_addresses,
   addAndEditpassword: AppString.changeAddress,
 
-  cartConfirmOrder: 'Cart Confirm Order Screen',
+  cartConfirmOrder: "Cart Confirm Order Screen",
   shopHomeScreen: 'ShopHomeScreen',
   myOrder: 'My Order',
   orderDetails: 'Order Details',
@@ -58,15 +58,15 @@ export const RouteNames = {
   logistic_screen: AppString.logistics,
   review: AppString.review,
 
-  changeAddress: 'Change Address',
+  changeAddress: "Change Address",
   select_return_region: AppString.select_your_region,
   refund: AppString.refund,
   return_exchange: AppString.return_exchange,
-  exchangeDetail: 'Exchange Detail Screen',
-  subscribers_screen: 'subscribers_screen',
+  exchangeDetail: "Exchange Detail Screen",
+  subscribers_screen: "subscribers_screen",
   walletScreen: AppString.wallet,
   historyScreen: AppString.story,
-  bodyData: 'BodyData Screen',
-  editBodyData: 'Edit BodyData Screen',
-  help_and_feedback: AppString.feedback_and_help,
+  bodyData: "BodyData Screen",
+  editBodyData: "Edit BodyData Screen",
+  help_and_feedback: AppString.feedback_and_help
 };

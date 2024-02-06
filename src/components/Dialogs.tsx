@@ -10,21 +10,20 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import {styles} from '../utils/AppStyles';
-import {AppString} from '../utils/AppStrings';
-import {useState} from 'react';
+import { styles } from '../utils/AppStyles';
+import { AppString } from '../utils/AppStrings';
+import { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {colors} from '../utils/AppColors';
-import {fontFamily} from '../utils/Fonts';
+import { colors } from '../utils/AppColors';
+import { fontFamily } from '../utils/Fonts';
 
 import CloseCircleOutline from '../../assets/Icons/CloseCircle.svg';
-import {FlatList, GestureHandlerRootView} from 'react-native-gesture-handler';
-import {imagesUrl} from '../utils/AppIcons';
+import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { imagesUrl } from '../utils/AppIcons';
 import CheckGreen from '../../assets/Icons/CheckGreen.svg';
 import CloseIconRed from '../../assets/Icons/CloseIconRed.svg';
-import {RadioButtons} from '../screens/Cart/CartScreen';
+import { RadioButtons } from '../screens/Cart/CartScreen';
 import Internet from '../../assets/Icons/Internet.svg';
-import React from 'react';
 
 export const VerifyDeleteAccountDialog = ({
   isShow = false,
@@ -41,12 +40,12 @@ export const VerifyDeleteAccountDialog = ({
       visible={isShow}
       onRequestClose={onCancel}>
       <View
-        style={[styles.botton_view, {backgroundColor: 'rgba(0, 0,0, .7 )'}]}>
-        <View style={[styles.bottom_sheet, {paddingHorizontal: 10}]}>
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
+        <View style={[styles.bottom_sheet, { paddingHorizontal: 10 }]}>
           <Text
             style={[
               styles.textStyle,
-              {marginTop: 10, fontFamily: fontFamily.bold, fontSize: 17},
+              { marginTop: 10, fontFamily: fontFamily.bold, fontSize: 17 },
             ]}>
             {AppString.verify_phone_no}
           </Text>
@@ -61,12 +60,12 @@ export const VerifyDeleteAccountDialog = ({
           <Text
             style={[
               styles.textStyle,
-              {fontFamily: fontFamily.bold, fontSize: 17},
+              { fontFamily: fontFamily.bold, fontSize: 17 },
             ]}>
             {AppString.confirmation_code}
           </Text>
 
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TextInput
               placeholder={AppString.enter_sms_code}
               style={style.otpText}
@@ -78,8 +77,8 @@ export const VerifyDeleteAccountDialog = ({
             <TouchableOpacity style={style.sendOTPButton}>
               <LinearGradient
                 colors={['#FE8C00', '#FC4A1A']}
-                start={{x: 0.2, y: 0}}
-                end={{x: 1, y: 1}}
+                start={{ x: 0.2, y: 0 }}
+                end={{ x: 1, y: 1 }}
                 style={[
                   style.leftSideGradient,
                   {
@@ -99,13 +98,13 @@ export const VerifyDeleteAccountDialog = ({
               </LinearGradient>
             </TouchableOpacity>
           </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
             <TouchableOpacity
               onPress={onCancel}
-              style={{marginVertical: 10, paddingBottom: 16, width: '45%'}}>
+              style={{ marginVertical: 10, paddingBottom: 16, width: '45%' }}>
               <LinearGradient
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 1}}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
                 colors={['#FE8C00', '#FC4A1A']}
                 style={{
                   elevation: 4,
@@ -158,7 +157,7 @@ export const VerifyDeleteAccountDialog = ({
   );
 };
 
-export const FailAccDeletePopup = ({isShow = false, onConfirm, onCancel}) => {
+export const FailAccDeletePopup = ({ isShow = false, onConfirm, onCancel }) => {
   const [number, setNumber] = useState('');
   const [otp, setOtp] = useState('');
 
@@ -169,7 +168,7 @@ export const FailAccDeletePopup = ({isShow = false, onConfirm, onCancel}) => {
       visible={isShow}
       onRequestClose={onCancel}>
       <View
-        style={[styles.botton_view, {backgroundColor: 'rgba(0, 0,0, .7 )'}]}>
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
         <View
           style={[
             styles.bottom_sheet,
@@ -191,20 +190,29 @@ export const FailAccDeletePopup = ({isShow = false, onConfirm, onCancel}) => {
             ]}>
             {AppString.failed_to_delete_acc}
           </Text>
-          <Text style={[styles.textStyle, {paddingBottom: 20, fontSize: 14}]}>
+          <Text style={[styles.textStyle, { paddingBottom: 20, fontSize: 14 }]}>
             {AppString.failed_acc_delete_reason}
           </Text>
         </View>
-        <Pressable onPress={onCancel} style={{paddingTop: 22}}>
-          <CloseCircleOutline width={31} height={31} color={colors.white} />
+        <Pressable onPress={onCancel} style={{ paddingTop: 22 }}
+        >
+          <CloseCircleOutline
+            width={31}
+            height={31}
+            color={colors.white}
+          />
         </Pressable>
       </View>
     </Modal>
   );
 };
 
-export const LeaveCommentPopup = ({isShow = false, onCancel}) => {
-  const [click, setClick] = useState(false);
+
+
+
+export const LeaveCommentPopup = ({ isShow = false, onCancel }) => {
+
+  const [click, setClick] = useState(false)
 
   return (
     <Modal
@@ -212,33 +220,31 @@ export const LeaveCommentPopup = ({isShow = false, onCancel}) => {
       animationType={'fade'}
       visible={isShow}
       onRequestClose={onCancel}>
+
       <View
-        style={[styles.botton_view, {backgroundColor: 'rgba(0, 0,0, .7 )'}]}>
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )' }]}>
         <View
           style={[
             styles.bottom_sheet,
             {
               justifyContent: 'center',
               alignContent: 'center',
-              width: '95%',
+              width: '95%'
             },
           ]}>
           <TitleWithImages />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: 10,
-            }}>
-            <ViewWithColor Icon={CheckGreen} color="#02AAB0" />
+          <View style={{
+            flexDirection: 'row', alignItems: 'center',
+            justifyContent: 'center', marginTop: 10
+          }}>
+            <ViewWithColor Icon={CheckGreen} color='#02AAB0' />
 
             <Text
               style={[
                 styles.textStyle,
                 {
                   marginStart: 9,
-                  fontWeight: '500',
+                  fontWeight: '500'
                 },
               ]}>
               {'Изображения, детали и комментарии'}
@@ -255,165 +261,146 @@ export const LeaveCommentPopup = ({isShow = false, onCancel}) => {
               justifyContent: 'center',
               alignContent: 'center',
               marginTop: 13,
-              width: '95%',
+              width: '95%'
+
             },
           ]}>
           <TitleWithImages data={[1, 2]} />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-              paddingHorizontal: 14,
-            }}>
+          <View style={{
+            flexDirection: 'row', alignItems: 'center',
+            marginTop: 10,
+            paddingHorizontal: 14
+          }}>
             <ViewWithColor />
             <Text
               style={[
                 styles.textStyle,
                 {
                   marginStart: 9,
-                  fontWeight: '500',
+                  fontWeight: '500'
                 },
               ]}>
               {'Плохое изображение, отсутствует подробный текст'}
             </Text>
           </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-              paddingHorizontal: 14,
-            }}>
-            <RadioButtons
-              size={15}
-              isCheck={click}
-              onClick={() => {
-                setClick(!click);
-              }}
-            />
+
+          <View style={{
+            flexDirection: 'row', alignItems: 'center',
+            marginTop: 10,
+            paddingHorizontal: 14
+          }}>
+
+            <RadioButtons size={15} isCheck={click} onClick={() => {
+              setClick(!click)
+            }} />
             <Text
               style={[
                 styles.textStyle,
                 {
                   marginStart: 9,
-                  color: '#121212',
+                  color: '#121212'
                 },
               ]}>
               {"Don't show again"}
             </Text>
           </View>
-          <TextWithColor text="1" mt={-20} />
+          <TextWithColor text='1' mt={-20} />
+
         </View>
-        <Pressable onPress={onCancel} style={{paddingTop: 22}}>
-          <CloseCircleOutline width={31} height={31} />
+        <Pressable onPress={onCancel} style={{ paddingTop: 22 }}
+        >
+          <CloseCircleOutline
+            width={31}
+            height={31}
+          />
         </Pressable>
       </View>
-    </Modal>
+
+    </Modal >
   );
 };
 
-const ViewWithColor = ({Icon = CloseIconRed, s = 15, color = '#E52D27'}) => {
-  return (
-    <View
-      style={{
-        height: s,
-        width: s,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: s / 2,
-        backgroundColor: color,
-      }}>
-      <Icon />
-    </View>
-  );
-};
+const ViewWithColor = ({ Icon = CloseIconRed, s = 15, color = '#E52D27' }) => {
 
-const TextWithColor = ({text = '5', mt = -8}) => {
-  return (
-    <View
-      style={{
-        backgroundColor: '#E93368',
-        height: 28,
-        width: 48,
-        borderTopStartRadius: 8,
-        borderBottomEndRadius: 8,
-        alignSelf: 'flex-end',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: mt,
-      }}>
+  return <View style={{
+    height: s, width: s,
+    justifyContent: 'center', alignItems: 'center',
+    borderRadius: s / 2, backgroundColor: color
+  }}>
+    <Icon />
+  </View>
+}
+
+
+const TextWithColor = ({ text = '5', mt = -8 }) => {
+
+  return <View style={{
+    backgroundColor: '#E93368', height: 28, width: 48,
+    borderTopStartRadius: 8, borderBottomEndRadius: 8, alignSelf: 'flex-end',
+    justifyContent: 'center', alignItems: 'center', marginTop: mt
+  }}>
+    <Text
+      style={[
+        styles.textStyle,
+        {
+          fontSize: 13,
+          color: colors.white
+        },
+      ]}>
+      {'+'} <Text
+        style={[
+          styles.textStyle,
+          {
+            fontSize: 21,
+            color: colors.white
+          },
+        ]}>{text}</Text> <Text
+          style={[
+            styles.textStyle,
+            {
+              color: colors.white
+            },
+          ]}>{'J'}</Text>
+    </Text>
+
+  </View>
+}
+
+const TitleWithImages = ({ data = [1, 2, 4] }) => {
+
+  return <GestureHandlerRootView style={{ width: '100%' }}>
+    <View style={{ paddingHorizontal: 14 }}>
+
       <Text
         style={[
           styles.textStyle,
           {
-            fontSize: 13,
-            color: colors.white,
+            paddingVertical: 9,
+            fontSize: 11,
           },
         ]}>
-        {'+'}{' '}
-        <Text
-          style={[
-            styles.textStyle,
-            {
-              fontSize: 21,
-              color: colors.white,
-            },
-          ]}>
-          {text}
-        </Text>{' '}
-        <Text
-          style={[
-            styles.textStyle,
-            {
-              color: colors.white,
-            },
-          ]}>
-          {'J'}
-        </Text>
+        {'Хороший товар, удобная ткань, красивый и по размеру'}
       </Text>
+
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        data={data}
+        renderItem={({ item, index }) =>
+          <Image source={{ uri: imagesUrl.shoes }} style={{
+            height: 100,
+            width: 100, borderRadius: 8, marginEnd: 9
+          }} />
+        }
+      />
     </View>
-  );
-};
+  </GestureHandlerRootView>
+}
 
-const TitleWithImages = ({data = [1, 2, 4]}) => {
-  return (
-    <GestureHandlerRootView style={{width: '100%'}}>
-      <View style={{paddingHorizontal: 14}}>
-        <Text
-          style={[
-            styles.textStyle,
-            {
-              paddingVertical: 9,
-              fontSize: 11,
-            },
-          ]}>
-          {'Хороший товар, удобная ткань, красивый и по размеру'}
-        </Text>
+export const HelpPopup = ({ isShow = false, onCancel }) => {
 
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          data={data}
-          renderItem={({item, index}) => (
-            <Image
-              source={{uri: imagesUrl.shoes}}
-              style={{
-                height: 100,
-                width: 100,
-                borderRadius: 8,
-                marginEnd: 9,
-              }}
-            />
-          )}
-        />
-      </View>
-    </GestureHandlerRootView>
-  );
-};
 
-export const HelpPopup = ({isShow = false, onCancel}) => {
   return (
     <Modal
       transparent={true}
@@ -421,19 +408,15 @@ export const HelpPopup = ({isShow = false, onCancel}) => {
       visible={isShow}
       onRequestClose={onCancel}>
       <View
-        style={[
-          styles.botton_view,
-          {backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end'},
-        ]}>
-        <GestureHandlerRootView style={{width: '100%'}}>
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end' }]}>
+        <GestureHandlerRootView style={{ width: '100%' }}>
           <View
             style={[
               styles.bottom_sheet,
               {
                 paddingHorizontal: 10,
-                width: '100%',
-                borderBottomRightRadius: 0,
-                borderBottomLeftRadius: 0,
+                width: '100%', borderBottomRightRadius: 0,
+                borderBottomLeftRadius: 0
               },
             ]}>
             <Text
@@ -453,14 +436,15 @@ export const HelpPopup = ({isShow = false, onCancel}) => {
               data={dataList}
               scrollEnabled={false}
               showsVerticalScrollIndicator={false}
-              renderItem={({item, index}) => (
-                <View style={{paddingHorizontal: 20, marginBottom: 15}}>
+              renderItem={({ item, index }) =>
+                <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
+
                   <Text
                     style={[
                       styles.textStyle,
                       {
                         fontSize: 17,
-                        color: '#121212',
+                        color: '#121212'
                       },
                     ]}>
                     {item.title}
@@ -471,27 +455,26 @@ export const HelpPopup = ({isShow = false, onCancel}) => {
                       styles.textStyle,
                       {
                         fontSize: 14,
-                        color: '#989898',
+                        color: '#989898'
                       },
                     ]}>
                     {item.subTitle}
                   </Text>
                 </View>
-              )}
+              }
             />
 
-            <TouchableOpacity
-              style={{marginTop: 20, marginBottom: 20}}
-              onPress={onCancel}>
+            <TouchableOpacity style={{ marginTop: 20, marginBottom: 20 }} onPress={onCancel} >
               <LinearGradient
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 1}}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
                 colors={['#FE8C00', '#FC4A1A']}
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 23,
                   height: 39,
+
                 }}>
                 <Text
                   style={[
@@ -499,7 +482,8 @@ export const HelpPopup = ({isShow = false, onCancel}) => {
                     {
                       fontSize: 18,
                       color: colors.white,
-                      fontWeight: 'bold',
+                      fontWeight: 'bold'
+
                     },
                   ]}>
                   {AppString.ok}
@@ -513,34 +497,42 @@ export const HelpPopup = ({isShow = false, onCancel}) => {
   );
 };
 
-const dataList = [
-  {
-    title: 'Публично',
-    subTitle:
-      'Псевдонимы пользователей и аватары будут отображаться публично в разделе комментариев.',
-  },
-  {
-    title: 'Анонимно',
-    subTitle: 'Комментарии будут отображаться анонимно.',
-  },
-];
 
-export const ClearChatPopup = ({isShow = false, onConfirm, onCancel}) => {
+
+const dataList = [{
+  title: 'Публично',
+  subTitle: 'Псевдонимы пользователей и аватары будут отображаться публично в разделе комментариев.'
+},
+{
+  title: 'Анонимно',
+  subTitle: 'Комментарии будут отображаться анонимно.'
+},
+]
+
+
+
+
+export const ClearChatPopup = ({ isShow = false,
+  title = AppString.recovery_after_cleaning_is_not_posible,
+  onConfirm, onCancel }) => {
+
+
   return (
     <Modal
       transparent={true}
       animationType={'fade'}
       visible={isShow}
+
       onRequestClose={onCancel}>
       <View
-        style={[styles.botton_view, {backgroundColor: 'rgba(0, 0,0, .3 )'}]}>
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .3 )' }]}>
         <View
           style={[
             styles.bottom_sheet,
             {
               justifyContent: 'center',
               alignContent: 'center',
-              width: '82%',
+              width: '82%'
             },
           ]}>
           <Text
@@ -563,55 +555,41 @@ export const ClearChatPopup = ({isShow = false, onConfirm, onCancel}) => {
                 paddingBottom: 20,
                 fontSize: 13,
                 textAlign: 'center',
-                paddingHorizontal: 4,
+                paddingHorizontal: 4
               },
             ]}>
-            {AppString.recovery_after_cleaning_is_not_posible}
+            {title}
           </Text>
 
-          <View style={{height: 1, backgroundColor: '#CFCFCF'}} />
-
           <View
-            style={{
-              justifyContent: 'center',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <TouchableOpacity
-              onPress={onConfirm}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 0.5,
-              }}>
+            style={{ height: 1, backgroundColor: '#CFCFCF' }}
+          />
+
+          <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+
+            <TouchableOpacity onPress={onConfirm} style={{ justifyContent: 'center', alignItems: 'center', flex: 0.5 }}>
               <Text
                 style={[
                   styles.textStyle,
                   {
                     fontSize: 18,
-                    color: '#4A78E8',
+                    color: '#4A78E8'
                   },
                 ]}>
                 {AppString.yes}
               </Text>
             </TouchableOpacity>
             <View
-              style={{height: '100%', width: 1, backgroundColor: '#CFCFCF'}}
+              style={{ height: '100%', width: 1, backgroundColor: '#CFCFCF' }}
             />
-            <TouchableOpacity
-              onPress={onCancel}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingVertical: 11,
-                flex: 0.5,
-              }}>
+            <TouchableOpacity onPress={onCancel} style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 11, flex: 0.5 }}>
               <Text
                 style={[
                   styles.textStyle,
                   {
                     fontSize: 18,
-                    color: '#4A78E8',
+                    color: '#4A78E8'
+
                   },
                 ]}>
                 {AppString.no}
@@ -619,20 +597,26 @@ export const ClearChatPopup = ({isShow = false, onConfirm, onCancel}) => {
             </TouchableOpacity>
           </View>
         </View>
+
       </View>
     </Modal>
   );
 };
 
-export const DeleteAddress = ({isShow = false, onConfirm, onCancel}) => {
+
+
+export const DeleteAddress = ({ isShow = false, onConfirm, onCancel }) => {
+
+
   return (
     <Modal
       transparent={true}
       animationType={'fade'}
       visible={isShow}
+
       onRequestClose={onCancel}>
       <View
-        style={[styles.botton_view, {backgroundColor: 'rgba(0, 0,0, .3 )'}]}>
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .3 )' }]}>
         <View
           style={[
             styles.bottom_sheet,
@@ -640,7 +624,7 @@ export const DeleteAddress = ({isShow = false, onConfirm, onCancel}) => {
               justifyContent: 'center',
               alignContent: 'center',
               width: '82%',
-              borderRadius: 15,
+              borderRadius: 15
             },
           ]}>
           <Text
@@ -656,55 +640,46 @@ export const DeleteAddress = ({isShow = false, onConfirm, onCancel}) => {
             {AppString.do_you_want_to_delete_an_address}
           </Text>
 
-          <View
-            style={{
-              justifyContent: 'center',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 13,
-              marginBottom: 20,
-            }}>
-            <TouchableOpacity
-              onPress={onConfirm}
+
+
+          <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center', gap: 13, marginBottom: 20 }}>
+
+            <TouchableOpacity onPress={onConfirm}
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderColor: colors.lightOrange,
-                height: 39,
-                width: 110,
-                borderWidth: 1,
-                borderRadius: 20,
+                justifyContent: 'center', alignItems: 'center',
+                borderColor: colors.lightOrange, height: 39, width: 110, borderWidth: 1, borderRadius: 20
               }}>
               <Text
                 style={[
                   styles.textStyle,
                   {
                     fontSize: 18,
-                    color: colors.lightOrange,
+                    color: colors.lightOrange
                   },
                 ]}>
                 {AppString.yes}
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={onCancel}>
+            <TouchableOpacity onPress={onCancel} >
               <LinearGradient
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 1}}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
                 colors={['#FE8C00', '#FC4A1A']}
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 23,
-                  height: 39,
-                  width: 110,
+                  height: 39, width: 110,
+
                 }}>
                 <Text
                   style={[
                     styles.textStyle,
                     {
                       fontSize: 18,
-                      color: colors.white,
+                      color: colors.white
+
                     },
                   ]}>
                   {AppString.no}
@@ -713,6 +688,7 @@ export const DeleteAddress = ({isShow = false, onConfirm, onCancel}) => {
             </TouchableOpacity>
           </View>
         </View>
+
       </View>
     </Modal>
   );
@@ -755,15 +731,19 @@ const style = StyleSheet.create({
   },
 });
 
-export const DeleteBodyData = ({isShow = false, onConfirm, onCancel}) => {
+
+export const DeleteBodyData = ({ isShow = false, onConfirm, onCancel }) => {
+
+
   return (
     <Modal
       transparent={true}
       animationType={'fade'}
       visible={isShow}
+
       onRequestClose={onCancel}>
       <View
-        style={[styles.botton_view, {backgroundColor: 'rgba(0, 0,0, .3 )'}]}>
+        style={[styles.botton_view, { backgroundColor: 'rgba(0, 0,0, .3 )' }]}>
         <View
           style={[
             styles.bottom_sheet,
@@ -771,7 +751,7 @@ export const DeleteBodyData = ({isShow = false, onConfirm, onCancel}) => {
               justifyContent: 'center',
               alignContent: 'center',
               width: '82%',
-              borderRadius: 15,
+              borderRadius: 15
             },
           ]}>
           <Text
@@ -786,55 +766,44 @@ export const DeleteBodyData = ({isShow = false, onConfirm, onCancel}) => {
             ]}>
             {AppString.exit_body_data}
           </Text>
-          <View
-            style={{
-              justifyContent: 'center',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 13,
-              marginBottom: 20,
-            }}>
-            <TouchableOpacity
-              onPress={onConfirm}
+          <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center', gap: 13, marginBottom: 20 }}>
+
+            <TouchableOpacity onPress={onConfirm}
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderColor: colors.lightOrange,
-                height: 39,
-                width: 110,
-                borderWidth: 1,
-                borderRadius: 20,
+                justifyContent: 'center', alignItems: 'center',
+                borderColor: colors.lightOrange, height: 39, width: 110, borderWidth: 1, borderRadius: 20
               }}>
               <Text
                 style={[
                   styles.textStyle,
                   {
                     fontSize: 18,
-                    color: colors.lightOrange,
+                    color: colors.lightOrange
                   },
                 ]}>
                 {AppString.yes}
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={onCancel}>
+            <TouchableOpacity onPress={onCancel} >
               <LinearGradient
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 1}}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
                 colors={['#FE8C00', '#FC4A1A']}
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 23,
-                  height: 39,
-                  width: 110,
+                  height: 39, width: 110,
+
                 }}>
                 <Text
                   style={[
                     styles.textStyle,
                     {
                       fontSize: 18,
-                      color: colors.white,
+                      color: colors.white
+
                     },
                   ]}>
                   {AppString.no}
@@ -843,51 +812,48 @@ export const DeleteBodyData = ({isShow = false, onConfirm, onCancel}) => {
             </TouchableOpacity>
           </View>
         </View>
+
       </View>
     </Modal>
   );
 };
 
-export const ProgressView = ({ht = '100%'}) => {
-  return (
-    <View
-      style={[
-        styles.centeredView,
-        {marginHorizontal: 0, height: ht, paddingVertical: 20},
-      ]}>
-      <ActivityIndicator
-        size={Platform.OS == 'ios' ? 'large' : 70}
-        color={colors.lightOrange}
-      />
-      {/* <Text style={[style.textStyle, {textAlign:'center'}]}>Loading...</Text> */}
-    </View>
-  );
-};
 
-export const RetryWhenErrorOccur = ({
-  data,
-  isRetry = true,
-  ht = '100%',
-  onClick,
-}) => {
-  return (
-    <View style={[styles.centerContent, {gap: 10, height: ht}]}>
-      {ht == '100%' ? <Internet /> : null}
-      <Text
-        style={[
-          styles.textStyle,
-          {
-            fontWeight: 'bold',
-            fontSize: 18,
-            textAlign: 'center',
-          },
-        ]}>
-        {data && data.data ? data.data.toString() : ''}
-      </Text>
-      {isRetry ? <CommonButton onClick={onClick} /> : null}
-    </View>
-  );
-};
+
+export const ProgressView = ({ ht = '100%' }) => {
+  return <View style={[styles.centeredView, { marginHorizontal: 0, height: ht, paddingVertical: 20 }]}>
+    <ActivityIndicator size={Platform.OS == "ios" ? "large" : 70} color={colors.lightOrange} />
+    {/* <Text style={[style.textStyle, {textAlign:'center'}]}>Loading...</Text> */}
+
+  </View>
+}
+
+export const CenterProgressView = ({ }) => {
+  return <View style={{ position: 'absolute', margin: 0, justifyContent: "center", backgroundColor: 'rgba(0,0,0, 0.2)', flex: 1, width: "100%", height: "100%" }}>
+    <ActivityIndicator size={Platform.OS == "ios" ? "large" : 70} color={colors.lightOrange} />
+  </View>
+}
+
+
+export const RetryWhenErrorOccur = ({ data, isRetry = true, ht = "100%", onClick }) => {
+
+
+  return <View style={[styles.centerContent, { gap: 10, height: ht }]}>
+
+    {ht == '100%' ? <Internet /> : null}
+    <Text style={[styles.textStyle,
+    {
+      fontWeight: 'bold', fontSize: 18,
+      textAlign: 'center'
+    }]}>{data && data.data ? data.data.toString() : ""}</Text>
+    {isRetry ?
+      <CommonButton onClick={onClick} /> : null}
+
+
+  </View>
+
+}
+
 
 const CommonButton = ({
   text = AppString.pay,
@@ -899,8 +865,8 @@ const CommonButton = ({
     <TouchableOpacity onPress={onClick}>
       <LinearGradient
         colors={[startorange, endColor]}
-        start={{x: 0.4, y: 0}}
-        end={{x: 1, y: 1}}
+        start={{ x: 0.4, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={{
           paddingHorizontal: 20,
           borderRadius: 40,
@@ -911,7 +877,7 @@ const CommonButton = ({
         <Text
           style={[
             styles.textStyle,
-            {color: colors.white, fontSize: 14, fontWeight: '500'},
+            { color: colors.white, fontSize: 14, fontWeight: '500' },
           ]}>
           {text}
         </Text>
@@ -919,3 +885,4 @@ const CommonButton = ({
     </TouchableOpacity>
   );
 };
+

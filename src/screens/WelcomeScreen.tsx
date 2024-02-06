@@ -1,19 +1,30 @@
-import {StyleSheet, Image, View, Text} from 'react-native';
-import React, {useEffect} from 'react';
-import {RouteNames} from '../utils/RouteNames';
-import {appIcons} from '../utils/AppIcons';
+import { StyleSheet, Image, View, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { RouteNames } from '../utils/RouteNames';
+import { appIcons } from '../utils/AppIcons';
+import { AsyncStorageKeys, getValue } from '../utils/AsyncStorage';
 
 interface Props {
   navigation: any;
 }
 
-const WelcomeScreen: React.FC<Props> = ({navigation: navigation}) => {
+const WelcomeScreen: React.FC<Props> = ({ navigation: navigation }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace(RouteNames.login);
+
+      getValue(AsyncStorageKeys.authToken).then(it => {
+        if (it) {
+          navigation.replace("Main");
+        } else {
+          navigation.replace(RouteNames.login);
+        }
+      })
     }, 2000);
     return () => clearTimeout(timer);
-  }, []);
+
+
+
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -38,12 +49,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: 'yellow',
-    shadowOffset: {width: 0, height: 5},
+    shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 1,
     shadowRadius: 24,
     elevation: 13,
   },
-  logo: {width: 103, height: 103, borderRadius: 24},
+  logo: { width: 103, height: 103, borderRadius: 24 },
 
   text1: {
     width: 160,

@@ -9,14 +9,13 @@ import {
   StyleSheet,
   TextInput,
   Dimensions,
+  ActivityIndicator,
+  StatusBar,
 } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useEffect, useRef, useState } from 'react';
 import { AppString } from '../../utils/AppStrings';
-import { fontFamily } from '../../utils/Fonts';
 import { colors } from '../../utils/AppColors';
 import { appIcons, imagesUrl, productImages } from '../../utils/AppIcons';
-import { dimensions } from '../../utils/sizes';
 import LinearGradient from 'react-native-linear-gradient';
 import { onShare } from '../../utils/Common';
 import SelectProductSizeColorScreen from './SelectProductSizeColorScreen';
@@ -46,12 +45,15 @@ import OrangeStar from '../../../assets/Icons/OrangeStar.svg';
 import Cube from '../../../assets/Icons/Cube.svg';
 import Profile from '../../../assets/Icons/Profile.svg';
 
-import { AirbnbRating, Rating } from 'react-native-ratings';
 import Chars from '../../../assets/Icons/Chars.svg';
 import Guaranty from '../../../assets/Icons/Guaranty.svg';
 import Sizes from '../../../assets/Icons/Sizes.svg';
 import ColorIcon from '../../../assets/Icons/ColorIcon.svg';
-import StarRating from 'react-native-star-rating-widget';
+import { getAPICall, postAPICall } from '../../Netowork/Apis';
+import { CommonModal } from '../HomeScreen';
+import { ProductAPIs } from '../../Netowork/Constants';
+import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
+import { getCharachterstics } from '../../utils/DataManipulation';
 
 const shoeImageURL = appIcons.shoeImageURL;
 const china = appIcons.china;
@@ -123,12 +125,56 @@ const postionsArray: Position[] = [
   },
 ];
 
-export const ProductDetailScreen = ({ navigation }) => {
+export const ProductDetailScreen = ({ navigation, route }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [butShow, setBuyShow] = useState(false);
   const [guranty, setOnGauranty] = useState(false);
-
   const [addShow, setAddShow] = useState(false);
+  const [data, setData] = useState<CommonModal>()
+  const [loading, setLoading] = useState(false)
+  const [favLoading, setFavLoading] = useState(false)
+  const [images, setImages] = useState(data && data.data.data
+    && data.data.data.productImages &&
+    data.data.data.productImages.length > 0 ?
+    data.data.data.productImages : productImages)
+
+  useEffect(() => {
+    callAPI()
+  }, [])
+
+  const addFav = () => {
+    setFavLoading(true)
+    postAPICall({ productId: route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7' },
+      ProductAPIs.favoriteProduct, true,
+      (res: any) => {
+        setFavLoading(false)
+        setFavourite(!isFav);
+      })
+  }
+
+  const removeFav = () => {
+    setFavLoading(true)
+    postAPICall({ productId: [route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'] },
+      ProductAPIs.removeFavourite, true,
+      (res: any) => {
+        setFavLoading(false)
+        setFavourite(!isFav);
+      })
+  }
+
+  const callAPI = () => {
+    setLoading(true)
+    const id = route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
+
+    getAPICall(ProductAPIs.getProductDetails + `${id}`, (res: any) => {
+      setLoading(false)
+      setData(res)
+      if (res.data) {
+        setImages(res.data.data.productImages.length ? res.data.data.productImages : productImages)
+        setFavourite(res.data.data.isFavourite)
+      }
+    })
+  }
 
   const handleViewableItemsChanged = useRef(({ viewableItems, changed }) => {
     if (changed && changed.length > 0) {
@@ -194,7 +240,7 @@ export const ProductDetailScreen = ({ navigation }) => {
   const [currentPosition, setCurrentPosition] = useState(0);
   const [selectPosition, setSelectPosition] = useState(0);
 
-  const [like, setLike] = useState(false);
+  const [isFav, setFavourite] = useState(false);
   const scrollRef = useRef<ScrollView>()
   const handleScroll = (event: Object) => {
     //  console.log(event.nativeEvent.contentOffset.y);
@@ -230,7 +276,7 @@ export const ProductDetailScreen = ({ navigation }) => {
   const [showImages, setShowImages] = useState(-1);
 
   return (
-    <View style={{ flex: 1 }}>
+    data && data.data && data.isSuccess ? <View style={{ flex: 1 }}>
       <ScrollView
         ref={scrollRef}
         showsVerticalScrollIndicator={false}
@@ -245,7 +291,7 @@ export const ProductDetailScreen = ({ navigation }) => {
               snapToAlignment="center"
               pagingEnabled={true}
               showsHorizontalScrollIndicator={false}
-              data={productImages}
+              data={images}
               decelerationRate={'normal'}
               scrollEventThrottle={16}
               onViewableItemsChanged={handleViewableItemsChanged.current}
@@ -288,12 +334,12 @@ export const ProductDetailScreen = ({ navigation }) => {
                   borderRadius: 12,
                 },
               ]}>
-              {activeIndex + 1 + '/' + productImages.length}
+              {activeIndex + 1 + '/' + images.length}
             </Text>
           </View>
 
-          <ProductDetails />
-          <ProductDesclamenation isGauranty={guranty} onGauranctCancle={() => {
+          <ProductDetails item={data.data.data} />
+          <ProductDesclamenation item={data.data.data} isGauranty={guranty} onGauranctCancle={() => {
             setOnGauranty(false)
           }} />
           <View style={{ paddingHorizontal: 9 }}>
@@ -305,13 +351,14 @@ export const ProductDetailScreen = ({ navigation }) => {
             <ShopView navigation={navigation} />
           </View>
           <ProductImages
+            images={images}
             onClick={(index: number) => {
               setShowImages(index);
             }}
           />
-          <RelatedProducts
-            onclick={() => {
-              navigation.push(RouteNames.product_detail);
+          <RelatedProducts item={data.data.recommendedProducts}
+            onclick={(item: any) => {
+              navigation.push(RouteNames.product_detail, { id: item._id });
             }}
           />
         </View>
@@ -421,25 +468,32 @@ export const ProductDetailScreen = ({ navigation }) => {
             style={{ alignItems: 'center', marginStart: -20 }}>
             <ChatbubbleEllipsisOutline width={24} height={24} />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setLike(!like);
-            }}
-            style={{
-              alignItems: 'center',
-              marginStart: -20,
-            }}>
-            {like ? (
-              <HeartRed width={24} height={24} />
-            ) : (
-              <HeartOutline width={24} height={24} />
-            )}
-            {/* <Ionicons
+          {
+            favLoading ? <ActivityIndicator size={"small"} style={{ alignSelf: 'center', justifyContent: "center", alignItems: "center", marginStart: -20, }} color={colors.lightOrange} /> :
+              <TouchableOpacity
+                onPress={() => {
+                  if (isFav) {
+                    removeFav()
+                  } else {
+                    addFav()
+                  }
+                }}
+                style={{
+                  alignItems: 'center',
+                  marginStart: -20,
+                }}>
+                {isFav ? (
+                  <HeartRed width={24} height={24} />
+                ) : (
+                  <HeartOutline width={24} height={24} />
+                )}
+                {/* <Ionicons
               name={like ? 'heart' : 'heart-outline'}
               size={24}
               color={like ? colors.lightRed : colors.grey}
             /> */}
-          </TouchableOpacity>
+              </TouchableOpacity>
+          }
         </View>
 
         <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -459,6 +513,7 @@ export const ProductDetailScreen = ({ navigation }) => {
         </View>
       </View>
       <ProductImageScreeen
+        data={images}
         isShow={showImages != -1}
         pos={showImages != -1 ? showImages : 0}
         onClose={() => {
@@ -484,7 +539,10 @@ export const ProductDetailScreen = ({ navigation }) => {
           setOnGauranty(true)
         }}
       />
-    </View>
+    </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+      setData(undefined)
+      callAPI()
+    }} />
   );
 };
 // MARK: - Review Section
@@ -653,7 +711,7 @@ const CommonButton = ({
   );
 };
 
-const ProductDesclamenation = ({ isGauranty = false, onGauranctCancle }) => {
+const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle }) => {
   const [showColorSize, setShowColorSize] = useState(false);
   const [showGurantees, setShowGurantees] = useState(isGauranty);
 
@@ -705,7 +763,7 @@ const ProductDesclamenation = ({ isGauranty = false, onGauranctCancle }) => {
       />
       <TextWithIcon
         Icon={Chars}
-        title="Бренд • Материал • Метод обработки"
+        title={getCharachterstics(item.attributes.ruAttribute)}
         onClick={() => {
           setShowCharacterstics(true);
         }}
@@ -734,6 +792,7 @@ const ProductDesclamenation = ({ isGauranty = false, onGauranctCancle }) => {
         }}
       />
       <CharacterSticsScreen
+        data={item.attributes.ruAttribute}
         isShow={showCharacterstics}
         onClose={() => {
           setShowCharacterstics(false);
@@ -1029,7 +1088,7 @@ const ShopFeaturedProduct = ({ onClick }) => {
   );
 };
 
-const ProductImages = ({ onClick }) => {
+const ProductImages = ({ images, onClick }) => {
   return (
     <View>
 
@@ -1067,14 +1126,14 @@ const ProductImages = ({ onClick }) => {
           }}
         />
       </View>
-      {imagesArray.map((item, index) => (
+      {images.map((item, index) => (
         <TouchableOpacity
           onPress={() => {
             onClick(index);
           }}
           style={{ paddingBottom: 8 }}>
           <Image
-            source={{ uri: imagesUrl.shoes }}
+            source={{ uri: item }}
             style={{ width: '100%', height: 385 }}
           />
         </TouchableOpacity>
@@ -1083,7 +1142,7 @@ const ProductImages = ({ onClick }) => {
   );
 };
 
-const RelatedProducts = ({ onclick }) => {
+const RelatedProducts = ({ item, onclick }) => {
   return (
     <View style={{ marginBottom: 100, paddingStart: 9 }}>
       <View
@@ -1139,9 +1198,9 @@ const RelatedProducts = ({ onclick }) => {
         />
       </View>
       <FlatList
-        data={data}
+        data={item}
         keyExtractor={item => {
-          return item.id.toString();
+          return item._id.toString();
         }}
         scrollEnabled={false}
         numColumns={2}
@@ -1159,10 +1218,10 @@ const RelatedProducts = ({ onclick }) => {
                 marginTop: 8,
               }}
               onPress={() => {
-                onclick();
+                onclick(item)
               }}>
               <Image
-                source={appIcons.shoeImageURL}
+                source={item.images != '' ? { uri: item.images } : appIcons.shoeImageURL}
                 style={{
                   height: 265,
                   paddingHorizontal: 1,
@@ -1190,31 +1249,34 @@ const RelatedProducts = ({ onclick }) => {
                 <Text
                   style={{
                     marginLeft: 4,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: '500',
                     color: colors.black
                   }}
                   numberOfLines={1}>
-                  Футболка
+                  {item.name ? item.name : 'Футболка'}
                 </Text>
               </View>
               <View
-                style={{ flexDirection: 'row', paddingLeft: 8, paddingTop: 4 }}>
+                style={{
+                  flexDirection: 'row', paddingLeft: 8, paddingTop: 4,
+                  justifyContent: 'space-between'
+                }}>
                 <View style={{ flexDirection: 'row', width: '30%' }}>
                   <Text
                     style={{
                       fontSize: 17,
                       color: '#ff7600',
-                      fontFamily: 'SegoeUI',
+                      fontWeight: 'bold'
                     }}>
-                    999
+                    {item.price ? item.price : "999"}
                   </Text>
                   <Text
                     style={{
                       paddingTop: 6,
                       color: '#ff7600',
-                      fontSize: 12,
-                      fontFamily: 'SegoeUI',
+                      fontSize: 11,
+                      fontWeight: '400'
                     }}>
                     c.
                   </Text>
@@ -1222,12 +1284,13 @@ const RelatedProducts = ({ onclick }) => {
                 <Text
                   numberOfLines={1}
                   style={{
-                    width: '70%',
                     color: '#AAAAAA',
                     paddingTop: 3,
-                    fontFamily: 'SegoeUI',
+
+                    fontWeight: '400',
+                    fontSize: 11
                   }}>
-                  {item.desc}
+                  {`${item.views}${AppString.views}`}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -1238,7 +1301,7 @@ const RelatedProducts = ({ onclick }) => {
   );
 };
 
-const ProductDetails = () => {
+const ProductDetails = ({ item }) => {
   return (
     <View
       style={{
@@ -1264,7 +1327,7 @@ const ProductDetails = () => {
               styles.textStyle,
               { fontSize: 21, color: colors.lightOrange },
             ]}>
-            {'178с.'}
+            {item.price ? item.price : '178с.'}с.
           </Text>
           <Text
             style={[
@@ -1275,7 +1338,7 @@ const ProductDetails = () => {
                 textDecorationLine: 'line-through',
               },
             ]}>
-            {'178с.'}
+            {item.price ? item.price : '178с.'}с.
           </Text>
         </View>
         <RatingView />
@@ -1295,7 +1358,7 @@ const ProductDetails = () => {
             }}
             resizeMode="cover"
           />{' '}
-          {'ORT Product name子子子子子子子子子子子子男 子子子子子子子子'}
+          {item.productName}
         </Text>
       </View>
 
@@ -1306,11 +1369,11 @@ const ProductDetails = () => {
             fontSize: 13,
             color: colors.grey,
             alignSelf: 'flex-end',
-            marginTop: -20,
+            marginTop: 2,
             paddingBottom: 6,
           },
         ]}>
-        {'продано 15'}
+        {`продано ${item.soldUnits ? item.soldUnits : '15'}`}
       </Text>
     </View>
   );
