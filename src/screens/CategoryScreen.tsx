@@ -239,6 +239,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
         <View style={styles.productsGrid}>
           <MasonryList
             data={productsDataArray}
+
             keyExtractor={item => {
               return item.id;
             }}
