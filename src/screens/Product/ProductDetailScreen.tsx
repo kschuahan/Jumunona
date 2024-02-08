@@ -172,7 +172,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
       if (res.data) {
         setImages(res.data.data.productImages.length ? res.data.data.productImages : productImages)
         setFavourite(res.data.data.isFavourite)
-        console.warn("color options",res.data.data.attributes.attribute1.attr1.data)
+        console.warn("color options", res.data.data.attributes.attribute1.attr1.data)
       }
     })
   }
@@ -341,16 +341,16 @@ export const ProductDetailScreen = ({ navigation, route }) => {
 
           <ProductDetails item={data.data.data} />
           <ProductDesclamenation
-           item={data.data.data}
+            item={data.data.data}
             isGauranty={guranty}
-             onGauranctCancle={() => {
-            setOnGauranty(false)
-          }} 
-          onShowColorSize={ () => {
-            setSizeColorBottomSheetMode(ColorSizeBottomSheetMode.selectSize)
-            setShowColorSize(true)
-            
-            }}/>
+            onGauranctCancle={() => {
+              setOnGauranty(false)
+            }}
+            onShowColorSize={() => {
+              setSizeColorBottomSheetMode(ColorSizeBottomSheetMode.selectSize)
+              setShowColorSize(true)
+
+            }} />
           <View style={{ paddingHorizontal: 9 }}>
             <ReviewsSection
               viewAllReviews={() => {
@@ -532,9 +532,10 @@ export const ProductDetailScreen = ({ navigation, route }) => {
         }}
       />
       <SelectProductSizeColorScreen
-      productDetail={data.data.data}
-      displayImage = {images[0]}
-      currentMode= {sizeColorBottomSheetMode}
+        navigation={navigation}
+        productDetail={data.data.data}
+        displayImage={images[0]}
+        currentMode={sizeColorBottomSheetMode}
         isShow={showColorSize}
         onClose={() => {
           setShowColorSize(false);
@@ -543,7 +544,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
           setOnGauranty(true)
         }}
       />
-     
+
     </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
       setData(undefined)
       callAPI()
@@ -777,7 +778,7 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onS
           setShowSizeChart(true);
         }}
       />
-      
+
       <ProuductGuanteeScreen
         isShow={showGurantees}
         onClose={() => {

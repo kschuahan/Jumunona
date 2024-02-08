@@ -140,6 +140,8 @@ const HomeScreen: React.FC = ({ navigation }) => {
   const [pagingData, setPagingData] = useState<PagingData>();
 
   const [loading, setLoading] = useState(false);
+  const [pullToRefresh, setPullToRefresh] = useState(false);
+
   const [dataArray, setArrayData] = useState<Array<any>>([]);
   const [categoryData, setCategoryData] = useState<CommonModal>();
 
@@ -157,6 +159,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
         setArrayData([...dataArray, ...res.data.data.products]);
       }
       setLoading(false);
+      setPullToRefresh(false)
       setData(res);
     });
   };
@@ -191,7 +194,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
           data={dataArray}
           keyExtractor={item => {
             return item._id;
-          }}
+          }}          
           ListFooterComponent={
             loading ? (
               <ProgressView ht={undefined} />

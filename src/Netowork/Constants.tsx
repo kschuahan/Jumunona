@@ -1,4 +1,4 @@
-import {localEnum} from './ApiEnum';
+import { localEnum } from './ApiEnum';
 
 export const BASE_URL = (type = localEnum.development) => {
   if (type == localEnum.development) {
@@ -17,10 +17,11 @@ export const apiUrls = {
 };
 
 export const modules = {
-    productModule: '/app/products/',
-    categoryModule: '/app/categories/',
-    authModule: '/auth/',
-    profile: "/app/profile/"
+  productModule: '/app/products/',
+  categoryModule: '/app/categories/',
+  authModule: '/auth/',
+  profile: "/app/profile/",
+  cart: '/app/cart/'
 }
 
 export const otherModule = {
@@ -45,13 +46,21 @@ export const ProductAPIs = {
 };
 
 export const AuthAPIs = {
-    login: modules.authModule + 'login',
-    signUp: modules.authModule + 'register',
-    sendOtp: modules.authModule + 'sendOtp',
-    forgotPassword: modules.authModule + 'forgotPassword'
+  login: modules.authModule + 'login',
+  signUp: modules.authModule + 'register',
+  sendOtp: modules.authModule + 'sendOtp',
+  forgotPassword: modules.authModule + 'forgotPassword'
 }
 
 export const ProfileAPIs = {
-    changePass: modules.profile + "changePassword",
-    uploadProfilePic: modules.profile + "uploadProfileImage",
+  changePass: modules.profile + "changePassword",
+  uploadProfilePic: modules.profile + "uploadProfileImage",
+}
+
+export const CartAPIs = {
+  addToCart: modules.cart + 'addToCart',
+  deleteItemFromCart: modules.cart + 'deleteItemFromCart',
+  updateCart: modules.cart + 'updateCart',
+  deleteCart: modules.cart + 'deleteCart',
+  getCart: modules.cart + 'getCart',
 }

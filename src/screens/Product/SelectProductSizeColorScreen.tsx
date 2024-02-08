@@ -24,6 +24,7 @@ import AddCircleOutline from '../../../assets/Icons/AddCircle.svg';
 import ChevronFwdOutline from '../../../assets/Icons/ForwardOrange.svg';
 import ResizeIcon from '../../../assets/Icons/resizeIcon.svg';
 import RemoveCircleOutline from '../../../assets/Icons/removeCircleOutline.svg';
+import { RouteNames } from '../../utils/RouteNames';
 
 export enum ColorSizeBottomSheetMode {
   selectSize = "selectSize",
@@ -33,10 +34,12 @@ export enum ColorSizeBottomSheetMode {
 }
 
 
-const SelectProductSizeColorScreen = ({ productDetail, displayImage, currentMode = ColorSizeBottomSheetMode.selectSize, isShow = false, onClose, onGuranty }) => {
-  const [number, setNumber] = useState('');
-  const [otp, setOtp] = useState('');
-  const [selectedColorIndex, setSelectColorIndex] = useState(0)
+const SelectProductSizeColorScreen = ({ navigation,
+  productDetail, displayImage,
+  currentMode = ColorSizeBottomSheetMode.selectSize,
+  isShow = false, onClose, onGuranty }) => {
+
+
   return (
     <Modal
       transparent={true}
@@ -101,7 +104,10 @@ const SelectProductSizeColorScreen = ({ productDetail, displayImage, currentMode
             <CancelReturnPolicyView onClick={() => {
               onGuranty()
             }} />
-            <PhoneDataScreen onClick={() => { }} />
+            <PhoneDataScreen onClick={() => {
+              onClose()
+              navigation.navigate(RouteNames.bodyData)
+            }} />
             <View
               style={{
                 height: 1,
@@ -110,26 +116,12 @@ const SelectProductSizeColorScreen = ({ productDetail, displayImage, currentMode
               }}
             />
             {productDetail ?
-              <ColorOptions colorOptions={productDetail.attributes.attribute1.attr1} selectedColorIndex={selectedColorIndex} onSelectColor={(index: number) => { setSelectColorIndex(index) }} />
+              <ColorOptions colorOptions={productDetail.attributes.attribute1.attr1}
+                onSelectColor={(index: number) => {
+
+                }} />
               : null
             }
-            <View
-              style={{
-                height: 1,
-                marginVertical: 13,
-                backgroundColor: colors.darkWhite,
-              }}
-            />
-
-            <SizeAndBuyingForView productDetail={productDetail.attributes.attribute1.attr1} selectedColorIndex={selectedColorIndex} />
-            <View
-              style={{
-                height: 1,
-                marginVertical: 10,
-                backgroundColor: colors.darkWhite,
-              }}
-            />
-            <QuanityView />
           </ScrollView>
 
           {
@@ -143,9 +135,12 @@ const SelectProductSizeColorScreen = ({ productDetail, displayImage, currentMode
                   paddingBottom: 20,
                 }}>
                 <CommonButton
+                  text={AppString.add_to_cart}
                   startorange={colors.yellowStart}
                   endColor={colors.yellowEnd}
-                  onClick={() => { }}
+                  onClick={() => {
+
+                  }}
                 />
                 <CommonButton text={AppString.buy} onClick={() => { }} />
               </View>
@@ -207,7 +202,7 @@ const CancelReturnPolicyView = ({ onClick }) => {
 
 const PhoneDataScreen = ({ onClick }) => {
   return (
-    <View
+    <TouchableOpacity onPress={onClick}
       style={[
         styles.profile,
         {
@@ -237,25 +232,28 @@ const PhoneDataScreen = ({ onClick }) => {
         </Text>
       </View>
       <ChevronFwdOutline color={colors.startOrange} width={12} height={12} />
-    </View>
+    </TouchableOpacity>
   );
 };
-const ColorOptions = ({ colorOptions, selectedColorIndex, onSelectColor }) => {
-  console.warn(colorOptions)
+const ColorOptions = ({ colorOptions, onSelectColor }) => {
+  const [selectedColorIndex, setSelectColorIndex] = useState(0)
+console.log(selectedColorIndex);
+
   return (
     <View>
-      <Text style={[styles.textStyle, { fontSize: 14 }]}>{colorOptions.attributeName} (2)</Text>
+      <Text style={[styles.textStyle, { fontSize: 14 }]}>
+        {colorOptions.attributeName} ({colorOptions.data.length})
+      </Text>
 
       <FlatList
         data={colorOptions.data}
         renderItem={({ item, index }) => (
           <View style={{ marginEnd: 8 }}>
             <View style={{ height: 13 }} />
-            <TouchableOpacity
+            <TouchableOpacity disabled={item.quantity == 0}
               onPress={() => {
-                if (item.quantity != 0) {
-                  onSelectColor(index)
-                }
+                onSelectColor(index)
+                setSelectColorIndex(index)
               }}>
               <View
                 style={{
@@ -356,6 +354,29 @@ const ColorOptions = ({ colorOptions, selectedColorIndex, onSelectColor }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
       />
+
+      <View
+        style={{
+          height: 1,
+          marginVertical: 13,
+          backgroundColor: colors.darkWhite,
+        }}
+      />
+
+      <SizeAndBuyingForView productDetail={colorOptions}
+        selectedColorIndex={selectedColorIndex} />
+      <View
+        style={{
+          height: 1,
+          marginVertical: 10,
+          backgroundColor: colors.darkWhite,
+        }}
+      />
+      <QuanityView onClick={(qunatity: number) => {
+
+      }}
+        quantity={colorOptions.data[selectedColorIndex].quantity} />
+
     </View>
   );
 };
@@ -488,9 +509,11 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex }) => {
   );
 };
 
-const QuanityView = ({ }) => {
+const QuanityView = ({ quantity, onClick }) => {
   const [quantiy, setQuantity] = useState(1);
-  const maxQuantity = 9;
+  console.log(quantity);
+
+  const maxQuantity = quantity;
   return (
     <View
       style={{
@@ -512,6 +535,8 @@ const QuanityView = ({ }) => {
           onPress={() => {
             if (quantiy > 1) {
               setQuantity(quantiy - 1);
+              onClick(quantiy)
+
             }
           }}>
           <RemoveCircleOutline
@@ -532,6 +557,7 @@ const QuanityView = ({ }) => {
           onPress={() => {
             if (quantiy < maxQuantity) {
               setQuantity(quantiy + 1);
+              onClick(quantiy)
             }
           }}>
           <AddCircleOutline
