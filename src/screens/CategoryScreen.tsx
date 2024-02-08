@@ -6,111 +6,37 @@ import {
   View,
   Text,
   Image,
-  Pressable,
   Dimensions,
 } from 'react-native';
-import { ScrollView } from 'react-native-virtualized-view';
-import React, { useState } from 'react';
+import {ScrollView} from 'react-native-virtualized-view';
+import React, {useEffect, useState} from 'react';
 import MasonryList from '@react-native-seoul/masonry-list';
-import { dimensions } from '../utils/sizes';
-import { colors } from '../utils/AppColors';
+import {colors} from '../utils/AppColors';
 import LinearGradient from 'react-native-linear-gradient';
-import { fontFamily } from '../utils/Fonts';
+import {fontFamily} from '../utils/Fonts';
 import SearchIcon from '../../assets/Icons/searchIcon.svg';
 import ChevronDownOutline from '../../assets/Icons/chevronDownOutlline.svg';
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
+import EllipsisHorizontalGrey from '../../assets/Icons/EllipsisGrey.svg';
 // import HoodieIcon from '../../assets/Icons/hoodieIcon.svg';
 import ImageIcon from '../../assets/Icons/image-outline.svg';
-import { RouteNames } from '../utils/RouteNames';
-import { appIcons } from '../utils/AppIcons';
+import {RouteNames} from '../utils/RouteNames';
+import {appIcons} from '../utils/AppIcons';
+import {getAPICall} from '../Netowork/Apis';
+import {categoriesModule, ProductAPIs} from '../Netowork/Constants';
+import {ProgressView, RetryWhenErrorOccur} from '../components/Dialogs';
 
-interface Category {
-  id: number;
-  desc: string;
+interface CommonModal {
+  isSuccess: boolean;
+  data: any;
 }
-interface Product {
-  id: number;
-  imageURL: string | any;
-  desc: string;
+
+interface PagingData {
+  total: number;
+  remaining: number;
+  current: number;
+  pages: number;
 }
-const categoryData: Category[] = [
-  { id: 1, desc: "Men's" },
-  { id: 2, desc: "Women's" },
-  { id: 3, desc: 'Child' },
-  { id: 4, desc: 'Baby' },
-  { id: 5, desc: 'Home' },
-  { id: 6, desc: 'Electro' },
-  { id: 7, desc: 'Auto' },
-  { id: 8, desc: 'Home' },
-  { id: 9, desc: 'Beauty' },
-  { id: 10, desc: 'Suits' },
-  { id: 11, desc: 'Accesso' },
-  { id: 12, desc: 'Make-Up' },
-];
-const mensCategoryData: Category[] = [
-  { id: 1, desc: 'Hoodies' },
-  { id: 2, desc: 'Pants' },
-  { id: 3, desc: 'Overalls' },
-  { id: 4, desc: 'Casual Shorts' },
-  { id: 5, desc: 'Short Jacket' },
-  { id: 6, desc: '衬衫' },
-  { id: 7, desc: '运动套装' },
-  { id: 8, desc: '羽绒服' },
-  { id: 9, desc: '西装' },
-  { id: 10, desc: 'More...' },
-];
-const data: Product[] = [
-  {
-    id: 1,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 2,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 3,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 4,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 5,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 6,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 7,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 8,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 9,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 10,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-];
 
 const HeaderCategoryScreen = () => (
   <View style={styles.headerContainer}>
@@ -121,118 +47,203 @@ const HeaderCategoryScreen = () => (
   </View>
 );
 
-const CategoryScreen: React.FC = ({ navigation }) => {
-  const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] = useState(1);
-  return (
+const CategoryScreen: React.FC = ({navigation}) => {
+  const [productsData, setProductsData] = useState<CommonModal>();
+  const [pagingData, setPagingData] = useState<PagingData>();
+  const [loading, setLoading] = useState(false);
+  const [productsDataArray, setProductsDataArray] = useState<Array<any>>([]);
+  const [horizontalCategoryData, setHorizontalCategoryData] =
+    useState<CommonModal>();
+  const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] =
+    useState<string>('');
+  const [activeItemSubCategories, setActiveItemSubCategories] = useState();
+
+  const callhorizontalCategoryAPI = () => {
+    setLoading(true);
+    getAPICall(
+      categoriesModule.getCategoriesListForCategoriesScreen,
+      (response: any) => {
+        setHorizontalCategoryData(response);
+        // Assuming the first category is always available
+        setActiveItemPrimaryCategory(response?.data.data[0]._id);
+        setActiveItemSubCategories(response?.data.data[0].subCategories);
+      },
+    );
+  };
+  const callAPI = (page = 1) => {
+    setLoading(true);
+    getAPICall(ProductAPIs.getProducts + `${page}`, (response: any) => {
+      if (response.isSuccess) {
+        setPagingData(response.data.data.pages);
+        setProductsDataArray([
+          ...productsDataArray,
+          ...response.data.data.products,
+        ]);
+        setProductsData(response);
+      }
+    });
+    setLoading(false);
+  };
+  useEffect(() => {
+    callhorizontalCategoryAPI();
+    callAPI();
+  }, []);
+
+  const fetchMore = () => {
+    if (
+      productsData?.isSuccess &&
+      pagingData &&
+      pagingData?.pages > pagingData?.current
+    ) {
+      callAPI(pagingData.current + 1);
+    }
+  };
+
+  return horizontalCategoryData &&
+    activeItemPrimaryCategory &&
+    activeItemSubCategories &&
+    productsData &&
+    productsDataArray ? (
     <View style={styles.container}>
       <HeaderCategoryScreen />
-      <View style={styles.primaryCategories}>
-        <FlatList
-          style={styles.primaryCategoriesContent}
-          data={categoryData}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={item => {
-            return item.id.toString();
-          }}
-          renderItem={({ item }) => {
-            return (
-              <View style={{ flex: 1, marginRight: 22 }}>
-                <TouchableOpacity
-                  onPress={() => setActiveItemPrimaryCategory(item.id)}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color:
-                        activeItemPrimaryCategory === item.id
-                          ? '#ff7600'
-                          : 'black',
-                      fontWeight: '400',
-                    }}>
-                    {item.desc}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-        />
-        <View style={styles.downArrowButton}>
-          <LinearGradient
-            colors={[colors.whiteF2F2F2, colors.whiteF6F6F6]}
-            start={{ x: 0.4, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={{
-              height: 20,
-              width: 4,
-              backgroundColor: '#7E7D7D29',
-              borderRadius: 100,
-            }}
-          />
-          <TouchableOpacity
-            style={{
-              marginStart: -10,
-              marginEnd: -20
-            }} onPress={() => {
-              navigation.navigate(RouteNames.categories)
-            }}>
-            <ChevronDownOutline />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={styles.scrollable}>
-        <View style={styles.secondaryCategoriesBG}>
+      {horizontalCategoryData ? (
+        <View style={styles.primaryCategories}>
           <FlatList
-            scrollEnabled={false}
-            data={mensCategoryData}
+            style={styles.primaryCategoriesContent}
+            data={horizontalCategoryData?.data.data.sort(
+              (a: any, b: any) => a.categoryListIndex - b.categoryListIndex,
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
             keyExtractor={item => {
-              return item.id.toString();
+              return item._id.toString();
             }}
-            numColumns={5}
-            renderItem={({ item }) => {
+            initialScrollIndex={0}
+            renderItem={({item}) => {
               return (
-                <View
-                  style={{
-                    flex: 0.5,
-                    marginTop: 8,
-                  }}>
-                  {item.id === 10 ? (
-                    <TouchableOpacity onPress={() => {
-                      navigation.navigate(RouteNames.categories)
-
-                    }} style={{ alignItems: 'center' }}>
-                      <EllipsisHorizontal width={24} height={50} />
-                      <Text
-                        style={{ fontSize: 13, color: colors.balc111111, fontWeight: '400' }}>
-                        Ещё
-                      </Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity onPress={() => {
-                      navigation.navigate(RouteNames.product_search_screen)
-
-                    }} style={{ alignItems: 'center' }}>
-                      <ImageIcon width={50} height={50} />
-                      <Text
-                        style={{ fontSize: 13, color: colors.balc111111, fontWeight: '400' }}>
-                        {item.desc}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
+                <View style={{flex: 1, marginRight: 22}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setActiveItemPrimaryCategory(item._id);
+                      setActiveItemSubCategories(item.subCategories);
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color:
+                          activeItemPrimaryCategory === item._id
+                            ? '#ff7600'
+                            : 'black',
+                        fontWeight: '400',
+                      }}>
+                      {item.categoryName}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               );
             }}
           />
+          <View style={styles.downArrowButton}>
+            <LinearGradient
+              colors={[colors.whiteF2F2F2, colors.whiteF6F6F6]}
+              start={{x: 0.4, y: 0}}
+              end={{x: 1, y: 0}}
+              style={{
+                height: 20,
+                width: 4,
+                backgroundColor: '#7E7D7D29',
+                borderRadius: 100,
+              }}
+            />
+            <TouchableOpacity
+              style={{
+                marginStart: -10,
+                marginEnd: -20,
+              }}
+              onPress={() => {
+                navigation.navigate(RouteNames.categories);
+              }}>
+              <ChevronDownOutline />
+            </TouchableOpacity>
+          </View>
         </View>
+      ) : (
+        <View />
+      )}
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollable}>
+        {/* {activeItemSubCategories && activeItemSubCategories.data.data ? ( */}
+        {activeItemSubCategories ? (
+          <View style={styles.secondaryCategoriesBG}>
+            <FlatList
+              scrollEnabled={false}
+              // data={activeItemSubCategories?.data.data.subCategories.slice(
+              data={activeItemSubCategories.slice(0, 10)}
+              keyExtractor={item => {
+                // console.log('item', item);
+                return item._id;
+              }}
+              numColumns={5}
+              renderItem={({item, index}) => {
+                return (
+                  <View
+                    style={{
+                      flex: 0.5,
+                      marginTop: 8,
+                    }}>
+                    {index === 9 ? (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate(RouteNames.categories);
+                        }}
+                        style={{alignItems: 'center'}}>
+                        <EllipsisHorizontal width={24} height={50} />
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            color: colors.balc111111,
+                            fontWeight: '400',
+                          }}>
+                          Ещё
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate(RouteNames.product_search_screen);
+                        }}
+                        style={{alignItems: 'center'}}>
+                        <ImageIcon width={50} height={50} />
+                        <Text
+                          numberOfLines={1}
+                          style={{
+                            fontSize: 13,
+                            color: colors.balc111111,
+                            fontWeight: '400',
+                          }}>
+                          {item.categoryName}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                );
+              }}
+            />
+          </View>
+        ) : (
+          <View />
+        )}
+
         <View style={styles.productsGrid}>
           <MasonryList
-            data={data}
+            data={productsDataArray}
             keyExtractor={item => {
               return item.id;
             }}
             numColumns={2}
-            renderItem={({ item }) => {
+            renderItem={({item}) => {
               return (
                 <TouchableOpacity
                   style={{
@@ -247,11 +258,8 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                     paddingBottom: 8,
                   }}
                   onPress={() => {
-                    navigation.navigate(RouteNames.product_detail)
-
-                  }}
-
-                >
+                    navigation.navigate(RouteNames.product_detail);
+                  }}>
                   <Image
                     source={appIcons.shoeImageURL}
                     style={{
@@ -274,7 +282,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                     }}>
                     <Image
                       source={appIcons.china}
-                      style={{ height: 15, width: 15, marginTop: 3 }}
+                      style={{height: 15, width: 15, marginTop: 3}}
                     />
                     <Text
                       style={{
@@ -284,7 +292,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                         fontWeight: '500',
                       }}
                       numberOfLines={1}>
-                      Футболка
+                      {item.name}
                     </Text>
                   </View>
                   <View
@@ -293,14 +301,14 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                       paddingLeft: 8,
                       marginTop: 3,
                     }}>
-                    <View style={{ flexDirection: 'row', width: '30%' }}>
+                    <View style={{flexDirection: 'row', width: '30%'}}>
                       <Text
                         style={{
                           fontSize: 17,
                           color: '#ff7600',
                           fontFamily: fontFamily.bold,
                         }}>
-                        999
+                        {item.price}
                       </Text>
                       <Text
                         style={{
@@ -312,18 +320,25 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                         c.
                       </Text>
                     </View>
-                    <Text
-                      numberOfLines={1}
+                    <View
                       style={{
-                        width: '70%',
-                        color: '#AAAAAA',
-                        paddingTop: 3,
-                        fontFamily: fontFamily.regular,
-                        fontSize: 10.5,
-                        marginTop: 4,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingTop: 4,
                       }}>
-                      {item.desc}
-                    </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          width: '70%',
+                          color: '#AAAAAA',
+                          fontFamily: fontFamily.regular,
+                          fontSize: 10.5,
+                          paddingLeft: 28,
+                        }}>
+                        {`${item.views}+куплено`}
+                      </Text>
+                      <EllipsisHorizontalGrey style={{marginTop: 4}} />
+                    </View>
                   </View>
                 </TouchableOpacity>
               );
@@ -332,9 +347,19 @@ const CategoryScreen: React.FC = ({ navigation }) => {
         </View>
       </ScrollView>
     </View>
+  ) : loading ? (
+    <RetryWhenErrorOccur
+      data={productsData}
+      onClick={() => {
+        setActiveItemSubCategories(undefined);
+        setProductsData(undefined);
+        callAPI();
+      }}
+    />
+  ) : (
+    <ProgressView />
   );
 };
-
 export default CategoryScreen;
 
 const styles = StyleSheet.create({
@@ -346,8 +371,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
     borderRadius: 24,
     paddingTop: 12,
     paddingBottom: 4,
@@ -356,8 +379,8 @@ const styles = StyleSheet.create({
   },
   searchBarBG: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#ffffff',
     width: '100%',
     height: 37,
