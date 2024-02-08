@@ -17,10 +17,11 @@ export const apiUrls = {
 };
 
 export const modules = {
-  productModule: '/app/products/',
-  categoryModule: '/app/categories/',
-  authModule: '/auth/',
-};
+    productModule: '/app/products/',
+    categoryModule: '/app/categories/',
+    authModule: '/auth/',
+    profile: "/app/profile/"
+}
 
 export const otherModule = {
   getTermsCondition: '/app/getTermsCondition',
@@ -44,8 +45,13 @@ export const ProductAPIs = {
 };
 
 export const AuthAPIs = {
-  login: modules.authModule + 'login',
-  signUp: modules.authModule + 'register',
-  sendOtp: modules.authModule + 'sendOtp',
-  forgotPassword: modules.authModule + 'forgotPassword',
-};
+    login: modules.authModule + 'login',
+    signUp: modules.authModule + 'register',
+    sendOtp: modules.authModule + 'sendOtp',
+    forgotPassword: modules.authModule + 'forgotPassword'
+}
+
+export const ProfileAPIs = {
+    changePass: modules.profile + "changePassword",
+    uploadProfilePic: modules.profile + "uploadProfileImage",
+}

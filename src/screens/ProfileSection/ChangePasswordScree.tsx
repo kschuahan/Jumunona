@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { colors } from '../../utils/AppColors';
 import { AppString } from '../../utils/AppStrings';
@@ -17,10 +18,13 @@ import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import { fontFamily } from '../../utils/Fonts';
 import { CustomHeader } from '../../components/Header';
+import { postAPICall } from '../../Netowork/Apis';
+import { ProfileAPIs } from '../../Netowork/Constants';
+import { CenterProgressView, ProgressView } from '../../components/Dialogs';
 
 const ChangePassswordScreen = ({ navigation }) => {
   useEffect(() => {
-    navigation.setOptions({
+    navigation.setOptions({ 
       headerTitle: AppString.change_password,
       headerRight: () => (
         <TouchableOpacity style={{ alignItems: 'center' }}>
@@ -41,16 +45,52 @@ const ChangePassswordScreen = ({ navigation }) => {
   });
   const [newPass, setNewPass] = useState('');
   const [confirmNewPass, setConfirmNewPass] = useState('');
+  const [newPassErr, setNewPassErr] = useState('');
+  const [confirmPassErr, setConfirmPassErr] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const changePass = () => {
+    setLoading(true)
+      postAPICall({
+        newPassword: newPass,
+        confirmPassword: confirmNewPass
+      }, ProfileAPIs.changePass, true, (res: any) => {
+         setLoading(false)
+          if (res.isSuccess) {
+            navigation.navigate(RouteNames.sucessfulChangePassword);
+          } else {
+            Alert.alert(res.data.toString())
+          }
+      })
+  }
+
+  const validate = () => {
+    console.warn(newPass.trim().length)
+    if (newPass.trim().length >= 8) {
+      setNewPassErr("")
+        if (confirmNewPass == newPass) {
+          setConfirmPassErr("")
+          return true
+        } else {
+          setConfirmPassErr("Password does not match.")
+           return false
+        }
+    } else {
+      setNewPassErr("Enter valid new password.")
+      setConfirmPassErr("")
+      return false
+    }
+  }
 
   return (
     <View style={[styles.container, { padding: 0 }]}>
       <CustomHeader navigation={navigation} title={AppString.change_password} />
 
-      <ScrollView>
+      <ScrollView style = {{flex: 1}}>
         <View
           style={[
             style.container,
-            { backgroundColor: colors.white, borderRadius: 13,  marginTop: 6},
+            { backgroundColor: colors.white, borderRadius: 13,  marginTop: 6, },
           ]}>
           <Text
             style={[
@@ -59,8 +99,8 @@ const ChangePassswordScreen = ({ navigation }) => {
             ]}>
             {AppString.new_password}
           </Text>
-
-          <View style={{ flexDirection: 'row', marginBottom: 14 }}>
+          <View style={{ marginBottom: 14}}>
+          <View style={{ flexDirection: 'row', }}>
             <TextInput
               placeholder={AppString.create_new_password}
               style={style.passwordTextInput}
@@ -69,7 +109,21 @@ const ChangePassswordScreen = ({ navigation }) => {
                 setNewPass(text);
               }}></TextInput>
           </View>
+          {
+                  newPassErr.length > 0
+                    ? <Text
+                      style={{
+                        color: colors.lightRed,
+                        fontSize: 14,
+                        fontWeight: '400',
+                        paddingStart: 8
+                      }}>
+                      {newPassErr}
+                    </Text>
+                    : null
 
+                }
+        </View>
           <Text
             style={[
               styles.textStyle,
@@ -83,14 +137,31 @@ const ChangePassswordScreen = ({ navigation }) => {
               style={style.passwordTextInput}
               value={confirmNewPass}
               onChangeText={text => {
-                setNewPass(text);
+                setConfirmNewPass(text);
               }}></TextInput>
           </View>
+          {
+                  confirmPassErr.length > 0
+                    ? <Text
+                      style={{
+                        color: colors.lightRed,
+                        fontSize: 14,
+                        fontWeight: '400',
+                        paddingStart: 8
+                      }}>
+                      {confirmPassErr}
+                    </Text>
+                    : null
+
+                }
         </View>
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(RouteNames.sucessfulChangePassword);
+            // navigation.navigate(RouteNames.sucessfulChangePassword);
+            if (validate()) {
+              changePass()
+            }
           }}
           style={style.confirmButton}>
           <LinearGradient
@@ -104,7 +175,9 @@ const ChangePassswordScreen = ({ navigation }) => {
             </Text>
           </LinearGradient>
         </TouchableOpacity>
+       
       </ScrollView>
+      { loading ? <CenterProgressView /> : null}
     </View>
   );
 };
@@ -125,6 +198,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 16,
     fontFamily: fontFamily.regular,
     fontSize: 14,
+    paddingVertical: 0
   },
   confirmButton: {
     flex: 1,

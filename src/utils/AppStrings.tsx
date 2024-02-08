@@ -256,5 +256,6 @@ export const AppString = {
   waist: "Обхват талии",
   exit_body_data: "Выход из данных о теле",
   current_body_data_not_complete: "Текущие данные о теле не завершены",
-  are_you_sure_to_continue: "Вы уверены, что хотите продолжить?"
+  are_you_sure_to_continue: "Вы уверены, что хотите продолжить?",
+  camera: "Камера"
 };

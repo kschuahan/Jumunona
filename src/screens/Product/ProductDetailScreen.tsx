@@ -18,7 +18,7 @@ import { colors } from '../../utils/AppColors';
 import { appIcons, imagesUrl, productImages } from '../../utils/AppIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { onShare } from '../../utils/Common';
-import SelectProductSizeColorScreen from './SelectProductSizeColorScreen';
+import SelectProductSizeColorScreen, { ColorSizeBottomSheetMode } from './SelectProductSizeColorScreen';
 import ProuductGuanteeScreen from './ProductGuarnteeScreen';
 import ProductImageScreeen from './ProductImageScreeen';
 import CharacterSticsScreen from './CharactersticsScreen';
@@ -127,12 +127,12 @@ const postionsArray: Position[] = [
 
 export const ProductDetailScreen = ({ navigation, route }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [butShow, setBuyShow] = useState(false);
   const [guranty, setOnGauranty] = useState(false);
-  const [addShow, setAddShow] = useState(false);
   const [data, setData] = useState<CommonModal>()
   const [loading, setLoading] = useState(false)
   const [favLoading, setFavLoading] = useState(false)
+  const [showColorSize, setShowColorSize] = useState(false);
+  const [sizeColorBottomSheetMode, setSizeColorBottomSheetMode] = useState(ColorSizeBottomSheetMode.selectSize)
   const [images, setImages] = useState(data && data.data.data
     && data.data.data.productImages &&
     data.data.data.productImages.length > 0 ?
@@ -172,6 +172,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
       if (res.data) {
         setImages(res.data.data.productImages.length ? res.data.data.productImages : productImages)
         setFavourite(res.data.data.isFavourite)
+        console.warn("color options",res.data.data.attributes.attribute1.attr1.data)
       }
     })
   }
@@ -339,9 +340,17 @@ export const ProductDetailScreen = ({ navigation, route }) => {
           </View>
 
           <ProductDetails item={data.data.data} />
-          <ProductDesclamenation item={data.data.data} isGauranty={guranty} onGauranctCancle={() => {
+          <ProductDesclamenation
+           item={data.data.data}
+            isGauranty={guranty}
+             onGauranctCancle={() => {
             setOnGauranty(false)
-          }} />
+          }} 
+          onShowColorSize={ () => {
+            setSizeColorBottomSheetMode(ColorSizeBottomSheetMode.selectSize)
+            setShowColorSize(true)
+            
+            }}/>
           <View style={{ paddingHorizontal: 9 }}>
             <ReviewsSection
               viewAllReviews={() => {
@@ -501,13 +510,15 @@ export const ProductDetailScreen = ({ navigation, route }) => {
             startorange={colors.yellowStart}
             endColor={colors.yellowEnd}
             onClick={() => {
-              setAddShow(true);
+              setSizeColorBottomSheetMode(ColorSizeBottomSheetMode.addToCart)
+              setShowColorSize(true);
             }}
           />
           <CommonButton
             text={AppString.buy}
             onClick={() => {
-              setBuyShow(true);
+              setSizeColorBottomSheetMode(ColorSizeBottomSheetMode.buyNow)
+              setShowColorSize(true);
             }}
           />
         </View>
@@ -520,25 +531,19 @@ export const ProductDetailScreen = ({ navigation, route }) => {
           setShowImages(-1);
         }}
       />
-
-      <AddSelectProductSizeColorScreen
-        isShow={addShow}
+      <SelectProductSizeColorScreen
+      productDetail={data.data.data}
+      displayImage = {images[0]}
+      currentMode= {sizeColorBottomSheetMode}
+        isShow={showColorSize}
         onClose={() => {
-          setAddShow(false);
+          setShowColorSize(false);
         }}
         onGuranty={() => {
           setOnGauranty(true)
         }}
       />
-      <BuySelectProductSizeColorScreen
-        isShow={butShow}
-        onClose={() => {
-          setBuyShow(false);
-        }}
-        onGuranty={() => {
-          setOnGauranty(true)
-        }}
-      />
+     
     </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
       setData(undefined)
       callAPI()
@@ -711,8 +716,7 @@ const CommonButton = ({
   );
 };
 
-const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle }) => {
-  const [showColorSize, setShowColorSize] = useState(false);
+const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onShowColorSize }) => {
   const [showGurantees, setShowGurantees] = useState(isGauranty);
 
   const [showCharacterstics, setShowCharacterstics] = useState(false);
@@ -750,9 +754,7 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle }) =
       <TextWithIcon
         Icon={ColorIcon}
         title="2 цветов на выбор"
-        onClick={() => {
-          setShowColorSize(true);
-        }}
+        onClick={onShowColorSize}
       />
       <TextWithIcon
         Icon={Guaranty}
@@ -775,15 +777,7 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle }) =
           setShowSizeChart(true);
         }}
       />
-      <SelectProductSizeColorScreen
-        isShow={showColorSize}
-        onClose={() => {
-          setShowColorSize(false);
-        }}
-        onGuranty={() => {
-          setShowGurantees(true);
-        }}
-      />
+      
       <ProuductGuanteeScreen
         isShow={showGurantees}
         onClose={() => {

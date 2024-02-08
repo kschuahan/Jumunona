@@ -8,7 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import { ScrollView } from 'react-native-virtualized-view';
-import { useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { AppString } from '../../utils/AppStrings';
 import { styles } from '../../utils/AppStyles';
@@ -25,17 +25,25 @@ import ChevronFwdOutline from '../../../assets/Icons/ForwardOrange.svg';
 import ResizeIcon from '../../../assets/Icons/resizeIcon.svg';
 import RemoveCircleOutline from '../../../assets/Icons/removeCircleOutline.svg';
 
-const SelectProductSizeColorScreen = ({ isShow = false, onClose, onGuranty }) => {
+export enum ColorSizeBottomSheetMode {
+  selectSize = "selectSize",
+  addToCart = "addToCart",
+  buyNow = "buyNow"
+
+}
+
+
+const SelectProductSizeColorScreen = ({ productDetail, displayImage, currentMode = ColorSizeBottomSheetMode.selectSize, isShow = false, onClose, onGuranty }) => {
   const [number, setNumber] = useState('');
   const [otp, setOtp] = useState('');
-
+  const [selectedColorIndex, setSelectColorIndex] = useState(0)
   return (
     <Modal
       transparent={true}
       animationType={'slide'}
       visible={isShow}
       onRequestClose={onClose}
-      >
+    >
       <Pressable onPress={onClose}
         style={[
           styles.botton_view,
@@ -63,7 +71,7 @@ const SelectProductSizeColorScreen = ({ isShow = false, onClose, onGuranty }) =>
                 alignContent: 'space-between',
               }}>
               <Image
-                source={{ uri: imagesUrl.shoes }}
+                source={{ uri: displayImage }}
                 style={{ height: 65, width: 65, borderRadius: 10, margin: 3 }}
               />
 
@@ -76,12 +84,11 @@ const SelectProductSizeColorScreen = ({ isShow = false, onClose, onGuranty }) =>
                     color: colors.startOrange,
                   },
                 ]}>
-                178с.
+                {productDetail.price}c.
               </Text>
             </View>
             <TouchableOpacity
               style={{ marginEnd: 7.11, marginTop: 6 }}
-
               onPress={() => {
                 onClose();
               }}>
@@ -102,8 +109,10 @@ const SelectProductSizeColorScreen = ({ isShow = false, onClose, onGuranty }) =>
                 backgroundColor: colors.darkWhite,
               }}
             />
-
-            <ColorOptions />
+            {productDetail ?
+              <ColorOptions colorOptions={productDetail.attributes.attribute1.attr1} selectedColorIndex={selectedColorIndex} onSelectColor={(index: number) => { setSelectColorIndex(index) }} />
+              : null
+            }
             <View
               style={{
                 height: 1,
@@ -112,7 +121,7 @@ const SelectProductSizeColorScreen = ({ isShow = false, onClose, onGuranty }) =>
               }}
             />
 
-            <SizeAndBuyingForView />
+            <SizeAndBuyingForView productDetail={productDetail.attributes.attribute1.attr1} selectedColorIndex={selectedColorIndex} />
             <View
               style={{
                 height: 1,
@@ -123,20 +132,41 @@ const SelectProductSizeColorScreen = ({ isShow = false, onClose, onGuranty }) =>
             <QuanityView />
           </ScrollView>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 35,
-              paddingBottom: 20,
-            }}>
-            <CommonButton
-              startorange={colors.yellowStart}
-              endColor={colors.yellowEnd}
-              onClick={() => { }}
-            />
-            <CommonButton text={AppString.buy} onClick={() => { }} />
-          </View>
+          {
+            currentMode == ColorSizeBottomSheetMode.selectSize ?
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 35,
+                  paddingBottom: 20,
+                }}>
+                <CommonButton
+                  startorange={colors.yellowStart}
+                  endColor={colors.yellowEnd}
+                  onClick={() => { }}
+                />
+                <CommonButton text={AppString.buy} onClick={() => { }} />
+              </View>
+              : currentMode == ColorSizeBottomSheetMode.addToCart ?
+
+                <View style={{
+                  marginVertical: 35,
+                  paddingBottom: 20,
+                }}>
+                  <CommonButton text={AppString.add} onClick={() => { }} />
+                </View>
+
+                :
+                <View style={{
+                  marginVertical: 35,
+                  paddingBottom: 20,
+                }}>
+                  <CommonButton text={AppString.buy} onClick={() => { }} />
+                </View>
+
+          }
         </Pressable>
       </Pressable>
     </Modal>
@@ -210,21 +240,22 @@ const PhoneDataScreen = ({ onClick }) => {
     </View>
   );
 };
-
-const ColorOptions = ({ }) => {
-  const [selectedColor, setSelectedColor] = useState(1);
+const ColorOptions = ({ colorOptions, selectedColorIndex, onSelectColor }) => {
+  console.warn(colorOptions)
   return (
     <View>
-      <Text style={[styles.textStyle, { fontSize: 14 }]}>Цвет (2)</Text>
+      <Text style={[styles.textStyle, { fontSize: 14 }]}>{colorOptions.attributeName} (2)</Text>
 
       <FlatList
-        data={[1, 2]}
+        data={colorOptions.data}
         renderItem={({ item, index }) => (
           <View style={{ marginEnd: 8 }}>
             <View style={{ height: 13 }} />
             <TouchableOpacity
               onPress={() => {
-                setSelectedColor(item);
+                if (item.quantity != 0) {
+                  onSelectColor(index)
+                }
               }}>
               <View
                 style={{
@@ -234,7 +265,7 @@ const ColorOptions = ({ }) => {
                   alignContent: 'center',
                 }}>
                 <Image
-                  source={{ uri: imagesUrl.shoes }}
+                  source={{ uri: item.skuImageUrlPath }}
                   style={{ width: 109, height: 111, borderRadius: 7 }}
                 />
                 <View
@@ -252,7 +283,7 @@ const ColorOptions = ({ }) => {
                         textAlign: 'center',
                         alignSelf: 'center',
                         color:
-                          selectedColor == item
+                          selectedColorIndex == index
                             ? colors.startOrange
                             : colors.black,
                         marginTop: 4,
@@ -260,10 +291,9 @@ const ColorOptions = ({ }) => {
                       },
                     ]}>
                     {' '}
-                    light gray
+                    {item.attributeValue}
                   </Text>
                 </View>
-
                 <View
                   style={{
                     position: 'absolute',
@@ -279,7 +309,7 @@ const ColorOptions = ({ }) => {
                   <ResizeIcon width={19} height={19} color={colors.white} />
                 </View>
               </View>
-              {selectedColor == item ? (
+              {selectedColorIndex == index ? (
                 <View
                   style={{
                     position: 'absolute',
@@ -293,7 +323,7 @@ const ColorOptions = ({ }) => {
                 />
               ) : null}
 
-              {index == 1 ? (
+              {item.quantity == 0 ? (
                 <View
                   style={{
                     position: 'absolute',
@@ -330,7 +360,7 @@ const ColorOptions = ({ }) => {
   );
 };
 
-const SizeAndBuyingForView = ({ }) => {
+const SizeAndBuyingForView = ({ productDetail, selectedColorIndex }) => {
   const [selectedSize, setSelecteSize] = useState(false);
   const users = ['Vali', 'Name 2', '+ Add'];
   const sizes = ['24', '25', '26', '27', '28', '29', '30', '31', '32'];
@@ -403,11 +433,11 @@ const SizeAndBuyingForView = ({ }) => {
         numColumns={5}
         renderItem={({ item }) => ( */}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
-        {(selectedSize ? sizes : users).map((item) =>
+        {(selectedSize ? productDetail.data[selectedColorIndex].att2.data : users).map((item: any) =>
           <View style={{ margin: 8 }}>
             <TouchableOpacity
               onPress={() => {
-                setSelecteItem(item);
+                selectedSize ? setSelecteItem(item.attributeID) : setSelecteItem(item)
               }}>
               <View
                 style={{
@@ -432,11 +462,11 @@ const SizeAndBuyingForView = ({ }) => {
                     },
                   ]}>
                   {' '}
-                  {item}
+                  {selectedSize ? item.attributeValue : item}
                 </Text>
               </View>
             </TouchableOpacity>
-            {selectedItem == item ? (
+            {((selectedSize && selectedItem == item.attributeID) || (!selectedSize && selectedItem == item)) ? (
               <View
                 style={{
                   position: 'absolute',

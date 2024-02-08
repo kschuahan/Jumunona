@@ -25,6 +25,9 @@ import CloseIconRed from '../../assets/Icons/CloseIconRed.svg';
 import { RadioButtons } from '../screens/Cart/CartScreen';
 import Internet from '../../assets/Icons/Internet.svg';
 
+import CameraIcon from '../../assets/Icons/Camera.svg';
+
+import GalleryIcon from '../../assets/Icons/Gallery.svg';
 export const VerifyDeleteAccountDialog = ({
   isShow = false,
   onConfirm,
@@ -886,3 +889,37 @@ const CommonButton = ({
   );
 };
 
+export const UploadImage = ({ isShow = false, camera, library, onCancel }) => {
+  return (
+    <Modal
+      transparent={true}
+      animationType={'fade'}
+      visible={isShow}
+      onRequestClose={onCancel}>
+        <Pressable onPress= {onCancel} style = {{justifyContent: 'flex-end', flex: 1, backgroundColor: 'rgba(0,0,0,0.4'}}>
+      <View style={{ flexDirection: 'row',  bottom: 0, padding: 20, backgroundColor: colors.white, shadowOpacity: 1, shadowRadius: 3, shadowOffset: {width: 0, height: -3}, shadowColor: 'rgba(0,0,0,0.5)', borderTopLeftRadius: 13, borderTopRightRadius: 13}}>
+        <IconWithText title={AppString.camera} onClick={camera} marginEnd={20} />
+        <IconWithText title={AppString.album} onClick={library} Icon={GalleryIcon} />
+      </View>
+      </Pressable>
+      </Modal>
+  )
+}
+
+
+const IconWithText = ({ title = AppString.camera, onClick, Icon = CameraIcon, marginEnd = 33 }) => {
+  return <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', marginEnd: marginEnd }} onPress={onClick}>
+    <View style={{
+      backgroundColor: colors.white,
+      justifyContent: 'center', alignItems: 'center',
+      height: 58, width: 58, borderRadius: 8,
+    }}>
+      <Icon />
+
+    </View>
+    <Text
+      style={[styles.textStyle, { fontSize: 14, color: colors.black666666, marginTop: 4 }]}>
+      {title}
+    </Text>
+  </TouchableOpacity>
+}
