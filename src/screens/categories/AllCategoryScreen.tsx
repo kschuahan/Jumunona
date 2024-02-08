@@ -1,15 +1,16 @@
-import { TouchableOpacity, View, FlatList, Text } from 'react-native';
-import { styles } from '../../utils/AppStyles';
-import React, { useEffect, useState } from 'react';
-import { RouteNames } from '../../utils/RouteNames';
-import { AppString } from '../../utils/AppStrings';
-import { colors } from '../../utils/AppColors';
-import { fontFamily } from '../../utils/Fonts';
+import {TouchableOpacity, View, FlatList, Text} from 'react-native';
+import {styles} from '../../utils/AppStyles';
+import React, {useEffect, useState} from 'react';
+import {RouteNames} from '../../utils/RouteNames';
+import {AppString} from '../../utils/AppStrings';
+import {colors} from '../../utils/AppColors';
 import EllipsisHorizontalIcon from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/ForwardBlack.svg';
 import ImageIcon from '../../../assets/Icons/image-outline.svg';
-import { CustomHeader } from '../../components/Header';
+import {CustomHeader} from '../../components/Header';
+import {getAPICall} from '../../Netowork/Apis';
+import {categoriesModule} from '../../Netowork/Constants';
 
 const categories = [
   "Women's",
@@ -26,26 +27,46 @@ const categories = [
   '汽车用品',
 ];
 const products = [
-  { title: 'coat', isSelected: false },
-  { title: '3 category', isSelected: false },
-  { title: 'Jacket', isSelected: false },
-  { title: 'Cotton clothes', isSelected: false },
-  { title: 'down jacket', isSelected: false },
-  { title: 'leather coat', isSelected: false },
-  { title: '棒球服', isSelected: false },
-  { title: '西装', isSelected: false },
-  { title: 'PU皮衣', isSelected: false },
+  {title: 'coat', isSelected: false},
+  {title: '3 category', isSelected: false},
+  {title: 'Jacket', isSelected: false},
+  {title: 'Cotton clothes', isSelected: false},
+  {title: 'down jacket', isSelected: false},
+  {title: 'leather coat', isSelected: false},
+  {title: '棒球服', isSelected: false},
+  {title: '西装', isSelected: false},
+  {title: 'PU皮衣', isSelected: false},
 ];
 
-export const AllCategoriesScreen = ({ navigation }) => {
+export const AllCategoriesScreen = ({navigation}) => {
   const [pos, setPos] = useState(0);
+  const [leftCategoryList, setLeftCategoryList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] =
+    useState<string>('');
+  const [activeItemSubCategories, setActiveItemSubCategories] = useState();
+
+  const callLeftCategoryListAPI = () => {
+    setLoading(true);
+    getAPICall(
+      categoriesModule.getCategoriesListForCategoriesScreen,
+      (response: any) => {
+        setLeftCategoryList(response);
+        // Assuming the first category is always available
+        setActiveItemPrimaryCategory(response?.data.data[0]._id);
+        setActiveItemSubCategories(response?.data.data[0].subCategories);
+      },
+    );
+    setLoading(false);
+  };
 
   useEffect(() => {
+    callLeftCategoryListAPI();
     navigation.setOptions({
       headerTitle: AppString.categories,
 
       headerRight: () => (
-        <TouchableOpacity style={{ alignItems: 'center' }}>
+        <TouchableOpacity style={{alignItems: 'center'}}>
           <EllipsisHorizontalIcon width={24} height={24} />
         </TouchableOpacity>
       ),
@@ -55,26 +76,33 @@ export const AllCategoriesScreen = ({ navigation }) => {
           onPress={() => {
             navigation.goBack();
           }}
-          style={{ alignItems: 'center' }}>
+          style={{alignItems: 'center'}}>
           <ChevronBackOutline width={15} height={15} />
         </TouchableOpacity>
       ),
     });
   });
 
-  return (
-    <View style={[styles.container, { padding: 0 }]}>
+  return leftCategoryList &&
+    activeItemPrimaryCategory &&
+    activeItemSubCategories ? (
+    <View style={[styles.container, {padding: 0}]}>
       <CustomHeader navigation={navigation} title={AppString.categories} />
-      <View style={[styles.container, { paddingEnd: 6, backgroundColor: undefined }]}>
+      <View
+        style={[styles.container, {paddingEnd: 6, backgroundColor: undefined}]}>
         <View
           style={[
             styles.container,
-            { flexDirection: 'row', padding: undefined, backgroundColor: undefined },
+            {
+              flexDirection: 'row',
+              padding: undefined,
+              backgroundColor: undefined,
+            },
           ]}>
           <FlatList
-            style={{ width: '22%', marginTop: -10 }}
-            data={categories}
-            renderItem={({ item, index }) => (
+            style={{width: '22%', marginTop: -10}}
+            data={leftCategoryList?.data?.data}
+            renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() => {
                   setPos(index);
@@ -83,7 +111,7 @@ export const AllCategoriesScreen = ({ navigation }) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginBottom: 17.25,
-                  marginTop: index == 0 ? 13 : 17.25
+                  marginTop: index == 0 ? 13 : 17.25,
                 }}>
                 <Text
                   style={[
@@ -101,14 +129,14 @@ export const AllCategoriesScreen = ({ navigation }) => {
           />
 
           <FlatList
-            style={{ width: '78%', marginTop: -14 }}
+            style={{width: '78%', marginTop: -14}}
             data={[
-              { title: 'Jackets', product: products },
-              { title: 'Tops', product: products },
-              { title: 'Joggers', product: products },
+              {title: 'Jackets', product: products},
+              {title: 'Tops', product: products},
+              {title: 'Joggers', product: products},
             ]}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <View
                 style={{
                   backgroundColor: colors.white,
@@ -129,7 +157,7 @@ export const AllCategoriesScreen = ({ navigation }) => {
                   }}
                   numColumns={3}
                   scrollEnabled={false}
-                  renderItem={({ item, index }) => (
+                  renderItem={({item, index}) => (
                     <TouchableOpacity
                       style={{
                         flex: 1 / 3,
@@ -167,10 +195,12 @@ export const AllCategoriesScreen = ({ navigation }) => {
         </View>
       </View>
     </View>
+  ) : (
+    <View />
   );
 };
 
-const TextWithIcon = ({ title = 'Jackets', padding = 10, onClick }) => {
+const TextWithIcon = ({title = 'Jackets', padding = 10, onClick}) => {
   return (
     <TouchableOpacity
       onPress={onClick}
