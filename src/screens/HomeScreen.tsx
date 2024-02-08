@@ -8,12 +8,9 @@ import {
   Image,
   FlatList,
   Pressable,
-  ActivityIndicator,
 } from 'react-native';
-import {ScrollView} from 'react-native-virtualized-view';
 import LinearGradient from 'react-native-linear-gradient';
 import MasonryList from '@react-native-seoul/masonry-list';
-import {dimensions} from '../utils/sizes';
 import {RouteNames} from '../utils/RouteNames';
 import {colors} from '../utils/AppColors';
 import React, {useEffect, useState} from 'react';
@@ -25,8 +22,8 @@ import {appIcons} from '../utils/AppIcons';
 import {getAPICall} from '../Netowork/Apis';
 import {categoriesModule, ProductAPIs} from '../Netowork/Constants';
 import {ProgressView, RetryWhenErrorOccur} from '../components/Dialogs';
-import {SvgUri} from 'react-native-svg';
 import {AppString} from '../utils/AppStrings';
+import {TouchableHighlight} from 'react-native-gesture-handler';
 
 export interface CommonModal {
   isSuccess: boolean;
@@ -39,83 +36,7 @@ interface PagingData {
   current: number;
   pages: number;
 }
-interface Product {
-  id: number;
-  imageURL: string | any;
-  desc: string;
-}
-interface Category {
-  id: number;
-  desc: string;
-}
 const numColumns = 5;
-const dataResponse: Product[] = [
-  {
-    id: 1,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 2,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 3,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 4,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 5,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 6,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 7,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 8,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 9,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 10,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-];
-
-const categoryData: Category[] = [
-  {id: 1, desc: 'Men'},
-  {id: 2, desc: 'Women'},
-  {id: 3, desc: 'Child'},
-  {id: 4, desc: 'Shoes'},
-  {id: 5, desc: 'Bags'},
-  {id: 6, desc: 'Electro'},
-  {id: 7, desc: 'Auto'},
-  {id: 8, desc: 'Home'},
-  {id: 9, desc: 'Beauty'},
-  {id: 10, desc: 'Suits'},
-  // { id: 11, desc: "Accesso" },
-  // { id: 12, desc: "Make-Up" },
-];
 
 const HeaderItem = ({onSearchClick}) => (
   <View style={styles.header}>
@@ -149,17 +70,24 @@ const MainCategoriesItem = ({navigation, data}) => {
           return item._id.toString();
         }}
         numColumns={5}
-        renderItem={({item, index}) => {
+        renderItem={({item, index, separators}) => {
           return (
             <View
               style={{
                 flex: 1 / 5,
               }}>
-              {index == 9 ? (
-                <TouchableOpacity
+              {index === 9 ? (
+                <TouchableHighlight
+                  key={item._id}
                   onPress={() => {
-                    navigation.navigate(RouteNames.categories);
+                    navigation.navigate(RouteNames.categories, {
+                      categoryID: item._id,
+                      routeName: 'HomeScreen',
+                      index: index,
+                    });
                   }}
+                  onShowUnderlay={separators.highlight}
+                  onHideUnderlay={separators.unhighlight}
                   style={{alignItems: 'center'}}>
                   <EllipsisHorizontal width={24} height={38} />
                   <Text
@@ -171,14 +99,18 @@ const MainCategoriesItem = ({navigation, data}) => {
                     }}>
                     ещё
                   </Text>
-                </TouchableOpacity>
+                </TouchableHighlight>
               ) : (
-                <TouchableOpacity
+                <TouchableHighlight
                   onPress={() => {
-                    navigation.navigate(RouteNames.product_search_screen);
+                    navigation.navigate(RouteNames.product_search_screen, {
+                      categoryID: item._id,
+                      routeName: 'HomeScreen',
+                      index: index,
+                    });
                   }}
                   style={{alignItems: 'center'}}>
-                  {item.image == '' ? (
+                  {item.image === '' ? (
                     <ImageOutline width={50} height={38} />
                   ) : (
                     <Image source={{uri: item.image}} height={38} width={50} />
@@ -193,7 +125,7 @@ const MainCategoriesItem = ({navigation, data}) => {
                     }}>
                     {item.categoryName}
                   </Text>
-                </TouchableOpacity>
+                </TouchableHighlight>
               )}
             </View>
           );
@@ -292,13 +224,13 @@ const HomeScreen: React.FC = ({navigation}) => {
                 }}>
                 <Image
                   source={
-                    item.images != ''
+                    item.images !== ''
                       ? {uri: item.images}
                       : appIcons.shoeImageURL
                   }
                   style={[
                     styles.gridViewItemImage,
-                    {height: i % 3 != 1 ? 240 : 277},
+                    {height: i % 3 !== 1 ? 240 : 277},
                   ]}
                 />
                 <View

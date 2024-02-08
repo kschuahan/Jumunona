@@ -8,13 +8,13 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import { colors } from '../../utils/AppColors';
-import { useEffect, useState } from 'react';
-import { styles } from '../../utils/AppStyles';
-import { dimensions } from '../../utils/sizes';
+import {colors} from '../../utils/AppColors';
+import {useEffect, useState} from 'react';
+import {styles} from '../../utils/AppStyles';
+import {dimensions} from '../../utils/sizes';
 import MasonryList from '@react-native-seoul/masonry-list';
-import { appIcons, imagesUrl } from '../../utils/AppIcons';
-import { RouteNames } from '../../utils/RouteNames';
+import {appIcons, imagesUrl} from '../../utils/AppIcons';
+import {RouteNames} from '../../utils/RouteNames';
 import LinearGradient from 'react-native-linear-gradient';
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
@@ -22,25 +22,25 @@ import FunnelGrayOutlineIcon from '../../../assets/Icons/funnelOutlineGrey.svg';
 import CaretDownIcon from '../../../assets/Icons/DropDown.svg';
 import ChevronDownOutlineIcon from '../../../assets/Icons/chevronDownOutlline.svg';
 import SearchIcon from '../../../assets/Icons/searchIcon.svg';
-import { CustomHeaderWithoutBackgroundSearch } from '../../components/Header';
+import {CustomHeaderWithoutBackgroundSearch} from '../../components/Header';
 import CheckmarkOutline from '../../../assets/Icons/CheckOrange.svg';
-import { fontFamily } from '../../utils/Fonts';
-import { AppString } from '../../utils/AppStrings';
+import {fontFamily} from '../../utils/Fonts';
+import {AppString} from '../../utils/AppStrings';
 import FilterBottomSheet from './FilterBottomSheet';
 
 const categoryData = [
-  { id: 1, desc: 'Jackets' },
-  { id: 2, desc: 'Tops' },
-  { id: 3, desc: 'Child' },
-  { id: 4, desc: 'Baby' },
-  { id: 5, desc: 'Home' },
-  { id: 6, desc: 'Electro' },
-  { id: 7, desc: 'Auto' },
-  { id: 8, desc: 'Home' },
-  { id: 9, desc: 'Beauty' },
-  { id: 10, desc: 'Suits' },
-  { id: 11, desc: 'Accesso' },
-  { id: 12, desc: 'Make-Up' },
+  {id: 1, desc: 'Jackets'},
+  {id: 2, desc: 'Tops'},
+  {id: 3, desc: 'Child'},
+  {id: 4, desc: 'Baby'},
+  {id: 5, desc: 'Home'},
+  {id: 6, desc: 'Electro'},
+  {id: 7, desc: 'Auto'},
+  {id: 8, desc: 'Home'},
+  {id: 9, desc: 'Beauty'},
+  {id: 10, desc: 'Suits'},
+  {id: 11, desc: 'Accesso'},
+  {id: 12, desc: 'Make-Up'},
 ];
 
 const data = [
@@ -95,19 +95,18 @@ const data = [
     desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
   },
 ];
-export const ProductSearchResultScreen = ({ navigation, route }) => {
-
-  const [select, setSelect] = useState(-1)
-  const [selectUpdate, setSelectUpdate] = useState(-1)
-  const [showFilter, setShowFilter] = useState(false)
+export const ProductSearchResultScreen = ({navigation, route}) => {
+  const [select, setSelect] = useState(-1);
+  const [selectUpdate, setSelectUpdate] = useState(-1);
+  const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: '',
 
       headerRight: () => (
-        <View style={{ flexDirection: 'row', gap: 30 }}>
-          <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
+        <View style={{flexDirection: 'row', gap: 30}}>
+          <TouchableOpacity style={{alignItems: 'center', marginStart: -20}}>
             <EllipsisHorizontal width={24} height={24} />
           </TouchableOpacity>
         </View>
@@ -124,7 +123,7 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
             onPress={() => {
               navigation.goBack();
             }}
-            style={{ alignItems: 'center' }}>
+            style={{alignItems: 'center'}}>
             <ChevronBackOutline width={15} height={15} />
           </TouchableOpacity>
 
@@ -140,22 +139,22 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
   });
 
   const sortBy = [
-    { id: 1, desc: 'Все' },
-    { id: 2, desc: 'Хиты' },
-    { id: 3, desc: 'Цена' },
+    {id: 1, desc: 'Все'},
+    {id: 2, desc: 'Хиты'},
+    {id: 3, desc: 'Цена'},
   ];
   const filter = [
-    { id: 1, desc: 'Country' },
-    { id: 2, desc: 'Brand' },
-    { id: 3, desc: 'Material' },
-    { id: 4, desc: 'Style' },
-    { id: 5, desc: 'Sleeve Length' },
+    {id: 1, desc: 'Country'},
+    {id: 2, desc: 'Brand'},
+    {id: 3, desc: 'Material'},
+    {id: 4, desc: 'Style'},
+    {id: 5, desc: 'Sleeve Length'},
   ];
 
   const [selectedSortBy, setSortBy] = useState(1);
 
   return (
-    <View style={[styles.container, { padding: 0 }]}>
+    <View style={[styles.container, {padding: 0}]}>
       <CustomHeaderWithoutBackgroundSearch navigation={navigation} />
       <View style={style.container}>
         {route.params && route.params.isRoute ? null : (
@@ -182,14 +181,15 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
             keyExtractor={item => {
               return item.id.toString();
             }}
-            renderItem={({ item }) => {
+            renderItem={({item}) => {
               return (
-                <View style={{ flex: 1, marginRight: 52 }}>
+                <View style={{flex: 1, marginRight: 52}}>
                   <TouchableOpacity onPress={() => setSortBy(item.id)}>
                     <Text
                       style={{
                         fontSize: 16,
-                        color: selectedSortBy === item.id ? '#ff7600' : '#666666',
+                        color:
+                          selectedSortBy === item.id ? '#ff7600' : '#666666',
                       }}>
                       {item.desc}
                     </Text>
@@ -198,14 +198,17 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
               );
             }}
           />
-          <TouchableOpacity onPress={() => {
-            setShowFilter(true)
-          }}><FunnelGrayOutlineIcon
+          <TouchableOpacity
+            onPress={() => {
+              setShowFilter(true);
+            }}>
+            <FunnelGrayOutlineIcon
               width={15}
               height={15}
               color={colors.black666666}
-              style={{ marginTop: 10 }}
-            /></TouchableOpacity>
+              style={{marginTop: 10}}
+            />
+          </TouchableOpacity>
         </View>
 
         <View
@@ -218,17 +221,17 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
             data={filter}
             showsHorizontalScrollIndicator={false}
             horizontal
-            style={{ marginHorizontal: 8 }}
+            style={{marginHorizontal: 8}}
             keyExtractor={item => {
               return item.id.toString();
             }}
-            renderItem={({ item, index }) => {
+            renderItem={({item, index}) => {
               return (
                 <View>
                   <TouchableOpacity
                     onPress={() => {
-                      setSelect(index)
-                      setSelectUpdate(-1)
+                      setSelect(index);
+                      setSelectUpdate(-1);
                     }}
                     style={{
                       flexDirection: 'row',
@@ -250,79 +253,111 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
                       }}>
                       {item.desc}
                     </Text>
-                    <CaretDownIcon width={8} height={8} style={{ marginLeft: 4 }} />
+                    <CaretDownIcon
+                      width={8}
+                      height={8}
+                      style={{marginLeft: 4}}
+                    />
                   </TouchableOpacity>
 
-                  {select == index ? <View style={{
-                    backgroundColor: "#F6F6F6",
-                    height: 8, borderTopRightRadius: 15,
-                    borderTopLeftRadius: 15, marginTop: -4, marginRight: 6,
-                    marginStart: -2
-                  }} />
-                    : null}
+                  {select == index ? (
+                    <View
+                      style={{
+                        backgroundColor: '#F6F6F6',
+                        height: 8,
+                        borderTopRightRadius: 15,
+                        borderTopLeftRadius: 15,
+                        marginTop: -4,
+                        marginRight: 6,
+                        marginStart: -2,
+                      }}
+                    />
+                  ) : null}
                 </View>
               );
             }}
           />
-          {select != -1 ? <View>
-            <FlatList data={['Китай', 'Таджикистан', 'Турция']}
-              numColumns={2}
-              style={{
-                backgroundColor: '#F6F6F6',
-                padding: 15,
-                borderTopRightRadius: 13,
-                borderTopLeftRadius: 13,
-                paddingTop: 0
-
-              }}
-              renderItem={({ item, index }) => <TouchableOpacity
-                onPress={() => {
-                  setSelectUpdate(index)
-
-                }}
+          {select != -1 ? (
+            <View>
+              <FlatList
+                data={['Китай', 'Таджикистан', 'Турция']}
+                numColumns={2}
                 style={{
+                  backgroundColor: '#F6F6F6',
+                  padding: 15,
+                  borderTopRightRadius: 13,
+                  borderTopLeftRadius: 13,
+                  paddingTop: 0,
+                }}
+                renderItem={({item, index}) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectUpdate(index);
+                    }}
+                    style={{
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      flex: 0.5,
+                      marginTop: 15,
+                    }}>
+                    {select == 0 ? (
+                      <Image
+                        source={appIcons.china}
+                        style={{height: 15, width: 15, borderRadius: 8}}
+                      />
+                    ) : null}
+                    <Text
+                      style={[
+                        styles.textStyle,
+                        {
+                          marginStart: 4,
+                          fontSize: 13,
+                          color:
+                            selectUpdate == index
+                              ? colors.lightOrange
+                              : colors.balc111111,
+                        },
+                      ]}>
+                      {item}
+                    </Text>
+                    {selectUpdate == index ? (
+                      <CheckmarkOutline
+                        width={11}
+                        height={9}
+                        style={{marginStart: 2}}
+                      />
+                    ) : null}
+                  </TouchableOpacity>
+                )}
+              />
+
+              <View
+                style={{
+                  justifyContent: 'center',
                   alignItems: 'center',
                   flexDirection: 'row',
-                  flex: 0.5,
-                  marginTop: 15
+                  paddingHorizontal: 12,
+                  marginTop: 6,
                 }}>
-
-                {select == 0 ? <Image source={appIcons.china} style={{ height: 15, width: 15, borderRadius: 8 }} /> : null}
-                <Text style={[styles.textStyle, {
-                  marginStart: 4,
-                  fontSize: 13,
-                  color: selectUpdate == index ? colors.lightOrange : colors.balc111111
-                }]}>{item}</Text>
-                {
-                  selectUpdate == index ? <CheckmarkOutline
-                    width={11}
-                    height={9}
-                    style={{ marginStart: 2 }} /> : null
-                }
-              </TouchableOpacity>
-
-              }
-            />
-
-            <View style={{
-              justifyContent: 'center', alignItems: 'center',
-              flexDirection: 'row', paddingHorizontal: 12, marginTop: 6
-            }}>
-              <CommonButton startorange='#FCD82F' endColor='#FDCA30'
-                text={AppString.reset} onClick={() => {
-
-                }} />
-              <CommonButton startorange='#FE8C00'
-                endColor='#FC4A1A'
-                borderBottomStartRadius={0} borderBottomEndRadius={20}
-                borderTopEndRadius={20} borderTopStartRadius={0}
-                onClick={() => {
-
-                }} />
+                <CommonButton
+                  startorange="#FCD82F"
+                  endColor="#FDCA30"
+                  text={AppString.reset}
+                  onClick={() => {}}
+                />
+                <CommonButton
+                  startorange="#FE8C00"
+                  endColor="#FC4A1A"
+                  borderBottomStartRadius={0}
+                  borderBottomEndRadius={20}
+                  borderTopEndRadius={20}
+                  borderTopStartRadius={0}
+                  onClick={() => {}}
+                />
+              </View>
             </View>
-          </View> : null}
+          ) : null}
         </View>
-
 
         <View style={[style.productsGrid]}>
           <MasonryList
@@ -332,8 +367,8 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
             }}
             showsVerticalScrollIndicator={false}
             numColumns={2}
-            style={{ marginHorizontal: 4 }}
-            renderItem={({ item, index }) => {
+            style={{marginHorizontal: 4}}
+            renderItem={({item, index}) => {
               return (
                 <TouchableOpacity
                   style={{
@@ -370,22 +405,26 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
                     }}>
                     <Image
                       source={appIcons.china}
-                      style={{ height: 15, width: 15, marginTop: 3 }}
+                      style={{height: 15, width: 15, marginTop: 3}}
                     />
                     <Text
                       style={{
                         marginLeft: 4,
                         fontSize: 13,
                         fontWeight: '500',
-                        color: colors.black
+                        color: colors.black,
                       }}
                       numberOfLines={1}>
                       Футболка
                     </Text>
                   </View>
                   <View
-                    style={{ flexDirection: 'row', paddingLeft: 8, marginTop: 4 }}>
-                    <View style={{ flexDirection: 'row', width: '30%' }}>
+                    style={{
+                      flexDirection: 'row',
+                      paddingLeft: 8,
+                      marginTop: 4,
+                    }}>
+                    <View style={{flexDirection: 'row', width: '30%'}}>
                       <Text
                         style={{
                           fontSize: 17,
@@ -420,20 +459,22 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
           />
         </View>
       </View>
-      <FilterBottomSheet isShow={showFilter} onClose={() => {
-        setShowFilter(false)
-      }} />
+      <FilterBottomSheet
+        isShow={showFilter}
+        onClose={() => {
+          setShowFilter(false);
+        }}
+      />
     </View>
-
   );
 };
 
-const CategoriesList = ({ navigation }) => {
+const CategoriesList = ({navigation}) => {
   const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] = useState(1);
 
   return (
     <View
-      style={{ height: 137, backgroundColor: colors.white, borderRadius: 13 }}>
+      style={{height: 137, backgroundColor: colors.white, borderRadius: 13}}>
       <View style={styles.primaryCategories}>
         <FlatList
           style={styles.primaryCategoriesContent}
@@ -443,9 +484,9 @@ const CategoriesList = ({ navigation }) => {
           keyExtractor={item => {
             return item.id.toString();
           }}
-          renderItem={({ item }) => {
+          renderItem={({item}) => {
             return (
-              <View style={{ flex: 1, marginRight: 22 }}>
+              <View style={{flex: 1, marginRight: 22}}>
                 <TouchableOpacity
                   onPress={() => setActiveItemPrimaryCategory(item.id)}>
                   <Text
@@ -466,8 +507,8 @@ const CategoriesList = ({ navigation }) => {
         <View style={styles.downArrowButton}>
           <LinearGradient
             colors={[colors.whiteF2F2F2, colors.whiteF6F6F6]}
-            start={{ x: 0.4, y: 0 }}
-            end={{ x: 1, y: 0 }}
+            start={{x: 0.4, y: 0}}
+            end={{x: 1, y: 0}}
             style={{
               height: 20,
               width: 4,
@@ -478,7 +519,8 @@ const CategoriesList = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => {
               navigation.push(RouteNames.categories);
-            }} style={{ marginStart: -10 }}>
+            }}
+            style={{marginStart: -10}}>
             <ChevronDownOutlineIcon width={46} height={46} />
           </TouchableOpacity>
         </View>
@@ -488,15 +530,15 @@ const CategoriesList = ({ navigation }) => {
         data={['3rd level', 'Thicken', 'Zipper', 'Zipper', 'Zipper']}
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{ marginStart: 8 }}
+        style={{marginStart: 8}}
         keyExtractor={item => {
           return item.toString();
         }}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={{ marginEnd: 8, gap: 2 }}>
+        renderItem={({item}) => (
+          <TouchableOpacity style={{marginEnd: 8, gap: 2}}>
             <Image
-              source={{ uri: imagesUrl.shoes }}
-              style={{ height: 70, width: 70, borderRadius: 18 }}
+              source={{uri: imagesUrl.shoes}}
+              style={{height: 70, width: 70, borderRadius: 18}}
             />
             <Text
               style={{
@@ -513,8 +555,6 @@ const CategoriesList = ({ navigation }) => {
   );
 };
 
-
-
 export const CommonButton = ({
   text = AppString.ok,
   endColor = colors.endOrange,
@@ -523,16 +563,18 @@ export const CommonButton = ({
   borderTopEndRadius = 0,
   borderTopStartRadius = 20,
   borderBottomEndRadius = 0,
-  borderBottomStartRadius = 20
+  borderBottomStartRadius = 20,
 }) => {
   return (
-    <TouchableOpacity style={{
-      width: '50%',
-    }} onPress={onClick}>
+    <TouchableOpacity
+      style={{
+        width: '50%',
+      }}
+      onPress={onClick}>
       <LinearGradient
         colors={[startorange, endColor]}
-        start={{ x: 0.4, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        start={{x: 0.4, y: 0}}
+        end={{x: 1, y: 1}}
         style={{
           borderTopLeftRadius: borderTopStartRadius,
           borderTopRightRadius: borderTopEndRadius,
@@ -540,12 +582,12 @@ export const CommonButton = ({
           borderBottomLeftRadius: borderBottomStartRadius,
           height: 34,
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
         }}>
         <Text
           style={[
             styles.textStyle,
-            { color: colors.white, fontWeight: 'bold', fontSize: 14 },
+            {color: colors.white, fontWeight: 'bold', fontSize: 14},
           ]}>
           {text}
         </Text>
@@ -567,9 +609,8 @@ const SearchView = () => {
         borderRadius: 19,
         width: '96%',
         marginStart: 10,
-        height: 33
+        height: 33,
       }}>
-
       {/* <SearchIcon
         width={17}
         height={17} style={{ marginStart: 15 }} /> */}
@@ -615,6 +656,6 @@ const style = StyleSheet.create({
     fontSize: 15,
     padding: 0,
     paddingHorizontal: 5,
-    fontWeight: '400'
+    fontWeight: '400',
   },
 });
