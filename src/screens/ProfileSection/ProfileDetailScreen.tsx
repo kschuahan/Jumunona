@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styles } from '../../utils/AppStyles';
 import { imagesUrl } from '../../utils/AppIcons';
 import { colors } from '../../utils/AppColors';
@@ -17,6 +17,11 @@ import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/chevronForwardOutline.svg';
 import { CustomHeader } from '../../components/Header';
+import { CenterProgressView, UploadImage } from '../../components/Dialogs';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { FileModal, cameraLaunch, selectFile } from '../../utils/FileUpload';
+import { postMultipartData } from '../../Netowork/Apis';
+import { ProfileAPIs } from '../../Netowork/Constants';
 
 const ProfileDetailScreen = ({ navigation }) => {
   useEffect(() => {
@@ -38,7 +43,36 @@ const ProfileDetailScreen = ({ navigation }) => {
         </TouchableOpacity>
       ),
     });
-  });
+  }, []);
+
+  const [updateProfilePic, setUpdateProfilePic] = useState(false)
+  const [loading, setLoading] = useState(false);
+  /***
+       * this is for Camera, Gallery, And PDF response handler
+       */
+  const responseHandling = (success: boolean, response: any) => {
+    if (success) {
+
+      const fileModel = new FileModal(response.fileName,
+        "image",
+        response.uri)
+        console.log(fileModel)
+        uploadProfilePic(fileModel)
+      
+    }
+  }
+
+  const uploadProfilePic = (file: FileModal) => {
+    console.warn("hwehrwe")
+      setLoading(true)
+      postMultipartData(file, {}, ProfileAPIs.uploadProfilePic, true, (res: any) => {
+        console.log("res,", res)
+          setLoading(false)
+      }).catch ( (error: any) => {
+        setLoading(false)
+        console.log("error,", error)
+      })
+  }
 
   return (
     <View style={[styles.container, { padding: 0 }]}>
@@ -48,7 +82,7 @@ const ProfileDetailScreen = ({ navigation }) => {
         contentContainerStyle={{ flex: 1 }}
         showsVerticalScrollIndicator={false}>
         <View style={[styles.container, { paddingTop: 5 }]}>
-          <UserAvatar onClick={() => { }} />
+          <UserAvatar onProfileClick={() => { setUpdateProfilePic(true) }} />
           <View
             style={{
               backgroundColor: colors.white,
@@ -144,18 +178,43 @@ const ProfileDetailScreen = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
+      <UploadImage isShow={updateProfilePic} camera={() => {
+
+        setTimeout(() => {
+          cameraLaunch(true, responseHandling)
+        }, 1000)
+        setUpdateProfilePic(false)
+
+      }} library={() => {
+
+        setTimeout(() => {
+          selectFile(true, responseHandling)
+        }, 1000)
+        setUpdateProfilePic(false)
+
+      }} onCancel={() => {
+        setUpdateProfilePic(false)
+
+      }} />
+       { loading ? <CenterProgressView /> : null}
     </View>
   );
 };
 
-const UserAvatar = ({ onClick }) => {
+const UserAvatar = ({ onProfileClick }) => {
   return (
     <View style={{ borderRadius: 13, backgroundColor: colors.white }}>
       <View style={[style.userAvatar]}>
-        <Image
-          source={{ uri: imagesUrl.profile }}
-          style={{ height: 111, width: 111, borderRadius: 56 }}
-        />
+        <TouchableOpacity
+          onPress={() => {
+            onProfileClick()
+          }}
+        >
+          <Image
+            source={{ uri: imagesUrl.profile }}
+            style={{ height: 111, width: 111, borderRadius: 56 }}
+          />
+        </TouchableOpacity>
         <Text
           style={[
             styles.textStyle,

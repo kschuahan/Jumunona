@@ -19,7 +19,8 @@ export const apiUrls = {
 export const modules = {
     productModule: '/app/products/',
     categoryModule: '/app/categories/',
-    authModule: '/auth/'
+    authModule: '/auth/',
+    profile: "/app/profile/"
 }
 
 export const otherModule = {
@@ -45,4 +46,9 @@ export const AuthAPIs = {
     signUp: modules.authModule + 'register',
     sendOtp: modules.authModule + 'sendOtp',
     forgotPassword: modules.authModule + 'forgotPassword'
+}
+
+export const ProfileAPIs = {
+    changePass: modules.profile + "changePassword",
+    uploadProfilePic: modules.profile + "uploadProfileImage",
 }
