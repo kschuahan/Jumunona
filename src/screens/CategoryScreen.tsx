@@ -8,23 +8,24 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import {ScrollView} from 'react-native-virtualized-view';
-import React, {useEffect, useState} from 'react';
+import { ScrollView } from 'react-native-virtualized-view';
+import React, { useEffect, useState } from 'react';
 import MasonryList from '@react-native-seoul/masonry-list';
-import {colors} from '../utils/AppColors';
+import { colors } from '../utils/AppColors';
 import LinearGradient from 'react-native-linear-gradient';
-import {fontFamily} from '../utils/Fonts';
+import { fontFamily } from '../utils/Fonts';
 import SearchIcon from '../../assets/Icons/searchIcon.svg';
 import ChevronDownOutline from '../../assets/Icons/chevronDownOutlline.svg';
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import EllipsisHorizontalGrey from '../../assets/Icons/EllipsisGrey.svg';
 // import HoodieIcon from '../../assets/Icons/hoodieIcon.svg';
 import ImageIcon from '../../assets/Icons/image-outline.svg';
-import {RouteNames} from '../utils/RouteNames';
-import {appIcons} from '../utils/AppIcons';
-import {getAPICall} from '../Netowork/Apis';
-import {categoriesModule, ProductAPIs} from '../Netowork/Constants';
-import {ProgressView, RetryWhenErrorOccur} from '../components/Dialogs';
+import { RouteNames } from '../utils/RouteNames';
+import { appIcons } from '../utils/AppIcons';
+import { getAPICall } from '../Netowork/Apis';
+import { categoriesModule, ProductAPIs } from '../Netowork/Constants';
+import { ProgressView, RetryWhenErrorOccur } from '../components/Dialogs';
+import { AppString } from '../utils/AppStrings';
 
 interface CommonModal {
   isSuccess: boolean;
@@ -47,7 +48,7 @@ const HeaderCategoryScreen = () => (
   </View>
 );
 
-const CategoryScreen: React.FC = ({navigation}) => {
+const CategoryScreen: React.FC = ({ navigation }) => {
   const [productsData, setProductsData] = useState<CommonModal>();
   const [pagingData, setPagingData] = useState<PagingData>();
   const [loading, setLoading] = useState(false);
@@ -119,9 +120,9 @@ const CategoryScreen: React.FC = ({navigation}) => {
               return item._id.toString();
             }}
             initialScrollIndex={0}
-            renderItem={({item}) => {
+            renderItem={({ item }) => {
               return (
-                <View style={{flex: 1, marginRight: 22}}>
+                <View style={{ flex: 1, marginRight: 22 }}>
                   <TouchableOpacity
                     onPress={() => {
                       setActiveItemPrimaryCategory(item._id);
@@ -146,8 +147,8 @@ const CategoryScreen: React.FC = ({navigation}) => {
           <View style={styles.downArrowButton}>
             <LinearGradient
               colors={[colors.whiteF2F2F2, colors.whiteF6F6F6]}
-              start={{x: 0.4, y: 0}}
-              end={{x: 1, y: 0}}
+              start={{ x: 0.4, y: 0 }}
+              end={{ x: 1, y: 0 }}
               style={{
                 height: 20,
                 width: 4,
@@ -186,7 +187,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
                 return item._id;
               }}
               numColumns={5}
-              renderItem={({item, index}) => {
+              renderItem={({ item, index }) => {
                 return (
                   <View
                     style={{
@@ -198,7 +199,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
                         onPress={() => {
                           navigation.navigate(RouteNames.categories);
                         }}
-                        style={{alignItems: 'center'}}>
+                        style={{ alignItems: 'center' }}>
                         <EllipsisHorizontal width={24} height={50} />
                         <Text
                           style={{
@@ -214,7 +215,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
                         onPress={() => {
                           navigation.navigate(RouteNames.product_search_screen);
                         }}
-                        style={{alignItems: 'center'}}>
+                        style={{ alignItems: 'center' }}>
                         <ImageIcon width={50} height={50} />
                         <Text
                           numberOfLines={1}
@@ -243,7 +244,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
               return item.id;
             }}
             numColumns={2}
-            renderItem={({item}) => {
+            renderItem={({ item }) => {
               return (
                 <TouchableOpacity
                   style={{
@@ -261,7 +262,11 @@ const CategoryScreen: React.FC = ({navigation}) => {
                     navigation.navigate(RouteNames.product_detail);
                   }}>
                   <Image
-                    source={appIcons.shoeImageURL}
+                    source={
+                      item.images != ''
+                        ? { uri: item.images }
+                        : appIcons.shoeImageURL
+                    }
                     style={{
                       height: 265,
                       paddingHorizontal: 1,
@@ -282,7 +287,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
                     }}>
                     <Image
                       source={appIcons.china}
-                      style={{height: 15, width: 15, marginTop: 3}}
+                      style={{ height: 15, width: 15, marginTop: 3 }}
                     />
                     <Text
                       style={{
@@ -301,14 +306,14 @@ const CategoryScreen: React.FC = ({navigation}) => {
                       paddingLeft: 8,
                       marginTop: 3,
                     }}>
-                    <View style={{flexDirection: 'row', width: '30%'}}>
+                    <View style={{ flexDirection: 'row', width: '30%' }}>
                       <Text
                         style={{
                           fontSize: 17,
                           color: '#ff7600',
                           fontFamily: fontFamily.bold,
                         }}>
-                        {item.price}
+                        {item.price ? item.price : '58'}
                       </Text>
                       <Text
                         style={{
@@ -335,9 +340,9 @@ const CategoryScreen: React.FC = ({navigation}) => {
                           fontSize: 10.5,
                           paddingLeft: 28,
                         }}>
-                        {`${item.views}+куплено`}
+                        {`${item.views}${AppString.views}`}
                       </Text>
-                      <EllipsisHorizontalGrey style={{marginTop: 4}} />
+                      <EllipsisHorizontalGrey style={{ marginTop: 4 }} />
                     </View>
                   </View>
                 </TouchableOpacity>

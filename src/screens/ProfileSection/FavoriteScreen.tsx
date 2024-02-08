@@ -8,15 +8,16 @@ import {
   FlatList,
   Platform,
   Dimensions,
+  Alert,
 } from 'react-native';
-import React, {useEffect} from 'react';
-import {styles} from '../../utils/AppStyles';
-import {imagesUrl} from '../../utils/AppIcons';
-import {colors} from '../../utils/AppColors';
-import {AppString} from '../../utils/AppStrings';
-import {Card} from 'react-native-paper';
-import {useState} from 'react';
-import {fontFamily} from '../../utils/Fonts';
+import React, { useEffect } from 'react';
+import { styles } from '../../utils/AppStyles';
+import { imagesUrl } from '../../utils/AppIcons';
+import { colors } from '../../utils/AppColors';
+import { AppString } from '../../utils/AppStrings';
+import { Card } from 'react-native-paper';
+import { useState } from 'react';
+import { fontFamily } from '../../utils/Fonts';
 
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
@@ -26,30 +27,30 @@ import CreateOutline from '../../../assets/Icons/EditItem.svg';
 import SearchIcon from '../../../assets/Icons/searchIcon.svg';
 import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
-import {getAPICall, postAPICall} from '../../Netowork/Apis';
-import {ProductAPIs, categoriesModule} from '../../Netowork/Constants';
-import {CenterProgressView, ClearChatPopup} from '../../components/Dialogs';
-import {CommonModal} from '../HomeScreen';
-import {RouteNames} from '../../utils/RouteNames';
+import { getAPICall, postAPICall } from '../../Netowork/Apis';
+import { ProductAPIs, categoriesModule } from '../../Netowork/Constants';
+import { CenterProgressView, ClearChatPopup } from '../../components/Dialogs';
+import { CommonModal } from '../HomeScreen';
+import { RouteNames } from '../../utils/RouteNames';
 import CircleGreyDot from '../../../assets/Icons/CircleGreyDot.svg';
 
 const categories = ['New', 'Womens', 'Mens', '内衣', '鞋靴', '箱包', '美妆'];
 const products = [
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
-  {title: 'v 29.9', isSelected: false},
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
+  { title: 'v 29.9', isSelected: false },
 ];
 
-export const FavoriteScreen = ({navigation}) => {
+export const FavoriteScreen = ({ navigation }) => {
   const [pos, setPos] = useState(0);
   const [edit, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -71,7 +72,7 @@ export const FavoriteScreen = ({navigation}) => {
       if (res.isSuccess) {
         if (res.data.data) {
           let data = res.data.data.map(it => {
-            return {data: it, isSelected: false};
+            return { data: it, isSelected: false };
           });
           setFavList(data);
         } else {
@@ -89,7 +90,7 @@ export const FavoriteScreen = ({navigation}) => {
     getAPICall(categoriesModule.getCategories, (res: any) => {
       if (res.data.data != undefined) {
         if (res.data.data.length > 0) {
-          const allCategory = {_id: '', categoryName: 'Все'};
+          const allCategory = { _id: '', categoryName: 'Все' };
           res.data.data.splice(0, 0, allCategory);
         }
       }
@@ -100,7 +101,7 @@ export const FavoriteScreen = ({navigation}) => {
   const removeFav = (ids: Array<any>) => {
     setLoading(true);
     postAPICall(
-      {productId: ids},
+      { productId: ids },
       ProductAPIs.removeFavourite,
       true,
       (res: any) => {
@@ -122,7 +123,7 @@ export const FavoriteScreen = ({navigation}) => {
     <View
       style={[
         styles.container,
-        {backgroundColor: colors.whiteF7F7F7, padding: undefined},
+        { backgroundColor: colors.whiteF7F7F7, padding: undefined },
       ]}>
       <Card
         style={{
@@ -145,18 +146,18 @@ export const FavoriteScreen = ({navigation}) => {
             onPress={() => {
               navigation.goBack();
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <ChevronBackOutline width={15} height={15} />
           </TouchableOpacity>
-          <Text style={[styles.textStyle, {fontSize: 21, fontWeight: 'bold'}]}>
+          <Text style={[styles.textStyle, { fontSize: 21, fontWeight: 'bold' }]}>
             {AppString.want_to}{' '}
-            <Text style={[styles.textStyle, {fontSize: 21}]}>{'(281)'}</Text>
+            <Text style={[styles.textStyle, { fontSize: 21 }]}>{'(281)'}</Text>
           </Text>
           <TouchableOpacity
             onPress={() => {
               setEditing(!edit);
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             {edit ? (
               <CheckmarkOutline
                 width={19}
@@ -192,9 +193,9 @@ export const FavoriteScreen = ({navigation}) => {
           ]}>
           {categoryData && categoryData.isSuccess ? (
             <FlatList
-              style={{width: '30%', backgroundColor: colors.whiteF7F7F7}}
+              style={{ width: '30%', backgroundColor: colors.whiteF7F7F7 }}
               data={categoryData.data.data}
-              renderItem={({item, index}) => (
+              renderItem={({ item, index }) => (
                 <TouchableOpacity
                   onPress={() => {
                     setPos(index);
@@ -224,13 +225,13 @@ export const FavoriteScreen = ({navigation}) => {
           ) : null}
           {favlist.length > 0 || loading ? (
             <FlatList
-              style={{width: '80%', marginTop: 8, marginStart: 10}}
+              style={{ width: '80%', marginTop: 8, marginStart: 10 }}
               data={favlist}
               keyExtractor={item => {
                 return item.data._id.toString();
               }}
               numColumns={3}
-              renderItem={({item, index}) => (
+              renderItem={({ item, index }) => (
                 <TouchableOpacity
                   onPress={() => {
                     navigation.push(RouteNames.product_detail, {
@@ -250,12 +251,12 @@ export const FavoriteScreen = ({navigation}) => {
                           ? item.data.images
                           : imagesUrl.shoes,
                     }}
-                    style={{height: 80, width: 80, borderRadius: 5}}
+                    style={{ height: 80, width: '90%', borderRadius: 5 }}
                   />
                   <Text
                     style={[
                       styles.textStyle,
-                      {fontSize: 14, color: colors.lightOrange, marginTop: 2},
+                      { fontSize: 14, color: colors.lightOrange, marginTop: 2 },
                     ]}>
                     ¥ {item.data.price}
                   </Text>
@@ -268,7 +269,7 @@ export const FavoriteScreen = ({navigation}) => {
                         }
                         setReload(!reloadFav);
                       }}
-                      style={{position: 'absolute', end: 15, top: 2}}>
+                      style={{ position: 'absolute', end: 12, top: 2 }}>
                       {item.isSelected ? (
                         <CheckmarkCircle
                           width={17}
@@ -282,7 +283,7 @@ export const FavoriteScreen = ({navigation}) => {
                           color={colors.white}
                         />
                       )}
-                      <Ionicons
+                      {/* <Ionicons
                         name={
                           item.isSelected
                             ? 'checkmark-circle'
@@ -292,7 +293,7 @@ export const FavoriteScreen = ({navigation}) => {
                         color={
                           item.isSelected ? colors.endOrange : colors.white
                         }
-                      />
+                      /> */}
                     </TouchableOpacity>
                   ) : null}
                 </TouchableOpacity>
@@ -330,7 +331,7 @@ export const FavoriteScreen = ({navigation}) => {
             borderTopRightRadius: 13,
             shadowColor: '#0000000D',
             shadowOpacity: 1,
-            shadowOffset: {width: 0, height: -3},
+            shadowOffset: { width: 0, height: -3 },
             backgroundColor: colors.white,
           }}>
           <View
@@ -391,7 +392,7 @@ export const FavoriteScreen = ({navigation}) => {
                 <Text
                   style={[
                     styles.textStyle,
-                    {fontSize: 14, fontWeight: '400', color: colors.balc111111},
+                    { fontSize: 14, fontWeight: '400', color: colors.balc111111 },
                   ]}>
                   {AppString.add_to_cart}
                 </Text>
@@ -416,8 +417,9 @@ export const FavoriteScreen = ({navigation}) => {
                     });
                   if (ids.length > 0) {
                     isShow(true);
+                  } else {
+                    Alert.alert(AppString.alert, "Please select a item for delete")
                   }
-                  console.warn(ids);
                 }}>
                 <Text
                   style={[
@@ -475,7 +477,7 @@ const SearchView = () => {
       <SearchIcon
         width={17}
         height={17}
-        style={{marginStart: 15}}
+        style={{ marginStart: 15 }}
         color={colors.grey}
       />
       <TextInput
@@ -502,7 +504,7 @@ const style = StyleSheet.create({
   },
 });
 
-export const RadioButtons = ({isCheck = false, onClick, size = 22}) => {
+export const RadioButtons = ({ isCheck = false, onClick, size = 22 }) => {
   return true ? (
     <TouchableOpacity onPress={onClick}>
       {isCheck ? (
