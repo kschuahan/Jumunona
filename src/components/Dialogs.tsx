@@ -923,3 +923,10 @@ const IconWithText = ({ title = AppString.camera, onClick, Icon = CameraIcon, ma
     </Text>
   </TouchableOpacity>
 }
+
+
+export const ActivityIndicatorView = ({tintColor = colors.lightOrange}) => {
+  return (
+    <ActivityIndicator size={"small"} style={{ alignSelf: 'center', justifyContent: "center", alignItems: "center", marginStart: -20, }} color={tintColor} />
+  )
+}

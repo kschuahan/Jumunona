@@ -257,5 +257,6 @@ export const AppString = {
   exit_body_data: "Выход из данных о теле",
   current_body_data_not_complete: "Текущие данные о теле не завершены",
   are_you_sure_to_continue: "Вы уверены, что хотите продолжить?",
-  camera: "Камера"
+  camera: "Камера",
+  go_to_cart: "перейти в корзину"
 };

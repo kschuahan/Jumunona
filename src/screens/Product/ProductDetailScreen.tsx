@@ -543,6 +543,10 @@ export const ProductDetailScreen = ({ navigation, route }) => {
         onGuranty={() => {
           setOnGauranty(true)
         }}
+        onGoToCart={() => {
+          setShowColorSize(false);
+          navigation.navigate(RouteNames.cartScreen)
+        }}
       />
 
     </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {

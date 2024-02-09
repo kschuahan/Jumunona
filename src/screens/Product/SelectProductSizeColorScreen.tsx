@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Pressable,
+  Alert,
 } from 'react-native';
 import { ScrollView } from 'react-native-virtualized-view';
 import { createRef, useEffect, useRef, useState } from 'react';
@@ -25,6 +26,9 @@ import ChevronFwdOutline from '../../../assets/Icons/ForwardOrange.svg';
 import ResizeIcon from '../../../assets/Icons/resizeIcon.svg';
 import RemoveCircleOutline from '../../../assets/Icons/removeCircleOutline.svg';
 import { RouteNames } from '../../utils/RouteNames';
+import { ActivityIndicatorView } from '../../components/Dialogs';
+import { postAPICall } from '../../Netowork/Apis';
+import { CartAPIs } from '../../Netowork/Constants';
 
 export enum ColorSizeBottomSheetMode {
   selectSize = "selectSize",
@@ -33,12 +37,35 @@ export enum ColorSizeBottomSheetMode {
 
 }
 
+var addToCartModel = {
+  productId: "",
+  quantity :1,
+  attr1_id: "",
+  attr2_id:"",
+  attr3_id:"",
+}
 
 const SelectProductSizeColorScreen = ({ navigation,
-  productDetail, displayImage,
-  currentMode = ColorSizeBottomSheetMode.selectSize,
-  isShow = false, onClose, onGuranty }) => {
+                                        productDetail,
+                                        displayImage,
+                                        currentMode = ColorSizeBottomSheetMode.selectSize,
+                                        isShow = false,
+                                        onClose,
+                                        onGuranty,
+                                        onGoToCart }) => {
 
+  
+  useEffect(() => {
+    addToCartModel = {
+      productId: productDetail._id,
+      quantity :1,
+      attr1_id: productDetail.attributes.attribute1.attr1.data[0].attributeID,
+      attr2_id:"",
+      attr3_id:"078bb017-6bff-4462-b833-dee4db0e7f37",
+    }
+  }, [])
+
+  
 
   return (
     <Modal
@@ -116,10 +143,19 @@ const SelectProductSizeColorScreen = ({ navigation,
               }}
             />
             {productDetail ?
-              <ColorOptions colorOptions={productDetail.attributes.attribute1.attr1}
-                onSelectColor={(index: number) => {
+              <ColorOptions 
+              colorOptions={productDetail.attributes.attribute1.attr1}
+                onSelectColor={ (selectedColor: any) => {
+                    addToCartModel.attr1_id = selectedColor.attributeID
+                }}
+                onSelectSize = { (id: string) => {
 
-                }} />
+                  addToCartModel.attr2_id = id
+                }}
+                onSelectQuantity={ (quantity: number) => {
+                  addToCartModel.quantity = quantity
+                }}
+                 />
               : null
             }
           </ScrollView>
@@ -135,11 +171,11 @@ const SelectProductSizeColorScreen = ({ navigation,
                   paddingBottom: 20,
                 }}>
                 <CommonButton
-                  text={AppString.add_to_cart}
+                  text={ AppString.add_to_cart}
                   startorange={colors.yellowStart}
                   endColor={colors.yellowEnd}
-                  onClick={() => {
-
+                  onClick={(addedToCart: boolean) => {
+                     onGoToCart()
                   }}
                 />
                 <CommonButton text={AppString.buy} onClick={() => { }} />
@@ -150,9 +186,11 @@ const SelectProductSizeColorScreen = ({ navigation,
                   marginVertical: 35,
                   paddingBottom: 20,
                 }}>
-                  <CommonButton text={AppString.add} onClick={() => { }} />
+                  <CommonButton text={ AppString.add} onClick={() =>  {
+                     onGoToCart()
+                    }
+                  } />
                 </View>
-
                 :
                 <View style={{
                   marginVertical: 35,
@@ -235,9 +273,8 @@ const PhoneDataScreen = ({ onClick }) => {
     </TouchableOpacity>
   );
 };
-const ColorOptions = ({ colorOptions, onSelectColor }) => {
+const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuantity }) => {
   const [selectedColorIndex, setSelectColorIndex] = useState(0)
-console.log(selectedColorIndex);
 
   return (
     <View>
@@ -252,8 +289,9 @@ console.log(selectedColorIndex);
             <View style={{ height: 13 }} />
             <TouchableOpacity disabled={item.quantity == 0}
               onPress={() => {
-                onSelectColor(index)
+                onSelectColor(colorOptions.data[index])
                 setSelectColorIndex(index)
+               
               }}>
               <View
                 style={{
@@ -364,7 +402,7 @@ console.log(selectedColorIndex);
       />
 
       <SizeAndBuyingForView productDetail={colorOptions}
-        selectedColorIndex={selectedColorIndex} />
+        selectedColorIndex={selectedColorIndex} onSelectSize = {onSelectSize} />
       <View
         style={{
           height: 1,
@@ -373,7 +411,7 @@ console.log(selectedColorIndex);
         }}
       />
       <QuanityView onClick={(qunatity: number) => {
-
+        onSelectQuantity(qunatity)
       }}
         quantity={colorOptions.data[selectedColorIndex].quantity} />
 
@@ -381,7 +419,7 @@ console.log(selectedColorIndex);
   );
 };
 
-const SizeAndBuyingForView = ({ productDetail, selectedColorIndex }) => {
+const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize }) => {
   const [selectedSize, setSelecteSize] = useState(false);
   const users = ['Vali', 'Name 2', '+ Add'];
   const sizes = ['24', '25', '26', '27', '28', '29', '30', '31', '32'];
@@ -458,7 +496,12 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex }) => {
           <View style={{ margin: 8 }}>
             <TouchableOpacity
               onPress={() => {
-                selectedSize ? setSelecteItem(item.attributeID) : setSelecteItem(item)
+                if (selectedSize) {
+                  setSelecteItem(item.attributeID)
+                  onSelectSize(item.attributeID)
+                } else { 
+                  setSelecteItem(item)
+                 }
               }}>
               <View
                 style={{
@@ -511,7 +554,6 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex }) => {
 
 const QuanityView = ({ quantity, onClick }) => {
   const [quantiy, setQuantity] = useState(1);
-  console.log(quantity);
 
   const maxQuantity = quantity;
   return (
@@ -536,8 +578,7 @@ const QuanityView = ({ quantity, onClick }) => {
             if (quantiy > 1) {
               setQuantity(quantiy - 1);
               onClick(quantiy)
-
-            }
+            } 
           }}>
           <RemoveCircleOutline
             color={quantiy > 1 ? colors.startOrange : '#F1F1F1'}
@@ -577,8 +618,46 @@ const CommonButton = ({
   startorange = colors.startOrange,
   onClick,
 }) => {
+  const [isItemInCart, setIsItemInCart] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const validate = () => {
+    if (addToCartModel.attr2_id.length == 0) {
+      Alert.alert("Please Select size")
+      return false
+    } else {}
+    return true
+  }
+
+  const addToCart = () => {
+    setLoading(true)
+    postAPICall(addToCartModel,
+                CartAPIs.addToCart,
+                true, 
+                ((res: any) => {
+        setLoading(false)
+        if (res.isSuccess) {
+          Alert.alert(AppString.alert, "Product added to cart successfully.")
+          setIsItemInCart(true)
+        } else {
+          Alert.alert(AppString.alert, res.data.toString())
+        }
+      })
+    )
+  }
+
   return (
-    <TouchableOpacity onPress={onClick} style={{ flex: 0.5 }}>
+    <TouchableOpacity onPress={() => {
+      if (text == AppString.add || text == AppString.add_to_cart ) {
+        if (isItemInCart) {
+          onClick()
+        }
+        else if (validate()) {
+            addToCart()
+        }
+      } else {
+        onClick()
+      }
+    }} style={{ flex: 0.5 }} disabled = {loading}>
       <LinearGradient
         colors={[startorange, endColor]}
         start={{ x: 0.4, y: 0 }}
@@ -590,13 +669,19 @@ const CommonButton = ({
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text
-          style={[
-            styles.textStyle,
-            { color: colors.white, fontWeight: 'bold', fontSize: 14 },
-          ]}>
-          {text}
-        </Text>
+        {
+
+          loading ?
+          <ActivityIndicatorView tintColor={colors.white} />
+          :
+          <Text
+            style={[
+              styles.textStyle,
+              { color: colors.white, fontWeight: 'bold', fontSize: 14 },
+            ]}>
+            {(text == AppString.add || text == AppString.add_to_cart) ? isItemInCart ? AppString.go_to_cart : text : text }
+          </Text>
+         }
       </LinearGradient>
     </TouchableOpacity>
   );

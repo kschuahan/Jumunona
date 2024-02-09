@@ -30,6 +30,9 @@ import { AppString } from '../../utils/AppStrings';
 import { data } from '../Product/ProductDetailScreen';
 import { styles } from '../../utils/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
+import { getAPICall } from '../../Netowork/Apis';
+import { CartAPIs } from '../../Netowork/Constants';
+import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 interface CartItemData {
   id: string;
   storeName: string;
@@ -90,10 +93,16 @@ const CartScreen = ({ navigation }) => {
 
   const [isCheck, setIsCheck] = useState(false)
   const [isEditable, setIsEditable] = useState(false)
-
+  const [cartProduct, setCartProduct] = useState<[any]>()
+  const [data, setData] = useState<any>(undefined)
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    getCart()
+  }, [])
   const sum = cartItemData.reduce((accumulator, currentValue) => accumulator +
 
     (currentValue.radioButtonStore ? getProdcutPrice(currentValue.products) : 0), 0);
+
 
 
   function getProdcutPrice(items: Array<ProductItemData>) {
@@ -101,7 +110,27 @@ const CartScreen = ({ navigation }) => {
     return items.reduce((accumulator, currentValue) => accumulator + (currentValue.radioButtonItem ? currentValue.price : 0), 0)
   }
 
+
+  const getCart = () => {
+    setLoading(true)
+    getAPICall(CartAPIs.getCart, (res: any) => {
+      if (res.isSuccess) {
+        setData(res.data.data)
+        console.warn(res.data.data.cartDetails)
+        setCartProduct(res.data.data.cartDetails)
+      } else {
+        setData(undefined)
+      }
+      setLoading(false)
+    }
+    ).catch( error => {
+      setData(undefined)
+      setLoading(false)
+    })
+  }
   return (
+
+    data && !loading ?
     <GestureHandlerRootView style={{ flex: 1 }}>
 
       <View style={style.container}>
@@ -290,6 +319,10 @@ const CartScreen = ({ navigation }) => {
 
       </View>
     </GestureHandlerRootView>
+    : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+      setData(undefined)
+      getCart()
+    }} />
   );
 };
 

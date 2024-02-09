@@ -80,7 +80,6 @@ const App: React.FC = () => {
               fontWeight: 'bold',
               fontSize: 21,
             },
-
             headerBackVisible: false,
             headerStyle: {
               backgroundColor: '#ffffff',
