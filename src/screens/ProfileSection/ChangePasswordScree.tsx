@@ -57,7 +57,7 @@ const ChangePassswordScreen = ({ navigation }) => {
       }, ProfileAPIs.changePass, true, (res: any) => {
          setLoading(false)
           if (res.isSuccess) {
-            navigation.navigate(RouteNames.sucessfulChangePassword);
+            navigation.replace(RouteNames.sucessfulChangePassword);
           } else {
             Alert.alert(res.data.toString())
           }
