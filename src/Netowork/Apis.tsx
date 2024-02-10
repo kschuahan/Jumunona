@@ -13,12 +13,12 @@ export const getAPICall = async (endPoint: any, onResponse: any,
   item: any = undefined, authToken = true) => {
 
     const token = await getValue(AsyncStorageKeys.authToken)
-    console.log("token", token)
+    // console.log("token", token)
   await axiosClient(authToken ? token : undefined).get(endPoint, { params: item })
     .then((response: any) => {
 
       apiSucessErrorHandling(response, (isSuccess: boolean) => {
-        console.log("suc", isSuccess, response.data);
+        // console.log("suc", isSuccess, response.data);
         onResponse({ isSuccess: isSuccess, data: isSuccess ? response.data : response.message })
       })
     }).catch((error: any) => {

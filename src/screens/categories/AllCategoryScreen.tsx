@@ -38,9 +38,14 @@ const products = [
   {title: 'PU皮衣', isSelected: false},
 ];
 
+export interface CommonModal {
+  isSuccess: boolean;
+  data: any;
+}
+
 export const AllCategoriesScreen = ({navigation}) => {
   const [pos, setPos] = useState(0);
-  const [leftCategoryList, setLeftCategoryList] = useState([]);
+  const [leftCategoryList, setLeftCategoryList] = useState<CommonModal>();
   const [loading, setLoading] = useState(false);
   const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] =
     useState<string>('');
@@ -51,10 +56,14 @@ export const AllCategoriesScreen = ({navigation}) => {
     getAPICall(
       categoriesModule.getCategoriesListForCategoriesScreen,
       (response: any) => {
-        setLeftCategoryList(response);
-        // Assuming the first category is always available
-        setActiveItemPrimaryCategory(response?.data.data[0]._id);
-        setActiveItemSubCategories(response?.data.data[0].subCategories);
+        if (response.isSuccess) {
+          setLeftCategoryList(response);
+          console.log('bharat', response.data.data);
+          // Assuming the first category is always available
+          setActiveItemPrimaryCategory(response?.data.data[0]._id);
+          console.log('bharat', response?.data.data[0]._id);
+          setActiveItemSubCategories(response?.data.data[0].subCategories);
+        }
       },
     );
     setLoading(false);
@@ -62,26 +71,7 @@ export const AllCategoriesScreen = ({navigation}) => {
 
   useEffect(() => {
     callLeftCategoryListAPI();
-    navigation.setOptions({
-      headerTitle: AppString.categories,
-
-      headerRight: () => (
-        <TouchableOpacity style={{alignItems: 'center'}}>
-          <EllipsisHorizontalIcon width={24} height={24} />
-        </TouchableOpacity>
-      ),
-
-      headerLeft: () => (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-          style={{alignItems: 'center'}}>
-          <ChevronBackOutline width={15} height={15} />
-        </TouchableOpacity>
-      ),
-    });
-  });
+  }, []);
 
   return leftCategoryList &&
     activeItemPrimaryCategory &&
@@ -101,7 +91,10 @@ export const AllCategoriesScreen = ({navigation}) => {
           ]}>
           <FlatList
             style={{width: '22%', marginTop: -10}}
-            data={leftCategoryList?.data?.data}
+            data={leftCategoryList.data?.data}
+            keyExtractor={item => {
+              return item._id;
+            }}
             renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() => {
@@ -122,7 +115,7 @@ export const AllCategoriesScreen = ({navigation}) => {
                         pos == index ? colors.lightOrange : colors.black444444,
                     },
                   ]}>
-                  {item}
+                  {item.categoryName}
                 </Text>
               </TouchableOpacity>
             )}
