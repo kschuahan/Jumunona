@@ -67,7 +67,7 @@ const MainCategoriesItem = ({navigation, data}) => {
           .slice(0, 10)
           .sort((a: any, b: any) => a.homeIndex - b.homeIndex)}
         keyExtractor={item => {
-          return item._id.toString();
+          return item._id;
         }}
         numColumns={5}
         renderItem={({item, index}) => {
@@ -80,14 +80,8 @@ const MainCategoriesItem = ({navigation, data}) => {
                 <TouchableOpacity
                   key={item._id}
                   onPress={() => {
-                    navigation.navigate(RouteNames.categories, {
-                      categoryID: item._id,
-                      routeName: 'HomeScreen',
-                      index: index,
-                    });
+                    navigation.navigate(RouteNames.categories);
                   }}
-                  // onShowUnderlay={separators.highlight}
-                  // onHideUnderlay={separators.unhighlight}
                   style={{alignItems: 'center'}}>
                   <EllipsisHorizontal width={24} height={38} />
                   <Text
@@ -105,7 +99,7 @@ const MainCategoriesItem = ({navigation, data}) => {
                   onPress={() => {
                     navigation.navigate(RouteNames.product_search_screen, {
                       categoryID: item._id,
-                      routeName: 'HomeScreen',
+                      routeName: RouteNames.home,
                       index: index,
                     });
                   }}
@@ -116,6 +110,7 @@ const MainCategoriesItem = ({navigation, data}) => {
                     <Image source={{uri: item.image}} height={38} width={50} />
                   )}
                   <Text
+                    numberOfLines={2}
                     style={{
                       fontSize: 13,
                       fontWeight: '400',
@@ -138,25 +133,35 @@ const MainCategoriesItem = ({navigation, data}) => {
 const HomeScreen: React.FC = ({navigation}) => {
   const [data, setData] = useState<CommonModal>();
   const [pagingData, setPagingData] = useState<PagingData>();
-
   const [loading, setLoading] = useState(false);
   const [dataArray, setArrayData] = useState<Array<any>>([]);
   const [categoryData, setCategoryData] = useState<CommonModal>();
 
-  useEffect(() => {
+  const fetchData = () => {
+    setLoading(true); // Set loading to true before starting API calls
     callCategoryAPI();
     callAPI();
+  };
+  const checkLoadingStatus = () => {
+    // Assuming both functions have completed execution
+    setLoading(false); // Set loading to false after both API calls are complete
+  };
+  useEffect(() => {
+    fetchData();
   }, []);
-
+  const callCategoryAPI = () => {
+    getAPICall(categoriesModule.getHomePageCategories, (res: any) => {
+      setCategoryData(res);
+      // checkLoadingStatus();
+    });
+  };
   const callAPI = (page = 1) => {
-    setLoading(true);
-
     getAPICall(ProductAPIs.getProducts + `${page}`, (res: any) => {
       if (res.isSuccess) {
         setPagingData(res.data.data.pages);
         setArrayData([...dataArray, ...res.data.data.products]);
       }
-      setLoading(false);
+      checkLoadingStatus();
       setData(res);
     });
   };
@@ -169,12 +174,6 @@ const HomeScreen: React.FC = ({navigation}) => {
     ) {
       callAPI(pagingData.current + 1);
     }
-  };
-
-  const callCategoryAPI = () => {
-    getAPICall(categoriesModule.getHomePageCategories, (res: any) => {
-      setCategoryData(res);
-    });
   };
 
   return dataArray && pagingData ? (

@@ -10,7 +10,6 @@ import {
   TextInput,
   Dimensions,
   ActivityIndicator,
-  StatusBar,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { AppString } from '../../utils/AppStrings';
@@ -24,9 +23,6 @@ import ProductImageScreeen from './ProductImageScreeen';
 import CharacterSticsScreen from './CharactersticsScreen';
 import { ProductSizeChartSceen } from './ProductSizeChartSceen';
 import { RouteNames } from '../../utils/RouteNames';
-import AddSelectProductSizeColorScreen from './AddSelectProductSizeColorScreen';
-import BuySelectProductSizeColorScreen from './BuySelectProductSizeColorScreen';
-import ArrowRedoOutline from '../../../assets/Icons/arrowRedoOutline.svg';
 import CartIcon from '../../../assets/Icons/Carts.svg';
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
@@ -41,10 +37,8 @@ import CheckGrey from '../../../assets/Icons/CheckGrey.svg';
 import Star from '../../../assets/Icons/Star.svg';
 import GreyStar from '../../../assets/Icons/GreyStar.svg';
 import OrangeStar from '../../../assets/Icons/OrangeStar.svg';
-
 import Cube from '../../../assets/Icons/Cube.svg';
 import Profile from '../../../assets/Icons/Profile.svg';
-
 import Chars from '../../../assets/Icons/Chars.svg';
 import Guaranty from '../../../assets/Icons/Guaranty.svg';
 import Sizes from '../../../assets/Icons/Sizes.svg';
@@ -1420,12 +1414,7 @@ const SearchView = () => {
         borderRadius: 19,
         width: '90%'
       }}>
-      {/* <Ionicons
-        name="search"
-        size={17}
-        style={{marginStart: 15}}
-        color={colors.grey}
-      /> */}
+      
       <SearchIcon width={15} height={15} style={{ marginStart: 15 }}
       />
 

@@ -27,6 +27,7 @@ import CheckmarkOutline from '../../../assets/Icons/CheckOrange.svg';
 import {fontFamily} from '../../utils/Fonts';
 import {AppString} from '../../utils/AppStrings';
 import FilterBottomSheet from './FilterBottomSheet';
+import {useRoute} from '@react-navigation/native';
 
 const categoryData = [
   {id: 1, desc: 'Jackets'},
@@ -100,43 +101,12 @@ export const ProductSearchResultScreen = ({navigation, route}) => {
   const [selectUpdate, setSelectUpdate] = useState(-1);
   const [showFilter, setShowFilter] = useState(false);
 
+  const {categoryID, routeName} = route.params;
+
   useEffect(() => {
-    navigation.setOptions({
-      headerTitle: '',
-
-      headerRight: () => (
-        <View style={{flexDirection: 'row', gap: 30}}>
-          <TouchableOpacity style={{alignItems: 'center', marginStart: -20}}>
-            <EllipsisHorizontal width={24} height={24} />
-          </TouchableOpacity>
-        </View>
-      ),
-      headerLeft: () => (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            marginEnd: 110,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={{alignItems: 'center'}}>
-            <ChevronBackOutline width={15} height={15} />
-          </TouchableOpacity>
-
-          <SearchView />
-        </View>
-      ),
-      headerStyle: {
-        backgroundColor: '#F6F6F6',
-      },
-
-      headerShadowVisible: false,
-    });
-  });
+    console.log('categoryID', categoryID);
+    console.log('routeName', routeName);
+  }, []);
 
   const sortBy = [
     {id: 1, desc: 'Все'},

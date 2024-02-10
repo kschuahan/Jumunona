@@ -4,28 +4,13 @@ import React, {useEffect, useState} from 'react';
 import {RouteNames} from '../../utils/RouteNames';
 import {AppString} from '../../utils/AppStrings';
 import {colors} from '../../utils/AppColors';
-import EllipsisHorizontalIcon from '../../../assets/Icons/ellipsis-horizontal.svg';
-import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/ForwardBlack.svg';
 import ImageIcon from '../../../assets/Icons/image-outline.svg';
 import {CustomHeader} from '../../components/Header';
 import {getAPICall} from '../../Netowork/Apis';
 import {categoriesModule} from '../../Netowork/Constants';
+import {ProgressView, RetryWhenErrorOccur} from '../../components/Dialogs';
 
-const categories = [
-  "Women's",
-  "Men's",
-  'Baby',
-  'Home',
-  '美妆',
-  '电器',
-  '家具',
-  '玩具',
-  '配饰',
-  '内衣',
-  '鞋靴',
-  '汽车用品',
-];
 const products = [
   {title: 'coat', isSelected: false},
   {title: '3 category', isSelected: false},
@@ -188,8 +173,18 @@ export const AllCategoriesScreen = ({navigation}) => {
         </View>
       </View>
     </View>
+  ) : loading ? (
+    <RetryWhenErrorOccur
+      data={leftCategoryList}
+      onClick={() => {
+        setLeftCategoryList(undefined);
+        setActiveItemPrimaryCategory('');
+        setActiveItemSubCategories(undefined);
+        callLeftCategoryListAPI();
+      }}
+    />
   ) : (
-    <View />
+    <ProgressView />
   );
 };
 

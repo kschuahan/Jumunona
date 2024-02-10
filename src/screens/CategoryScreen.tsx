@@ -8,24 +8,24 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import { ScrollView } from 'react-native-virtualized-view';
-import React, { useEffect, useState } from 'react';
+import {ScrollView} from 'react-native-virtualized-view';
+import React, {useEffect, useState} from 'react';
 import MasonryList from '@react-native-seoul/masonry-list';
-import { colors } from '../utils/AppColors';
+import {colors} from '../utils/AppColors';
 import LinearGradient from 'react-native-linear-gradient';
-import { fontFamily } from '../utils/Fonts';
+import {fontFamily} from '../utils/Fonts';
 import SearchIcon from '../../assets/Icons/searchIcon.svg';
 import ChevronDownOutline from '../../assets/Icons/chevronDownOutlline.svg';
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import EllipsisHorizontalGrey from '../../assets/Icons/EllipsisGrey.svg';
 // import HoodieIcon from '../../assets/Icons/hoodieIcon.svg';
 import ImageIcon from '../../assets/Icons/image-outline.svg';
-import { RouteNames } from '../utils/RouteNames';
-import { appIcons } from '../utils/AppIcons';
-import { getAPICall } from '../Netowork/Apis';
-import { categoriesModule, ProductAPIs } from '../Netowork/Constants';
-import { ProgressView, RetryWhenErrorOccur } from '../components/Dialogs';
-import { AppString } from '../utils/AppStrings';
+import {RouteNames} from '../utils/RouteNames';
+import {appIcons} from '../utils/AppIcons';
+import {getAPICall} from '../Netowork/Apis';
+import {categoriesModule, ProductAPIs} from '../Netowork/Constants';
+import {ProgressView, RetryWhenErrorOccur} from '../components/Dialogs';
+import {AppString} from '../utils/AppStrings';
 
 interface CommonModal {
   isSuccess: boolean;
@@ -48,7 +48,7 @@ const HeaderCategoryScreen = () => (
   </View>
 );
 
-const CategoryScreen: React.FC = ({ navigation }) => {
+const CategoryScreen: React.FC = ({navigation}) => {
   const [productsData, setProductsData] = useState<CommonModal>();
   const [pagingData, setPagingData] = useState<PagingData>();
   const [loading, setLoading] = useState(false);
@@ -68,11 +68,11 @@ const CategoryScreen: React.FC = ({ navigation }) => {
         // Assuming the first category is always available
         setActiveItemPrimaryCategory(response?.data.data[0]._id);
         setActiveItemSubCategories(response?.data.data[0].subCategories);
+        setLoading(false);
       },
     );
   };
   const callAPI = (page = 1) => {
-    setLoading(true);
     getAPICall(ProductAPIs.getProducts + `${page}`, (response: any) => {
       if (response.isSuccess) {
         setPagingData(response.data.data.pages);
@@ -80,10 +80,9 @@ const CategoryScreen: React.FC = ({ navigation }) => {
           ...productsDataArray,
           ...response.data.data.products,
         ]);
-        setProductsData(response);
       }
+      setProductsData(response);
     });
-    setLoading(false);
   };
   useEffect(() => {
     callhorizontalCategoryAPI();
@@ -100,11 +99,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
     }
   };
 
-  return horizontalCategoryData &&
-    activeItemPrimaryCategory &&
-    activeItemSubCategories &&
-    productsData &&
-    productsDataArray ? (
+  return horizontalCategoryData ? (
     <View style={styles.container}>
       <HeaderCategoryScreen />
       {horizontalCategoryData ? (
@@ -117,12 +112,12 @@ const CategoryScreen: React.FC = ({ navigation }) => {
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={item => {
-              return item._id.toString();
+              return item._id;
             }}
             initialScrollIndex={0}
-            renderItem={({ item }) => {
+            renderItem={({item}) => {
               return (
-                <View style={{ flex: 1, marginRight: 22 }}>
+                <View style={{flex: 1, marginRight: 22}}>
                   <TouchableOpacity
                     onPress={() => {
                       setActiveItemPrimaryCategory(item._id);
@@ -147,8 +142,8 @@ const CategoryScreen: React.FC = ({ navigation }) => {
           <View style={styles.downArrowButton}>
             <LinearGradient
               colors={[colors.whiteF2F2F2, colors.whiteF6F6F6]}
-              start={{ x: 0.4, y: 0 }}
-              end={{ x: 1, y: 0 }}
+              start={{x: 0.4, y: 0}}
+              end={{x: 1, y: 0}}
               style={{
                 height: 20,
                 width: 4,
@@ -180,14 +175,12 @@ const CategoryScreen: React.FC = ({ navigation }) => {
           <View style={styles.secondaryCategoriesBG}>
             <FlatList
               scrollEnabled={false}
-              // data={activeItemSubCategories?.data.data.subCategories.slice(
               data={activeItemSubCategories.slice(0, 10)}
               keyExtractor={item => {
-                // console.log('item', item);
                 return item._id;
               }}
               numColumns={5}
-              renderItem={({ item, index }) => {
+              renderItem={({item, index}) => {
                 return (
                   <View
                     style={{
@@ -199,7 +192,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                         onPress={() => {
                           navigation.navigate(RouteNames.categories);
                         }}
-                        style={{ alignItems: 'center' }}>
+                        style={{alignItems: 'center'}}>
                         <EllipsisHorizontal width={24} height={50} />
                         <Text
                           style={{
@@ -213,12 +206,18 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                     ) : (
                       <TouchableOpacity
                         onPress={() => {
-                          navigation.navigate(RouteNames.product_search_screen);
+                          navigation.navigate(
+                            RouteNames.product_search_screen,
+                            {
+                              categoryID: item._id,
+                              routeName: RouteNames.categoriesHome,
+                            },
+                          );
                         }}
-                        style={{ alignItems: 'center' }}>
+                        style={{alignItems: 'center'}}>
                         <ImageIcon width={50} height={50} />
                         <Text
-                          numberOfLines={1}
+                          numberOfLines={2}
                           style={{
                             fontSize: 13,
                             color: colors.balc111111,
@@ -244,7 +243,22 @@ const CategoryScreen: React.FC = ({ navigation }) => {
               return item.id;
             }}
             numColumns={2}
-            renderItem={({ item }) => {
+            ListFooterComponent={
+              loading ? (
+                <ProgressView ht={undefined} />
+              ) : productsData?.isSuccess ? null : (
+                <RetryWhenErrorOccur
+                  ht={120}
+                  data={productsData}
+                  onClick={() => {
+                    callAPI(pagingData.current + 1);
+                  }}
+                />
+              )
+            }
+            onEndReached={fetchMore}
+            onEndReachedThreshold={0.1}
+            renderItem={({item}) => {
               return (
                 <TouchableOpacity
                   style={{
@@ -259,12 +273,14 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                     paddingBottom: 8,
                   }}
                   onPress={() => {
-                    navigation.navigate(RouteNames.product_detail);
+                    navigation.navigate(RouteNames.product_detail, {
+                      id: item._id,
+                    });
                   }}>
                   <Image
                     source={
                       item.images != ''
-                        ? { uri: item.images }
+                        ? {uri: item.images}
                         : appIcons.shoeImageURL
                     }
                     style={{
@@ -287,7 +303,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                     }}>
                     <Image
                       source={appIcons.china}
-                      style={{ height: 15, width: 15, marginTop: 3 }}
+                      style={{height: 15, width: 15, marginTop: 3}}
                     />
                     <Text
                       style={{
@@ -306,7 +322,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                       paddingLeft: 8,
                       marginTop: 3,
                     }}>
-                    <View style={{ flexDirection: 'row', width: '30%' }}>
+                    <View style={{flexDirection: 'row', width: '30%'}}>
                       <Text
                         style={{
                           fontSize: 17,
@@ -342,7 +358,7 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                         }}>
                         {`${item.views}${AppString.views}`}
                       </Text>
-                      <EllipsisHorizontalGrey style={{ marginTop: 4 }} />
+                      <EllipsisHorizontalGrey style={{marginTop: 4}} />
                     </View>
                   </View>
                 </TouchableOpacity>
@@ -353,6 +369,8 @@ const CategoryScreen: React.FC = ({ navigation }) => {
       </ScrollView>
     </View>
   ) : loading ? (
+    <ProgressView />
+  ) : (
     <RetryWhenErrorOccur
       data={productsData}
       onClick={() => {
@@ -361,8 +379,6 @@ const CategoryScreen: React.FC = ({ navigation }) => {
         callAPI();
       }}
     />
-  ) : (
-    <ProgressView />
   );
 };
 export default CategoryScreen;
