@@ -44,6 +44,7 @@ var addToCartModel = {
   attr2_id:"",
   attr3_id:"",
 }
+var hasSetSelectedColor = false
 
 const SelectProductSizeColorScreen = ({ navigation,
                                         productDetail,
@@ -63,6 +64,7 @@ const SelectProductSizeColorScreen = ({ navigation,
       attr2_id:"",
       attr3_id:"078bb017-6bff-4462-b833-dee4db0e7f37",
     }
+    hasSetSelectedColor = false
   }, [])
 
   
@@ -284,14 +286,20 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
 
       <FlatList
         data={colorOptions.data}
-        renderItem={({ item, index }) => (
+        renderItem={({ item, index }) => {
+         
+          if (!hasSetSelectedColor && item.quantity > 0) {
+            console.warn("fsdfdsf",selectedColorIndex)
+            setSelectColorIndex(index)
+            hasSetSelectedColor =  true
+           } 
+          return (
           <View style={{ marginEnd: 8 }}>
             <View style={{ height: 13 }} />
             <TouchableOpacity disabled={item.quantity == 0}
               onPress={() => {
                 onSelectColor(colorOptions.data[index])
                 setSelectColorIndex(index)
-               
               }}>
               <View
                 style={{
@@ -388,7 +396,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
               ) : null}
             </TouchableOpacity>
           </View>
-        )}
+                  )}}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
@@ -413,7 +421,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
       <QuanityView onClick={(qunatity: number) => {
         onSelectQuantity(qunatity)
       }}
-        quantity={colorOptions.data[selectedColorIndex].quantity} />
+        quantity={colorOptions.data[selectedColorIndex ?? 0].quantity} />
 
     </View>
   );
@@ -429,7 +437,7 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
       <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
         <TouchableOpacity
           onPress={() => {
-            setSelecteSize(false);
+              setSelecteSize(false);
           }}>
           <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
             <Text
@@ -496,7 +504,7 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
           <View style={{ margin: 8 }}>
             <TouchableOpacity
               onPress={() => {
-                if (selectedSize) {
+                if (selectedSize && hasSetSelectedColor) {
                   setSelecteItem(item.attributeID)
                   onSelectSize(item.attributeID)
                 } else { 
