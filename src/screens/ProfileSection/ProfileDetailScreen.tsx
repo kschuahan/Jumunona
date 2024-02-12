@@ -17,11 +17,12 @@ import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/chevronForwardOutline.svg';
 import { CustomHeader } from '../../components/Header';
-import { CenterProgressView, UploadImage } from '../../components/Dialogs';
+import { CenterProgressView, ProgressView, RetryWhenErrorOccur, UploadImage } from '../../components/Dialogs';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { FileModal, cameraLaunch, selectFile } from '../../utils/FileUpload';
-import { postMultipartData } from '../../Netowork/Apis';
+import { getAPICall, postMultipartData } from '../../Netowork/Apis';
 import { ProfileAPIs } from '../../Netowork/Constants';
+import { CommonModal } from '../HomeScreen';
 
 const ProfileDetailScreen = ({ navigation }) => {
   useEffect(() => {
@@ -56,33 +57,52 @@ const ProfileDetailScreen = ({ navigation }) => {
       const fileModel = new FileModal(response.fileName,
         "image",
         response.uri)
-        console.log(fileModel)
-        uploadProfilePic(fileModel)
-      
+      console.log(fileModel)
+      uploadProfilePic(fileModel)
+
     }
   }
 
   const uploadProfilePic = (file: FileModal) => {
     console.warn("hwehrwe")
-      setLoading(true)
-      postMultipartData(file, {}, ProfileAPIs.uploadProfilePic, true, (res: any) => {
-        console.log("res,", res)
-          setLoading(false)
-      }).catch ( (error: any) => {
-        setLoading(false)
-        console.log("error,", error)
-      })
+    setLoading(true)
+    postMultipartData(file, {}, ProfileAPIs.uploadProfilePic, true, (res: any) => {
+      console.log("res,", res)
+      setLoading(false)
+    }).catch((error: any) => {
+      setLoading(false)
+      console.log("error,", error)
+    })
+  }
+
+
+
+
+  const [data, setData] = useState<CommonModal>();
+  const [loadingData, setdataLoading] = useState(false);
+
+
+  useEffect(() => {
+    callAPI()
+  }, [])
+
+  const callAPI = () => {
+    setdataLoading(true)
+    getAPICall(ProfileAPIs.getprofile, (res: any) => {
+      setdataLoading(false)
+      setData(res)
+    })
   }
 
   return (
     <View style={[styles.container, { padding: 0 }]}>
       <CustomHeader navigation={navigation} title={AppString.profile} />
 
-      <ScrollView
+      {data && data.isSuccess ? <ScrollView
         contentContainerStyle={{ flex: 1 }}
         showsVerticalScrollIndicator={false}>
         <View style={[styles.container, { paddingTop: 5 }]}>
-          <UserAvatar onProfileClick={() => { setUpdateProfilePic(true) }} />
+          <UserAvatar data={data.data.data} onProfileClick={() => { setUpdateProfilePic(true) }} />
           <View
             style={{
               backgroundColor: colors.white,
@@ -177,7 +197,17 @@ const ProfileDetailScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+      </ScrollView> : loadingData ? (
+        <ProgressView />
+      ) : (
+        <RetryWhenErrorOccur
+          data={data}
+          onClick={() => {
+            setData(undefined);
+            callAPI();
+          }}
+        />
+      )}
       <UploadImage isShow={updateProfilePic} camera={() => {
 
         setTimeout(() => {
@@ -196,12 +226,13 @@ const ProfileDetailScreen = ({ navigation }) => {
         setUpdateProfilePic(false)
 
       }} />
-       { loading ? <CenterProgressView /> : null}
+      {loading ? <CenterProgressView /> : null}
     </View>
+
   );
 };
 
-const UserAvatar = ({ onProfileClick }) => {
+const UserAvatar = ({data, onProfileClick }) => {
   return (
     <View style={{ borderRadius: 13, backgroundColor: colors.white }}>
       <View style={[style.userAvatar]}>
@@ -226,7 +257,7 @@ const UserAvatar = ({ onProfileClick }) => {
               color: colors.lightOrange,
             },
           ]}>
-          Изменить
+           {data && data.userName ? data.userName : 'User name'}
         </Text>
       </View>
     </View>

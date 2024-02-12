@@ -55,6 +55,7 @@ export const AuthAPIs = {
 export const ProfileAPIs = {
   changePass: modules.profile + "changePassword",
   uploadProfilePic: modules.profile + "uploadProfileImage",
+  getprofile: modules.profile + 'getProfile'
 }
 
 export const CartAPIs = {

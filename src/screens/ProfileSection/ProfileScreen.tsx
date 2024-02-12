@@ -1,5 +1,5 @@
 import { Text, View, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styles } from '../../utils/AppStyles';
 import { imagesUrl } from '../../utils/AppIcons';
 import { colors } from '../../utils/AppColors';
@@ -32,18 +32,39 @@ import Address from '../../../assets/Icons/Address.svg';
 import help from '../../../assets/Icons/Help.svg';
 import Team from '../../../assets/Icons/Team.svg';
 import Reviews from '../../../assets/Icons/Reviews.svg';
+import { getAPICall } from '../../Netowork/Apis';
+import { ProfileAPIs } from '../../Netowork/Constants';
+import { CommonModal } from '../HomeScreen';
+import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 
 const ProfileScreen = (props: any) => {
   const navigation = props.navigation
 
+  const [data, setData] = useState<CommonModal>();
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+    callAPI()
+  }, [])
+
+  const callAPI = () => {
+    setLoading(true)
+    getAPICall(ProfileAPIs.getprofile, (res: any) => {
+      setLoading(false)
+      setData(res)
+    })
+  }
+
 
   return (
-    <ScrollView 
+    data && data.isSuccess ? <ScrollView
       contentContainerStyle={{ flex: 1 }}
       showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        
+
         <Profile
+          data={data.data.data}
           onClick={() => {
             props.navigation.navigate(RouteNames.setting);
           }}
@@ -70,7 +91,7 @@ const ProfileScreen = (props: any) => {
             width={21}
             height={21}
             title={AppString.subscription}
-            onPress={() => {navigation.navigate(RouteNames.subscribers_screen) }}
+            onPress={() => { navigation.navigate(RouteNames.subscribers_screen) }}
             gap={4}
 
           />
@@ -129,10 +150,10 @@ const ProfileScreen = (props: any) => {
               height={21}
               color={colors.lightRed}
               title={AppString.body}
-              onPress={() => {  
+              onPress={() => {
 
                 props.navigation.navigate(RouteNames.bodyData)
-               }}
+              }}
               gap={6}
 
             />
@@ -215,6 +236,17 @@ const ProfileScreen = (props: any) => {
         </View>
       </View>
     </ScrollView>
+      : loading ? (
+        <ProgressView />
+      ) : (
+        <RetryWhenErrorOccur
+          data={data}
+          onClick={() => {
+            setData(undefined);
+            callAPI();
+          }}
+        />
+      )
   );
 };
 
@@ -401,7 +433,7 @@ const CommonButton = ({
   );
 };
 
-const Profile = ({ onClick }) => {
+const Profile = ({ data, onClick }) => {
   return (
     <View style={styles.profile}>
       <View
@@ -415,13 +447,13 @@ const Profile = ({ onClick }) => {
           style={{ height: 70, width: 70, borderRadius: 35, marginStart: 9 }}
         />
         <View style={{ paddingHorizontal: 20, gap: 4 }}>
-          <Text
+          {data ? <Text
             style={[
               styles.textStyle,
               { fontSize: 21, fontFamily: fontFamily.bold },
             ]}>
-            User name
-          </Text>
+            {data.userName ? data.userName : 'User name'}
+          </Text> : null}
 
           <Text
             style={[

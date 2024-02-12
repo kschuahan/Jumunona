@@ -116,7 +116,7 @@ const CartScreen = ({ navigation }) => {
     getAPICall(CartAPIs.getCart, (res: any) => {
       if (res.isSuccess) {
         setData(res.data.data)
-        console.warn(res.data.data.cartDetails)
+        // console.warn(res.data.data.cartDetails)
         setCartProduct(res.data.data.cartDetails)
       } else {
         setData(undefined)

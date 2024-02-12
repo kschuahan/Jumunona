@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { styles } from '../../../utils/AppStyles';
 import { imagesUrl } from '../../../utils/AppIcons';
 import { colors } from '../../../utils/AppColors';
@@ -20,6 +20,10 @@ import ChevronFwdOutline from '../../../../assets/Icons/chevronForwardOutline.sv
 import { BackLogo, CustomHeader, LogoTitle, MenuLogo } from '../../../components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AsyncStorageKeys } from '../../../utils/AsyncStorage';
+import { ProfileAPIs } from '../../../Netowork/Constants';
+import { CommonModal } from '../../HomeScreen';
+import { getAPICall } from '../../../Netowork/Apis';
+import { ProgressView, RetryWhenErrorOccur } from '../../../components/Dialogs';
 
 export const SettingScreen = ({ navigation }) => {
   // useEffect(() => {
@@ -32,14 +36,32 @@ export const SettingScreen = ({ navigation }) => {
   //   });
   // });
 
+
+  const [data, setData] = useState<CommonModal>();
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+    callAPI()
+  }, [])
+
+  const callAPI = () => {
+    setLoading(true)
+    getAPICall(ProfileAPIs.getprofile, (res: any) => {
+      setLoading(false)
+      setData(res)
+    })
+  }
+
   return (
     <View style={[styles.container, { padding: 0 }]}>
       <CustomHeader navigation={navigation} title={RouteNames.setting} />
-      <ScrollView
+      {data && data.isSuccess ? <ScrollView
         contentContainerStyle={{ flex: 1 }}
         showsVerticalScrollIndicator={false}>
         <View style={[styles.container, { paddingTop: 6 }]}>
           <Profile
+            data={data.data.data}
             onClick={() => {
               navigation.navigate(RouteNames.profileDetail);
             }}
@@ -70,7 +92,7 @@ export const SettingScreen = ({ navigation }) => {
             <TextWithIcon
               padding={13}
               title={AppString.feedback_and_help}
-              onClick={() => { 
+              onClick={() => {
 
                 navigation.navigate(RouteNames.help_and_feedback)
               }}
@@ -164,12 +186,23 @@ export const SettingScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+      </ScrollView> : loading ? (
+        <ProgressView />
+      ) : (
+        <RetryWhenErrorOccur
+          data={data}
+          onClick={() => {
+            setData(undefined);
+            callAPI();
+          }}
+        />
+      )}
     </View>
+
   );
 };
 
-const Profile = ({ onClick }) => {
+const Profile = ({ data, onClick }) => {
   return (
     <View
       style={{ backgroundColor: colors.white, borderRadius: 13 }}>
@@ -199,7 +232,7 @@ const Profile = ({ onClick }) => {
                     styles.textStyle,
                     { fontSize: 16, fontWeight: 'bold', color: colors.balc111111 },
                   ]}>
-                  User name
+                  {data && data.userName ? data.userName : 'User name'}
                 </Text>
                 <Text
                   style={[
