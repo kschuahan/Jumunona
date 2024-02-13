@@ -377,6 +377,8 @@ PODS:
   - React-jsinspector (0.72.7)
   - React-logger (0.72.7):
     - glog
+  - react-native-date-picker (4.3.6):
+    - React-Core
   - react-native-image-picker (7.1.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -558,6 +560,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-render-html (from `../node_modules/react-native-render-html`)
@@ -648,6 +651,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-date-picker:
+    :path: "../node_modules/react-native-date-picker"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-netinfo:
@@ -736,6 +741,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: c49502e5d02112247ee4526bc3ccfc891ae3eb9b
   React-jsinspector: 8baadae51f01d867c3921213a25ab78ab4fbcd91
   React-logger: 8edc785c47c8686c7962199a307015e2ce9a0e4f
+  react-native-date-picker: c28ccf1b3bc3de3bc6a785792a393fee49677f89
   react-native-image-picker: 5e076db26cd81660cfb6db5bcf517cfa12054d45
   react-native-netinfo: 8a7fd3f7130ef4ad2fb4276d5c9f8d3f28d2df3d
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe

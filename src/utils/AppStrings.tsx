@@ -258,5 +258,11 @@ export const AppString = {
   current_body_data_not_complete: "Текущие данные о теле не завершены",
   are_you_sure_to_continue: "Вы уверены, что хотите продолжить?",
   camera: "Камера",
-  go_to_cart: "перейти в корзину"
+  go_to_cart: "перейти в корзину",
+  add_name: "Добавить Имя",
+  add_gender: "Добавить Пол",
+  add_dob: "Добавить Возраст",
+  add_email: "Добавить Почта",
+  select_gender: "Выберите Пол",
+  prefer_not_to_say: "Предпочитаю не говорить"
 };
