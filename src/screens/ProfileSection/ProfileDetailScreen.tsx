@@ -23,6 +23,8 @@ import { FileModal, cameraLaunch, selectFile } from '../../utils/FileUpload';
 import { getAPICall, postMultipartData } from '../../Netowork/Apis';
 import { ProfileAPIs } from '../../Netowork/Constants';
 import { CommonModal } from '../HomeScreen';
+import { apiGenderOption, genderOptions } from './EditProfileDetailScreen';
+import { useIsFocused } from '@react-navigation/native';
 
 const ProfileDetailScreen = ({ navigation }) => {
   useEffect(() => {
@@ -46,7 +48,11 @@ const ProfileDetailScreen = ({ navigation }) => {
     });
   }, []);
 
+
+
   const [updateProfilePic, setUpdateProfilePic] = useState(false)
+  const [profileData, setProfileData] = useState<any>()
+  
   const [loading, setLoading] = useState(false);
   /***
        * this is for Camera, Gallery, And PDF response handler
@@ -58,10 +64,9 @@ const ProfileDetailScreen = ({ navigation }) => {
         "image",
         response.uri)
       console.log(fileModel)
-      uploadProfilePic(fileModel)
-
     }
   }
+
 
   const uploadProfilePic = (file: FileModal) => {
     console.warn("hwehrwe")
@@ -75,22 +80,37 @@ const ProfileDetailScreen = ({ navigation }) => {
     })
   }
 
-
-
-
   const [data, setData] = useState<CommonModal>();
   const [loadingData, setdataLoading] = useState(false);
 
-
+  const isFocused = useIsFocused()
   useEffect(() => {
-    callAPI()
-  }, [])
+    if (isFocused) {
+      getProfile()
+    }
+  }, [isFocused])
 
-  const callAPI = () => {
+  const getProfile = () => {
     setdataLoading(true)
     getAPICall(ProfileAPIs.getprofile, (res: any) => {
       setdataLoading(false)
-      setData(res)
+       if (res.isSuccess && res.data.data) {
+
+     
+          let gender = res.data.data.gender ?? ""
+          if (gender.length > 0) {
+            let index = apiGenderOption.findIndex(element => element == gender)
+            if (index >= 0 && index < genderOptions.length) {
+              res.data.data.gender = genderOptions[index]
+            } 
+          }
+        setProfileData(res.data.data)
+        setData(res)
+      } 
+     
+       
+     
+      console.log("getProfile", res)
     })
   }
 
@@ -113,22 +133,28 @@ const ProfileDetailScreen = ({ navigation }) => {
             }}>
             <TextWithIcon
               title={AppString.name}
-              value={'Valijon'}
-              onClick={() => { }}
+              value={profileData.userName.toString().trim().length > 0 ? profileData.userName : AppString.add_name}
+              onClick={() => { 
+                navigation.navigate(RouteNames.editProfileDetailScreen, {profileData: profileData})
+              }}
             />
             <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
 
             <TextWithIcon
               title={AppString.gender}
-              value={'Мужской'}
-              onClick={() => { }}
+              value={profileData.gender.toString().trim().length > 0 ? profileData.gender : AppString.add_gender}
+              onClick={() => { 
+                navigation.navigate(RouteNames.editProfileDetailScreen, {profileData: profileData})
+              }}
             />
             <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
 
             <TextWithIcon
               title={AppString.age}
-              value={'1992'}
-              onClick={() => { }}
+              value= {profileData.dob.toString().trim().length > 0 ? profileData.dob : AppString.add_dob}
+              onClick={() => { 
+                navigation.navigate(RouteNames.editProfileDetailScreen, {profileData: profileData})
+              }}
             />
           </View>
 
@@ -142,7 +168,7 @@ const ProfileDetailScreen = ({ navigation }) => {
             }}>
             <TextWithIcon
               title={AppString.number}
-              value={'150******50'}
+              value={profileData.phone}
               onClick={() => {
                 navigation.navigate(RouteNames.viewPhoneNumber, { isMobile: true });
               }}
@@ -150,7 +176,7 @@ const ProfileDetailScreen = ({ navigation }) => {
             <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
             <TextWithIcon
               title={AppString.mail}
-              value={'Valijon@gmail.com'}
+              value={profileData.email.toString().trim().length > 0 ? profileData.email : AppString.add_email}
               onClick={() => {
                 navigation.navigate(RouteNames.viewPhoneNumber, {
                   isMobile: false,
@@ -204,7 +230,7 @@ const ProfileDetailScreen = ({ navigation }) => {
           data={data}
           onClick={() => {
             setData(undefined);
-            callAPI();
+            getProfile();
           }}
         />
       )}
