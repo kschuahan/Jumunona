@@ -848,7 +848,7 @@ export const RetryWhenErrorOccur = ({ data, isRetry = true, ht = "100%", onClick
     {
       fontWeight: 'bold', fontSize: 18,
       textAlign: 'center'
-    }]}>{data && data.data ? data.data.toString() : ""}</Text>
+    }]}>{data && data.data ? data.data.toString() : data ? data.toString() : ''}</Text>
     {isRetry ?
       <CommonButton onClick={onClick} /> : null}
 
@@ -896,13 +896,13 @@ export const UploadImage = ({ isShow = false, camera, library, onCancel }) => {
       animationType={'fade'}
       visible={isShow}
       onRequestClose={onCancel}>
-        <Pressable onPress= {onCancel} style = {{justifyContent: 'flex-end', flex: 1, backgroundColor: 'rgba(0,0,0,0.4'}}>
-      <View style={{ flexDirection: 'row',  bottom: 0, padding: 20, backgroundColor: colors.white, shadowOpacity: 1, shadowRadius: 3, shadowOffset: {width: 0, height: -3}, shadowColor: 'rgba(0,0,0,0.5)', borderTopLeftRadius: 13, borderTopRightRadius: 13}}>
-        <IconWithText title={AppString.camera} onClick={camera} marginEnd={20} />
-        <IconWithText title={AppString.album} onClick={library} Icon={GalleryIcon} />
-      </View>
+      <Pressable onPress={onCancel} style={{ justifyContent: 'flex-end', flex: 1, backgroundColor: 'rgba(0,0,0,0.4' }}>
+        <View style={{ flexDirection: 'row', bottom: 0, padding: 20, backgroundColor: colors.white, shadowOpacity: 1, shadowRadius: 3, shadowOffset: { width: 0, height: -3 }, shadowColor: 'rgba(0,0,0,0.5)', borderTopLeftRadius: 13, borderTopRightRadius: 13 }}>
+          <IconWithText title={AppString.camera} onClick={camera} marginEnd={20} />
+          <IconWithText title={AppString.album} onClick={library} Icon={GalleryIcon} />
+        </View>
       </Pressable>
-      </Modal>
+    </Modal>
   )
 }
 
@@ -925,7 +925,7 @@ const IconWithText = ({ title = AppString.camera, onClick, Icon = CameraIcon, ma
 }
 
 
-export const ActivityIndicatorView = ({tintColor = colors.lightOrange}) => {
+export const ActivityIndicatorView = ({ tintColor = colors.lightOrange }) => {
   return (
     <ActivityIndicator size={"small"} style={{ alignSelf: 'center', justifyContent: "center", alignItems: "center", marginStart: -20, }} color={tintColor} />
   )
