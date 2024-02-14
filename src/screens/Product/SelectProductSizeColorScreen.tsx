@@ -45,7 +45,7 @@ var addToCartModel = {
   attr3_id: "",
 }
 var hasSetSelectedColor = false
-
+var isCart=false;
 const SelectProductSizeColorScreen = ({ navigation,
   productDetail,
   displayImage,
@@ -176,7 +176,7 @@ const SelectProductSizeColorScreen = ({ navigation,
                   text={AppString.add_to_cart}
                   startorange={colors.yellowStart}
                   endColor={colors.yellowEnd}
-                  productIncart={productDetail ? productDetail.productIncart : false}
+                  productIncart={productDetail ? (productDetail.productIncart || isCart)  : false}
                   onClick={(addedToCart: boolean) => {
                     onGoToCart()
                   }}
@@ -190,7 +190,7 @@ const SelectProductSizeColorScreen = ({ navigation,
                   paddingBottom: 20,
                 }}>
                   <CommonButton text={AppString.add}
-                    productIncart={productDetail ? productDetail.productIncart : false}
+                    productIncart={productDetail ? (productDetail.productIncart || isCart) : false}
                     onClick={() => {
                       onGoToCart()
                     }
@@ -683,6 +683,7 @@ const CommonButton = ({
         setLoading(false)
         if (res.isSuccess) {
           Alert.alert(AppString.alert, "Product added to cart successfully.")
+          isCart=true
           setIsItemInCart(true)
         } else {
           Alert.alert(AppString.alert, res.data.toString())

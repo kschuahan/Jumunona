@@ -39,11 +39,11 @@ import { useIsFocused } from '@react-navigation/native';
 
 let row: Array<any> = [];
 let prevOpenedRow;
+let editable = false
 const CartScreen = ({ navigation }) => {
 
   const [isCheck, setIsCheck] = useState(false)
   const [isEditable, setIsEditable] = useState(false)
-  const [cartProduct, setCartProduct] = useState<[any]>()
   const [data, setData] = useState<CommonModal>()
   const [loading, setLoading] = useState(false)
   const [refresh, setRefresh] = useState(false)
@@ -114,7 +114,7 @@ const CartScreen = ({ navigation }) => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                // isEditableButton = !isEditable
+                editable = !isEditable
                 setIsEditable(!isEditable)
               }}
               style={{
@@ -146,7 +146,9 @@ const CartScreen = ({ navigation }) => {
 
                   <CartProduct
                     onQunatityUpdate={() => {
-                      setRefresh(!refresh)
+                      getCart()
+
+                      // setRefresh(!refresh)
                     }}
                     onDelete={(item: any) => {
                       getCart()
@@ -620,7 +622,7 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
       {loading ? <ActivityIndicatorView /> : <TouchableOpacity onPress={() => {
         // const data = chats.filter((it, pos) => pos != index)
         //setChats(data)
-        // deleteApi(item)
+        deleteApi(item)
       }}><DeleteIcon /></TouchableOpacity>}
 
     </View>
@@ -645,9 +647,9 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
         paddingStart: 10
       }}>
 
-      <RadioButtons isCheck={isCheck} onClick={() => {
+      {editable ? <RadioButtons isCheck={isCheck} onClick={() => {
         setIsCheck(!isCheck)
-      }} />
+      }} /> : null}
       <Image
         source={appIcons.china}
         style={{ width: 18, height: 18, marginStart: 10 }}
@@ -678,7 +680,7 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
           renderRightActions={() =>
             <RightButtons index={index} item={item} />}>
           <ProductItem onUpdateQuantity={(qut: number) => {
-            //updateQuantity(item, qut)
+            updateQuantity(item, qut)
           }}
             check={items.radioButtonStore}
             item={item} onClick={onClick} />
@@ -694,7 +696,7 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
 
 const ProductItem = ({ item, check = false, onClick, onUpdateQuantity }) => {
 
-  const [isIncrease, setIsIncrease] = useState(false)
+  const [isIncrease, setIsIncrease] = useState(true)
   const [count, setCount] = useState(item.selected_quantity)
   const [isCheck, setIsCheck] = useState(false)
 
@@ -717,9 +719,9 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity }) => {
       paddingHorizontal: 10,
       flex: 1
     }}>
-    <RadioButtons isCheck={isCheck} onClick={() => {
+    {editable ? <RadioButtons isCheck={isCheck} onClick={() => {
       setIsCheck(!isCheck)
-    }} />
+    }} /> : null}
 
     <Image
       source={item.productImage ? { uri: item.productImage } : appIcons.shoeImageURL}
@@ -728,10 +730,10 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity }) => {
     <View
       style={{
         justifyContent: 'space-between',
-        height: 110, width: '60%',
+        height: 110, width: editable ? '60%' : '66%',
         paddingStart: 10
       }}>
-      <View >
+      <View>
         <Text style={{ fontSize: 14, fontWeight: '500', color: colors.balc111111 }}
           numberOfLines={2}>
           {item.productName}
@@ -759,7 +761,7 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity }) => {
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text style={{ color: colors.lightOrange, fontSize: 21, fontWeight: '500' }}>
-          {(parseInt(item.price) * count).toString()}c.
+          {(parseInt(item.singlePrice) * count).toString()}c.
         </Text>
 
         {<TouchableOpacity disabled={isIncrease} onPress={() => {

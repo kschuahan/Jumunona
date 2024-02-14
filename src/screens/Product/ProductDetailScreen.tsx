@@ -752,7 +752,7 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onS
       </Text>
       <TextWithIcon
         Icon={ColorIcon}
-        title="2 цветов на выбор"
+        title={`${item.attributes.attribute1.attr1.data.length} цветов на выбор`}
         onClick={onShowColorSize}
       />
       <TextWithIcon
