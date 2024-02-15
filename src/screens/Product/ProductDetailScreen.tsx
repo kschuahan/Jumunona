@@ -123,6 +123,8 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [guranty, setOnGauranty] = useState(false);
   const [data, setData] = useState<CommonModal>()
+  const [shopData, setShopData] = useState<CommonModal>()
+
   const [loading, setLoading] = useState(false)
   const [favLoading, setFavLoading] = useState(false)
   const [showColorSize, setShowColorSize] = useState(false);
@@ -132,13 +134,19 @@ export const ProductDetailScreen = ({ navigation, route }) => {
     data.data.data.productImages.length > 0 ?
     data.data.data.productImages : productImages)
 
+  const [desImages, setDesImages] = useState(data && data.data.data
+    && data.data.data.discriptionPath &&
+    data.data.data.discriptionPath.length > 0 ?
+    data.data.data.discriptionPath : productImages)
+  const [imagesType, setImageType] = useState(-1)
+
   useEffect(() => {
     callAPI()
   }, [])
 
   const addFav = () => {
     setFavLoading(true)
-    postAPICall({ productId: route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7' },
+    postAPICall({ productId: [route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'] },
       ProductAPIs.favoriteProduct, true,
       (res: any) => {
         setFavLoading(false)
@@ -159,17 +167,29 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   const callAPI = () => {
     setLoading(true)
     const id = route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
-
+    callShopsApi(id)
     getAPICall(ProductAPIs.getProductDetails + `${id}`, (res: any) => {
       setLoading(false)
       setData(res)
       if (res.data) {
+
         setImages(res.data.data.productImages.length ? res.data.data.productImages : productImages)
+        setDesImages(res.data.data.discriptionPath.length ? res.data.data.discriptionPath : productImages)
+
         setFavourite(res.data.data.isFavourite)
         console.warn("color options", res.data.data.attributes.attribute1.attr1.data)
       }
     })
   }
+
+
+  const callShopsApi = (id: string) => {
+
+    getAPICall(ProductAPIs.getShopsProduct + `${id}`, (res: any) => {
+      setShopData(res)
+    })
+  }
+
 
   const handleViewableItemsChanged = useRef(({ viewableItems, changed }) => {
     if (changed && changed.length > 0) {
@@ -298,6 +318,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
               renderItem={({ item, index }) => (
                 <TouchableOpacity
                   onPress={() => {
+                    setImageType(0)
                     setShowImages(index);
                   }}
                   style={[{ padding: 0 }]}>
@@ -351,10 +372,10 @@ export const ProductDetailScreen = ({ navigation, route }) => {
                 navigation.navigate(RouteNames.product_review_screen);
               }}
             />
-            <ShopView navigation={navigation} />
+            <ShopView data={shopData} navigation={navigation} />
           </View>
           <ProductImages
-            images={images}
+            images={desImages}
             onClick={(index: number) => {
               setShowImages(index);
             }}
@@ -518,10 +539,11 @@ export const ProductDetailScreen = ({ navigation, route }) => {
         </View>
       </View>
       <ProductImageScreeen
-        data={images}
+        data={imagesType == 0 ? images : desImages}
         isShow={showImages != -1}
         pos={showImages != -1 ? showImages : 0}
         onClose={() => {
+          setImageType(1)
           setShowImages(-1);
         }}
       />
@@ -721,6 +743,37 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onS
   const [showCharacterstics, setShowCharacterstics] = useState(false);
   const [showSizeChart, setShowSizeChart] = useState(false);
 
+
+  const [colorSize, setColorSize] = useState(`${item.attributes.attribute1.attr1.data.length} цветов на выбор`)
+
+  useEffect(() => {
+    //finding the colors and size from the list
+    const color = item.attributes.attribute1.attr1
+    const cartItemIndex = color.data.findIndex((element) => (element.isItemInCart));
+    console.log("Index 11", cartItemIndex);
+
+    if (cartItemIndex != -1) {
+      const index = color.data.findIndex((element) => (element.attirbutedID ===
+        color.data[cartItemIndex].attirbutedID));
+      console.log("Index 11", index);
+
+      const sizes = color.data[index].att2.data
+      const cartItemIndex = sizes.findIndex((element) => (element.isItemInCart));
+      console.log("Index 11", cartItemIndex);
+
+      if (cartItemIndex != -1) {
+        const index1 = sizes.findIndex((element) => (element.attirbutedID ===
+          sizes[cartItemIndex].attirbutedID));
+        setColorSize(color[index].attributeValue + " • " + sizes[index1].attributeValue)
+
+        // setSelecteItem(filter[index1].attributeID)
+        console.log("Index", index1);
+      }
+    }
+
+
+  }, [])
+
   useEffect(() => {
     setShowGurantees(isGauranty)
   }, [isGauranty])
@@ -738,7 +791,7 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onS
         marginBottom: 10,
         paddingBottom: 4,
       }}>
-      <Text
+      {/* <Text
         style={[
           styles.textStyle,
           {
@@ -749,10 +802,10 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onS
           },
         ]}>
         {'Выбран: 7 дюймовый'}
-      </Text>
+      </Text> */}
       <TextWithIcon
         Icon={ColorIcon}
-        title={`${item.attributes.attribute1.attr1.data.length} цветов на выбор`}
+        title={colorSize}
         onClick={onShowColorSize}
       />
       <TextWithIcon
@@ -769,13 +822,13 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onS
           setShowCharacterstics(true);
         }}
       />
-      <TextWithIcon
+      {/* <TextWithIcon
         Icon={Sizes}
         title="Ширина плеч • Ширина груди • Длина рукава"
         onClick={() => {
           setShowSizeChart(true);
         }}
-      />
+      /> */}
 
       <ProuductGuanteeScreen
         isShow={showGurantees}
@@ -890,8 +943,11 @@ export const RatingView = ({ rating = 3.5, count = 5,
 
 // MARK: - Shop Detail
 
-const ShopView = ({ navigation }) => {
-  return (
+const ShopView = ({ data, navigation }) => {
+
+
+
+  return (data && data.isSuccess ?
     <View
       style={{
         borderRadius: 13,
@@ -931,7 +987,7 @@ const ShopView = ({ navigation }) => {
               }}
               resizeMode="cover"
             />{' '}
-            Shop name name
+            {data.data.data.shopData.shopName}
           </Text>
 
           <View
@@ -943,17 +999,17 @@ const ShopView = ({ navigation }) => {
             }}>
             <Star style={{ marginEnd: 3.5 }} />
             <Text style={[styles.textStyle, { fontSize: 11, marginEnd: 19.5 }]}>
-              4.5
+              {data.data.data.shopData.ratings}
             </Text>
 
             <Cube style={{ marginEnd: 3.5 }} />
             <Text style={[styles.textStyle, { fontSize: 11, marginEnd: 19.5 }]}>
-              2 505
+              {data.data.data.shopData.productShiped}
             </Text>
 
             <Profile style={{ marginEnd: 3.5 }} />
             <Text style={[styles.textStyle, { fontSize: 11, marginEnd: 19.5 }]}>
-              50 000
+              {data.data.data.shopData.followers}
             </Text>
           </View>
         </View>
@@ -1009,27 +1065,28 @@ const ShopView = ({ navigation }) => {
           }}
         />
       </View>
-      <ShopFeaturedProduct onClick={() => {
-        navigation.push(RouteNames.product_detail)
-
+      <ShopFeaturedProduct data={data.data.data.shopData.shopProducts} onClick={(item: any) => {
+        navigation.push(RouteNames.product_detail, {
+          id: item._id,
+        });
       }} />
-    </View >
+    </View > : null
   );
 };
 
-const ShopFeaturedProduct = ({ onClick }) => {
+const ShopFeaturedProduct = ({ data, onClick }) => {
   return (
     <FlatList
-      data={data}
+      data={data.slice(0, 6)}
       keyExtractor={item => {
-        return item.id.toString();
+        return item._id.toString();
       }}
       scrollEnabled={false}
       numColumns={3}
       style={{ marginEnd: -2.5 }}
       renderItem={({ item }) => {
         return (
-          <TouchableOpacity onPress={onClick}
+          <TouchableOpacity onPress={() => onClick(item)}
             style={{
               backgroundColor: '#ffffff',
               marginHorizontal: 2.5,
@@ -1039,8 +1096,11 @@ const ShopFeaturedProduct = ({ onClick }) => {
               marginTop: 12,
             }}>
             <Image
-              source={item.imageURL}
-              style={{
+              source={
+                item.images !== ''
+                  ? { uri: item.images }
+                  : appIcons.shoeImageURL
+              } style={{
                 height: 108,
                 width: '100%',
                 borderRadius: 6,
@@ -1062,7 +1122,7 @@ const ShopFeaturedProduct = ({ onClick }) => {
                   color: colors.balc111111
                 }}
                 numberOfLines={1}>
-                Название това...
+                {item.name}
               </Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
@@ -1071,7 +1131,7 @@ const ShopFeaturedProduct = ({ onClick }) => {
                   fontSize: 14,
                   color: '#ff7600',
                 }}>
-                999c.
+                {item.price ? item.price : '58'}c.
               </Text>
             </View>
           </TouchableOpacity>
@@ -1295,6 +1355,8 @@ const RelatedProducts = ({ item, onclick }) => {
 };
 
 const ProductDetails = ({ item }) => {
+
+
   return (
     <View
       style={{
@@ -1331,10 +1393,10 @@ const ProductDetails = ({ item }) => {
                 textDecorationLine: 'line-through',
               },
             ]}>
-            {item.price ? item.price : '178с.'}с.
+            {item.strikePrice ? item.strikePrice : '178с.'}с.
           </Text>
         </View>
-        <RatingView />
+        <RatingView rating={item.rating ? item.rating : 4} />
       </View>
       <View style={{ flexDirection: 'row', gap: 6, marginTop: 2, width: '100%' }}>
         <Text
@@ -1414,7 +1476,7 @@ const SearchView = () => {
         borderRadius: 19,
         width: '90%'
       }}>
-      
+
       <SearchIcon width={15} height={15} style={{ marginStart: 15 }}
       />
 
