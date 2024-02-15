@@ -43,6 +43,9 @@ export const ProductAPIs = {
   getProductDetails: modules.productModule + 'getProductDetails?productId=',
   favoriteProduct: modules.productModule + 'favoriteProduct',
   removeFavourite: modules.productModule + 'removeFavoriteProduct',
+  getShopsProduct: modules.productModule + 'getShopsProduct?productId=',
+
+  
 };
 
 export const AuthAPIs = {

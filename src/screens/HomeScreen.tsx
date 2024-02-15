@@ -11,19 +11,19 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import MasonryList from '@react-native-seoul/masonry-list';
-import {RouteNames} from '../utils/RouteNames';
-import {colors} from '../utils/AppColors';
-import React, {useEffect, useState} from 'react';
-import {fontFamily} from '../utils/Fonts';
+import { RouteNames } from '../utils/RouteNames';
+import { colors } from '../utils/AppColors';
+import React, { useEffect, useState } from 'react';
+import { fontFamily } from '../utils/Fonts';
 
 import EllipsisHorizontal from '../../assets/Icons/ellipsis-horizontal.svg';
 import ImageOutline from '../../assets/Icons/image-outline.svg';
-import {appIcons} from '../utils/AppIcons';
-import {getAPICall} from '../Netowork/Apis';
-import {categoriesModule, ProductAPIs} from '../Netowork/Constants';
-import {ProgressView, RetryWhenErrorOccur} from '../components/Dialogs';
-import {AppString} from '../utils/AppStrings';
-import {TouchableHighlight} from 'react-native-gesture-handler';
+import { appIcons } from '../utils/AppIcons';
+import { getAPICall } from '../Netowork/Apis';
+import { categoriesModule, ProductAPIs } from '../Netowork/Constants';
+import { ProgressView, RetryWhenErrorOccur } from '../components/Dialogs';
+import { AppString } from '../utils/AppStrings';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 export interface CommonModal {
   isSuccess: boolean;
@@ -38,7 +38,7 @@ interface PagingData {
 }
 const numColumns = 5;
 
-const HeaderItem = ({onSearchClick}) => (
+const HeaderItem = ({ onSearchClick }) => (
   <View style={styles.header}>
     <TextInput
       style={styles.searchBox}
@@ -48,8 +48,8 @@ const HeaderItem = ({onSearchClick}) => (
     <TouchableOpacity style={styles.button} onPress={onSearchClick}>
       <LinearGradient
         colors={['#FF7600', '#FC4A1A']}
-        start={{x: 0.4, y: 0}}
-        end={{x: 1, y: 1}}
+        start={{ x: 0.4, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={styles.linearGradient}>
         <Text style={styles.searchButtonText}>Поиск</Text>
       </LinearGradient>
@@ -57,9 +57,9 @@ const HeaderItem = ({onSearchClick}) => (
   </View>
 );
 
-const MainCategoriesItem = ({navigation, data}) => {
+const MainCategoriesItem = ({ navigation, data }) => {
   return data && data.isSuccess ? (
-    <View style={{width: '100%'}}>
+    <View style={{ width: '100%' }}>
       <FlatList
         style={styles.categories}
         scrollEnabled={false}
@@ -70,7 +70,7 @@ const MainCategoriesItem = ({navigation, data}) => {
           return item._id;
         }}
         numColumns={5}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           return (
             <View
               style={{
@@ -82,7 +82,7 @@ const MainCategoriesItem = ({navigation, data}) => {
                   onPress={() => {
                     navigation.navigate(RouteNames.categories);
                   }}
-                  style={{alignItems: 'center'}}>
+                  style={{ alignItems: 'center' }}>
                   <EllipsisHorizontal width={24} height={38} />
                   <Text
                     style={{
@@ -103,11 +103,11 @@ const MainCategoriesItem = ({navigation, data}) => {
                       index: index,
                     });
                   }}
-                  style={{alignItems: 'center'}}>
+                  style={{ alignItems: 'center' }}>
                   {item.image === '' ? (
                     <ImageOutline width={50} height={38} />
                   ) : (
-                    <Image source={{uri: item.image}} height={38} width={50} />
+                    <Image source={{ uri: item.image }} height={38} width={50} />
                   )}
                   <Text
                     numberOfLines={2}
@@ -130,7 +130,7 @@ const MainCategoriesItem = ({navigation, data}) => {
   ) : null;
 };
 
-const HomeScreen: React.FC = ({navigation}) => {
+const HomeScreen: React.FC = ({ navigation }) => {
   const [data, setData] = useState<CommonModal>();
   const [pagingData, setPagingData] = useState<PagingData>();
   const [loading, setLoading] = useState(false);
@@ -204,18 +204,25 @@ const HomeScreen: React.FC = ({navigation}) => {
               />
             )
           }
+          // ListEmptyComponent={
+          //   <RetryWhenErrorOccur
+          //     data={'No Products found'}
+          //     onClick={() => {
+               
+          //     }} isRetry={false}/>
+          // }
           onEndReached={featchMore}
           onEndReachedThreshold={0.1}
           ListHeaderComponent={
             <MainCategoriesItem navigation={navigation} data={categoryData} />
           }
           showsVerticalScrollIndicator={false}
-          style={{marginHorizontal: 7}}
+          style={{ marginHorizontal: 7 }}
           numColumns={2}
-          renderItem={({item, i}) => {
+          renderItem={({ item, i }) => {
             return (
               <Pressable
-                style={[styles.gridViewItemStyle, {paddingBottom: 8}]}
+                style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
                 onPress={() => {
                   navigation.navigate(RouteNames.product_detail, {
                     id: item._id,
@@ -224,12 +231,12 @@ const HomeScreen: React.FC = ({navigation}) => {
                 <Image
                   source={
                     item.images !== ''
-                      ? {uri: item.images}
+                      ? { uri: item.images }
                       : appIcons.shoeImageURL
                   }
                   style={[
                     styles.gridViewItemImage,
-                    {height: i % 3 !== 1 ? 240 : 277},
+                    { height: i % 3 !== 1 ? 240 : 277 },
                   ]}
                 />
                 <View
@@ -243,7 +250,7 @@ const HomeScreen: React.FC = ({navigation}) => {
                     height={15} width={15} uri={item.country_flag} /> */}
                   <Image
                     source={appIcons.china}
-                    style={{borderRadius: 8, height: 15, width: 15}}
+                    style={{ borderRadius: 8, height: 15, width: 15 }}
                   />
                   <Text
                     style={{
@@ -265,7 +272,7 @@ const HomeScreen: React.FC = ({navigation}) => {
                     marginTop: 3,
                     justifyContent: 'space-between',
                   }}>
-                  <View style={{flexDirection: 'row'}}>
+                  <View style={{ flexDirection: 'row' }}>
                     <Text
                       style={{
                         fontSize: 17,

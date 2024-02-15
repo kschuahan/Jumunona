@@ -39,35 +39,37 @@ export enum ColorSizeBottomSheetMode {
 
 var addToCartModel = {
   productId: "",
-  quantity :1,
+  quantity: 1,
   attr1_id: "",
-  attr2_id:"",
-  attr3_id:"",
+  attr2_id: "",
+  attr3_id: "",
 }
 var hasSetSelectedColor = false
-
+var isCart = false;
+var colorIndex = -1;
+var sizeIndex = -1
 const SelectProductSizeColorScreen = ({ navigation,
-                                        productDetail,
-                                        displayImage,
-                                        currentMode = ColorSizeBottomSheetMode.selectSize,
-                                        isShow = false,
-                                        onClose,
-                                        onGuranty,
-                                        onGoToCart }) => {
+  productDetail,
+  displayImage,
+  currentMode = ColorSizeBottomSheetMode.selectSize,
+  isShow = false,
+  onClose,
+  onGuranty,
+  onGoToCart }) => {
 
-  
+
   useEffect(() => {
     addToCartModel = {
       productId: productDetail._id,
-      quantity :1,
-      attr1_id: productDetail.attributes.attribute1.attr1.data[0].attributeID,
-      attr2_id:"",
-      attr3_id:"078bb017-6bff-4462-b833-dee4db0e7f37",
+      quantity: 1,
+      attr1_id: "",
+      attr2_id: "",
+      attr3_id: "078bb017-6bff-4462-b833-dee4db0e7f37",
     }
-    hasSetSelectedColor = false
+    hasSetSelectedColor = true
   }, [])
 
-  
+
 
   return (
     <Modal
@@ -145,19 +147,19 @@ const SelectProductSizeColorScreen = ({ navigation,
               }}
             />
             {productDetail ?
-              <ColorOptions 
-              colorOptions={productDetail.attributes.attribute1.attr1}
-                onSelectColor={ (selectedColor: any) => {
-                    addToCartModel.attr1_id = selectedColor.attributeID
+              <ColorOptions
+                colorOptions={productDetail.attributes.attribute1.attr1}
+                onSelectColor={(selectedColor: any) => {
+                  addToCartModel.attr1_id = selectedColor.attributeID
                 }}
-                onSelectSize = { (id: string) => {
+                onSelectSize={(id: string) => {
 
                   addToCartModel.attr2_id = id
                 }}
-                onSelectQuantity={ (quantity: number) => {
+                onSelectQuantity={(quantity: number) => {
                   addToCartModel.quantity = quantity
                 }}
-                 />
+              />
               : null
             }
           </ScrollView>
@@ -173,11 +175,12 @@ const SelectProductSizeColorScreen = ({ navigation,
                   paddingBottom: 20,
                 }}>
                 <CommonButton
-                  text={ AppString.add_to_cart}
+                  text={AppString.add_to_cart}
                   startorange={colors.yellowStart}
                   endColor={colors.yellowEnd}
+                  productIncart={productDetail ? (productDetail.productIncart || isCart) : false}
                   onClick={(addedToCart: boolean) => {
-                     onGoToCart()
+                    onGoToCart()
                   }}
                 />
                 <CommonButton text={AppString.buy} onClick={() => { }} />
@@ -188,10 +191,12 @@ const SelectProductSizeColorScreen = ({ navigation,
                   marginVertical: 35,
                   paddingBottom: 20,
                 }}>
-                  <CommonButton text={ AppString.add} onClick={() =>  {
-                     onGoToCart()
+                  <CommonButton text={AppString.add}
+                    productIncart={productDetail ? (productDetail.productIncart || isCart) : false}
+                    onClick={() => {
+                      onGoToCart()
                     }
-                  } />
+                    } />
                 </View>
                 :
                 <View style={{
@@ -276,7 +281,37 @@ const PhoneDataScreen = ({ onClick }) => {
   );
 };
 const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuantity }) => {
-  const [selectedColorIndex, setSelectColorIndex] = useState(0)
+  const [selectedColorIndex, setSelectColorIndex] = useState(-1)
+
+
+  useEffect(() => {
+
+    const filter = colorOptions.data.filter(it => it.quantity > 0)
+    console.log("Filter" + filter);
+
+    if (filter.length > 0) {
+      const cartItemIndex = filter.findIndex((element) => (element.isItemInCart));
+      console.log("Index", cartItemIndex);
+
+      if (cartItemIndex != -1) {
+        const index = colorOptions.data.findIndex((element) => (element.attirbutedID ===
+          filter[cartItemIndex].attirbutedID));
+        addToCartModel.attr1_id = filter[index].attirbutedID
+
+        setSelectColorIndex(index)
+        console.log("Index", index);
+      } else {
+        const index = colorOptions.data.findIndex((element) => (element.attirbutedID ===
+          filter[0].attirbutedID));
+        setSelectColorIndex(colorIndex != -1 ? colorIndex : -1)
+
+        console.log("Index", index);
+      }
+
+    }
+
+  }, [])
+
 
   return (
     <View>
@@ -287,116 +322,122 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
       <FlatList
         data={colorOptions.data}
         renderItem={({ item, index }) => {
-         
-          if (!hasSetSelectedColor && item.quantity > 0) {
-            console.warn("fsdfdsf",selectedColorIndex)
-            setSelectColorIndex(index)
-            hasSetSelectedColor =  true
-           } 
-          return (
-          <View style={{ marginEnd: 8 }}>
-            <View style={{ height: 13 }} />
-            <TouchableOpacity disabled={item.quantity == 0}
-              onPress={() => {
-                onSelectColor(colorOptions.data[index])
-                setSelectColorIndex(index)
-              }}>
-              <View
-                style={{
-                  marginHorizontal: 1,
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  alignContent: 'center',
-                }}>
-                <Image
-                  source={{ uri: item.skuImageUrlPath }}
-                  style={{ width: 109, height: 111, borderRadius: 7 }}
-                />
-                <View
-                  style={{
-                    width: 109,
-                    height: 42,
-                    justifyContent: 'center',
-                    backgroundColor: '#F6F6F6',
-                    borderRadius: 7,
-                  }}>
-                  <Text
-                    style={[
-                      styles.textStyle,
-                      {
-                        textAlign: 'center',
-                        alignSelf: 'center',
-                        color:
-                          selectedColorIndex == index
-                            ? colors.startOrange
-                            : colors.black,
-                        marginTop: 4,
-                        fontSize: 10
-                      },
-                    ]}>
-                    {' '}
-                    {item.attributeValue}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 5,
-                    end: 4,
-                    height: 19,
-                    width: 19,
-                    backgroundColor: colors.greyB3B3B38C,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 10,
-                  }}>
-                  <ResizeIcon width={19} height={19} color={colors.white} />
-                </View>
-              </View>
-              {selectedColorIndex == index ? (
-                <View
-                  style={{
-                    position: 'absolute',
-                    backgroundColor: 'rgba(255, 118, 0, 0.08)',
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: 7,
-                    borderColor: colors.startOrange,
-                    borderWidth: 1,
-                  }}
-                />
-              ) : null}
 
-              {item.quantity == 0 ? (
+          // if (!hasSetSelectedColor && item.quantity > 0) {
+          //   // console.warn("fsdfdsf", selectedColorIndex)
+          //   setSelectColorIndex(index)
+          //   hasSetSelectedColor = true
+          // }
+          return (
+            <View style={{ marginEnd: 8 }}>
+              <View style={{ height: 13 }} />
+              <TouchableOpacity disabled={item.quantity == 0}
+                onPress={() => {
+                  colorIndex = index
+                  onSelectColor(colorOptions.data[index])
+                  setSelectColorIndex(index)
+                }}>
                 <View
                   style={{
-                    position: 'absolute',
-                    top: -10,
-                    end: -1,
-                    height: 13,
-                    width: 44,
-                    backgroundColor: colors.greyCCCCCC,
-                    borderColor: colors.whiteF2F2F2,
+                    marginHorizontal: 1,
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    borderBottomEndRadius: 5,
-                    borderTopStartRadius: 5,
+                    flexDirection: 'column',
+                    alignContent: 'center',
                   }}>
-                  <Text
-                    style={[
-                      styles.textStyle,
-                      {
-                        color: colors.white,
-                        fontSize: 10,
-                      },
-                    ]}>
-                    sold out
-                  </Text>
+                  <Image
+                    source={{ uri: item.skuImageUrlPath }}
+                    style={{
+                      width: 109, height: 111, borderTopLeftRadius: 7,
+                      borderTopRightRadius: 7
+                    }}
+                  />
+                  <View
+                    style={{
+                      width: 109,
+                      height: 42,
+                      justifyContent: 'center',
+                      backgroundColor: '#F6F6F6',
+                      borderBottomLeftRadius: 7,
+                      borderBottomRightRadius: 7
+                    }}>
+                    <Text
+                      style={[
+                        styles.textStyle,
+                        {
+                          textAlign: 'center',
+                          alignSelf: 'center',
+                          color:
+                            selectedColorIndex == index
+                              ? colors.startOrange
+                              : colors.black,
+                          marginTop: 4,
+                          fontSize: 10
+                        },
+                      ]}>
+                      {' '}
+                      {item.attributeValue}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: 5,
+                      end: 4,
+                      height: 19,
+                      width: 19,
+                      backgroundColor: colors.greyB3B3B38C,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 10,
+                    }}>
+                    <ResizeIcon width={19} height={19} color={colors.white} />
+                  </View>
                 </View>
-              ) : null}
-            </TouchableOpacity>
-          </View>
-                  )}}
+                {selectedColorIndex == index ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      backgroundColor: 'rgba(255, 118, 0, 0.08)',
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: 7,
+                      borderColor: colors.startOrange,
+                      borderWidth: 1,
+                    }}
+                  />
+                ) : null}
+
+                {item.quantity == 0 ? (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: -10,
+                      end: -1,
+                      height: 13,
+                      width: 44,
+                      backgroundColor: colors.greyCCCCCC,
+                      borderColor: colors.whiteF2F2F2,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderBottomEndRadius: 5,
+                      borderTopStartRadius: 5,
+                    }}>
+                    <Text
+                      style={[
+                        styles.textStyle,
+                        {
+                          color: colors.white,
+                          fontSize: 10,
+                        },
+                      ]}>
+                      sold out
+                    </Text>
+                  </View>
+                ) : null}
+              </TouchableOpacity>
+            </View>
+          )
+        }}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
@@ -410,7 +451,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
       />
 
       <SizeAndBuyingForView productDetail={colorOptions}
-        selectedColorIndex={selectedColorIndex} onSelectSize = {onSelectSize} />
+        selectedColorIndex={selectedColorIndex} onSelectSize={onSelectSize} />
       <View
         style={{
           height: 1,
@@ -421,104 +462,108 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
       <QuanityView onClick={(qunatity: number) => {
         onSelectQuantity(qunatity)
       }}
-        quantity={colorOptions.data[selectedColorIndex ?? 0].quantity} />
+        quantity={colorOptions.data[selectedColorIndex != -1 ? selectedColorIndex : 0].quantity} />
 
     </View>
   );
 };
 
 const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize }) => {
-  const [selectedSize, setSelecteSize] = useState(false);
+  const [selectedSize, setSelecteSize] = useState(0);
   const users = ['Vali', 'Name 2', '+ Add'];
   const sizes = ['24', '25', '26', '27', '28', '29', '30', '31', '32'];
   const [selectedItem, setSelecteItem] = useState('');
+
+  useEffect(() => {
+    onSelectSize(selectedItem)
+  }, [selectedItem])
+
+  useEffect(() => {
+    const sizes = productDetail.data[selectedColorIndex != -1 ? selectedColorIndex : 0].att2.data
+    const filter = sizes.filter(it => it.quantity > 0)
+    console.log("Filter" + filter);
+
+    if (filter.length > 0) {
+      const cartItemIndex = filter.findIndex((element) => (element.isItemInCart));
+      console.log("Index", cartItemIndex);
+
+      if (cartItemIndex != -1) {
+        const index = sizes.findIndex((element) => (element.attirbutedID ===
+          filter[cartItemIndex].attirbutedID));
+        addToCartModel.attr2_id = filter[index].attributeID
+        setSelecteItem(filter[index].attributeID)
+        console.log("Index", index);
+      } else {
+        const index = sizes.findIndex((element) => (element.attirbutedID ===
+          filter[0].attirbutedID));
+
+        setSelecteItem(sizeIndex != -1 ? filter[sizeIndex].attirbutedID : "")
+
+        console.log("Index", index);
+      }
+
+    }
+
+  }, [])
+
+
   return (
     <View style={{ width: '100%' }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-        <TouchableOpacity
-          onPress={() => {
-              setSelecteSize(false);
-          }}>
-          <View style={{ flexDirection: 'column', justifyContent: 'flex-start' }}>
-            <Text
-              style={[
-                styles.textStyle,
-                {
-                  fontSize: 14,
-                  color: !selectedSize ? colors.startOrange : colors.black,
-                },
-              ]}>
-              Для
-            </Text>
-            {!selectedSize ? (
-              <View
-                style={{
-                  height: 2,
-                  backgroundColor: colors.startOrange,
-                  width: 30,
-                }}
-              />
-            ) : null}
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setSelecteSize(true);
-          }}>
-          <View
-            style={{
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-              marginStart: 15,
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={['Для', 'Размер']}
+        renderItem={({ item, index }) =>
+          <TouchableOpacity
+            onPress={() => {
+              setSelecteSize(index);
             }}>
-            <Text
-              style={[
-                styles.textStyle,
-                {
-                  fontSize: 14,
-                  color: selectedSize ? colors.startOrange : colors.black,
-                },
-              ]}>
-              Размер
-            </Text>
-            {selectedSize ? (
-              <View
-                style={{
-                  height: 2,
-                  backgroundColor: colors.startOrange,
-                  width: 30,
-                }}
-              />
-            ) : null}
-          </View>
-        </TouchableOpacity>
-      </View>
+            <View style={{ flexDirection: 'column', justifyContent: 'flex-start', marginEnd: 20 }}>
+              <Text
+                style={[
+                  styles.textStyle,
+                  {
+                    fontSize: 14,
+                    color: index == selectedSize ? colors.startOrange : colors.black,
+                  },
+                ]}>
+                {item}
+              </Text>
+              {index == selectedSize ? (
+                <View
+                  style={{
+                    height: 2,
+                    backgroundColor: colors.startOrange,
+                    width: 30,
+                    marginTop: 2
+                  }}
+                />
+              ) : null}
+            </View>
+          </TouchableOpacity>}
+      />
 
-      {/* <FlatList
-        data={selectedSize ? sizes : users}
-        scrollEnabled={false}
-        numColumns={5}
-        renderItem={({ item }) => ( */}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
-        {(selectedSize ? productDetail.data[selectedColorIndex].att2.data : users).map((item: any) =>
+        {(selectedSize == 1 ? productDetail.data[selectedColorIndex != -1 ? selectedColorIndex : 0].att2.data : users).map((item: any, index: number) =>
           <View style={{ margin: 8 }}>
             <TouchableOpacity
               onPress={() => {
-                if (selectedSize && hasSetSelectedColor) {
+                if (selectedSize == 1 && hasSetSelectedColor) {
+                  sizeIndex = index
                   setSelecteItem(item.attributeID)
-                  onSelectSize(item.attributeID)
-                } else { 
+                  //onSelectSize(item.attributeID)
+                } else {
                   setSelecteItem(item)
-                 }
+                }
               }}>
               <View
                 style={{
-                  paddingHorizontal: !selectedSize ? 16 : undefined,
+                  paddingHorizontal: selectedSize == 0 ? 16 : undefined,
                   justifyContent: 'center',
                   backgroundColor: '#F6F6F6',
-                  borderRadius: selectedSize ? 5 : 15,
+                  borderRadius: selectedSize == 1 ? 5 : 15,
                   height: 28,
-                  width: selectedSize ? 56 : undefined
+                  width: selectedSize == 1 ? 56 : undefined
                 }}>
                 <Text
                   style={[
@@ -530,22 +575,22 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
                           : colors.black121212,
                       textAlign: 'center',
                       alignSelf: 'center',
-                      fontSize: selectedSize ? 12 : 14,
+                      fontSize: selectedSize == 1 ? 12 : 14,
                     },
                   ]}>
                   {' '}
-                  {selectedSize ? item.attributeValue : item}
+                  {selectedSize == 1 ? item.attributeValue : item}
                 </Text>
               </View>
             </TouchableOpacity>
-            {((selectedSize && selectedItem == item.attributeID) || (!selectedSize && selectedItem == item)) ? (
+            {((selectedSize == 1 && selectedItem == item.attributeID) || (selectedSize == 0 && selectedItem == item)) ? (
               <View
                 style={{
                   position: 'absolute',
                   backgroundColor: 'rgba(255, 118, 0, 0.08)',
                   width: '100%',
                   height: '100%',
-                  borderRadius: selectedSize ? 5 : 15,
+                  borderRadius: selectedSize == 1 ? 5 : 15,
                   borderColor: colors.startOrange,
                   borderWidth: 1,
                 }}
@@ -583,10 +628,12 @@ const QuanityView = ({ quantity, onClick }) => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <TouchableOpacity
           onPress={() => {
-            if (quantiy > 1) {
+            if (quantiy > 1 &&
+              addToCartModel.attr2_id.length != 0
+              && addToCartModel.attr1_id.length != 0) {
               setQuantity(quantiy - 1);
               onClick(quantiy)
-            } 
+            }
           }}>
           <RemoveCircleOutline
             color={quantiy > 1 ? colors.startOrange : '#F1F1F1'}
@@ -604,7 +651,9 @@ const QuanityView = ({ quantity, onClick }) => {
         </Text>
         <TouchableOpacity
           onPress={() => {
-            if (quantiy < maxQuantity) {
+            if (quantiy < maxQuantity &&
+              addToCartModel.attr2_id.length != 0
+              && addToCartModel.attr1_id.length != 0) {
               setQuantity(quantiy + 1);
               onClick(quantiy)
             }
@@ -624,27 +673,33 @@ const CommonButton = ({
   text = AppString.add_to_cart,
   endColor = colors.endOrange,
   startorange = colors.startOrange,
+  productIncart = false,
   onClick,
 }) => {
-  const [isItemInCart, setIsItemInCart] = useState(false)
+  const [isItemInCart, setIsItemInCart] = useState(productIncart)
   const [loading, setLoading] = useState(false)
   const validate = () => {
-    if (addToCartModel.attr2_id.length == 0) {
-      Alert.alert("Please Select size")
+    if (addToCartModel.attr1_id.length == 0) {
+      Alert.alert("Please select color")
       return false
-    } else {}
+    }
+    else if (addToCartModel.attr2_id.length == 0) {
+      Alert.alert("Please select size")
+      return false
+    } else { }
     return true
   }
 
   const addToCart = () => {
     setLoading(true)
     postAPICall(addToCartModel,
-                CartAPIs.addToCart,
-                true, 
-                ((res: any) => {
+      CartAPIs.addToCart,
+      true,
+      ((res: any) => {
         setLoading(false)
         if (res.isSuccess) {
           Alert.alert(AppString.alert, "Product added to cart successfully.")
+          isCart = true
           setIsItemInCart(true)
         } else {
           Alert.alert(AppString.alert, res.data.toString())
@@ -655,17 +710,17 @@ const CommonButton = ({
 
   return (
     <TouchableOpacity onPress={() => {
-      if (text == AppString.add || text == AppString.add_to_cart ) {
+      if (text == AppString.add || text == AppString.add_to_cart) {
         if (isItemInCart) {
           onClick()
         }
         else if (validate()) {
-            addToCart()
+          addToCart()
         }
       } else {
         onClick()
       }
-    }} style={{ flex: 0.5 }} disabled = {loading}>
+    }} style={{ flex: 0.5 }} disabled={loading}>
       <LinearGradient
         colors={[startorange, endColor]}
         start={{ x: 0.4, y: 0 }}
@@ -680,16 +735,16 @@ const CommonButton = ({
         {
 
           loading ?
-          <ActivityIndicatorView tintColor={colors.white} />
-          :
-          <Text
-            style={[
-              styles.textStyle,
-              { color: colors.white, fontWeight: 'bold', fontSize: 14 },
-            ]}>
-            {(text == AppString.add || text == AppString.add_to_cart) ? isItemInCart ? AppString.go_to_cart : text : text }
-          </Text>
-         }
+            <ActivityIndicatorView tintColor={colors.white} />
+            :
+            <Text
+              style={[
+                styles.textStyle,
+                { color: colors.white, fontWeight: 'bold', fontSize: 14 },
+              ]}>
+              {(text == AppString.add || text == AppString.add_to_cart) ? isItemInCart ? AppString.go_to_cart : text : text}
+            </Text>
+        }
       </LinearGradient>
     </TouchableOpacity>
   );

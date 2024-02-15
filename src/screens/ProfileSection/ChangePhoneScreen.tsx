@@ -16,6 +16,7 @@ import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import { fontFamily } from '../../utils/Fonts';
 import { CustomHeader } from '../../components/Header';
+import React from 'react';
 
 const ChangePhoneScreen = ({ navigation }) => {
   useEffect(() => {

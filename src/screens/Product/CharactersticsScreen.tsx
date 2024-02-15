@@ -67,7 +67,7 @@ const CharacterSticsScreen = ({ isShow = false, data, onClose }) => {
                   <Text
                     style={[
                       styles.textStyle,
-                      { fontSize: 14, color: colors.grey9D9D9D },
+                      { fontSize: 14, color: colors.grey9D9D9D, width:'24%' },
                     ]}>
                     {item.key}
                   </Text>
