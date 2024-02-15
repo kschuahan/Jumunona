@@ -1,4 +1,4 @@
-import { TouchableOpacity, View, Text, Pressable } from 'react-native';
+import { TouchableOpacity, View, Text, Pressable, Alert } from 'react-native';
 import { styles } from '../../utils/AppStyles';
 import { useEffect, useState } from 'react';
 import { colors } from '../../utils/AppColors';
@@ -16,8 +16,14 @@ import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import { fontFamily } from '../../utils/Fonts';
 import { CustomHeader } from '../../components/Header';
+import { deleteAPICall } from '../../Netowork/Apis';
+import { ProfileAPIs } from '../../Netowork/Constants';
+import { AsyncStorage } from 'react-native';
+import { AsyncStorageKeys } from '../../utils/AsyncStorage';
+import { RouteNames } from '../../utils/RouteNames';
 
-const ConfirmDeleteAccount = ({ navigation }) => {
+const ConfirmDeleteAccount = ({ navigation, route }) => {
+  var reason = route.params.deletAccReason ?? ""
   useEffect(() => {
     navigation.setOptions({
       headerTitle: AppString.deleting_an_account,
@@ -42,6 +48,28 @@ const ConfirmDeleteAccount = ({ navigation }) => {
   const [agreeToTnC, setAgreeToTnC] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showFailurePop, setShowFailurePop] = useState(false);
+
+  const deleteAccount = () => {
+    deleteAPICall({
+      reason: reason
+    },
+      ProfileAPIs.deleteAccount,
+      true,
+      (res: any) => {
+        if (res.isSuccess) {
+          AsyncStorage.removeItem(AsyncStorageKeys.authToken)
+          navigation.reset({
+            index: 0,
+            routes: [{ name: RouteNames.login }],
+          });
+        } else {
+          Alert.alert('', res.data.toString())
+        }
+      }
+    )
+  }
+
+  
   return (
     <View style={[styles.container, { padding: 0 }]}>
       <CustomHeader navigation={navigation} title={AppString.deleting_an_account} />
@@ -66,7 +94,12 @@ const ConfirmDeleteAccount = ({ navigation }) => {
 
         <TouchableOpacity
           onPress={() => {
-            setShowConfirm(true);
+            if (agreeToTnC) {
+              setShowConfirm(true);
+            } else {
+              Alert.alert("", "Please accept TnC.")
+            }
+          
           }}
           style={{ paddingBottom: 100, marginHorizontal: 20 }}>
           <LinearGradient

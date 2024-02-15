@@ -67,6 +67,25 @@ export const putAPICall = async (item: any, endPoint: any, authToken = true, onR
   })
 }
 
+export const deleteAPICall = async (item: any, endPoint: any, authToken = true, onResponse: any) => {
+
+  // let token = await getValue(AsyncStorageKeys.authToken)
+   const token = await getValue(AsyncStorageKeys.authToken)
+   console.log("token", token)
+  await axiosClient(authToken ? token : undefined).delete(endPoint, item).then((response: any) => {
+    console.log("ffffff", response);
+    apiSucessErrorHandling(response, (isSuccess: boolean) => {
+      console.log("suc", isSuccess, response.data);
+      onResponse({ isSuccess: isSuccess, data: isSuccess ? response.data : response.data.message ? response.data.message : response.data })
+    })
+  }).catch((error: any) => {
+    apiErrorHandling(error, ((message: any) => {
+      console.log("suc error", error.message);
+      onResponse({ success: false, data: message })
+    }))
+  })
+}
+
 export const postMultipartData = async (file: FileModal, item: any, endPoint: any, authToken = true, onResponse) => {
 
   let token = await getValue(AsyncStorageKeys.authToken)
@@ -112,3 +131,4 @@ export const createFormData = (file: FileModal, body: any) => {
 
   return data;
 };
+

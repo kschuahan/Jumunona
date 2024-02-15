@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   Pressable,
+  Alert,
 } from 'react-native';
 import { RouteNames } from '../../utils/RouteNames';
 import { styles } from '../../utils/AppStyles';
@@ -23,28 +24,12 @@ import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { CustomHeader } from '../../components/Header';
+import { AsyncStorage } from 'react-native';
+import { AsyncStorageKeys } from '../../utils/AsyncStorage';
+import { deleteAPICall } from '../../Netowork/Apis';
+import { ProfileAPIs } from '../../Netowork/Constants';
 
 const DeleteAccount = ({ navigation }) => {
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: RouteNames.deleteAccount,
-      headerRight: () => (
-        <TouchableOpacity style={{ alignItems: 'center' }}>
-          <EllipsisHorizontal width={24} height={24} />
-        </TouchableOpacity>
-      ),
-
-      headerLeft: () => (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-          style={{ alignItems: 'center' }}>
-          <ChevronBackOutline width={15} height={15} />
-        </TouchableOpacity>
-      ),
-    });
-  });
 
   const reaonseArray = [
     { title: AppString.need_to_turn_off_your_phone, isSelected: false },
@@ -55,10 +40,23 @@ const DeleteAccount = ({ navigation }) => {
     { title: AppString.other, isSelected: false },
   ];
 
-  const [reasonString, setReasonString] = useState<String>();
   const [reasonItems, setReasonItems] = useState(reaonseArray);
   const [selectedIndex, setSelectedIndex] = useState<Number>();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  var reason = ""
+  
+  const validate = () => {
+    var isValid = true
+    if (selectedIndex == undefined) {
+      Alert.alert('', "Please select the reason.")
+      isValid = false
+    } else if(selectedIndex == reasonItems.length - 1 && reason.length == 0) {
+      Alert.alert('', "Please describe the reason.")
+      isValid = false
+    }
+    return isValid
+  }
+
   return (
     <View style={[styles.container, { padding: 0 }]}>
       <CustomHeader navigation={navigation} title={RouteNames.deleteAccount} />
@@ -72,12 +70,12 @@ const DeleteAccount = ({ navigation }) => {
                 item={item}
                 index={index}
                 onSelect={(index: number) => {
-                  reasonItems[index].isSelected = !reasonItems[index].isSelected;
-
+                  if(index != reasonItems.length - 1) {
+                    reason = ""
+                  }
+                  reasonItems[index].isSelected = true
                   if (selectedIndex != undefined) {
-                    if (selectedIndex == index) {
-                      setSelectedIndex(undefined);
-                    } else {
+                    if (selectedIndex != index) {
                       reasonItems[selectedIndex].isSelected = false;
                       setSelectedIndex(index);
                     }
@@ -86,19 +84,24 @@ const DeleteAccount = ({ navigation }) => {
                   }
                   setReasonItems(reasonItems);
                   setIsRefreshing(!isRefreshing);
+                  
                 }}
               />
               <Separator />
             </View>
           ))}
 
+          
           <FooterView
-            value={reasonString}
-            onChangeText={(text: string) => {
-              setReasonString(text);
-            }}
+          showTextInput={ selectedIndex == reasonItems.length - 1 }
+          setText={ (text: string) => {
+            reason = text
+            console.warn(reason)
+          }}
             onDelete={() => {
-              navigation.navigate(RouteNames.confirmDeleteAccount);
+              if (validate()) {
+              navigation.navigate(RouteNames.confirmDeleteAccount, {deleteAccReason: selectedIndex == reasonItems.length - 1 ? reason : reasonItems[selectedIndex]});
+              }
             }}
           />
         </View>
@@ -178,15 +181,20 @@ const Separator = () => {
   return <View style={{ height: 1, backgroundColor: colors.darkWhite }} />;
 };
 
-const FooterView = ({ value, onChangeText, onDelete }) => {
+const FooterView = ({showTextInput, setText, onDelete }) => {
+
+  const [reasonString, setReasonString] = useState('');
+
   return (
-    <View style={{}}>
+    <View style={{paddingBottom: 400}}>
+      {showTextInput ?
       <TextInput
         style={[
           styles.textStyle,
           {
             textAlignVertical: 'top',
-            height: 75,
+            minHeight: 75,
+            maxHeight: 120,
             padding: 8,
             fontFamily: fontFamily.regular,
             fontSize: 16,
@@ -199,12 +207,15 @@ const FooterView = ({ value, onChangeText, onDelete }) => {
         ]}
         placeholder={AppString.please_provide_a_reason}
         placeholderTextColor={colors.grey979797}
-        value={value}
+        value={reasonString}
         multiline={true}
         numberOfLines={5}
         editable={true}
-        onChangeText={onChangeText}
-      />
+        onChangeText={ (text) => {
+          setReasonString(text)
+          setText(text)
+        }}
+      /> : null }
       <TouchableOpacity
         onPress={() => {
           onDelete();
