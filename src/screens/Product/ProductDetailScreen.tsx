@@ -758,13 +758,13 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onS
       console.log("Index 11", index);
 
       const sizes = color.data[index].att2.data
-      const cartItemIndex = sizes.findIndex((element) => (element.isItemInCart));
-      console.log("Index 11", cartItemIndex);
+      const cartItemIndex1 = sizes.findIndex((element) => (element.isItemInCart));
+      console.log("Index 11", cartItemIndex1);
 
-      if (cartItemIndex != -1) {
+      if (cartItemIndex1 != -1) {
         const index1 = sizes.findIndex((element) => (element.attirbutedID ===
-          sizes[cartItemIndex].attirbutedID));
-        setColorSize(color[index].attributeValue + " • " + sizes[index1].attributeValue)
+          sizes[cartItemIndex1].attirbutedID));
+        setColorSize(color.data[index].attributeValue + " • " + sizes[index1].attributeValue)
 
         // setSelecteItem(filter[index1].attributeID)
         console.log("Index", index1);
