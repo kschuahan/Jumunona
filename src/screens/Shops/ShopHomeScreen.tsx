@@ -27,9 +27,9 @@ import { ShopCategoriesScreen } from './ShopCategories';
 
 const Tab = createMaterialBottomTabNavigator();
 
-const ShopHomeScreen: React.FC = ({ }) => {
+const ShopHomeScreen: React.FC = ({route }) => {
 
-
+// console.warn(route.params.productId)
   return (
     <Tab.Navigator
       initialRouteName={RouteNames.home}
@@ -54,6 +54,7 @@ const ShopHomeScreen: React.FC = ({ }) => {
 
         name={RouteNames.shophome}
         component={ShopsScreen}
+        initialParams={{productId: route.params && route.params.productId ? route.params.productId : '65b8c1a8b03f0c815947e1e7'}}
         options={{
           tabBarIcon: ({ focused, color }) => {
             return focused ? (

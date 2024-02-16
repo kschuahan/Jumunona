@@ -372,7 +372,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
                 navigation.navigate(RouteNames.product_review_screen);
               }}
             />
-            <ShopView data={shopData} navigation={navigation} />
+            <ShopView data={shopData} navigation={navigation} route={route} />
           </View>
           <ProductImages
             images={desImages}
@@ -943,9 +943,9 @@ export const RatingView = ({ rating = 3.5, count = 5,
 
 // MARK: - Shop Detail
 
-const ShopView = ({ data, navigation }) => {
+const ShopView = ({ data, navigation, route }) => {
 
-
+  console.warn(data)
 
   return (data && data.isSuccess ?
     <View
@@ -956,7 +956,7 @@ const ShopView = ({ data, navigation }) => {
         marginTop: 12,
       }}>
       <TouchableOpacity onPress={() => {
-        navigation.navigate(RouteNames.shopHomeScreen)
+        navigation.navigate(RouteNames.shopHomeScreen, {productId: route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'})
 
       }}
         style={{

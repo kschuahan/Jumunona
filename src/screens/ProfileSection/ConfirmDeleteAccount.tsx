@@ -18,9 +18,9 @@ import { fontFamily } from '../../utils/Fonts';
 import { CustomHeader } from '../../components/Header';
 import { deleteAPICall } from '../../Netowork/Apis';
 import { ProfileAPIs } from '../../Netowork/Constants';
-import { AsyncStorage } from 'react-native';
 import { AsyncStorageKeys } from '../../utils/AsyncStorage';
 import { RouteNames } from '../../utils/RouteNames';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ConfirmDeleteAccount = ({ navigation, route }) => {
   var reason = route.params.deletAccReason ?? ""
@@ -69,6 +69,7 @@ const ConfirmDeleteAccount = ({ navigation, route }) => {
     )
   }
 
+  
   
   return (
     <View style={[styles.container, { padding: 0 }]}>
