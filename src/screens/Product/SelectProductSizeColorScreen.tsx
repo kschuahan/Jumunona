@@ -59,6 +59,8 @@ const SelectProductSizeColorScreen = ({ navigation,
 
 
   useEffect(() => {
+    colorIndex = -1
+    sizeIndex = -1
     addToCartModel = {
       productId: productDetail._id,
       quantity: 1,
@@ -499,12 +501,12 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
 
         setSelecteItem(sizeIndex != -1 ? filter[sizeIndex].attirbutedID : "")
 
-        console.log("Index", index);
+        // console.log("Index", index);
       }
 
     }
 
-  }, [])
+  }, [selectedSize])
 
 
   return (
