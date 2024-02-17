@@ -223,7 +223,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           </Text>
         </View>
       </ScrollView>
-      {loading ? <CenterProgressView /> : null}
+      <CenterProgressView isShow={loading} /> 
     </View>
   );
 };

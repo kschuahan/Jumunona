@@ -360,7 +360,7 @@ const SignUpScreen: React.FC = ({ navigation, route }) => {
       </View>
     
     </ScrollView>
-    { loading ? <CenterProgressView /> : null }
+    <CenterProgressView isShow={loading} /> 
     </View>
 
   );

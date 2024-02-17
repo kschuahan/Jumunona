@@ -341,7 +341,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation 
           </TouchableOpacity>
         </View>
       </ScrollView>
-      {loading ? <CenterProgressView /> : null}
+      <CenterProgressView isShow={loading} /> 
     </View>
 
   );

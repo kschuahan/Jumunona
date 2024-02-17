@@ -6,6 +6,7 @@ import {
   View,
   Image,
   Dimensions,
+  Alert,
 } from 'react-native';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 import { ScrollView } from 'react-native-virtualized-view';
@@ -32,14 +33,15 @@ import { styles } from '../../utils/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import { getAPICall, postAPICall } from '../../Netowork/Apis';
 import { CartAPIs } from '../../Netowork/Constants';
-import { ActivityIndicatorView, ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
+import { ActivityIndicatorView, CenterProgressView, ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 import { CommonModal } from '../HomeScreen';
 import { ConfirmationDialog, OkDialog } from '../../utils/Extentions';
 import { useIsFocused } from '@react-navigation/native';
 
 let row: Array<any> = [];
 let prevOpenedRow;
-let editable = false
+let selectedShopIds: Array<string> = []
+let selectedProductIds: Array<string> = []
 const CartScreen = ({ navigation }) => {
 
   const [isCheck, setIsCheck] = useState(false)
@@ -47,7 +49,6 @@ const CartScreen = ({ navigation }) => {
   const [data, setData] = useState<CommonModal>()
   const [loading, setLoading] = useState(false)
   const [refresh, setRefresh] = useState(false)
-
   const [sum, setSum] = useState(0)
   const isFocused = useIsFocused();
 
@@ -65,11 +66,6 @@ const CartScreen = ({ navigation }) => {
     }
   }, [loading, refresh])
 
-
-
-
-
-
   function getProdcutPrice(items: Array<ProductItemData>) {
 
     return items.reduce((accumulator, currentValue) => accumulator + (currentValue.price), 0)
@@ -85,6 +81,70 @@ const CartScreen = ({ navigation }) => {
     )
   }
 
+  const deleteItemFromCart = () => {
+    if (selectedProductIds.length > 0) {
+      confirmationAlert('Вы уверены, что хотите удалить эти продукты?', () => {
+        setLoading(true)
+        postAPICall({
+          cartIds: selectedProductIds
+        }, 
+        CartAPIs.deleteMultiItemFromCart,
+        true,
+        (res: any) => {
+          getCart()
+          selectedProductIds = []
+          selectedShopIds = []
+          setIsEditable(false) 
+          setIsCheck(false)
+        }
+        )
+      }, () => {
+        console.log("canceled")
+      })
+
+    } else {
+      Alert.alert("Пожалуйста, выберите товары, которые хотите удалить из корзины")
+    }
+  }
+
+  const moveToFav = () => {
+    if (selectedProductIds.length > 0) {
+      confirmationAlert('Вы уверены, что хотите переместить эти товары в избранное?', () => {
+        setLoading(true)
+        postAPICall({
+          productId: selectedProductIds
+        }, 
+        CartAPIs.moveToFavorite,
+        true,
+        (res: any) => {
+          getCart()
+          selectedProductIds = []
+          selectedShopIds = []
+          setIsEditable(false) 
+          setIsCheck(false)
+        }
+        )
+      }, () => {
+        console.log("canceled")
+      })
+
+    } else {
+      Alert.alert("пожалуйста, выберите продукты, чтобы переместить их в избранное")
+    }
+  }
+
+  const confirmationAlert = (message: string, onConfirm, onCancel) => {
+    Alert.alert("", message, [{
+      text: AppString.confirm,
+      onPress: (onConfirm),
+      style: 'default',
+    },
+    {
+      text: AppString.cancel,
+      onPress: (onCancel),
+      style: 'default',
+    }])
+  }
 
   return (
 
@@ -114,7 +174,6 @@ const CartScreen = ({ navigation }) => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                editable = !isEditable
                 setIsEditable(!isEditable)
               }}
               style={{
@@ -147,7 +206,6 @@ const CartScreen = ({ navigation }) => {
                   <CartProduct
                     onQunatityUpdate={() => {
                       getCart()
-
                       // setRefresh(!refresh)
                     }}
                     onDelete={(item: any) => {
@@ -155,11 +213,15 @@ const CartScreen = ({ navigation }) => {
                     }}
                     check={false}
                     navigation={navigation}
-                    items={item} onClick={() => {
+                    shopData={item} onClick={() => {
                       navigation.push(RouteNames.product_detail, {
                         id: item._id,
                       })
-                    }} />
+                    }}
+                    shouldRefresh={ () => {
+                      setRefresh(!refresh)
+                    }}
+                    />
                 );
               }}
             />
@@ -243,7 +305,23 @@ const CartScreen = ({ navigation }) => {
 
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <RadioButtons isCheck={isCheck} onClick={() => {
+              
+                if (isCheck) {
+                  selectedShopIds = []
+                  selectedProductIds = []
+                } else {
+                  selectedShopIds = []
+                  selectedProductIds = []
+                  selectedShopIds = data.data.data.cartDetails.map(it => it.shopId)
+                  data.data.data.cartDetails.forEach(element => {
+                    console.log("element", element)
+                    let productIdsArr = element.products.map(product => product.cartId)
+                    // console.warn(selectedProductIds) 
+                    selectedProductIds = [...selectedProductIds, ...productIdsArr]
+                  });
+                }
                 setIsCheck(!isCheck)
+
               }} />
               <Text
                 style={{
@@ -255,6 +333,8 @@ const CartScreen = ({ navigation }) => {
                 {AppString.choose_all}
               </Text>
             </View>
+
+            { !isEditable ? 
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <Text
                 style={{
@@ -288,6 +368,36 @@ const CartScreen = ({ navigation }) => {
                 }}
               />
             </View>
+            : 
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 7 }}>
+                <TouchableOpacity onPress={() => {
+                  moveToFav()
+                }}   style={{
+                      borderRadius: 20,
+                      height: 40,
+                      padding: 12,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderColor: colors.lightOrange,
+                      borderWidth: 1
+                    }}>
+                
+                    <Text
+                      style={[
+                        styles.textStyle,
+                        { color: colors.lightOrange, fontWeight: '400', fontSize: 16 },
+                      ]}>
+                      {AppString.to_Favourites}
+                    </Text>
+                </TouchableOpacity>
+                <CommonButton
+                  text={AppString.delete}
+                  onClick={() => {
+                    deleteItemFromCart()
+                  }}
+                />
+              </View>
+            }
           </View> : null}
 
           <View style={{
@@ -297,6 +407,8 @@ const CartScreen = ({ navigation }) => {
 
 
         </View>
+        <CenterProgressView isShow={loading} /> 
+
       </GestureHandlerRootView>
       : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
         setData(undefined)
@@ -321,7 +433,7 @@ const CommonButton = ({
         style={{
           borderRadius: 20,
           height: 40,
-          width: 100,
+          padding: 12,
           justifyContent: 'center',
           alignItems: 'center'
         }}>
@@ -566,7 +678,7 @@ export const RadioButtons = ({ isCheck = false, onClick, size = 22 }) => {
   )}</TouchableOpacity> : null
 }
 
-const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQunatityUpdate }) => {
+const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, onQunatityUpdate, shouldRefresh }) => {
 
   const [isCheck, setIsCheck] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -639,7 +751,6 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
     <TouchableOpacity
       onPress={() => {
         navigation.navigate(RouteNames.shopHomeScreen)
-
       }}
       style={{
         flexDirection: 'row',
@@ -647,9 +758,26 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
         paddingStart: 10
       }}>
 
-      {editable ? <RadioButtons isCheck={isCheck} onClick={() => {
+      <RadioButtons isCheck={selectedShopIds.indexOf(shopData.shopId) > -1} onClick={() => {
+       
+        if (selectedShopIds.includes(shopData.shopId)) {
+          selectedShopIds.pop(shopData.shopId)
+          shopData.products.forEach(element => {
+            
+              selectedProductIds.pop(element.cartId)
+          });
+        } else {
+          selectedShopIds.push(shopData.shopId)
+       
+            let productIdsArr = shopData.products.map(product => product.cartId)
+            // console.warn(selectedProductIds) 
+            selectedProductIds = [...selectedProductIds, ...productIdsArr]
+         
+        }
+        console.warn(selectedShopIds)
+        shouldRefresh()
         setIsCheck(!isCheck)
-      }} /> : null}
+      }} />
       <Image
         source={appIcons.china}
         style={{ width: 18, height: 18, marginStart: 10 }}
@@ -657,7 +785,7 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
       <Text style={{
         paddingLeft: 9,
         color: colors.black, fontSize: 16, fontWeight: 'bold', paddingBottom: 2
-      }}>{items.shopName}</Text>
+      }}>{shopData.shopName}</Text>
       <ChevronFwdOutlineIcon
         width={8}
         height={10}
@@ -671,7 +799,7 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
 
     <FlatList
       style={{ marginTop: 14 }}
-      data={items.products}
+      data={shopData.products}
       scrollEnabled={false}
       renderItem={({ item, index }) =>
         <Swipeable
@@ -682,9 +810,10 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
           <ProductItem onUpdateQuantity={(qut: number) => {
             updateQuantity(item, qut)
           }}
-            check={items.radioButtonStore}
-            item={item} onClick={onClick} />
-
+            check={shopData.radioButtonStore}
+            item={item} onClick={onClick}
+            shouldRefresh = {shouldRefresh}
+            />
         </Swipeable>
       }
 
@@ -694,7 +823,7 @@ const CartProduct = ({ check = true, items, navigation, onClick, onDelete, onQun
 }
 
 
-const ProductItem = ({ item, check = false, onClick, onUpdateQuantity }) => {
+const ProductItem = ({ item, check = false, onClick, onUpdateQuantity, shouldRefresh }) => {
 
   const [isIncrease, setIsIncrease] = useState(true)
   const [count, setCount] = useState(item.selected_quantity)
@@ -719,9 +848,16 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity }) => {
       paddingHorizontal: 10,
       flex: 1
     }}>
-    {editable ? <RadioButtons isCheck={isCheck} onClick={() => {
+    <RadioButtons isCheck={selectedProductIds.includes(item.cartId)} onClick={() => {
       setIsCheck(!isCheck)
-    }} /> : null}
+      if (selectedProductIds.indexOf(item.cartId) > -1) {
+        selectedProductIds.pop(item.cartId)
+      } else {
+        selectedProductIds.push(item.cartId)
+      }
+      console.warn(selectedProductIds)
+      shouldRefresh()
+    }} />
 
     <Image
       source={item.productImage ? { uri: item.productImage } : appIcons.shoeImageURL}
@@ -730,7 +866,7 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity }) => {
     <View
       style={{
         justifyContent: 'space-between',
-        height: 110, width: editable ? '60%' : '66%',
+        height: 110, width: '60%',
         paddingStart: 10
       }}>
       <View>
@@ -848,7 +984,4 @@ const style = StyleSheet.create({
 
   },
   scrollView: {
-    width: '100%',
-  },
-
-});
+    width: '100%

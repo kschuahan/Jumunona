@@ -264,5 +264,6 @@ export const AppString = {
   add_dob: "Добавить Возраст",
   add_email: "Добавить Почта",
   select_gender: "Выберите Пол",
-  prefer_not_to_say: "Предпочитаю не говорить"
+  prefer_not_to_say: "Предпочитаю не говорить",
+  to_Favourites: "В избранное"
 };

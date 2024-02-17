@@ -252,7 +252,7 @@ const ProfileDetailScreen = ({ navigation }) => {
         setUpdateProfilePic(false)
 
       }} />
-      {loading ? <CenterProgressView /> : null}
+       <CenterProgressView isShow={loading} /> 
     </View>
 
   );

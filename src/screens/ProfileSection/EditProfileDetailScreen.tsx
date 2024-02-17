@@ -215,7 +215,7 @@ export const EditProfileDetailScreen = ({ navigation, route }) => {
                     setOpen(false)
                 }}
             />
-           {isLoading ?  <CenterProgressView /> : null }
+       <CenterProgressView isShow={loading} /> 
         </View>
     )
 }

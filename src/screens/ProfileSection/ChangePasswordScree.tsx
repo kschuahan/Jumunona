@@ -177,7 +177,7 @@ const ChangePassswordScreen = ({ navigation }) => {
         </TouchableOpacity>
        
       </ScrollView>
-      { loading ? <CenterProgressView /> : null}
+       <CenterProgressView isShow={loading} /> 
     </View>
   );
 };

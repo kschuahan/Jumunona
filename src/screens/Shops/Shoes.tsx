@@ -149,7 +149,9 @@ export const ShopsScreen = ({ navigation, route }) => {
                         marginTop: 5,
                     }}
                     onPress={() => {
-                        navigation.navigate(RouteNames.product_detail);
+                        navigation.navigate(RouteNames.product_detail, {
+                            id: item._id,
+                          });
                     }}>
                     <Image
                         source={item.images !== ''

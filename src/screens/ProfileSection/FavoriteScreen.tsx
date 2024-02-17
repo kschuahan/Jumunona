@@ -437,7 +437,7 @@ export const FavoriteScreen = ({ navigation }) => {
           </View>
         </View>
       ) : null}
-      {loading ? <CenterProgressView /> : null}
+       <CenterProgressView isShow={loading} /> 
 
       <ClearChatPopup
         title="are you sure you want to remove the products"

@@ -69,4 +69,6 @@ export const CartAPIs = {
   updateCart: modules.cart + 'updateCart',
   deleteCart: modules.cart + 'deleteCart',
   getCart: modules.cart + 'getCart',
+  deleteMultiItemFromCart: modules.cart + 'deleteMultiItemFromCart',
+  moveToFavorite: modules.cart + 'moveToFavorite'
 }
