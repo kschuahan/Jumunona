@@ -66,14 +66,14 @@ const CartScreen = ({ navigation }) => {
   useEffect(() => {
     //calculating price
     if (data && data?.isSuccess && data.data && data.data.data && data.data.data.cartDetails) {
-      setSum(data.data.data.cartDetails.reduce((accumulator, currentValue) => accumulator +
+      setSum(data.data.data.cartDetails.reduce((accumulator:any, currentValue:any) => accumulator +
         (getProdcutPrice(currentValue.products)), 0))
     }
   }, [loading, refresh])
 
-  function getProdcutPrice(items: Array<ProductItemData>) {
+  function getProdcutPrice(items: any) {
 
-    return items.reduce((accumulator, currentValue) => accumulator + (currentValue.price), 0)
+    return items.reduce((accumulator:any, currentValue:any) => accumulator + (currentValue.price), 0)
   }
 
 
