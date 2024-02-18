@@ -8,18 +8,18 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
-import { ScrollView } from 'react-native-virtualized-view';
-import React, { useEffect, useMemo, useState } from 'react';
+import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-virtualized-view';
+import React, {useEffect, useMemo, useState} from 'react';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/chevronForwardOutline.svg';
 import EditIcon from '../../../assets/Icons/editIcon.svg';
-import { appIcons, imagesUrl } from '../../utils/AppIcons';
-import { colors } from '../../utils/AppColors';
+import {appIcons, imagesUrl} from '../../utils/AppIcons';
+import {colors} from '../../utils/AppColors';
 
 import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 import DropDownGrey from '../../../assets/Icons/DropDownGrey.svg';
-import { RouteNames } from '../../utils/RouteNames';
+import {RouteNames} from '../../utils/RouteNames';
 import AddCart from '../../../assets/Icons/AddCard.svg';
 import RemoveCart from '../../../assets/Icons/RemoveCart.svg';
 import DeleteIcon from '../../../assets/Icons/DeleteChat.svg';
@@ -27,206 +27,253 @@ import SearchCart from '../../../assets/Icons/SearchCart.svg';
 import LikeCart from '../../../assets/Icons/LikeCart.svg';
 import OrangeCheck from '../../../assets/Icons/OrnageCheck.svg';
 
-import { AppString } from '../../utils/AppStrings';
-import { data } from '../Product/ProductDetailScreen';
-import { styles } from '../../utils/AppStyles';
+import {AppString} from '../../utils/AppStrings';
+import {data} from '../Product/ProductDetailScreen';
+import {styles} from '../../utils/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
-import { getAPICall, postAPICall } from '../../Netowork/Apis';
-import { CartAPIs } from '../../Netowork/Constants';
-import { ActivityIndicatorView, CenterProgressView, ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
-import { CommonModal } from '../HomeScreen';
-import { ConfirmationDialog, OkDialog } from '../../utils/Extentions';
-import { useIsFocused } from '@react-navigation/native';
+import {getAPICall, postAPICall} from '../../Netowork/Apis';
+import {CartAPIs} from '../../Netowork/Constants';
+import {
+  ActivityIndicatorView,
+  CenterProgressView,
+  ProgressView,
+  RetryWhenErrorOccur,
+} from '../../components/Dialogs';
+import {CommonModal} from '../HomeScreen';
+import {ConfirmationDialog, OkDialog} from '../../utils/Extentions';
+import {useIsFocused} from '@react-navigation/native';
 
 let row: Array<any> = [];
 let prevOpenedRow;
-let selectedShopIds: Array<string> = []
-let selectedProductIds: Array<string> = []
-const CartScreen = ({ navigation }) => {
-
-  const [isCheck, setIsCheck] = useState(false)
-  const [isEditable, setIsEditable] = useState(false)
-  const [data, setData] = useState<CommonModal>()
-  const [loading, setLoading] = useState(false)
-  const [refresh, setRefresh] = useState(false)
-  const [sum, setSum] = useState(0)
+let selectedShopIds: Array<string> = [];
+let selectedProductIds: Array<string> = [];
+const CartScreen = ({navigation}) => {
+  const [isCheck, setIsCheck] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
+  const [data, setData] = useState<CommonModal>();
+  const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [sum, setSum] = useState(0);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     //if (isFocused) {
-    getCart()
+    getCart();
     //}
-  }, [isFocused])
+  }, [isFocused]);
 
   useEffect(() => {
     //calculating price
-    if (data && data?.isSuccess && data.data && data.data.data && data.data.data.cartDetails) {
-      setSum(data.data.data.cartDetails.reduce((accumulator, currentValue) => accumulator +
-        (getProdcutPrice(currentValue.products)), 0))
+    if (
+      data &&
+      data?.isSuccess &&
+      data.data &&
+      data.data.data &&
+      data.data.data.cartDetails
+    ) {
+      setSum(
+        data.data.data.cartDetails.reduce(
+          (accumulator, currentValue) =>
+            accumulator + getProdcutPrice(currentValue.products),
+          0,
+        ),
+      );
     }
-  }, [loading, refresh])
+  }, [loading, refresh]);
 
   function getProdcutPrice(items: Array<ProductItemData>) {
-
-    return items.reduce((accumulator, currentValue) => accumulator + (currentValue.price), 0)
+    return items.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.price,
+      0,
+    );
   }
 
   // getting cart produccts
   const getCart = () => {
-    setLoading(true)
+    setLoading(true);
     getAPICall(CartAPIs.getCart, (res: any) => {
-      setData(res)
-      setLoading(false)
-    }
-    )
-  }
+      setData(res);
+      setLoading(false);
+    });
+  };
 
   const deleteItemFromCart = () => {
     if (selectedProductIds.length > 0) {
-      confirmationAlert('Вы уверены, что хотите удалить эти продукты?', () => {
-        setLoading(true)
-        postAPICall({
-          cartIds: selectedProductIds
-        }, 
-        CartAPIs.deleteMultiItemFromCart,
-        true,
-        (res: any) => {
-          getCart()
-          selectedProductIds = []
-          selectedShopIds = []
-          setIsEditable(false) 
-          setIsCheck(false)
-        }
-        )
-      }, () => {
-        console.log("canceled")
-      })
-
+      confirmationAlert(
+        'Вы уверены, что хотите удалить эти продукты?',
+        () => {
+          setLoading(true);
+          postAPICall(
+            {
+              cartIds: selectedProductIds,
+            },
+            CartAPIs.deleteMultiItemFromCart,
+            true,
+            (res: any) => {
+              getCart();
+              selectedProductIds = [];
+              selectedShopIds = [];
+              setIsEditable(false);
+              setIsCheck(false);
+            },
+          );
+        },
+        () => {
+          console.log('canceled');
+        },
+      );
     } else {
-      Alert.alert("Пожалуйста, выберите товары, которые хотите удалить из корзины")
+      Alert.alert(
+        'Пожалуйста, выберите товары, которые хотите удалить из корзины',
+      );
     }
-  }
+  };
 
   const moveToFav = () => {
     if (selectedProductIds.length > 0) {
-      confirmationAlert('Вы уверены, что хотите переместить эти товары в избранное?', () => {
-        setLoading(true)
-        postAPICall({
-          productId: selectedProductIds
-        }, 
-        CartAPIs.moveToFavorite,
-        true,
-        (res: any) => {
-          getCart()
-          selectedProductIds = []
-          selectedShopIds = []
-          setIsEditable(false) 
-          setIsCheck(false)
-        }
-        )
-      }, () => {
-        console.log("canceled")
-      })
-
+      confirmationAlert(
+        'Вы уверены, что хотите переместить эти товары в избранное?',
+        () => {
+          setLoading(true);
+          postAPICall(
+            {
+              productId: selectedProductIds,
+            },
+            CartAPIs.moveToFavorite,
+            true,
+            (res: any) => {
+              getCart();
+              selectedProductIds = [];
+              selectedShopIds = [];
+              setIsEditable(false);
+              setIsCheck(false);
+            },
+          );
+        },
+        () => {
+          console.log('canceled');
+        },
+      );
     } else {
-      Alert.alert("пожалуйста, выберите продукты, чтобы переместить их в избранное")
+      Alert.alert(
+        'пожалуйста, выберите продукты, чтобы переместить их в избранное',
+      );
     }
-  }
+  };
 
   const confirmationAlert = (message: string, onConfirm, onCancel) => {
-    Alert.alert("", message, [{
-      text: AppString.confirm,
-      onPress: (onConfirm),
-      style: 'default',
-    },
-    {
-      text: AppString.cancel,
-      onPress: (onCancel),
-      style: 'default',
-    }])
-  }
+    Alert.alert('', message, [
+      {
+        text: AppString.confirm,
+        onPress: onConfirm,
+        style: 'default',
+      },
+      {
+        text: AppString.cancel,
+        onPress: onCancel,
+        style: 'default',
+      },
+    ]);
+  };
 
-  return (
-
-    data && data.isSuccess ?
-      <GestureHandlerRootView style={{ flex: 1 }}>
-
-        <View style={style.container}>
-          <View style={style.header}>
-            <View
+  return data && data.isSuccess ? (
+    <GestureHandlerRootView style={{flex: 1}}>
+      <View style={style.container}>
+        <View style={style.header}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'stretch',
+              marginTop: 24,
+              marginLeft: 16,
+            }}>
+            <Text
+              style={{fontSize: 21, fontWeight: 'bold', color: colors.black}}>
+              Cart
+            </Text>
+            <Text
               style={{
-                flexDirection: 'row',
-                alignItems: 'stretch',
-                marginTop: 24,
-                marginLeft: 16,
+                marginTop: 3,
+                marginLeft: 4.5,
+                fontSize: 14,
+                fontWeight: '500',
+                color: '#14100D',
               }}>
-              <Text style={{ fontSize: 21, fontWeight: 'bold', color: colors.black }}>Cart</Text>
-              <Text
-                style={{
-                  marginTop: 3,
-                  marginLeft: 4.5,
-                  fontSize: 14,
-                  fontWeight: '500',
-                  color: '#14100D',
-                }}>
-                {`(${34})`}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                setIsEditable(!isEditable)
-              }}
-              style={{
-                marginTop: 28, paddingEnd: 12
-              }}>
-              {isEditable ? <OrangeCheck /> : <EditIcon height={16} width={16} style={{ borderColor: '#666666' }} />}
-            </TouchableOpacity>
+              {`(${34})`}
+            </Text>
           </View>
-          <ScrollView
-            style={style.scrollView}
-            showsVerticalScrollIndicator={false}>
-            <FlatList
-              style={{ marginHorizontal: 6 }}
-              data={data.data.data.cartDetails}
-              scrollEnabled={false}
-              ListEmptyComponent={
-                <Text style={[styles.textStyle, {
-                  color: colors.lightOrange,
-                  paddingVertical: 100,
-                  fontSize: 16, fontWeight: 'bold', textAlign: 'center'
-                }]}>No prodcut in cart</Text>
-              }
-              keyExtractor={item => {
-                return item.shopId;
-              }}
-              numColumns={1}
-              renderItem={({ item, index }) => {
-                return (
+          <TouchableOpacity
+            onPress={() => {
+              setIsEditable(!isEditable);
+            }}
+            style={{
+              marginTop: 28,
+              paddingEnd: 12,
+            }}>
+            {isEditable ? (
+              <OrangeCheck />
+            ) : (
+              <EditIcon
+                height={16}
+                width={16}
+                style={{borderColor: '#666666'}}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+        <ScrollView
+          style={style.scrollView}
+          showsVerticalScrollIndicator={false}>
+          <FlatList
+            style={{marginHorizontal: 6}}
+            data={data.data.data.cartDetails}
+            scrollEnabled={false}
+            ListEmptyComponent={
+              <Text
+                style={[
+                  styles.textStyle,
+                  {
+                    color: colors.lightOrange,
+                    paddingVertical: 100,
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  },
+                ]}>
+                No prodcut in cart
+              </Text>
+            }
+            keyExtractor={item => {
+              return item.shopId;
+            }}
+            numColumns={1}
+            renderItem={({item, index}) => {
+              return (
+                <CartProduct
+                  onQunatityUpdate={() => {
+                    getCart();
+                    // setRefresh(!refresh)
+                  }}
+                  onDelete={(item: any) => {
+                    getCart();
+                  }}
+                  check={false}
+                  navigation={navigation}
+                  shopData={item}
+                  onClick={() => {
+                    navigation.push(RouteNames.product_detail, {
+                      id: item._id,
+                    });
+                  }}
+                  shouldRefresh={() => {
+                    setRefresh(!refresh);
+                  }}
+                />
+              );
+            }}
+          />
 
-                  <CartProduct
-                    onQunatityUpdate={() => {
-                      getCart()
-                      // setRefresh(!refresh)
-                    }}
-                    onDelete={(item: any) => {
-                      getCart()
-                    }}
-                    check={false}
-                    navigation={navigation}
-                    shopData={item} onClick={() => {
-                      navigation.push(RouteNames.product_detail, {
-                        id: item._id,
-                      })
-                    }}
-                    shouldRefresh={ () => {
-                      setRefresh(!refresh)
-                    }}
-                    />
-                );
-              }}
-            />
-
-            {/* {<FlatList
+          {/* {<FlatList
               style={{
                 backgroundColor: colors.white,
                 borderRadius: 13,
@@ -261,16 +308,18 @@ const CartScreen = ({ navigation }) => {
                 }} />
               }
             />} */}
-            {data && data.data && data.data.data ? <RelatedProducts
+          {data && data.data && data.data.data ? (
+            <RelatedProducts
               data={data.data.data.recommendedProducts}
               onclick={(item: any) => {
                 navigation.push(RouteNames.product_detail, {
                   id: item._id,
                 });
               }}
-            /> : null}
-          </ScrollView>
-          {/* <View
+            />
+          ) : null}
+        </ScrollView>
+        {/* <View
         style={{
           position: 'absolute',
           bottom: 0,
@@ -282,7 +331,12 @@ const CartScreen = ({ navigation }) => {
         }}
       /> */}
 
-          {sum > 0 && data && data.data && data.data.data && data.data.data.cartDetails ? <View
+        {sum > 0 &&
+        data &&
+        data.data &&
+        data.data.data &&
+        data.data.data.cartDetails ? (
+          <View
             style={{
               backgroundColor: colors.white,
               position: 'absolute',
@@ -300,123 +354,162 @@ const CartScreen = ({ navigation }) => {
               borderBlockColor: colors.whiteF7F7F7,
               borderBottomWidth: 1,
               marginBottom: -9,
-              paddingBottom: 18
+              paddingBottom: 18,
             }}>
-
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <RadioButtons isCheck={isCheck} onClick={() => {
-              
-                if (isCheck) {
-                  selectedShopIds = []
-                  selectedProductIds = []
-                } else {
-                  selectedShopIds = []
-                  selectedProductIds = []
-                  selectedShopIds = data.data.data.cartDetails.map(it => it.shopId)
-                  data.data.data.cartDetails.forEach(element => {
-                    console.log("element", element)
-                    let productIdsArr = element.products.map(product => product.cartId)
-                    // console.warn(selectedProductIds) 
-                    selectedProductIds = [...selectedProductIds, ...productIdsArr]
-                  });
-                }
-                setIsCheck(!isCheck)
-
-              }} />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <RadioButtons
+                isCheck={isCheck}
+                onClick={() => {
+                  if (isCheck) {
+                    selectedShopIds = [];
+                    selectedProductIds = [];
+                  } else {
+                    selectedShopIds = [];
+                    selectedProductIds = [];
+                    selectedShopIds = data.data.data.cartDetails.map(
+                      it => it.shopId,
+                    );
+                    data.data.data.cartDetails.forEach(element => {
+                      console.log('element', element);
+                      let productIdsArr = element.products.map(
+                        product => product.cartId,
+                      );
+                      // console.warn(selectedProductIds)
+                      selectedProductIds = [
+                        ...selectedProductIds,
+                        ...productIdsArr,
+                      ];
+                    });
+                  }
+                  setIsCheck(!isCheck);
+                }}
+              />
               <Text
                 style={{
                   fontSize: 13,
                   color: '#8b8b8b',
                   fontFamily: '400',
-                  marginStart: 4
+                  marginStart: 4,
                 }}>
                 {AppString.choose_all}
               </Text>
             </View>
 
-            { !isEditable ? 
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <Text
+            {!isEditable ? (
+              <View
                 style={{
-                  fontSize: 13,
-                  color: '#333',
-                  fontFamily: '400',
-                  marginStart: 4
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                {AppString.total + ':'}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 13,
-                  color: colors.lightOrange,
-                  fontFamily: '400',
-                  marginHorizontal: 4
-                }}>
-                {AppString.currency_symbol}<Text
+                <Text
                   style={{
-                    fontSize: 22,
+                    fontSize: 13,
+                    color: '#333',
+                    fontFamily: '400',
+                    marginStart: 4,
+                  }}>
+                  {AppString.total + ':'}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 13,
                     color: colors.lightOrange,
                     fontFamily: '400',
-                    marginStart: 4
-                  }}>{sum}</Text>
-              </Text>
-              <CommonButton
-                onClick={() => {
-                  // setBuyShow(true);
-                  //navigation.navigate(RouteNames.myAddress)
-                  navigation.navigate(RouteNames.cartConfirmOrder)
-                }}
-              />
-            </View>
-            : 
-              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 7 }}>
-                <TouchableOpacity onPress={() => {
-                  moveToFav()
-                }}   style={{
-                      borderRadius: 20,
-                      height: 40,
-                      padding: 12,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderColor: colors.lightOrange,
-                      borderWidth: 1
+                    marginHorizontal: 4,
+                  }}>
+                  {AppString.currency_symbol}
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      color: colors.lightOrange,
+                      fontFamily: '400',
+                      marginStart: 4,
                     }}>
-                
-                    <Text
-                      style={[
-                        styles.textStyle,
-                        { color: colors.lightOrange, fontWeight: '400', fontSize: 16 },
-                      ]}>
-                      {AppString.to_Favourites}
-                    </Text>
+                    {sum}
+                  </Text>
+                </Text>
+                <CommonButton
+                  onClick={() => {
+                    // setBuyShow(true);
+                    //navigation.navigate(RouteNames.myAddress)
+                    navigation.navigate(RouteNames.cartConfirmOrder);
+                  }}
+                />
+              </View>
+            ) : (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 7,
+                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    moveToFav();
+                  }}
+                  style={{
+                    borderRadius: 20,
+                    height: 40,
+                    padding: 12,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderColor: colors.lightOrange,
+                    borderWidth: 1,
+                  }}>
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        color: colors.lightOrange,
+                        fontWeight: '400',
+                        fontSize: 16,
+                      },
+                    ]}>
+                    {AppString.to_Favourites}
+                  </Text>
                 </TouchableOpacity>
                 <CommonButton
                   text={AppString.delete}
                   onClick={() => {
-                    deleteItemFromCart()
+                    deleteItemFromCart();
                   }}
                 />
               </View>
-            }
-          </View> : null}
+            )}
+          </View>
+        ) : null}
 
-          <View style={{
-            height: 0.5, width: '100%', backgroundColor: '#D9D9D9',
-            position: 'absolute', bottom: 0,
-          }} />
-
-
-        </View>
-        <CenterProgressView isShow={loading} /> 
-
-      </GestureHandlerRootView>
-      : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
-        setData(undefined)
-        getCart()
-      }} />
+        <View
+          style={{
+            height: 0.5,
+            width: '100%',
+            backgroundColor: '#D9D9D9',
+            position: 'absolute',
+            bottom: 0,
+          }}
+        />
+      </View>
+      <CenterProgressView isShow={loading} />
+    </GestureHandlerRootView>
+  ) : loading ? (
+    <ProgressView />
+  ) : (
+    <RetryWhenErrorOccur
+      data={data}
+      onClick={() => {
+        setData(undefined);
+        getCart();
+      }}
+    />
   );
 };
-
 
 const CommonButton = ({
   text = AppString.pay,
@@ -428,19 +521,19 @@ const CommonButton = ({
     <TouchableOpacity onPress={onClick}>
       <LinearGradient
         colors={[startorange, endColor]}
-        start={{ x: 0.4, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        start={{x: 0.4, y: 0}}
+        end={{x: 1, y: 1}}
         style={{
           borderRadius: 20,
           height: 40,
           padding: 12,
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
         }}>
         <Text
           style={[
             styles.textStyle,
-            { color: colors.white, fontWeight: '400', fontSize: 16 },
+            {color: colors.white, fontWeight: '400', fontSize: 16},
           ]}>
           {text}
         </Text>
@@ -449,64 +542,64 @@ const CommonButton = ({
   );
 };
 
-
-const RelatedProducts = ({ data, onclick }) => {
-
-  return (
-    data ? <View style={{ marginBottom: 100, paddingStart: 12, paddingEnd: 3 }}>
-      {data.length > 0 ? <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginTop: 8,
-          marginBottom: 10
-        }}>
+const RelatedProducts = ({data, onclick}) => {
+  return data ? (
+    <View style={{marginBottom: 100, paddingStart: 12, paddingEnd: 3}}>
+      {data.length > 0 ? (
         <View
           style={{
-            height: 1,
-            width: 50,
-            borderRadius: 0.5,
-            backgroundColor: colors.lightOrange,
-          }}
-        />
-        <View
-          style={{
-            height: 2,
-            width: 2,
-            borderRadius: 1,
-            backgroundColor: colors.lightOrange,
-          }}
-        />
-
-        <Text
-          style={{
-            fontSize: 14,
-            color: colors.lightOrange,
-            fontFamily: 'SegoeUI',
-
-            paddingHorizontal: 5,
-            alignSelf: 'center',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 8,
+            marginBottom: 10,
           }}>
-          Ещё
-        </Text>
-        <View
-          style={{
-            height: 2,
-            width: 2,
-            borderRadius: 1,
-            backgroundColor: colors.lightOrange,
-          }}
-        />
-        <View
-          style={{
-            height: 1,
-            width: 50,
-            borderRadius: 0.5,
-            backgroundColor: colors.lightOrange,
-          }}
-        />
-      </View> : null}
+          <View
+            style={{
+              height: 1,
+              width: 50,
+              borderRadius: 0.5,
+              backgroundColor: colors.lightOrange,
+            }}
+          />
+          <View
+            style={{
+              height: 2,
+              width: 2,
+              borderRadius: 1,
+              backgroundColor: colors.lightOrange,
+            }}
+          />
+
+          <Text
+            style={{
+              fontSize: 14,
+              color: colors.lightOrange,
+              fontFamily: 'SegoeUI',
+
+              paddingHorizontal: 5,
+              alignSelf: 'center',
+            }}>
+            Ещё
+          </Text>
+          <View
+            style={{
+              height: 2,
+              width: 2,
+              borderRadius: 1,
+              backgroundColor: colors.lightOrange,
+            }}
+          />
+          <View
+            style={{
+              height: 1,
+              width: 50,
+              borderRadius: 0.5,
+              backgroundColor: colors.lightOrange,
+            }}
+          />
+        </View>
+      ) : null}
       <FlatList
         data={data}
         keyExtractor={item => {
@@ -514,7 +607,7 @@ const RelatedProducts = ({ data, onclick }) => {
         }}
         scrollEnabled={false}
         numColumns={2}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           return (
             <TouchableOpacity
               style={{
@@ -533,9 +626,10 @@ const RelatedProducts = ({ data, onclick }) => {
               <Image
                 source={
                   item.images !== ''
-                    ? { uri: item.images }
+                    ? {uri: item.images}
                     : appIcons.shoeImageURL
-                } style={{
+                }
+                style={{
                   height: 265,
                   paddingHorizontal: 1,
                   width: 'auto',
@@ -557,22 +651,22 @@ const RelatedProducts = ({ data, onclick }) => {
                 }}>
                 <Image
                   source={appIcons.china}
-                  style={{ height: 15, width: 15 }}
+                  style={{height: 15, width: 15}}
                 />
                 <Text
                   style={{
                     marginLeft: 4,
                     fontSize: 15,
                     fontWeight: '500',
-                    color: colors.black
+                    color: colors.black,
                   }}
                   numberOfLines={1}>
                   {item.name}
                 </Text>
               </View>
               <View
-                style={{ flexDirection: 'row', paddingLeft: 8, paddingTop: 4 }}>
-                <View style={{ flexDirection: 'row', width: '30%' }}>
+                style={{flexDirection: 'row', paddingLeft: 8, paddingTop: 4}}>
+                <View style={{flexDirection: 'row', width: '30%'}}>
                   <Text
                     style={{
                       fontSize: 17,
@@ -607,367 +701,472 @@ const RelatedProducts = ({ data, onclick }) => {
           );
         }}
       />
-    </View> : null
+    </View>
+  ) : null;
+};
+
+const OutOfStocksCardProduct = ({item, onClick}) => {
+  return (
+    <TouchableOpacity
+      disabled={true}
+      style={{
+        marginBottom: 9,
+      }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 10,
+        }}>
+        <RadioButtons />
+
+        <Image
+          source={appIcons.shoeImageURL}
+          style={{width: 110, height: 110, borderRadius: 11, marginStart: 10}}
+        />
+        <View
+          style={{
+            justifyContent: 'space-between',
+            height: 110,
+            width: '60%',
+          }}>
+          <View style={{paddingHorizontal: 10}}>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: '400',
+                color: colors.greyCECECE,
+              }}
+              numberOfLines={1}>
+              若过度长的话只显示第一行
+            </Text>
+
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: '400',
+                color: colors.balc111111,
+                marginTop: 5,
+              }}
+              numberOfLines={2}>
+              #逻辑: 找同类 找最终一级的分类
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => {
+              onClick();
+            }}
+            style={{
+              borderRadius: 20,
+              borderColor: colors.lightOrange,
+              borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 32,
+              width: 91,
+              alignSelf: 'flex-end',
+            }}>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: '400',
+                color: colors.lightOrange,
+              }}
+              numberOfLines={2}>
+              {AppString.similar}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
+export const RadioButtons = ({isCheck = false, onClick, size = 22}) => {
+  return true ? (
+    <TouchableOpacity onPress={onClick}>
+      {isCheck ? (
+        <CheckmarkCircle
+          width={size}
+          height={size}
+          color={colors.lightOrange}
+        />
+      ) : (
+        <EllipsisHorizontalNormal width={size} height={size} />
+      )}
+    </TouchableOpacity>
+  ) : null;
+};
 
+const CartProduct = ({
+  check = true,
+  shopData,
+  navigation,
+  onClick,
+  onDelete,
+  onQunatityUpdate,
+  shouldRefresh,
+}) => {
+  const [isCheck, setIsCheck] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-
-const OutOfStocksCardProduct = ({ item, onClick }) => {
-
-  return <TouchableOpacity disabled={true} style={{
-    marginBottom: 9,
-  }}>
-
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 10
-      }}>
-      <RadioButtons />
-
-      <Image
-        source={appIcons.shoeImageURL}
-        style={{ width: 110, height: 110, borderRadius: 11, marginStart: 10 }}
-      />
-      <View
-        style={{
-          justifyContent: 'space-between',
-          height: 110, width: '60%'
-        }}>
-        <View style={{ paddingHorizontal: 10 }}>
-          <Text style={{ fontSize: 14, fontWeight: '400', color: colors.greyCECECE }} numberOfLines={1}>
-            若过度长的话只显示第一行
-          </Text>
-
-          <Text style={{ fontSize: 16, fontWeight: '400', color: colors.balc111111, marginTop: 5 }} numberOfLines={2}>
-            #逻辑: 找同类 找最终一级的分类
-          </Text>
-        </View>
-
-
-        <TouchableOpacity onPress={() => {
-          onClick()
-        }} style={{
-          borderRadius: 20,
-          borderColor: colors.lightOrange,
-          borderWidth: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 32,
-          width: 91,
-          alignSelf: 'flex-end'
-        }}>
-          <Text style={{ fontSize: 14, fontWeight: '400', color: colors.lightOrange }} numberOfLines={2}>
-            {AppString.similar}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </TouchableOpacity>
-
-}
-
-export const RadioButtons = ({ isCheck = false, onClick, size = 22 }) => {
-  return true ? <TouchableOpacity onPress={onClick}>{isCheck ? (
-    <CheckmarkCircle width={size} height={size} color={colors.lightOrange} />
-  ) : (
-    <EllipsisHorizontalNormal width={size} height={size} />
-  )}</TouchableOpacity> : null
-}
-
-const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, onQunatityUpdate, shouldRefresh }) => {
-
-  const [isCheck, setIsCheck] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-
-  const closeRow = (index) => {
+  const closeRow = index => {
     if (prevOpenedRow && prevOpenedRow !== row[index]) {
       prevOpenedRow.close();
     }
     prevOpenedRow = row[index];
-  }
-
-
+  };
 
   const deleteApi = (item: any) => {
     ConfirmationDialog(() => {
-      setLoading(true)
-      const deleteItem = { cartId: item.cartId }
+      setLoading(true);
+      const deleteItem = {cartId: item.cartId};
       postAPICall(deleteItem, CartAPIs.deleteItemFromCart, true, (res: any) => {
-        setLoading(false)
-        OkDialog(res.data && res.data.message ? res.data.message : res.data.toString())
+        setLoading(false);
+        OkDialog(
+          res.data && res.data.message ? res.data.message : res.data.toString(),
+        );
         if (res.isSuccess) {
-          onDelete(item)
+          onDelete(item);
         }
-      })
-    })
-  }
+      });
+    });
+  };
 
   const updateQuantity = (item: any, quantity: number) => {
-    const quntItem = { cartId: item.cartId, quantity: quantity, attr1_Id: '' }
+    const quntItem = {cartId: item.cartId, quantity: quantity, attr1_Id: ''};
 
     postAPICall(quntItem, CartAPIs.updateCart, true, (res: any) => {
       //setLoading(false)
       // OkDialog(res.data && res.data.message ? res.data.message : res.data.toString())
       if (res.isSuccess) {
-        onQunatityUpdate(item)
+        onQunatityUpdate(item);
       }
-    })
-  }
+    });
+  };
 
+  const RightButtons = ({index = 0, item}) => {
+    return (
+      <View
+        style={[
+          style.rowDirectionCenter,
+          {
+            justifyContent: 'space-around',
+            width: 222,
+            backgroundColor: colors.whiteF6F6F6,
+          },
+        ]}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(RouteNames.product_search_screen, {
+              isRoute: true,
+            });
+          }}>
+          <SearchCart />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {}}>
+          <LikeCart />
+        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicatorView />
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              // const data = chats.filter((it, pos) => pos != index)
+              //setChats(data)
+              deleteApi(item);
+            }}>
+            <DeleteIcon />
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  };
 
-  const RightButtons = ({ index = 0, item }) => {
-
-    return <View style={[style.rowDirectionCenter, {
-      justifyContent: 'space-around',
-      width: 222,
-      backgroundColor: colors.whiteF6F6F6
-    }]}>
-      <TouchableOpacity onPress={() => {
-        navigation.navigate(RouteNames.product_search_screen, { isRoute: true })
-      }}><SearchCart /></TouchableOpacity>
-      <TouchableOpacity onPress={() => { }}><LikeCart /></TouchableOpacity>
-      {loading ? <ActivityIndicatorView /> : <TouchableOpacity onPress={() => {
-        // const data = chats.filter((it, pos) => pos != index)
-        //setChats(data)
-        deleteApi(item)
-      }}><DeleteIcon /></TouchableOpacity>}
-
-    </View>
-  }
-
-  return <TouchableOpacity disabled={true}
-    onPress={onClick}
-    style={{
-      backgroundColor: colors.white,
-      borderRadius: 13,
-      marginBottom: 9,
-      paddingTop: 10
-    }}>
+  return (
     <TouchableOpacity
-      onPress={() => {
-        navigation.navigate(RouteNames.shopHomeScreen)
-      }}
+      disabled={true}
+      onPress={onClick}
       style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingStart: 10
+        backgroundColor: colors.white,
+        borderRadius: 13,
+        marginBottom: 9,
+        paddingTop: 10,
       }}>
-
-      <RadioButtons isCheck={selectedShopIds.indexOf(shopData.shopId) > -1} onClick={() => {
-       
-        if (selectedShopIds.includes(shopData.shopId)) {
-          selectedShopIds.pop(shopData.shopId)
-          shopData.products.forEach(element => {
-            
-              selectedProductIds.pop(element.cartId)
-          });
-        } else {
-          selectedShopIds.push(shopData.shopId)
-       
-            let productIdsArr = shopData.products.map(product => product.cartId)
-            // console.warn(selectedProductIds) 
-            selectedProductIds = [...selectedProductIds, ...productIdsArr]
-         
-        }
-        console.warn(selectedShopIds)
-        shouldRefresh()
-        setIsCheck(!isCheck)
-      }} />
-      <Image
-        source={appIcons.china}
-        style={{ width: 18, height: 18, marginStart: 10 }}
-      />
-      <Text style={{
-        paddingLeft: 9,
-        color: colors.black, fontSize: 16, fontWeight: 'bold', paddingBottom: 2
-      }}>{shopData.shopName}</Text>
-      <ChevronFwdOutlineIcon
-        width={8}
-        height={10}
-        style={{
-          borderColor: '#CDCDCD',
-          marginTop: 2,
-          marginLeft: 8,
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate(RouteNames.shopHomeScreen);
         }}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingStart: 10,
+        }}>
+        <RadioButtons
+          isCheck={selectedShopIds.indexOf(shopData.shopId) > -1}
+          onClick={() => {
+            if (selectedShopIds.includes(shopData.shopId)) {
+              selectedShopIds.pop(shopData.shopId);
+              shopData.products.forEach(element => {
+                selectedProductIds.pop(element.cartId);
+              });
+            } else {
+              selectedShopIds.push(shopData.shopId);
+
+              let productIdsArr = shopData.products.map(
+                product => product.cartId,
+              );
+              // console.warn(selectedProductIds)
+              selectedProductIds = [...selectedProductIds, ...productIdsArr];
+            }
+            console.warn(selectedShopIds);
+            shouldRefresh();
+            setIsCheck(!isCheck);
+          }}
+        />
+        <Image
+          source={appIcons.china}
+          style={{width: 18, height: 18, marginStart: 10}}
+        />
+        <Text
+          style={{
+            paddingLeft: 9,
+            color: colors.black,
+            fontSize: 16,
+            fontWeight: 'bold',
+            paddingBottom: 2,
+          }}>
+          {shopData.shopName}
+        </Text>
+        <ChevronFwdOutlineIcon
+          width={8}
+          height={10}
+          style={{
+            borderColor: '#CDCDCD',
+            marginTop: 2,
+            marginLeft: 8,
+          }}
+        />
+      </TouchableOpacity>
+
+      <FlatList
+        style={{marginTop: 14}}
+        data={shopData.products}
+        scrollEnabled={false}
+        renderItem={({item, index}) => (
+          <Swipeable
+            ref={ref => (row[index] = ref)}
+            onSwipeableOpen={() => closeRow(index)}
+            renderRightActions={() => (
+              <RightButtons index={index} item={item} />
+            )}>
+            <ProductItem
+              onUpdateQuantity={(qut: number) => {
+                updateQuantity(item, qut);
+              }}
+              check={shopData.radioButtonStore}
+              item={item}
+              onClick={onClick}
+              shouldRefresh={shouldRefresh}
+            />
+          </Swipeable>
+        )}
       />
     </TouchableOpacity>
+  );
+};
 
-    <FlatList
-      style={{ marginTop: 14 }}
-      data={shopData.products}
-      scrollEnabled={false}
-      renderItem={({ item, index }) =>
-        <Swipeable
-          ref={ref => row[index] = ref}
-          onSwipeableOpen={() => closeRow(index)}
-          renderRightActions={() =>
-            <RightButtons index={index} item={item} />}>
-          <ProductItem onUpdateQuantity={(qut: number) => {
-            updateQuantity(item, qut)
-          }}
-            check={shopData.radioButtonStore}
-            item={item} onClick={onClick}
-            shouldRefresh = {shouldRefresh}
-            />
-        </Swipeable>
-      }
-
-    />
-
-  </TouchableOpacity>
-}
-
-
-const ProductItem = ({ item, check = false, onClick, onUpdateQuantity, shouldRefresh }) => {
-
-  const [isIncrease, setIsIncrease] = useState(true)
-  const [count, setCount] = useState(item.selected_quantity)
-  const [isCheck, setIsCheck] = useState(false)
+const ProductItem = ({
+  item,
+  check = false,
+  onClick,
+  onUpdateQuantity,
+  shouldRefresh,
+}) => {
+  const [isIncrease, setIsIncrease] = useState(true);
+  const [count, setCount] = useState(item.selected_quantity);
+  const [isCheck, setIsCheck] = useState(false);
 
   //finding the selected value of colors by the index
   const selectedValue = useMemo(() => {
-    const index = item.attr1.findIndex((element) => (element.isSelected))
+    const index = item.attr1.findIndex(element => element.isSelected);
     return item.attr1[index];
   }, [item]);
   const selectedSizes = useMemo(() => {
-    const index = item.attr2.findIndex((element) => (element.isSelected))
+    const index = item.attr2.findIndex(element => element.isSelected);
     return item.attr2[index];
   }, [item]);
 
-  return <TouchableOpacity
-    onPress={onClick}
-    style={{
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingBottom: 14,
-      paddingHorizontal: 10,
-      flex: 1
-    }}>
-    <RadioButtons isCheck={selectedProductIds.includes(item.cartId)} onClick={() => {
-      setIsCheck(!isCheck)
-      if (selectedProductIds.indexOf(item.cartId) > -1) {
-        selectedProductIds.pop(item.cartId)
-      } else {
-        selectedProductIds.push(item.cartId)
-      }
-      console.warn(selectedProductIds)
-      shouldRefresh()
-    }} />
-
-    <Image
-      source={item.productImage ? { uri: item.productImage } : appIcons.shoeImageURL}
-      style={{ width: 110, height: 110, borderRadius: 11, marginStart: 10 }}
-    />
-    <View
+  return (
+    <TouchableOpacity
+      onPress={onClick}
       style={{
-        justifyContent: 'space-between',
-        height: 110, width: '60%',
-        paddingStart: 10
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 14,
+        paddingHorizontal: 10,
+        flex: 1,
       }}>
-      <View>
-        <Text style={{ fontSize: 14, fontWeight: '500', color: colors.balc111111 }}
-          numberOfLines={2}>
-          {item.productName}
-        </Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#F9F9F9',
-            width: selectedValue &&
-              selectedValue.attributeValue ? selectedValue.attributeValue.length * 16 : 70,
-            height: 25,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 5,
-            marginTop: 5.5,
-            flexDirection: 'row',
-            gap: 4,
-          }}>
-          <Text style={{ color: '#999999', fontSize: 14, fontWeight: '400' }} >
-            {selectedValue && selectedValue.attributeValue ? selectedValue.attributeValue : "white"}
-            {"; "}
-            {selectedSizes && selectedSizes.attributeValue ? selectedSizes.attributeValue : "M"}
-          </Text>
-          <DropDownGrey style={{ marginTop: 3 }} />
-        </TouchableOpacity>
-      </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Text style={{ color: colors.lightOrange, fontSize: 21, fontWeight: '500' }}>
-          {(parseInt(item.singlePrice) * count).toString()}c.
-        </Text>
+      <RadioButtons
+        isCheck={selectedProductIds.includes(item.cartId)}
+        onClick={() => {
+          setIsCheck(!isCheck);
+          if (selectedProductIds.indexOf(item.cartId) > -1) {
+            selectedProductIds.pop(item.cartId);
+          } else {
+            selectedProductIds.push(item.cartId);
+          }
+          console.warn(selectedProductIds);
+          shouldRefresh();
+        }}
+      />
 
-        {<TouchableOpacity disabled={isIncrease} onPress={() => {
-          setIsIncrease(true)
-        }} style={{
-          flexDirection: 'row',
-          borderRadius: 7,
-          borderColor: '#B3B3B3',
-          borderWidth: 0.6,
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 28,
-          width: isIncrease ? 99 : 28
+      <Image
+        source={
+          item.productImage ? {uri: item.productImage} : appIcons.shoeImageURL
+        }
+        style={{width: 110, height: 110, borderRadius: 11, marginStart: 10}}
+      />
+      <View
+        style={{
+          justifyContent: 'space-between',
+          height: 110,
+          width: '60%',
+          paddingStart: 10,
         }}>
-          {isIncrease ? <TouchableOpacity disabled={count == 1}
-            onPress={() => {
-              if (count != 1) {
-                onUpdateQuantity(count - 1)
-                setCount(count - 1)
-              }
-            }}
-            style={{
-              borderEndColor: '#B3B3B3',
-              borderEndWidth: 0.6,
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: 28, width: 28
-            }}>
-            <RemoveCart />
-          </TouchableOpacity> : null}
-          <Text style={{
-            color: colors.black, fontSize: 14,
-            fontWeight: '400',
-            paddingHorizontal: isIncrease ? 10 : undefined
-          }}>
-            {`${isIncrease ? '' : 'x'}${count}`}
+        <View>
+          <Text
+            style={{fontSize: 14, fontWeight: '500', color: colors.balc111111}}
+            numberOfLines={2}>
+            {item.productName}
           </Text>
-          {isIncrease ? <TouchableOpacity
-            onPress={() => {
-              if (item.totalQunatity > 0) {
-                onUpdateQuantity(count + 1)
-                setCount(count + 1)
-              }
-            }}
+          <TouchableOpacity
             style={{
-              borderStartColor: '#B3B3B3',
-              borderStartWidth: 0.6,
-              justifyContent: 'center',
+              backgroundColor: '#F9F9F9',
+              width:
+                selectedValue && selectedValue.attributeValue
+                  ? selectedValue.attributeValue.length * 16
+                  : 70,
+              height: 25,
               alignItems: 'center',
-              height: 28, width: 28
+              justifyContent: 'center',
+              borderRadius: 5,
+              marginTop: 5.5,
+              flexDirection: 'row',
+              gap: 4,
             }}>
-            <AddCart />
-          </TouchableOpacity> : null}
-        </TouchableOpacity>}
+            <Text style={{color: '#999999', fontSize: 14, fontWeight: '400'}}>
+              {selectedValue && selectedValue.attributeValue
+                ? selectedValue.attributeValue
+                : 'white'}
+              {'; '}
+              {selectedSizes && selectedSizes.attributeValue
+                ? selectedSizes.attributeValue
+                : 'M'}
+            </Text>
+            <DropDownGrey style={{marginTop: 3}} />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              color: colors.lightOrange,
+              fontSize: 21,
+              fontWeight: '500',
+            }}>
+            {(parseInt(item.singlePrice) * count).toString()}c.
+          </Text>
+
+          {
+            <TouchableOpacity
+              disabled={isIncrease}
+              onPress={() => {
+                setIsIncrease(true);
+              }}
+              style={{
+                flexDirection: 'row',
+                borderRadius: 7,
+                borderColor: '#B3B3B3',
+                borderWidth: 0.6,
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 28,
+                width: isIncrease ? 99 : 28,
+              }}>
+              {isIncrease ? (
+                <TouchableOpacity
+                  disabled={count == 1}
+                  onPress={() => {
+                    if (count != 1) {
+                      onUpdateQuantity(count - 1);
+                      setCount(count - 1);
+                    }
+                  }}
+                  style={{
+                    borderEndColor: '#B3B3B3',
+                    borderEndWidth: 0.6,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: 28,
+                    width: 28,
+                  }}>
+                  <RemoveCart />
+                </TouchableOpacity>
+              ) : null}
+              <Text
+                style={{
+                  color: colors.black,
+                  fontSize: 14,
+                  fontWeight: '400',
+                  paddingHorizontal: isIncrease ? 10 : undefined,
+                }}>
+                {`${isIncrease ? '' : 'x'}${count}`}
+              </Text>
+              {isIncrease ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    if (item.totalQunatity > 0) {
+                      onUpdateQuantity(count + 1);
+                      setCount(count + 1);
+                    }
+                  }}
+                  style={{
+                    borderStartColor: '#B3B3B3',
+                    borderStartWidth: 0.6,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: 28,
+                    width: 28,
+                  }}>
+                  <AddCart />
+                </TouchableOpacity>
+              ) : null}
+            </TouchableOpacity>
+          }
+        </View>
       </View>
-    </View>
-  </TouchableOpacity>
-
-}
-
-
+    </TouchableOpacity>
+  );
+};
 
 export default CartScreen;
 
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.whiteF6F6F6
+    backgroundColor: colors.whiteF6F6F6,
   },
-  rowDirectionCenter: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  rowDirectionCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
   header: {
     flexDirection: 'row',
@@ -981,7 +1180,8 @@ const style = StyleSheet.create({
     height: 60,
     marginBottom: 9,
     justifyContent: 'space-between',
-
   },
   scrollView: {
-    width: '100%
+    width: '100%',
+  },
+});
