@@ -48,14 +48,19 @@ const CartScreen = ({ navigation }) => {
   const [isEditable, setIsEditable] = useState(false)
   const [data, setData] = useState<CommonModal>()
   const [loading, setLoading] = useState(false)
+  const [mainLoading, setMainLoading] = useState(false)
+
   const [refresh, setRefresh] = useState(false)
   const [sum, setSum] = useState(0)
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    //if (isFocused) {
-    getCart()
-    //}
+    if (isFocused) {
+      getCart()
+    } else {
+      setIsEditable(false)
+    }
+
   }, [isFocused])
 
   useEffect(() => {
@@ -71,12 +76,13 @@ const CartScreen = ({ navigation }) => {
     return items.reduce((accumulator, currentValue) => accumulator + (currentValue.price), 0)
   }
 
+
   // getting cart produccts
   const getCart = () => {
-    setLoading(true)
+    setMainLoading(true)
     getAPICall(CartAPIs.getCart, (res: any) => {
       setData(res)
-      setLoading(false)
+      setMainLoading(false)
     }
     )
   }
@@ -87,16 +93,17 @@ const CartScreen = ({ navigation }) => {
         setLoading(true)
         postAPICall({
           cartIds: selectedProductIds
-        }, 
-        CartAPIs.deleteMultiItemFromCart,
-        true,
-        (res: any) => {
-          getCart()
-          selectedProductIds = []
-          selectedShopIds = []
-          setIsEditable(false) 
-          setIsCheck(false)
-        }
+        },
+          CartAPIs.deleteMultiItemFromCart,
+          true,
+          (res: any) => {
+            getCart()
+            setLoading(false)
+            selectedProductIds = []
+            selectedShopIds = []
+            setIsEditable(false)
+            setIsCheck(false)
+          }
         )
       }, () => {
         console.log("canceled")
@@ -113,16 +120,17 @@ const CartScreen = ({ navigation }) => {
         setLoading(true)
         postAPICall({
           productId: selectedProductIds
-        }, 
-        CartAPIs.moveToFavorite,
-        true,
-        (res: any) => {
-          getCart()
-          selectedProductIds = []
-          selectedShopIds = []
-          setIsEditable(false) 
-          setIsCheck(false)
-        }
+        },
+          CartAPIs.moveToFavorite,
+          true,
+          (res: any) => {
+            getCart()
+            selectedProductIds = []
+            selectedShopIds = []
+            setLoading(false)
+            setIsEditable(false)
+            setIsCheck(false)
+          }
         )
       }, () => {
         console.log("canceled")
@@ -169,10 +177,10 @@ const CartScreen = ({ navigation }) => {
                   fontWeight: '500',
                   color: '#14100D',
                 }}>
-                {`(${34})`}
+                {`(${data.data.data.cartDetails.length})`}
               </Text>
             </View>
-            <TouchableOpacity
+            {data.data.data.cartDetails.length > 0 ? <TouchableOpacity
               onPress={() => {
                 setIsEditable(!isEditable)
               }}
@@ -180,7 +188,7 @@ const CartScreen = ({ navigation }) => {
                 marginTop: 28, paddingEnd: 12
               }}>
               {isEditable ? <OrangeCheck /> : <EditIcon height={16} width={16} style={{ borderColor: '#666666' }} />}
-            </TouchableOpacity>
+            </TouchableOpacity> : null}
           </View>
           <ScrollView
             style={style.scrollView}
@@ -218,10 +226,10 @@ const CartScreen = ({ navigation }) => {
                         id: item._id,
                       })
                     }}
-                    shouldRefresh={ () => {
+                    shouldRefresh={() => {
                       setRefresh(!refresh)
                     }}
-                    />
+                  />
                 );
               }}
             />
@@ -305,7 +313,7 @@ const CartScreen = ({ navigation }) => {
 
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <RadioButtons isCheck={isCheck} onClick={() => {
-              
+
                 if (isCheck) {
                   selectedShopIds = []
                   selectedProductIds = []
@@ -334,63 +342,65 @@ const CartScreen = ({ navigation }) => {
               </Text>
             </View>
 
-            { !isEditable ? 
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <Text
-                style={{
-                  fontSize: 13,
-                  color: '#333',
-                  fontFamily: '400',
-                  marginStart: 4
-                }}>
-                {AppString.total + ':'}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 13,
-                  color: colors.lightOrange,
-                  fontFamily: '400',
-                  marginHorizontal: 4
-                }}>
-                {AppString.currency_symbol}<Text
+            {!isEditable ?
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <Text
                   style={{
-                    fontSize: 22,
-                    color: colors.lightOrange,
+                    fontSize: 13,
+                    color: '#333',
                     fontFamily: '400',
                     marginStart: 4
-                  }}>{sum}</Text>
-              </Text>
-              <CommonButton
-                onClick={() => {
-                  // setBuyShow(true);
-                  //navigation.navigate(RouteNames.myAddress)
-                  navigation.navigate(RouteNames.cartConfirmOrder)
-                }}
-              />
-            </View>
-            : 
+                  }}>
+                  {AppString.total + ':'}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    color: colors.lightOrange,
+                    fontFamily: '400',
+                    marginHorizontal: 4
+                  }}>
+                  {AppString.currency_symbol}<Text
+                    style={{
+                      fontSize: 22,
+                      color: colors.lightOrange,
+                      fontFamily: '400',
+                      marginStart: 4
+                    }}>{sum}</Text>
+                </Text>
+                <CommonButton
+                  onClick={() => {
+                    // setBuyShow(true);
+                    //navigation.navigate(RouteNames.myAddress)
+                    navigation.navigate(RouteNames.cartConfirmOrder)
+                  }}
+                />
+              </View>
+              :
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 7 }}>
                 <TouchableOpacity onPress={() => {
                   moveToFav()
-                }}   style={{
-                      borderRadius: 20,
-                      height: 40,
-                      padding: 12,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderColor: colors.lightOrange,
-                      borderWidth: 1
-                    }}>
-                
-                    <Text
-                      style={[
-                        styles.textStyle,
-                        { color: colors.lightOrange, fontWeight: '400', fontSize: 16 },
-                      ]}>
-                      {AppString.to_Favourites}
-                    </Text>
+                }} style={{
+                  borderRadius: 20,
+                  height: 40,
+                  paddingHorizontal: 12,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderColor: colors.orangeEC407AL,
+                  borderWidth: 1
+                }}>
+
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      { color: "#EC407A", fontWeight: '400', fontSize: 16 },
+                    ]}>
+                    {AppString.to_Favourites}
+                  </Text>
                 </TouchableOpacity>
                 <CommonButton
+                  startorange='#EC407A'
+                  endColor='#E93368'
                   text={AppString.delete}
                   onClick={() => {
                     deleteItemFromCart()
@@ -407,10 +417,10 @@ const CartScreen = ({ navigation }) => {
 
 
         </View>
-        <CenterProgressView isShow={loading} /> 
+        <CenterProgressView isShow={loading} />
 
       </GestureHandlerRootView>
-      : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+      : mainLoading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
         setData(undefined)
         getCart()
       }} />
@@ -433,7 +443,7 @@ const CommonButton = ({
         style={{
           borderRadius: 20,
           height: 40,
-          padding: 12,
+          paddingHorizontal: 12,
           justifyContent: 'center',
           alignItems: 'center'
         }}>
@@ -759,20 +769,20 @@ const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, on
       }}>
 
       <RadioButtons isCheck={selectedShopIds.indexOf(shopData.shopId) > -1} onClick={() => {
-       
+
         if (selectedShopIds.includes(shopData.shopId)) {
           selectedShopIds.pop(shopData.shopId)
           shopData.products.forEach(element => {
-            
-              selectedProductIds.pop(element.cartId)
+
+            selectedProductIds.pop(element.cartId)
           });
         } else {
           selectedShopIds.push(shopData.shopId)
-       
-            let productIdsArr = shopData.products.map(product => product.cartId)
-            // console.warn(selectedProductIds) 
-            selectedProductIds = [...selectedProductIds, ...productIdsArr]
-         
+
+          let productIdsArr = shopData.products.map(product => product.cartId)
+          // console.warn(selectedProductIds) 
+          selectedProductIds = [...selectedProductIds, ...productIdsArr]
+
         }
         console.warn(selectedShopIds)
         shouldRefresh()
@@ -812,8 +822,8 @@ const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, on
           }}
             check={shopData.radioButtonStore}
             item={item} onClick={onClick}
-            shouldRefresh = {shouldRefresh}
-            />
+            shouldRefresh={shouldRefresh}
+          />
         </Swipeable>
       }
 
@@ -984,4 +994,6 @@ const style = StyleSheet.create({
 
   },
   scrollView: {
-    width: '100%
+    width: '100%'
+  }
+})

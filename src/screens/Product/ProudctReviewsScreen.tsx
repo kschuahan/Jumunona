@@ -23,20 +23,54 @@ import Share from '../../../assets/Icons/Share.svg';
 import CartIcon from '../../../assets/Icons/Carts.svg';
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import { RouteNames } from '../../utils/RouteNames';
-const reviewFilter = [
-  { id: 1, desc: "Don't lose color(8)" },
-  { id: 2, desc: 'Good Fabric(12)' },
-  { id: 3, desc: 'Soft Soul(1)' },
-];
+import { getAPICall } from '../../Netowork/Apis';
+import { ReviewApis } from '../../Netowork/Constants';
+import { CommonModal } from '../HomeScreen';
+import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
+import { styles } from '../../utils/AppStyles';
+
 const filterOptions = [
-  { id: 1, desc: 'Все' },
-  { id: 2, desc: 'Изображение' },
-  { id: 3, desc: 'Хорошие' },
-  { id: 5, desc: 'Плохие' },
+  { id: 1, desc: 'Все', rating: 0 },
+  { id: 2, desc: 'Изображение', rating: -1 },
+  { id: 3, desc: 'Хорошие', rating: 4 },
+  { id: 5, desc: 'Плохие', rating: 2 },
 ];
 
-export const ProudctReviewsScreen = ({ navigation }) => {
-  const [selectedFactory, setSelectedFactory] = useState(1);
+export const ProudctReviewsScreen = ({ navigation, route }) => {
+  const [selectedFactory, setSelectedFactory] = useState(0);
+  const [data, setData] = useState<CommonModal>()
+  const [loading, setLoading] = useState(false)
+
+  const [reviewList, setReviewList] = useState()
+
+
+
+  useEffect(() => {
+    callAPI()
+  }, [])
+
+  useEffect(() => {
+    if (data && data.data && data.isSuccess) {
+      const filterImages = data.data.data.filter((it: any) => it.images.length > 0)
+      filterOptions[1].id = filterImages.length
+      const badFilter = data.data.data.filter((it: any) => it.rating <= 2)
+      filterOptions[3].id = badFilter.length
+      const filter = data.data.data.filter((it: any) => it.rating >= 4)
+      filterOptions[2].id = filter.length
+      setReviewList(data.data.data)
+      // setRefresh(!refresh)
+    }
+  }, [loading])
+
+  const callAPI = () => {
+    setLoading(true)
+    const id = route.params && route.params.productId ? route.params.productId : '65b8c1a8b03f0c815947e1e7'
+    getAPICall(ReviewApis.getReviews + `${id}`, (res: any) => {
+      setLoading(false)
+      setData(res)
+
+    })
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -88,9 +122,9 @@ export const ProudctReviewsScreen = ({ navigation }) => {
     });
   });
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ paddingHorizontal: 2 }}>
+  return (data && data.data && data.isSuccess ?
+    <View style={{ flex: 1 }}>
+      <View>
         <FlatList
           style={style.primaryCategoriesContent}
           data={filterOptions}
@@ -99,15 +133,29 @@ export const ProudctReviewsScreen = ({ navigation }) => {
           keyExtractor={item => {
             return item.id.toString();
           }}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return (
               <View style={{ paddingHorizontal: 4.5 }}>
-                <TouchableOpacity onPress={() => setSelectedFactory(item.id)}>
+                <TouchableOpacity onPress={() => {
+                  setSelectedFactory(index)
+                  if (item.rating == -1) {
+                    const filter = data.data.data.filter((it: any) => it.images.length > 0)
+                    setReviewList(filter)
+                  } else if (item.rating == 0) {
+                    setReviewList(data.data.data)
+                  } else if (item.rating == 2) {
+                    const filter = data.data.data.filter((it: any) => it.rating <= item.rating)
+                    setReviewList(filter)
+                  } else {
+                    const filter = data.data.data.filter((it: any) => it.rating >= item.rating)
+                    setReviewList(filter)
+                  }
+                }}>
                   <Text
                     style={{
                       fontSize: 14,
                       fontWeight: '400',
-                      color: selectedFactory === item.id ? '#ff7600' : 'black',
+                      color: selectedFactory === index ? '#ff7600' : 'black',
                     }}>
                     {item.desc}
                     <Text
@@ -115,7 +163,7 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                         fontSize: 14,
                         fontWeight: '400',
                         color:
-                          selectedFactory === item.id ? '#ff7600' : colors.grey,
+                          selectedFactory === index ? '#ff7600' : colors.grey,
                       }}>
                       {item.id != 1 ? '(' + item.id + ')' : ''}
                     </Text>
@@ -125,13 +173,11 @@ export const ProudctReviewsScreen = ({ navigation }) => {
             );
           }}
         />
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
         <FlatList
-          data={reviewFilter}
+          data={data.data.mostlyUsedWords}
           horizontal
           keyExtractor={item => {
-            return item.id.toString();
+            return item.word.toString();
           }}
           style={{ flexWrap: 'wrap', marginVertical: 9, marginStart: 9 }}
           showsHorizontalScrollIndicator={false}
@@ -154,37 +200,46 @@ export const ProudctReviewsScreen = ({ navigation }) => {
                     textAlign: 'center',
                     fontWeight: '400'
                   }}>
-                  {item.desc}
+                  {item.word}{`(${item.count})`}
                 </Text>
               </TouchableOpacity>
             );
           }}
         />
-        <View
-          style={{
-            flex: 1,
-            paddingVertical: 12,
-            backgroundColor: colors.white,
-            borderTopRightRadius: 13,
-            borderTopLeftRadius: 13,
-          }}>
-          <FlatList
-            data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
-            scrollEnabled={false}
-            keyExtractor={item => {
-              return item.toString();
-            }}
-            style={{ paddingHorizontal: 13, borderRadius: 13, height: '100%' }}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => {
-              return <ReviewUser size={113} />;
-            }}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+      <ReviewLay reviewList={reviewList} data={data.data.data} />
+    </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+      setData(undefined)
+      callAPI()
+    }} />
   );
 };
+
+const ReviewLay = ({ reviewList, data }) => {
+
+  return <View
+    style={{
+      flex: 1,
+      paddingVertical: 12,
+      backgroundColor: colors.white,
+      borderTopRightRadius: 13,
+      borderTopLeftRadius: 13,
+      paddingHorizontal: 13, borderRadius: 13, height: '100%'
+    }}>
+    {
+      reviewList == undefined ? <ReviewUser data={data} size={113} isScroll={true} />
+        : reviewList.length > 0 ?
+          <ReviewUser data={reviewList} size={113} isScroll={true} /> :
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.textStyle, {
+              color: colors.lightOrange,
+              paddingVertical: 100,
+              fontSize: 16, fontWeight: 'bold', textAlign: 'center'
+            }]}>No reviews</Text>
+          </View>
+    }
+  </View>
+}
 
 
 const SearchView = () => {

@@ -208,7 +208,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
           //   <RetryWhenErrorOccur
           //     data={'No Products found'}
           //     onClick={() => {
-               
+
           //     }} isRetry={false}/>
           // }
           onEndReached={featchMore}
@@ -217,7 +217,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
             <MainCategoriesItem navigation={navigation} data={categoryData} />
           }
           showsVerticalScrollIndicator={false}
-          style={{ marginHorizontal: 7 }}
+          style={{ marginHorizontal: 4.5 }}
           numColumns={2}
           renderItem={({ item, i }) => {
             return (
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   gridViewItemStyle: {
-    borderRadius: 10,
+    borderRadius: 13,
     backgroundColor: '#ffffff',
     marginHorizontal: 4.5,
     marginVertical: 4.5,
@@ -414,7 +414,6 @@ const styles = StyleSheet.create({
     flex: 0.5,
   },
   gridViewItemImage: {
-    paddingHorizontal: 1,
     width: 'auto',
     borderRadius: 13,
     marginBottom: 7,

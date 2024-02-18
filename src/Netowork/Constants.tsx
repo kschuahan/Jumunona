@@ -21,7 +21,8 @@ export const modules = {
   categoryModule: '/app/categories/',
   authModule: '/auth/',
   profile: "/app/profile/",
-  cart: '/app/cart/'
+  cart: '/app/cart/',
+  review:'/app/reviews/'
 }
 
 export const otherModule = {
@@ -71,4 +72,11 @@ export const CartAPIs = {
   getCart: modules.cart + 'getCart',
   deleteMultiItemFromCart: modules.cart + 'deleteMultiItemFromCart',
   moveToFavorite: modules.cart + 'moveToFavorite'
+}
+
+
+
+export const ReviewApis = {
+  getReviews: modules.review + 'getReviews?productId=',
+  
 }

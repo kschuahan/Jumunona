@@ -288,26 +288,27 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
 
   useEffect(() => {
 
-    const filter = colorOptions.data.filter(it => it.quantity > 0)
-    console.log("Filter" + filter);
+    const filter = colorOptions.data
+   // .filter(it => it.quantity > 0)
+   // console.log("Filter" + filter);
 
     if (filter.length > 0) {
       const cartItemIndex = filter.findIndex((element) => (element.isItemInCart));
-      console.log("Index", cartItemIndex);
+      console.log("cartItemIndex", cartItemIndex);
 
       if (cartItemIndex != -1) {
-        const index = colorOptions.data.findIndex((element) => (element.attirbutedID ===
-          filter[cartItemIndex].attirbutedID));
-        addToCartModel.attr1_id = filter[index].attirbutedID
+        // const index = filter.findIndex((element) => (element.attirbutedID ===
+        //   filter[cartItemIndex].attirbutedID));
+        addToCartModel.attr1_id = filter[cartItemIndex].attirbutedID
 
-        setSelectColorIndex(index)
-        console.log("Index", index);
+        setSelectColorIndex(cartItemIndex)
+        console.log("cartItemIndexIndex", cartItemIndex);
       } else {
-        const index = colorOptions.data.findIndex((element) => (element.attirbutedID ===
-          filter[0].attirbutedID));
+        // const index = colorOptions.data.findIndex((element) => (element.attirbutedID ===
+        //   filter[0].attirbutedID));
         setSelectColorIndex(colorIndex != -1 ? colorIndex : -1)
 
-        console.log("Index", index);
+       // console.log("Index", index);
       }
 
     }
@@ -482,24 +483,24 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
 
   useEffect(() => {
     const sizes = productDetail.data[selectedColorIndex != -1 ? selectedColorIndex : 0].att2.data
-    const filter = sizes.filter(it => it.quantity > 0)
-    console.log("Filter" + filter);
+   // const filter = sizes.filter(it => it.quantity > 0)
+   // console.log("Filter" + filter);
 
-    if (filter.length > 0) {
-      const cartItemIndex = filter.findIndex((element) => (element.isItemInCart));
-      console.log("Index", cartItemIndex);
+     if (sizes.length > 0) {
+      const cartItemIndex = sizes.findIndex((element) => (element.isItemInCart));
+    //   console.log("Index", cartItemIndex);
 
       if (cartItemIndex != -1) {
-        const index = sizes.findIndex((element) => (element.attirbutedID ===
-          filter[cartItemIndex].attirbutedID));
-        addToCartModel.attr2_id = filter[index].attributeID
-        setSelecteItem(filter[index].attributeID)
-        console.log("Index", index);
+        // const index = sizes.findIndex((element) => (element.attirbutedID ===
+        //   sizes[cartItemIndex].attirbutedID));
+        addToCartModel.attr2_id = sizes[cartItemIndex].attributeID
+        setSelecteItem(sizes[cartItemIndex].attributeID)
+        console.log("Index", cartItemIndex);
       } else {
-        const index = sizes.findIndex((element) => (element.attirbutedID ===
-          filter[0].attirbutedID));
+        // const index = sizes.findIndex((element) => (element.attirbutedID ===
+        //   filter[0].attirbutedID));
 
-        setSelecteItem(sizeIndex != -1 ? filter[sizeIndex].attirbutedID : "")
+        setSelecteItem(sizeIndex != -1 ? sizes[sizeIndex].attirbutedID : "")
 
         // console.log("Index", index);
       }

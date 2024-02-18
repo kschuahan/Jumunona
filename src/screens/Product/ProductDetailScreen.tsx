@@ -45,9 +45,10 @@ import Sizes from '../../../assets/Icons/Sizes.svg';
 import ColorIcon from '../../../assets/Icons/ColorIcon.svg';
 import { getAPICall, postAPICall } from '../../Netowork/Apis';
 import { CommonModal } from '../HomeScreen';
-import { ProductAPIs } from '../../Netowork/Constants';
+import { ProductAPIs, ReviewApis } from '../../Netowork/Constants';
 import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 import { getCharachterstics } from '../../utils/DataManipulation';
+import moment from 'moment';
 
 const shoeImageURL = appIcons.shoeImageURL;
 const china = appIcons.china;
@@ -124,6 +125,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   const [guranty, setOnGauranty] = useState(false);
   const [data, setData] = useState<CommonModal>()
   const [shopData, setShopData] = useState<CommonModal>()
+  const [reviewData, setReviewData] = useState<CommonModal>()
 
   const [loading, setLoading] = useState(false)
   const [favLoading, setFavLoading] = useState(false)
@@ -168,6 +170,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
     setLoading(true)
     const id = route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
     callShopsApi(id)
+    callReviewApi(id)
     getAPICall(ProductAPIs.getProductDetails + `${id}`, (res: any) => {
       setLoading(false)
       setData(res)
@@ -177,7 +180,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
         setDesImages(res.data.data.discriptionPath.length ? res.data.data.discriptionPath : productImages)
 
         setFavourite(res.data.data.isFavourite)
-        console.warn("color options", res.data.data.attributes.attribute1.attr1.data)
+        // console.warn("color options", res.data.data.attributes.attribute1.attr1.data)
       }
     })
   }
@@ -187,6 +190,13 @@ export const ProductDetailScreen = ({ navigation, route }) => {
 
     getAPICall(ProductAPIs.getShopsProduct + `${id}`, (res: any) => {
       setShopData(res)
+    })
+  }
+
+
+  const callReviewApi = (id: string) => {
+    getAPICall(ReviewApis.getReviews + `${id}`, (res: any) => {
+      setReviewData(res)
     })
   }
 
@@ -368,8 +378,11 @@ export const ProductDetailScreen = ({ navigation, route }) => {
             }} />
           <View style={{ paddingHorizontal: 9 }}>
             <ReviewsSection
+              data={reviewData}
               viewAllReviews={() => {
-                navigation.navigate(RouteNames.product_review_screen);
+                const id = route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
+                navigation.navigate(RouteNames.product_review_screen,
+                  { productId: id });
               }}
             />
             <ShopView data={shopData} navigation={navigation} route={route} />
@@ -572,9 +585,9 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   );
 };
 // MARK: - Review Section
-const ReviewsSection = ({ viewAllReviews, text = '' }) => {
+const ReviewsSection = ({ data, viewAllReviews, text = '' }) => {
   return (
-    <View
+    data && data.isSuccess ? <View
       id={'reviewSection'}
       style={{
         borderRadius: 13,
@@ -582,12 +595,12 @@ const ReviewsSection = ({ viewAllReviews, text = '' }) => {
         paddingHorizontal: 10,
         paddingVertical: 10,
       }}>
-      <TextWithIcon Icon={null} title={AppString.review + "(300+)"} onClick={viewAllReviews} />
+      <TextWithIcon Icon={null} title={`${AppString.review}(${data.data.data.length}+)`} onClick={viewAllReviews} />
       <FlatList
-        data={reviewFilter}
+        data={data.data.mostlyUsedWords}
         horizontal
         keyExtractor={item => {
-          return item.id.toString();
+          return item.word.toString();
         }}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => {
@@ -609,30 +622,31 @@ const ReviewsSection = ({ viewAllReviews, text = '' }) => {
                     fontSize: 15,
                     color: colors.orangeF66123,
                   }}>
-                  {item.desc}
+                  {item.word}{`(${item.count})`}
                 </Text>
               </TouchableOpacity>
             </View>
           );
         }}
       />
-      <ReviewUser text={text} />
-    </View>
+      <ReviewUser data={data.data.data ? data.data.data.filter((it: any, index: number) => index < 3) : []} text={text} />
+    </View> : null
   );
 };
 
-export const ReviewUser = ({ text = 'Серый XL', size = 81 }) => {
+export const ReviewUser = ({ data, text = 'Серый XL', size = 81, isScroll = false }) => {
   return (
     <View>
       <FlatList
-        data={[1, 2]}
-        scrollEnabled={false}
+        data={data}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={isScroll}
         renderItem={({ item, index }) => (
           <View style={{ marginBottom: 10, marginTop: index == 0 ? 5 : 30 }}>
             <View style={{ flexDirection: 'row' }}>
               <Image
                 style={{ width: 40, height: 40, borderRadius: 20 }}
-                source={{ uri: imagesUrl.profile }}
+                source={{ uri: item.profile != '' ? item.profile : imagesUrl.profile }}
               />
               <View
                 style={{
@@ -643,7 +657,7 @@ export const ReviewUser = ({ text = 'Серый XL', size = 81 }) => {
                   gap: 4
                 }}>
                 <Text style={[styles.textStyle, { fontSize: 15 }]}>
-                  user****ame
+                  {item.userName}
                 </Text>
 
                 <Text
@@ -651,10 +665,10 @@ export const ReviewUser = ({ text = 'Серый XL', size = 81 }) => {
                     styles.textStyle,
                     { fontSize: 12, color: colors.grey },
                   ]}>
-                  26.10.2022
+                  {moment(item.updatedDate).format('DD-MM-YYYY')}
                 </Text>
               </View>
-              <RatingView rating={3.5} />
+              <RatingView rating={item.rating} />
             </View>
 
             {text != '' ? (
@@ -667,7 +681,7 @@ export const ReviewUser = ({ text = 'Серый XL', size = 81 }) => {
                     color: colors.grey,
                   },
                 ]}>
-                {text}
+                {`${item.productColour && item.productColour != '' ? item.productColour : 'Gray'} ${item.productSize && item.productSize != '' ? item.productSize : 'XL'}`}
               </Text>
             ) : null}
             <Text
@@ -679,24 +693,22 @@ export const ReviewUser = ({ text = 'Серый XL', size = 81 }) => {
                   marginTop: text == '' ? 10 : 4,
                   color: colors.balc111111,
                 },
-              ]}>Very good quality多能显示2行-----------</Text>
+              ]}>{item.review}</Text>
 
-            {index != 0 ? (
-              <FlatList
-                style={{ marginTop: 15 }}
-                data={[1, 2, 3, 4, 5]}
-                renderItem={({ item }) => (
-                  <View style={{ marginHorizontal: size == 81 ? 1 : 3 }}>
-                    <Image
-                      source={{ uri: imagesUrl.shoes }}
-                      style={{ width: size, height: size, borderRadius: 6 }}
-                    />
-                  </View>
-                )}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              />
-            ) : null}
+            <FlatList
+              style={{ marginTop: 15 }}
+              data={item.images}
+              renderItem={({ item }) => (
+                <View style={{ marginHorizontal: size == 81 ? 1 : 3 }}>
+                  <Image
+                    source={{ uri: item }}
+                    style={{ width: size, height: size, borderRadius: 6 }}
+                  />
+                </View>
+              )}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
           </View>
         )}
       />
@@ -721,7 +733,6 @@ const CommonButton = ({
           marginEnd: 8,
           height: 38,
           width: 107,
-          paddingHorizontal: 19,
           justifyContent: 'center',
           alignItems: 'center'
         }}>
@@ -753,21 +764,21 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onS
     console.log("Index 11", cartItemIndex);
 
     if (cartItemIndex != -1) {
-      const index = color.data.findIndex((element) => (element.attirbutedID ===
-        color.data[cartItemIndex].attirbutedID));
-      console.log("Index 11", index);
+      // const index = color.data.findIndex((element) => (element.attirbutedID ===
+      //   color.data[cartItemIndex].attirbutedID));
+      // console.log("Index 11", index);
 
-      const sizes = color.data[index].att2.data
+      const sizes = color.data[cartItemIndex].att2.data
       const cartItemIndex1 = sizes.findIndex((element) => (element.isItemInCart));
       console.log("Index 11", cartItemIndex1);
 
       if (cartItemIndex1 != -1) {
-        const index1 = sizes.findIndex((element) => (element.attirbutedID ===
-          sizes[cartItemIndex1].attirbutedID));
-        setColorSize(color.data[index].attributeValue + " • " + sizes[index1].attributeValue)
+        // const index1 = sizes.findIndex((element) => (element.attirbutedID ===
+        //   sizes[cartItemIndex1].attirbutedID));
+        setColorSize(color.data[cartItemIndex].attributeValue + " • " + sizes[cartItemIndex1].attributeValue)
 
         // setSelecteItem(filter[index1].attributeID)
-        console.log("Index", index1);
+        console.log("Index", cartItemIndex1);
       }
     }
 
@@ -945,7 +956,7 @@ export const RatingView = ({ rating = 3.5, count = 5,
 
 const ShopView = ({ data, navigation, route }) => {
 
-  console.warn(data)
+  // console.warn(data)
 
   return (data && data.isSuccess ?
     <View
@@ -956,7 +967,7 @@ const ShopView = ({ data, navigation, route }) => {
         marginTop: 12,
       }}>
       <TouchableOpacity onPress={() => {
-        navigation.navigate(RouteNames.shopHomeScreen, {productId: route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'})
+        navigation.navigate(RouteNames.shopHomeScreen, { productId: route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7' })
 
       }}
         style={{

@@ -12,6 +12,7 @@ export const colors = {
   greyCCCCCC: '#CCCCCC',
   grey888888: '#888888',
   whiteF2F2F2: '#F2F2F2',
+  orangeEC407AL:'#EC407A',
   greyCECECE: '#CECECE',
   black666666: '#666666',
   orangeFDF1EC: '#FDF1EC',
