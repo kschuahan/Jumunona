@@ -35,6 +35,7 @@ export const AllCategoriesScreen = ({navigation}) => {
   const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] =
     useState<string>('');
   const [activeItemSubCategories, setActiveItemSubCategories] = useState();
+  const [rightSideCategories, setRightSideCategories] = useState<CommonModal>();
 
   const callLeftCategoryListAPI = () => {
     setLoading(true);
@@ -43,24 +44,33 @@ export const AllCategoriesScreen = ({navigation}) => {
       (response: any) => {
         if (response.isSuccess) {
           setLeftCategoryList(response);
-          console.log('bharat', response.data.data);
           // Assuming the first category is always available
           setActiveItemPrimaryCategory(response?.data.data[0]._id);
-          console.log('bharat', response?.data.data[0]._id);
-          setActiveItemSubCategories(response?.data.data[0].subCategories);
         }
+        setLoading(false);
       },
     );
-    setLoading(false);
+  };
+
+  const callRightSideCategoryListAPI = (id: string) => {
+    getAPICall(
+      categoriesModule.getSubCategories,
+      (response: any) => {
+        if (response.isSuccess) {
+          setRightSideCategories(response?.data);
+          console.log('bharat', response);
+        }
+      },
+      {categoryId: id},
+    );
   };
 
   useEffect(() => {
     callLeftCategoryListAPI();
+    callRightSideCategoryListAPI(activeItemPrimaryCategory);
   }, []);
 
-  return leftCategoryList &&
-    activeItemPrimaryCategory &&
-    activeItemSubCategories ? (
+  return leftCategoryList ? (
     <View style={[styles.container, {padding: 0}]}>
       <CustomHeader navigation={navigation} title={AppString.categories} />
       <View
@@ -174,6 +184,8 @@ export const AllCategoriesScreen = ({navigation}) => {
       </View>
     </View>
   ) : loading ? (
+    <ProgressView />
+  ) : (
     <RetryWhenErrorOccur
       data={leftCategoryList}
       onClick={() => {
@@ -183,8 +195,6 @@ export const AllCategoriesScreen = ({navigation}) => {
         callLeftCategoryListAPI();
       }}
     />
-  ) : (
-    <ProgressView />
   );
 };
 
