@@ -33,10 +33,11 @@ export const MyAddressesScreen = ({ navigation }) => {
     const isFocused = useIsFocused();
     const [loading, setLoading] = useState(false)
     const [actionLoading, setActionLoading] = useState(false)
-
     const [addressList, setAddressList] = useState()
     const [data, setData] = useState<CommonModal>()
     const [deletingAddressId, setDeletingAddressId] = useState('')
+    const [selectedAddress, setSelectedAddress] = useState<any>()
+
     useEffect(() => {
         setRefresh(!refresh)
     }, [isFocused])
@@ -45,6 +46,7 @@ export const MyAddressesScreen = ({ navigation }) => {
         getAddresses()
     }, [])
 
+    
     const getAddresses = () => {
         setLoading(true)
         getAPICall(AddressAPIs.getAddresses, (res: any) => {
@@ -58,6 +60,24 @@ export const MyAddressesScreen = ({ navigation }) => {
             setActionLoading(false)
         })
     }
+
+    const setDefaultAddress = () => {
+        if (selectedAddress && !selectedAddress.defaultAddress) {
+            setActionLoading(true)
+            postAPICall({
+             selectedAddress
+            },
+            AddressAPIs.addAddress, 
+            true,
+            (res: any) => {
+              console.warn(res.data.data)
+              getAddresses()
+            })
+        }
+      
+    }
+
+
 
     const deleteAddress = () => {
         setActionLoading(true)
@@ -123,11 +143,6 @@ export const MyAddressesScreen = ({ navigation }) => {
                         height: 78,
                         borderBlockColor: colors.whiteF7F7F7,
                     }}>
-
-
-
-
-
                 </View>
 
                 <CommonButton
