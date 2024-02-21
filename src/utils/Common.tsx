@@ -21,3 +21,16 @@ export const onShare = async (data: any = imagesUrl.shoes) => {
         Alert.alert(error.message);
     }
 };
+
+export const formatPhoneNumber = (phone: string) => {
+    let prefixLength = 4;
+    let suffixLength = 2;
+
+    let prefix = phone.substring(0, prefixLength);
+    let suffix = phone.slice(-suffixLength);
+    let nbStars = phone.length - (prefixLength + suffixLength);
+
+    let formattedPhone = prefix + "*".repeat(nbStars) + suffix;
+
+    return formattedPhone
+  }

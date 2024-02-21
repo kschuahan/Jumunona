@@ -67,6 +67,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         false,
         (res: any) => {
         console.warn(res.data.accessToken)
+        setLoading(false)
           if (res.isSuccess) {
             if (res.data.accessToken) {
             saveValue(AsyncStorageKeys.authToken, res.data.accessToken)
@@ -77,7 +78,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           } else {
             Alert.alert(res.data)
           }
-          setLoading(false)
+         
         }
       )
     }

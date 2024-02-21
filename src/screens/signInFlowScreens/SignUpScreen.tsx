@@ -107,7 +107,6 @@ const SignUpScreen: React.FC = ({ navigation, route }) => {
         }
       )
     }
-
   }
 
 
