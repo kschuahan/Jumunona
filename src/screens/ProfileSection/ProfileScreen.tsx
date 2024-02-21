@@ -33,20 +33,34 @@ import help from '../../../assets/Icons/Help.svg';
 import Team from '../../../assets/Icons/Team.svg';
 import Reviews from '../../../assets/Icons/Reviews.svg';
 import { getAPICall } from '../../Netowork/Apis';
-import { ProfileAPIs } from '../../Netowork/Constants';
+import { ProfileAPIs, reloadData } from '../../Netowork/Constants';
 import { CommonModal } from '../HomeScreen';
 import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
+import { localeData } from 'moment';
+import { useIsFocused } from '@react-navigation/native';
 
 const ProfileScreen = (props: any) => {
   const navigation = props.navigation
 
   const [data, setData] = useState<CommonModal>();
   const [loading, setLoading] = useState(false);
+  const isFocused = useIsFocused()
+
+
+  useEffect(() => {
+    if (reloadData.profileRefresh) {
+      setData(undefined)
+      reloadData.profileRefresh = false
+      callAPI()
+    }
+  }, [isFocused])
+
 
 
   useEffect(() => {
     callAPI()
   }, [])
+
 
   const callAPI = () => {
     setLoading(true)
@@ -443,7 +457,7 @@ const Profile = ({ data, onClick }) => {
           alignItems: 'center',
         }}>
         <Image
-          source={{ uri: imagesUrl.profile }}
+          source={{ uri: data.profileImage ? data.profileImage : imagesUrl.profile }}
           style={{ height: 70, width: 70, borderRadius: 35, marginStart: 9 }}
         />
         <View style={{ paddingHorizontal: 20, gap: 4 }}>

@@ -20,10 +20,11 @@ import ChevronFwdOutline from '../../../../assets/Icons/chevronForwardOutline.sv
 import { BackLogo, CustomHeader, LogoTitle, MenuLogo } from '../../../components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AsyncStorageKeys } from '../../../utils/AsyncStorage';
-import { ProfileAPIs } from '../../../Netowork/Constants';
+import { ProfileAPIs, reloadData } from '../../../Netowork/Constants';
 import { CommonModal } from '../../HomeScreen';
 import { getAPICall } from '../../../Netowork/Apis';
 import { ProgressView, RetryWhenErrorOccur } from '../../../components/Dialogs';
+import { useIsFocused } from '@react-navigation/native';
 
 export const SettingScreen = ({ navigation }) => {
   // useEffect(() => {
@@ -44,6 +45,17 @@ export const SettingScreen = ({ navigation }) => {
   useEffect(() => {
     callAPI()
   }, [])
+
+  const isFocused = useIsFocused()
+
+
+  useEffect(() => {
+    if (reloadData.profileRefresh) {
+      setData(undefined)
+      callAPI()
+    }
+  }, [isFocused])
+
 
   const callAPI = () => {
     setLoading(true)
@@ -223,7 +235,7 @@ const Profile = ({ data, onClick }) => {
                 marginEnd: 6.96,
               }}>
               <Image
-                source={{ uri: imagesUrl.profile }}
+                source={{ uri: data.profileImage ? data.profileImage : imagesUrl.profile }}
                 style={{ height: 60, width: 60, borderRadius: 35 }}
               />
               <View style={{ paddingHorizontal: 10, gap: 4 }}>

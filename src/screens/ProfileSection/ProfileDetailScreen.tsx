@@ -21,7 +21,7 @@ import { CenterProgressView, ProgressView, RetryWhenErrorOccur, UploadImage } fr
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { FileModal, cameraLaunch, selectFile } from '../../utils/FileUpload';
 import { getAPICall, postMultipartData } from '../../Netowork/Apis';
-import { ProfileAPIs } from '../../Netowork/Constants';
+import { ProfileAPIs, reloadData } from '../../Netowork/Constants';
 import { CommonModal } from '../HomeScreen';
 import { apiGenderOption, genderOptions } from './EditProfileDetailScreen';
 import { useIsFocused } from '@react-navigation/native';
@@ -52,7 +52,7 @@ const ProfileDetailScreen = ({ navigation }) => {
 
   const [updateProfilePic, setUpdateProfilePic] = useState(false)
   const [profileData, setProfileData] = useState<any>()
-  
+
   const [loading, setLoading] = useState(false);
   /***
        * this is for Camera, Gallery, And PDF response handler
@@ -63,17 +63,22 @@ const ProfileDetailScreen = ({ navigation }) => {
       const fileModel = new FileModal(response.fileName,
         "image",
         response.uri)
+      uploadProfilePic(fileModel)
       console.log(fileModel)
     }
   }
 
 
   const uploadProfilePic = (file: FileModal) => {
-    console.warn("hwehrwe")
     setLoading(true)
     postMultipartData(file, {}, ProfileAPIs.uploadProfilePic, true, (res: any) => {
       console.log("res,", res)
-      setLoading(false)
+      if (res.isSuccess) {
+        reloadData.profileRefresh = true
+        getProfile()
+      } else {
+        setLoading(false)
+      }
     }).catch((error: any) => {
       setLoading(false)
       console.log("error,", error)
@@ -94,22 +99,23 @@ const ProfileDetailScreen = ({ navigation }) => {
     setdataLoading(true)
     getAPICall(ProfileAPIs.getprofile, (res: any) => {
       setdataLoading(false)
-       if (res.isSuccess && res.data.data) {
+      if (res.isSuccess && res.data.data) {
 
-     
-          let gender = res.data.data.gender ?? ""
-          if (gender.length > 0) {
-            let index = apiGenderOption.findIndex(element => element == gender)
-            if (index >= 0 && index < genderOptions.length) {
-              res.data.data.gender = genderOptions[index]
-            } 
+
+        let gender = res.data.data.gender ?? ""
+        if (gender.length > 0) {
+          let index = apiGenderOption.findIndex(element => element == gender)
+          if (index >= 0 && index < genderOptions.length) {
+            res.data.data.gender = genderOptions[index]
           }
+        }
+        setLoading(false)
         setProfileData(res.data.data)
         setData(res)
-      } 
-     
-       
-     
+      }
+
+
+
       console.log("getProfile", res)
     })
   }
@@ -134,8 +140,8 @@ const ProfileDetailScreen = ({ navigation }) => {
             <TextWithIcon
               title={AppString.name}
               value={profileData.userName.toString().trim().length > 0 ? profileData.userName : AppString.add_name}
-              onClick={() => { 
-                navigation.navigate(RouteNames.editProfileDetailScreen, {profileData: profileData})
+              onClick={() => {
+                navigation.navigate(RouteNames.editProfileDetailScreen, { profileData: profileData })
               }}
             />
             <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
@@ -143,17 +149,17 @@ const ProfileDetailScreen = ({ navigation }) => {
             <TextWithIcon
               title={AppString.gender}
               value={profileData.gender.toString().trim().length > 0 ? profileData.gender : AppString.add_gender}
-              onClick={() => { 
-                navigation.navigate(RouteNames.editProfileDetailScreen, {profileData: profileData})
+              onClick={() => {
+                navigation.navigate(RouteNames.editProfileDetailScreen, { profileData: profileData })
               }}
             />
             <View style={{ height: 1, backgroundColor: colors.darkWhite }} />
 
             <TextWithIcon
               title={AppString.age}
-              value= {profileData.dob.toString().trim().length > 0 ? profileData.dob : AppString.add_dob}
-              onClick={() => { 
-                navigation.navigate(RouteNames.editProfileDetailScreen, {profileData: profileData})
+              value={profileData.dob.toString().trim().length > 0 ? profileData.dob : AppString.add_dob}
+              onClick={() => {
+                navigation.navigate(RouteNames.editProfileDetailScreen, { profileData: profileData })
               }}
             />
           </View>
@@ -236,29 +242,29 @@ const ProfileDetailScreen = ({ navigation }) => {
       )}
       <UploadImage isShow={updateProfilePic} camera={() => {
 
-        setTimeout(() => {
-          cameraLaunch(true, responseHandling)
-        }, 1000)
+        // setTimeout(() => {
+        cameraLaunch(true, responseHandling)
+        // }, 1000)
         setUpdateProfilePic(false)
 
       }} library={() => {
 
-        setTimeout(() => {
-          selectFile(true, responseHandling)
-        }, 1000)
+        // setTimeout(() => {
+        selectFile(true, responseHandling)
+        // }, 1000)
         setUpdateProfilePic(false)
 
       }} onCancel={() => {
         setUpdateProfilePic(false)
 
       }} />
-       <CenterProgressView isShow={loading} /> 
+      <CenterProgressView isShow={loading} />
     </View>
 
   );
 };
 
-const UserAvatar = ({data, onProfileClick }) => {
+const UserAvatar = ({ data, onProfileClick }) => {
   return (
     <View style={{ borderRadius: 13, backgroundColor: colors.white }}>
       <View style={[style.userAvatar]}>
@@ -268,7 +274,7 @@ const UserAvatar = ({data, onProfileClick }) => {
           }}
         >
           <Image
-            source={{ uri: imagesUrl.profile }}
+            source={{ uri: data.profileImage ? data.profileImage : imagesUrl.profile }}
             style={{ height: 111, width: 111, borderRadius: 56 }}
           />
         </TouchableOpacity>
@@ -283,7 +289,7 @@ const UserAvatar = ({data, onProfileClick }) => {
               color: colors.lightOrange,
             },
           ]}>
-           {data && data.userName ? data.userName : 'User name'}
+          {data && data.userName ? data.userName : 'User name'}
         </Text>
       </View>
     </View>

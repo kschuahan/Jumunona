@@ -10,7 +10,7 @@ import DatePicker from "react-native-date-picker";
 import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 import { postAPICall, putAPICall } from "../../Netowork/Apis";
-import { ProfileAPIs } from "../../Netowork/Constants";
+import { ProfileAPIs, reloadData } from "../../Netowork/Constants";
 import { CenterProgressView } from "../../components/Dialogs";
 import moment from "moment";
 
@@ -30,17 +30,16 @@ export const EditProfileDetailScreen = ({ navigation, route }) => {
             setName(profileData.userName)
             setDob(profileData.dob)
             setGender(profileData.gender)
-            let apiGender = genderOptions.findIndex(element => element == profileData.gender) 
+            let apiGender = genderOptions.findIndex(element => element == profileData.gender)
             if (apiGender >= 0 && apiGender < apiGenderOption.length) {
                 setApiGenderString(apiGenderOption[apiGender])
             }
             let momentObj = moment(profileData.dob, 'DD-MM-YYYY')
 
-            console.warn("dob", profileData.dob)
-            if (momentObj.toDate() ) {
-              
+            if (momentObj.toDate()) {
 
-               setDate(momentObj.toDate())
+
+                setDate(momentObj.toDate())
             }
         }
     }, []);
@@ -54,14 +53,13 @@ export const EditProfileDetailScreen = ({ navigation, route }) => {
     const [nameErr, setNameErr] = useState("")
     const [genderErr, setGenderErr] = useState("")
     const [dobErr, setDobErr] = useState("")
-    const [isLoading, setIsLoading] = useState(false)
+    const [loading, setIsLoading] = useState(false)
 
     const [apiGenderString, setApiGenderString] = useState("")
-   
+
 
     const updateProfile = () => {
         setIsLoading(true)
-        console.warn(apiGenderString)
         putAPICall(
             {
                 userName: name,
@@ -73,18 +71,19 @@ export const EditProfileDetailScreen = ({ navigation, route }) => {
             (res: any) => {
                 setIsLoading(false)
                 if (res.isSuccess) {
+                    reloadData.profileRefresh = true
                     Alert.alert("", res.data.message.toString(), [{
                         text: 'OK',
-                        onPress: () => {navigation.goBack()},
+                        onPress: () => { navigation.goBack() },
                         style: 'default',
-                      }])
+                    }])
                 } else {
                     Alert.alert("", res.data.toString())
                 }
             }
-        ).catch ( error =>
+        ).catch(error =>
             Alert.alert("", error.toString())
-         )
+        )
     }
 
     const validate = () => {
@@ -120,7 +119,6 @@ export const EditProfileDetailScreen = ({ navigation, route }) => {
                     }} />
                     <TouchableOpacity
                         onPress={() => {
-                            console.warn(open)
                             setOpen(true)
                         }}
                         style={style.dobText}
@@ -128,21 +126,21 @@ export const EditProfileDetailScreen = ({ navigation, route }) => {
                         <Text style={{ color: dob.trim().length > 0 ? colors.balc111111 : colors.grayC9C9C9 }}>
                             {dob.trim().length > 0 ? dob : AppString.add_dob}
                         </Text>
-                       
+
                     </TouchableOpacity>
                     {
-                            dobErr.length > 0
-                                ? <Text
-                                    style={{
-                                        color: colors.lightRed,
-                                        fontSize: 14,
-                                        fontWeight: '400',
-                                        paddingStart: 8
-                                    }}>
-                                    {dobErr}
-                                </Text>
-                                : null
-                        }
+                        dobErr.length > 0
+                            ? <Text
+                                style={{
+                                    color: colors.lightRed,
+                                    fontSize: 14,
+                                    fontWeight: '400',
+                                    paddingStart: 8
+                                }}>
+                                {dobErr}
+                            </Text>
+                            : null
+                    }
 
                     <Text style={{ color: colors.balc111111, fontSize: 16, fontWeight: "bold", paddingLeft: 8 }}>
                         {AppString.select_gender} :
@@ -153,7 +151,6 @@ export const EditProfileDetailScreen = ({ navigation, route }) => {
                                 <RadioOption isSelected={gender == it} text={it} onTap={() => {
                                     setGender(it)
                                     setApiGenderString(apiGenderOption[index])
-                                    console.warn(apiGenderString)
                                 }} />
                             )
                         }
@@ -176,7 +173,7 @@ export const EditProfileDetailScreen = ({ navigation, route }) => {
                 </View>
                 <TouchableOpacity
                     onPress={() => {
-                        if(validate()) {
+                        if (validate()) {
                             updateProfile()
                         }
                     }}
@@ -215,7 +212,7 @@ export const EditProfileDetailScreen = ({ navigation, route }) => {
                     setOpen(false)
                 }}
             />
-       <CenterProgressView isShow={loading} /> 
+            <CenterProgressView isShow={loading} />
         </View>
     )
 }

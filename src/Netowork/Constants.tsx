@@ -1,5 +1,9 @@
 import { localEnum } from './ApiEnum';
 
+export const reloadData = {
+  profileRefresh: false
+}
+
 export const BASE_URL = (type = localEnum.development) => {
   if (type == localEnum.development) {
     return apiUrls.development;
@@ -22,7 +26,7 @@ export const modules = {
   authModule: '/auth/',
   profile: "/app/profile/",
   cart: '/app/cart/',
-  review:'/app/reviews/'
+  review: '/app/reviews/'
 }
 
 export const otherModule = {
@@ -46,7 +50,7 @@ export const ProductAPIs = {
   removeFavourite: modules.productModule + 'removeFavoriteProduct',
   getShopsProduct: modules.productModule + 'getShopsProduct?productId=',
 
-  
+
 };
 
 export const AuthAPIs = {
@@ -78,5 +82,5 @@ export const CartAPIs = {
 
 export const ReviewApis = {
   getReviews: modules.review + 'getReviews?productId=',
-  
+
 }
