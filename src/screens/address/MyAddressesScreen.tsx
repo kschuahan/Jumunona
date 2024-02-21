@@ -18,203 +18,142 @@ import OrangeCheck from '../../../assets/Icons/CheckOrange.svg';
 import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 import HomeAddress from '../../../assets/Icons/HomeAddress.svg';
-import { DeleteAddress } from "../../components/Dialogs";
+import { CenterProgressView, DeleteAddress, ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs";
 import { useIsFocused } from "@react-navigation/native";
+import { getAPICall, postAPICall } from "../../Netowork/Apis";
+import { AddressAPIs } from "../../Netowork/Constants";
+import { CommonModal } from "../HomeScreen";
 let isEditedButton = false
-interface AddreessModal {
-    id: number;
-    type: String;
-    name: String;
-    mobile: String;
-    address: String;
-    isDefault: boolean;
-    reasion: string
-}
-let pos = 0;
-export const addressList: AddreessModal[] = [
-    {
-        id: 1,
-        type: 'home',
-        name: 'Nazir',
-        mobile: '18088008045',
-        address: 'Tianhe District, Guangzhou City, Room 5450, Area G1, Building 88',
-        isDefault: true,
-        reasion: 'Tajikistan Khujand'
-    },
-    {
-        id: 2,
-        type: 'work',
-        name: 'Nalive',
-        mobile: '18088008045',
-        address: '广东省广州市天河区 街道街道 路路路 88号栋楼小区g1区5450房',
-        isDefault: false,
-        reasion: 'Tajikistan Khujand'
-
-
-    },
-    {
-        id: 3,
-        type: 'work',
-        name: '李小龙',
-        mobile: '18088008045',
-        address: '广东省广州市天河区 街道街道 路路路 88号栋楼小区g1区5450房',
-        isDefault: false,
-        reasion: 'Tajikistan Khujand'
-
-
-    },
-    {
-        id: 4,
-        type: 'work',
-        name: '李小龙',
-        mobile: '18088008045',
-        address: '广东省广州市天河区 街道街道 路路路 88号栋楼小区g1区5450房',
-        isDefault: false,
-        reasion: 'Tajikistan Khujand'
-
-
-    },
-    {
-        id: 5,
-        type: 'work',
-        name: '李小龙',
-        mobile: '18088008045',
-        address: '广东省广州市天河区 街道街道 路路路 88号栋楼小区g1区5450房',
-        isDefault: false,
-        reasion: 'Tajikistan Khujand'
-
-
-    },
-    {
-        id: 6,
-        type: 'work',
-        name: '李小龙',
-        mobile: '18088008045',
-        address: '广东省广州市天河区 街道街道 路路路 88号栋楼小区g1区5450房',
-        isDefault: false,
-        reasion: 'Tajikistan Khujand'
-
-
-    },
-    {
-        id: 7,
-        type: 'work',
-        name: '李小龙',
-        mobile: '18088008045',
-        address: '广东省广州市天河区 街道街道 路路路 88号栋楼小区g1区5450房',
-        isDefault: false,
-        reasion: 'Tajikistan Khujand'
-
-
-    }
-]
 
 export const MyAddressesScreen = ({ navigation }) => {
 
     const [isEdited, setisEdited] = useState(false)
     const [refresh, setRefresh] = useState(false)
-    const [show, setShow] = useState(false)
+    const [showDeleteConfirmPopup, setShowDeleteConfirmPopup] = useState(false)
     const isFocused = useIsFocused();
+    const [loading, setLoading] = useState(false)
+    const [actionLoading, setActionLoading] = useState(false)
 
-
+    const [addressList, setAddressList] = useState()
+    const [data, setData] = useState<CommonModal>()
+    const [deletingAddressId, setDeletingAddressId] = useState('')
     useEffect(() => {
         setRefresh(!refresh)
     }, [isFocused])
 
     useEffect(() => {
-        navigation.setOptions({
-            headerTitle: () => <View style={{ marginBottom: -10 }}><LogoTitle title={AppString.my_addresses} /></View>,
-            headerRight: () => (
-                <TouchableOpacity onPress={() => {
-                    if (isEdited) {
-                        navigation.goBack()
-                    }
-                    isEditedButton = !isEditedButton
-                    setisEdited(!isEdited)
+        getAddresses()
+    }, [])
 
-                }} style={{ alignItems: 'center' }}>
-                    {isEdited ? <OrangeCheck /> : <EditIcon width={15} height={15} />}
-                </TouchableOpacity>
-            ),
+    const getAddresses = () => {
+        setLoading(true)
+        getAPICall(AddressAPIs.getAddresses, (res: any) => {
+            console.warn(res.data.data)
+            setData(res)
+            if (res?.isSuccess && res.data && res.data.data) {
+                console.warn(res.data.data)
+                setAddressList(res.data.data)
+            }
+            setLoading(false)
+            setActionLoading(false)
+        })
+    }
 
-            headerLeft: () => (
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                    style={{ alignItems: "flex-end", flexDirection: "column" }}>
-                    <ChevronBackOutlineIcon width={15} height={15} />
-                </TouchableOpacity>
-            ),
-        });
-    });
+    const deleteAddress = () => {
+        setActionLoading(true)
+      postAPICall({
+        addressIds: [deletingAddressId]
+      },
+      AddressAPIs.deleteAddress, 
+      true,
+      (res: any) => {
+        console.warn(res.data.data)
+        getAddresses()
+      })
+    }
 
-    return <View style={[styles.container, {padding: 0}]} >
-        <CustomHeader navigation={navigation} isEdited={isEdited} onRighButtonClick = { () => {
-             if (isEdited) {
+    return <View style={[styles.container, { padding: 0 }]} >
+        <CustomHeader navigation={navigation} isEdited={isEdited} onRighButtonClick={() => {
+            if (isEdited) {
                 navigation.goBack()
             }
             isEditedButton = !isEditedButton
             setisEdited(!isEdited)
         }} />
-        <View style ={ { paddingTop: 9, paddingHorizontal: 6, paddingBottom: 78 }}>
-        
-        <FlatList
-            showsVerticalScrollIndicator={false}
-            data={addressList}
-            renderItem={({ item, index }) =>
-                <AddressInflate item={item} onClick={(click: number) => {
-                    if (click == 1) {// edit address
-                        navigation.navigate(RouteNames.addAndEditpassword, { data: item, index: index })
-                    } else if (click == 2) {// Mark address as default
-                        for (let i = 0; i < addressList.length; i++) {
-                            addressList[i].isDefault = i == index
-                        }
-                        setRefresh(!refresh)
-                    } else {// delete addess
-                        pos = index
-                        setShow(true)
-                    }
 
-                }} />}
-        />
 
-        <View
-            style={{
-                backgroundColor: colors.white,
-                position: 'absolute',
-                bottom: 0,
-                width: Dimensions.get('window').width,
-                paddingVertical: 12,
-                paddingTop: 6,
-                paddingHorizontal: 10,
-                borderTopStartRadius: 13,
-                borderTopEndRadius: 13,
-                shadowColor: colors.black,
-                elevation: 10,
-                height: 78,
-                borderBlockColor: colors.whiteF7F7F7,
-            }}>
+        {data?.isSuccess && data.data && data.data.data ?
 
-            <CommonButton
-                onClick={() => {
-                    // setBuyShow(true);
-                    navigation.navigate(RouteNames.addAndEditpassword)
-                }}
+            <View style={{ paddingTop: 9, paddingHorizontal: 6, paddingBottom: 20, flex: 1 }}>
+
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={addressList}
+                    renderItem={({ item, index }) =>
+                        <AddressInflate item={item} onClick={(click: number) => {
+                            if (click == 1) {// edit address
+                                navigation.navigate(RouteNames.addAndEditpassword, { data: item, index: index })
+                            } else if (click == 2) {// Mark address as default
+                                for (let i = 0; i < addressList.length; i++) {
+                                    addressList[i].defaultAddress = i == index
+                                }
+                                setRefresh(!refresh)
+                            } else {
+                                // delete addess
+                                setDeletingAddressId(item._id)
+                                setShowDeleteConfirmPopup(true)
+                            }
+
+                        }} />}
+                />
+
+                <View
+                    style={{
+                        backgroundColor: colors.white,
+                        position: 'absolute',
+                        bottom: 0,
+                        width: Dimensions.get('window').width,
+                        paddingVertical: 12,
+                        paddingTop: 6,
+                        paddingHorizontal: 10,
+                        borderTopStartRadius: 13,
+                        borderTopEndRadius: 13,
+                        shadowColor: colors.black,
+                        elevation: 10,
+                        height: 78,
+                        borderBlockColor: colors.whiteF7F7F7,
+                    }}>
+
+
+
+
+
+                </View>
+
+                <CommonButton
+                    onClick={() => {
+                        // setBuyShow(true);
+                        navigation.navigate(RouteNames.addAndEditpassword)
+                    }}
+                />
+                <DeleteAddress isShow={showDeleteConfirmPopup} onCancel={() => {
+
+                    setShowDeleteConfirmPopup(false)
+                }} onConfirm={() => {
+                    deleteAddress()
+                    setShowDeleteConfirmPopup(false)
+
+                }} />
+
+
+            </View> :
+            loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+                setData(undefined)
+                getAddresses()
+            }}
             />
-
-
-
-        </View>
-
-        <DeleteAddress isShow={show} onCancel={() => {
-            setShow(false)
-        }} onConfirm={() => {
-            addressList.splice(pos, 1)
-            setShow(false)
-
-        }} />
-    </View>
+        }
+    <CenterProgressView isShow={actionLoading} />
     </View>
 }
 
@@ -267,14 +206,14 @@ const AddressInflate = ({ item, onClick }) => {
                 flexDirection: 'row',
                 alignItems: 'center',
             }}>
-                {item.type == 'home' ? <HomeAddress /> : <View style={{
+                {item.defaultAddress ? <HomeAddress /> : <View style={{
                     height: 32, width: 32, justifyContent: 'center',
                     alignItems: 'center', backgroundColor: colors.orangeFDF1EC, borderRadius: 16
                 }}>
                     <Text style={[styles.textStyle, {
                         color: colors.lightOrange,
                         fontWeight: 'bold', fontSize: 17
-                    }]}>{item.name.charAt(0)}</Text>
+                    }]}>{item.name.charAt(0).toUpperCase()}</Text>
                 </View>}
 
                 <View style={{
@@ -284,14 +223,14 @@ const AddressInflate = ({ item, onClick }) => {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.textStyle, {
                             color: colors.black121212,
-                            fontWeight: 'bold', fontSize: 17
+                            fontWeight: 'bold', fontSize: 17, textTransform: 'capitalize'
                         }]}>{item.name}</Text>
                         <Text style={[styles.textStyle, {
                             color: '#8F8F8F',
                             fontSize: 13, marginStart: 4
-                        }]}>{item.mobile}</Text>
+                        }]}>{item.phone}</Text>
 
-                        {item.isDefault ? <View style={{
+                        {item.defaultAddress ? <View style={{
                             borderRadius: 9,
                             borderColor: colors.lightOrange,
                             borderWidth: 0.5,
@@ -310,7 +249,7 @@ const AddressInflate = ({ item, onClick }) => {
                     <Text style={[styles.textStyle, {
                         color: '#3F3F3F',
                         fontSize: 15
-                    }]}>{item.address}</Text>
+                    }]}>{item.addressDetail} {" "} {item.city} {" "} {item.state} {" "} {item.country}</Text>
                 </View>
             </View>
             <TouchableOpacity onPress={() => { onClick(1) }}>
@@ -361,25 +300,25 @@ const RadioButtons = ({ isCheck = false, onClick }) => {
 
 const CustomHeader = ({ navigation, isEdited, onRighButtonClick }) => {
 
-    return ( <View
-         style={{
-             elevation: 2,
-             paddingHorizontal: 13,
-             paddingEnd: 12,
-             backgroundColor: colors.white,
-             borderTopEndRadius: 0,
-             borderTopStartRadius: 0,
-             paddingTop: Platform.OS == 'ios' ? 20 : 20,
-             paddingBottom: 5,
-             marginBottom: 4
-         }}>
-         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-             <BackLogo navigation={navigation} />
-             <LogoTitle title={AppString.my_addresses} />
-             <TouchableOpacity onPress={onRighButtonClick} style={{ alignItems: 'center' }}>
-                    {isEdited ? <OrangeCheck /> : <EditIcon width={15} height={15} />}
-                </TouchableOpacity>
-         </View>
-     </View>
+    return (<View
+        style={{
+            elevation: 2,
+            paddingHorizontal: 13,
+            paddingEnd: 12,
+            backgroundColor: colors.white,
+            borderTopEndRadius: 0,
+            borderTopStartRadius: 0,
+            paddingTop: Platform.OS == 'ios' ? 20 : 20,
+            paddingBottom: 5,
+            marginBottom: 4
+        }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <BackLogo navigation={navigation} />
+            <LogoTitle title={AppString.my_addresses} />
+            <TouchableOpacity onPress={onRighButtonClick} style={{ alignItems: 'center' }}>
+                {isEdited ? <OrangeCheck /> : <EditIcon width={15} height={15} />}
+            </TouchableOpacity>
+        </View>
+    </View>
     )
- }
+}

@@ -12,9 +12,11 @@ import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import SearchIcon from '../../../assets/Icons/searchIcon.svg';
 import { CustomHeader } from '../../components/Header';
+import { formatPhoneNumber } from '../../utils/Common';
 
 export const ViewMobileNumberScreen = ({ navigation, route }) => {
   const isMobile = route.params.isMobile;
+  const data = route.params.data;
   useEffect(() => {
     navigation.setOptions({
       headerTitle: isMobile ? RouteNames.viewPhoneNumber : AppString.mail,
@@ -63,14 +65,14 @@ export const ViewMobileNumberScreen = ({ navigation, route }) => {
                 marginTop: 21,
               },
             ]}>
-            {isMobile ? '150******50' : 'Valijon@gmail.com'}
+            {data}
           </Text>
 
           <TouchableOpacity
             onPress={() => {
               isMobile
-                ? navigation.navigate(RouteNames.changePhone)
-                : navigation.navigate(RouteNames.changeEmail);
+                ? navigation.replace(RouteNames.changePhone, {data: data})
+                : navigation.navigate(RouteNames.changeEmail, {data: data});
             }}
             style={[styles.loginButton, { marginTop: 59.05 }]}>
             <LinearGradient

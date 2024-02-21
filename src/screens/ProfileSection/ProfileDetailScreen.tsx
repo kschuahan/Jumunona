@@ -25,6 +25,7 @@ import { ProfileAPIs } from '../../Netowork/Constants';
 import { CommonModal } from '../HomeScreen';
 import { apiGenderOption, genderOptions } from './EditProfileDetailScreen';
 import { useIsFocused } from '@react-navigation/native';
+import { formatPhoneNumber } from '../../utils/Common';
 
 const ProfileDetailScreen = ({ navigation }) => {
   useEffect(() => {
@@ -114,6 +115,7 @@ const ProfileDetailScreen = ({ navigation }) => {
     })
   }
 
+
   return (
     <View style={[styles.container, { padding: 0 }]}>
       <CustomHeader navigation={navigation} title={AppString.profile} />
@@ -168,9 +170,9 @@ const ProfileDetailScreen = ({ navigation }) => {
             }}>
             <TextWithIcon
               title={AppString.number}
-              value={profileData.phone}
+              value={formatPhoneNumber(profileData.phone)}
               onClick={() => {
-                navigation.navigate(RouteNames.viewPhoneNumber, { isMobile: true });
+                navigation.navigate(RouteNames.viewPhoneNumber, { isMobile: true, data: profileData.phone });
               }}
             />
             <View style={{ height: 1, backgroundColor: colors.darkWhite }} />

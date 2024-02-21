@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { colors } from '../../utils/AppColors';
 import { AppString } from '../../utils/AppStrings';
@@ -17,8 +18,14 @@ import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import { fontFamily } from '../../utils/Fonts';
 import { CustomHeader } from '../../components/Header';
 import React from 'react';
+import { postAPICall } from '../../Netowork/Apis';
+import { AuthAPIs, ProfileAPIs } from '../../Netowork/Constants';
+import { AlertWithConirm, CenterProgressView } from '../../components/Dialogs';
 
-const ChangePhoneScreen = ({ navigation }) => {
+const ChangePhoneScreen = ({ navigation, route }) => {
+
+
+ const data = route.params.data;
   useEffect(() => {
     navigation.setOptions({
       headerTitle: AppString.change_phone_number,
@@ -39,13 +46,79 @@ const ChangePhoneScreen = ({ navigation }) => {
       ),
     });
   });
-  const [phone, setPhone] = useState('');
+
+  const [mobileErr, setMobileErr] = useState('');
+  const [otpErr, setOtpErr] = useState('');
+  const [loading, setLoading] = useState(false)
+  const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
 
+
+  const validate = () => {
+    var isValid = true
+    if (mobile.length < 10) {
+      setMobileErr("Enter valid mobile no.")
+      isValid = false
+      return isValid
+    } else {
+      setMobileErr('')
+    }
+    if (otp.length < 6) {
+      setOtpErr("Enter valid OTP.")
+      isValid = false
+      console.warn(otpErr)
+      return isValid
+    } else {
+      setOtpErr('')
+    }
+    return isValid
+  }
+
+  const SendOtp = () => {
+    if (mobile.length < 10 || isNaN(mobile)) {
+      setMobileErr("Enter valid mobile no.")
+    } else {
+      setMobileErr('')
+      setLoading(true)
+      postAPICall(
+        {
+          phoneNumber: '91' + mobile,
+          isRegister:true
+        },
+        AuthAPIs.sendOtp,
+        false,
+        (res: any) => {
+          Alert.alert(res.data.message ? res.data.message : res.data)
+          setLoading(false)
+        }
+      )
+    }
+  }
+
+  const chageMobile = () => {
+    setLoading(true)
+      postAPICall(
+        {
+        newNumber: "91" + mobile,
+        otp: otp,
+      }, 
+      ProfileAPIs.changePhoneNumber,
+      true,
+      (res: any) => {
+        if (res.isSuccess) {
+          setLoading(false)
+          AlertWithConirm("", res.data.message, () => {
+            navigation.goBack()
+          })
+        } else {
+          Alert.alert(res.data.message ? res.data.message : res.data.toString())
+        }
+      }
+      )
+  }
   return (
     <View style={[styles.container, { padding: 0 }]}>
       <CustomHeader navigation={navigation} title={AppString.change_phone_number} />
-
       <ScrollView>
         <View
           style={[
@@ -59,29 +132,42 @@ const ChangePhoneScreen = ({ navigation }) => {
             ]}>
             {AppString.enter_new_number}
           </Text>
+          <View style={{ marginBottom: 14 }}>
+            <View style={{ flexDirection: 'row' }}>
+              <LinearGradient
+                colors={['#ff7600', '#ffc500']}
+                start={{ x: 0.4, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={{
+                  width: '24%',
+                  height: 34,
+                  borderRadius: 24,
+                }}>
+                <Text style={style._992}>+992</Text>
+              </LinearGradient>
 
-          <View style={{ flexDirection: 'row', marginBottom: 14 }}>
-            <LinearGradient
-              colors={['#ff7600', '#ffc500']}
-              start={{ x: 0.4, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={{
-                width: '24%',
-                height: 34,
-                borderRadius: 24,
-              }}>
-              <Text style={style._992}>+992</Text>
-            </LinearGradient>
-
-            <TextInput
-              placeholder={AppString.enter_your_new_nubmer}
-              style={style.mobileTextInput}
-              value={phone}
-              onChangeText={text => {
-                setPhone(text);
-              }}></TextInput>
+              <TextInput
+                placeholder={AppString.enter_your_new_nubmer}
+                style={style.mobileTextInput}
+                value={mobile}
+                onChangeText={text => {
+                  setMobile(text);
+                }}></TextInput>
+            </View>
+            {
+              mobileErr.length > 0
+                ? <Text
+                  style={{
+                    color: colors.lightRed,
+                    fontSize: 14,
+                    fontWeight: '400',
+                    paddingStart: 8
+                  }}>
+                  {mobileErr}
+                </Text>
+                : null
+            }
           </View>
-
           <Text
             style={[
               styles.textStyle,
@@ -89,36 +175,57 @@ const ChangePhoneScreen = ({ navigation }) => {
             ]}>
             {AppString.confirmation_code}
           </Text>
-          <View style={{ flexDirection: 'row' }}>
-            <TextInput
-              placeholder={AppString.enter_new_number}
-              style={style.passwordTextInput}
-              value={otp}
-              onChangeText={text => {
-                setOtp(text);
-              }}></TextInput>
-            <TouchableOpacity
-              style={{
-                width: '35%',
-                height: 34,
-                paddingLeft: 8,
-                marginLeft: -30,
-                opacity: phone.length == 0 ? 0.5 : 1,
-              }}
-              onPress={() => { }}
-              disabled={phone.length == 0}>
-              <LinearGradient
-                colors={['#FE8C00', '#FC4A1A']}
-                start={{ x: 0.4, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={{ flex: 1, borderRadius: 24 }}>
-                <Text style={style._992}>{AppString.get_code}</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+          <View>
+            <View style={{ flexDirection: 'row' }}>
+              <TextInput
+                placeholder={AppString.enter_new_number}
+                style={style.passwordTextInput}
+                value={otp}
+                onChangeText={text => {
+                  setOtp(text);
+                }}></TextInput>
+              <TouchableOpacity
+                style={{
+                  width: '35%',
+                  height: 34,
+                  paddingLeft: 8,
+                  marginLeft: -30,
+                  opacity: mobile.length == 0 ? 0.5 : 1,
+                }}
+                onPress={() => { 
+                  SendOtp()
+                }}
+                disabled={mobile.length == 0}>
+                <LinearGradient
+                  colors={['#FE8C00', '#FC4A1A']}
+                  start={{ x: 0.4, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={{ flex: 1, borderRadius: 24 }}>
+                  <Text style={style._992}>{AppString.get_code}</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            {
+              otpErr.length > 0
+                ? <Text
+                  style={{
+                    color: colors.lightRed,
+                    fontSize: 14,
+                    fontWeight: '400',
+                    paddingStart: 8
+                  }}>
+                  {otpErr}
+                </Text>
+                : null
+            }
           </View>
         </View>
 
-        <TouchableOpacity onPress={() => { }} style={style.loginButton}>
+        <TouchableOpacity onPress={() => {
+            if (validate()) {
+              chageMobile()
+            }
+         }} style={style.loginButton}>
           <LinearGradient
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
@@ -131,6 +238,7 @@ const ChangePhoneScreen = ({ navigation }) => {
           </LinearGradient>
         </TouchableOpacity>
       </ScrollView>
+      <CenterProgressView isShow={loading} /> 
     </View>
   );
 };

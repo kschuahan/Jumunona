@@ -9,6 +9,7 @@ import {
   Image,
   ActivityIndicator,
   Platform,
+  Alert,
 } from 'react-native';
 import { styles } from '../utils/AppStyles';
 import { AppString } from '../utils/AppStrings';
@@ -937,3 +938,16 @@ export const ActivityIndicatorView = ({ tintColor = colors.lightOrange }) => {
     <ActivityIndicator size={"small"} style={{ alignSelf: 'center', justifyContent: "center", alignItems: "center", marginStart: -20, }} color={tintColor} />
   )
 }
+
+
+ 
+
+export const AlertWithConirm =(title = "", message, onConfirm) => {
+  return Alert.alert(title,
+    message,
+    [{
+      text: "OK",
+      onPress: (onConfirm),
+      style: 'default',
+    }])
+};

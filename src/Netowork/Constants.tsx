@@ -22,7 +22,8 @@ export const modules = {
   authModule: '/auth/',
   profile: "/app/profile/",
   cart: '/app/cart/',
-  review:'/app/reviews/'
+  review:'/app/reviews/',
+  address: '/app/address/'
 }
 
 export const otherModule = {
@@ -61,7 +62,8 @@ export const ProfileAPIs = {
   uploadProfilePic: modules.profile + "uploadProfileImage",
   getprofile: modules.profile + 'getProfile',
   updateProfile: modules.profile + "updateProfile",
-  deleteAccount: modules.profile + "delete"
+  deleteAccount: modules.profile + "delete",
+  changePhoneNumber: modules.profile + "changePhoneNumber"
 }
 
 export const CartAPIs = {
@@ -74,9 +76,14 @@ export const CartAPIs = {
   moveToFavorite: modules.cart + 'moveToFavorite'
 }
 
-
-
 export const ReviewApis = {
   getReviews: modules.review + 'getReviews?productId=',
-  
+}
+
+
+export const AddressAPIs = {
+  getAddresses: modules.address + 'getAddress',
+  addAddress: modules.address + 'addAddress',
+  getAddressDetail: modules.address + 'getAddressDeatils?addressId=',
+  deleteAddress: modules.address + "deleteAddress"
 }
