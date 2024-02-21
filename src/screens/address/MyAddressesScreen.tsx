@@ -50,10 +50,9 @@ export const MyAddressesScreen = ({ navigation }) => {
     const getAddresses = () => {
         setLoading(true)
         getAPICall(AddressAPIs.getAddresses, (res: any) => {
-            console.warn(res.data.data)
             setData(res)
             if (res?.isSuccess && res.data && res.data.data) {
-                console.warn(res.data.data)
+                // console.warn(res.data.data)
                 setAddressList(res.data.data)
             }
             setLoading(false)
@@ -87,7 +86,6 @@ export const MyAddressesScreen = ({ navigation }) => {
       AddressAPIs.deleteAddress, 
       true,
       (res: any) => {
-        console.warn(res.data.data)
         getAddresses()
       })
     }
@@ -109,6 +107,13 @@ export const MyAddressesScreen = ({ navigation }) => {
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={addressList}
+                    ListEmptyComponent={
+                        <Text style={[styles.textStyle, {
+                            color: colors.lightOrange,
+                            paddingVertical: 100,
+                            fontSize: 16, fontWeight: 'bold', textAlign: 'center'
+                          }]}>Нет сохраненного адреса</Text>
+                    }
                     renderItem={({ item, index }) =>
                         <AddressInflate item={item} onClick={(click: number) => {
                             if (click == 1) {// edit address
