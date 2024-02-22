@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RouteNames } from "../../utils/RouteNames";
 import { TouchableOpacity, View, ScrollView, Text, Image, FlatList, Dimensions } from "react-native";
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
@@ -17,6 +17,10 @@ import EditIcon from '../../../assets/Icons/EditWithoutBorder.svg';
 import PaymentIcon from '../../../assets/Icons/PaymentIcon.svg';
 import LinearGradient from "react-native-linear-gradient";
 import { DeliveryNotePopup } from "./DeliveryNotePopup";
+import { useIsFocused } from "@react-navigation/native";
+import { getAPICall } from "../../Netowork/Apis";
+import { CartAPIs, OrderAPI } from "../../Netowork/Constants";
+import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs";
 interface CartItemData {
     id: string;
     storeName: string;
@@ -55,43 +59,80 @@ const cartItemData: CartItemData[] = [
     },
 ];
 
-export const CartConfirmOrderScreen = ({ navigation }) => {
+export const CartConfirmOrderScreen = ({ navigation, route }) => {
     const [showNotePopup, setShowNotePopup] = useState(false)
+
+    const [data, setData] = useState<CommonModal>()
+    const [loading, setLoading] = useState(false)
+    const [mainLoading, setMainLoading] = useState(false)
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (isFocused) {
+            callAPI()
+        }
+
+    }, [isFocused])
+
+
+
+
+    // getting cart produccts
+    const callAPI = () => {
+        setMainLoading(true)
+        const ids = route.params.ids
+        let json = JSON.stringify(ids);
+        getAPICall(OrderAPI.placingOrder, (res: any) => {
+            setData(res)
+            setMainLoading(false)
+        }
+            , {
+                cartIds: json,
+            })
+    }
+
+
     return (
         <View style={[styles.container, { padding: 0 }]}>
             <CustomHeader navigation={navigation} title={AppString.placing_an_order} />
-            <ScrollView
-                style={{ paddingHorizontal: 6 }}
-            >
-                <AddressView onClick={() => {
-                    navigation.navigate(RouteNames.myAddress)
-                }} />
-                <FlatList
-                    data={cartItemData}
-                    scrollEnabled={false}
-                    keyExtractor={item => {
-                        return item.id;
-                    }}
-                    numColumns={1}
-                    renderItem={({ item, index }) => {
-                        return (
+            {data && data.data.data && data.isSuccess ? <View style={{ flex: 1 }}>
+                <ScrollView
+                    style={{ paddingHorizontal: 6 }}
+                >
+                    <AddressView data={data.data.data.defaultAddress} onClick={() => {
+                        navigation.navigate(RouteNames.myAddress)
+                    }} />
+                    <FlatList
+                        data={data.data.data.cartDetails}
+                        scrollEnabled={false}
+                        keyExtractor={item => {
+                            return item.shopId;
+                        }}
+                        numColumns={1}
+                        renderItem={({ item, index }) => {
+                            return (
 
-                            <CartItemListView check={item.radioButtonItem}
-                                navigation={navigation}
-                                items={item} onClick={() => {
-                                    navigation.push(RouteNames.product_detail)
-                                }}
-                                onShowNotePopup={() => {
-                                    setShowNotePopup(true)
-                                }}
-                            />
-                        );
-                    }}
-                />
-                <TotalView />
-                <PaymentGateway />
-            </ScrollView>
-            <BottomView navigation={navigation} />
+                                <CartItemListView check={item.radioButtonItem}
+                                    navigation={navigation}
+                                    items={item} onClick={() => {
+                                        navigation.push(RouteNames.product_detail)
+                                    }}
+                                    onShowNotePopup={() => {
+                                        setShowNotePopup(true)
+                                    }}
+                                />
+                            );
+                        }}
+                    />
+                    <TotalView data={data.data.data} />
+                    <PaymentGateway />
+                </ScrollView>
+                <BottomView data={data.data.data} navigation={navigation} />
+            </View> : mainLoading ? <ProgressView /> :
+                <RetryWhenErrorOccur data={data} onClick={() => {
+                    setData(undefined)
+                    callAPI()
+                }} />}
             <DeliveryNotePopup isShow={showNotePopup} onClose={() => {
                 setShowNotePopup(false)
             }} />
@@ -99,7 +140,7 @@ export const CartConfirmOrderScreen = ({ navigation }) => {
     )
 }
 
-const AddressView = ({ onClick }) => {
+const AddressView = ({ data, onClick }) => {
     return (
         <TouchableOpacity onPress={onClick}
             style={{
@@ -126,19 +167,22 @@ const AddressView = ({ onClick }) => {
                         fontFamily: fontFamily.bold,
                         fontWeight: 'bold',
                         fontSize: 17,
-                        color: colors.black14100D
+                        color: colors.black14100D,
+                        textTransform: 'capitalize'
+
                     }}
                 >
-                    Room 5505, Building G2, No. 88
+                    {data.addressDetail}
                 </Text>
                 <Text
                     style={{
                         fontFamily: fontFamily.regular,
                         fontSize: 14,
-                        color: colors.grayAAAAAA
+                        color: colors.grayAAAAAA,
+                        textTransform: 'capitalize'
                     }}
                 >
-                    Nazir 18080880808
+                    {data.name} {data.phone}
                 </Text>
             </View>
             <ChevronFwdOutline
@@ -155,6 +199,12 @@ const AddressView = ({ onClick }) => {
 }
 
 const CartItemListView = ({ check = true, items, navigation, onClick, onShowNotePopup }) => {
+
+    const totalPrice = useMemo(() => {
+        const price = items.products.reduce((accumulator: any, currentValue: any) => accumulator + (currentValue.price), 0)
+        return price;
+    }, [items]);
+
     return (
 
         <View
@@ -171,7 +221,7 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
                 style={{
                     flexDirection: "row",
                     paddingBottom: 9.5,
-                    alignItems:'center'
+                    alignItems: 'center'
                 }}
             >
                 <Image
@@ -185,7 +235,7 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
                         color: colors.black, fontSize: 16, fontWeight: 'bold',
                     }}
                 >
-                    店铺名称
+                    {items.shopName}
                 </Text>
 
 
@@ -245,14 +295,14 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
                                     color: colors.balc111111, fontSize: 14
                                 }}
                             >
-                                {AppString.note} 2{AppString.piece}:
+                                {AppString.note} {items.products.length}{AppString.piece}:
                             </Text>
                             <Text
                                 style={{
                                     color: colors.lightOrange, fontSize: 15, fontWeight: "bold"
                                 }}
                             >
-                                751c.
+                                {totalPrice}c.
                             </Text>
                         </View>
                     </View>
@@ -266,6 +316,15 @@ const CartItem = ({ item, check = false, onClick }) => {
 
     const [deliveryByTrain, setDeliveryByTrain] = useState(true)
 
+    const selectedValue = useMemo(() => {
+        const index = item.attr1.findIndex((element: any) => (element.isSelected))
+        return item.attr1[index];
+    }, [item]);
+    const selectedSizes = useMemo(() => {
+        const index = item.attr2.findIndex((element: any) => (element.isSelected))
+        return item.attr2[index];
+    }, [item]);
+
     return (
         <View>
             <TouchableOpacity
@@ -278,7 +337,7 @@ const CartItem = ({ item, check = false, onClick }) => {
                 }}>
 
                 <Image
-                    source={appIcons.shoeImageURL}
+                    source={item.productImage ? { uri: item.productImage } : appIcons.shoeImageURL}
                     style={{ width: 86, height: 86, borderRadius: 11, }}
                 />
                 <View
@@ -297,10 +356,11 @@ const CartItem = ({ item, check = false, onClick }) => {
                             }}
                         >
                             <Text style={{ fontSize: 14, fontWeight: '600', color: colors.balc111111, width: "80%", maxHeight: 30 }} numberOfLines={1}>
-                                若过度长的话只显示第一行
+                                {item.productName}
+
                             </Text>
                             <Text style={{ fontSize: 14, fontWeight: '400', color: colors.balc111111 }} numberOfLines={2}>
-                                368c.
+                                {item.price}c.
                             </Text>
                         </View>
 
@@ -313,10 +373,12 @@ const CartItem = ({ item, check = false, onClick }) => {
                             }}
                         >
                             <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, width: "80%", maxHeight: 30 }} numberOfLines={2}>
-                                Серый; Вали
+                                {selectedValue && selectedValue.attributeValue ? selectedValue.attributeValue : "white"}
+                                {"; "}
+                                {selectedSizes && selectedSizes.attributeValue ? selectedSizes.attributeValue : "M"}
                             </Text>
                             <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA }} numberOfLines={2}>
-                                x1
+                                x{item.quantity}
                             </Text>
                         </View>
                     </View>
@@ -346,10 +408,10 @@ const CartItem = ({ item, check = false, onClick }) => {
                     }}
                 >
                     <Text style={{ fontSize: 13, fontWeight: '400', color: colors.grayAAAAAA, }}>
-                        {AppString.byTrain} (28 - 34) {AppString.days}
+                        {AppString.byTrain} ({item.byTrainTime}) {AppString.days}
                     </Text>
                     <Text style={{ fontSize: 13, fontWeight: '400', color: colors.grayAAAAAA, }}>
-                        {AppString.byAir} (4 - 8) {AppString.days}
+                        {AppString.byAir} ({item.byAirTime}) {AppString.days}
                     </Text>
                 </View>
 
@@ -386,7 +448,7 @@ const CartItem = ({ item, check = false, onClick }) => {
                         }}
                     >
                         <Text style={{ fontSize: 13, fontWeight: '400', color: colors.balc111111, textAlign: "right" }}>
-                            15c.
+                            {item.byAirPrice}c.
                         </Text>
                         <RadioButtons
                             isCheck={!deliveryByTrain}
@@ -410,7 +472,7 @@ const RadioButtons = ({ isCheck = false, onClick }) => {
     )}</TouchableOpacity> : null
 }
 
-const TotalView = ({ }) => {
+const TotalView = ({ data }) => {
     return (
         <View
             style={{
@@ -450,7 +512,7 @@ const TotalView = ({ }) => {
                         color: colors.lightOrange,
                         marginLeft: 13
                     }}>
-                        {"   "}2
+                        {"   "}{data.priceDetails.totalProductQuantity}
                     </Text>
                     <Text style={{
                         fontSize: 16,
@@ -467,7 +529,7 @@ const TotalView = ({ }) => {
                     fontWeight: 'bold',
                     color: colors.balc111111,
                 }}>
-                    736с.
+                    {data.priceDetails.totalPrice}с.
                 </Text>
             </View>
             {/* Delivery Charges */}
@@ -535,7 +597,7 @@ const TotalView = ({ }) => {
                         fontWeight: 'bold',
                         color: colors.lightOrange,
                     }}>
-                        -33
+                        0
                     </Text>
                     <EditIcon />
                 </View>
@@ -563,7 +625,7 @@ const TotalView = ({ }) => {
                     fontWeight: 'bold',
                     color: colors.balc111111,
                 }}>
-                    718с.
+                    {data.priceDetails.totalPrice + 15}с.
                 </Text>
             </View>
         </View>
@@ -604,7 +666,7 @@ const PaymentGateway = () => {
     )
 }
 
-const BottomView = ({ navigation }) => {
+const BottomView = ({ data, navigation }) => {
     return <View
         style={{
             backgroundColor: colors.white,
@@ -614,17 +676,20 @@ const BottomView = ({ navigation }) => {
             justifyContent: 'space-between',
             paddingVertical: 12,
             paddingHorizontal: 10,
-            paddingTop:10,
+            paddingTop: 10,
             flexDirection: 'row',
             borderTopStartRadius: 13,
             borderTopEndRadius: 13,
             shadowColor: colors.black,
             elevation: 10,
-            height:80,
+            height: 80,
             borderBlockColor: colors.whiteF7F7F7,
             borderBottomWidth: 1
         }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom:8 }}>
+        <View style={{
+            flexDirection: 'row', justifyContent: 'center',
+            alignItems: 'center', marginBottom: 8
+        }}>
             <Text
                 style={{
                     fontSize: 14,
@@ -632,7 +697,7 @@ const BottomView = ({ navigation }) => {
                     fontFamily: '400',
                     marginHorizontal: 4
                 }}>
-                {AppString.total + ' 2шт:'}
+                {AppString.total + ` ${data.priceDetails.totalProductQuantity}шт:`}
             </Text>
             <Text
                 style={{
@@ -640,15 +705,15 @@ const BottomView = ({ navigation }) => {
                     color: colors.lightOrange,
                     fontWeight: 'bold',
                     marginStart: 4,
-                    marginBottom:6
-                }}>751<Text
-                style={{
-                    fontSize: 24,
-                    color: colors.lightOrange,
-                    fontWeight: '400',
-                    marginStart: 4,
-                    marginBottom:6
-                }}>с.</Text></Text>
+                    marginBottom: 6
+                }}>{data.priceDetails.totalPrice+15}<Text
+                    style={{
+                        fontSize: 24,
+                        color: colors.lightOrange,
+                        fontWeight: '400',
+                        marginStart: 4,
+                        marginBottom: 6
+                    }}>с.</Text></Text>
         </View>
         <CommonButton
             text={AppString.confirm}

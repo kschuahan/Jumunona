@@ -12,8 +12,8 @@ import { FileModal } from "../utils/FileUpload"
 export const getAPICall = async (endPoint: any, onResponse: any,
   item: any = undefined, authToken = true) => {
 
-    const token = await getValue(AsyncStorageKeys.authToken)
-    // console.log("token", token)
+  const token = await getValue(AsyncStorageKeys.authToken)
+  // console.log("token", token)
   await axiosClient(authToken ? token : undefined).get(endPoint, { params: item })
     .then((response: any) => {
 
@@ -32,8 +32,8 @@ export const getAPICall = async (endPoint: any, onResponse: any,
 export const postAPICall = async (item: any, endPoint: any, authToken = true, onResponse: any) => {
 
   // let token = await getValue(AsyncStorageKeys.authToken)
-   const token = await getValue(AsyncStorageKeys.authToken)
-   console.log("token", token)
+  const token = await getValue(AsyncStorageKeys.authToken)
+  console.log("token", token)
   await axiosClient(authToken ? token : undefined).post(endPoint, item).then((response: any) => {
     console.log("ffffff", response);
     apiSucessErrorHandling(response, (isSuccess: boolean) => {
@@ -51,8 +51,8 @@ export const postAPICall = async (item: any, endPoint: any, authToken = true, on
 export const putAPICall = async (item: any, endPoint: any, authToken = true, onResponse: any) => {
 
   // let token = await getValue(AsyncStorageKeys.authToken)
-   const token = await getValue(AsyncStorageKeys.authToken)
-   console.log("token", token)
+  const token = await getValue(AsyncStorageKeys.authToken)
+  console.log("token", token)
   await axiosClient(authToken ? token : undefined).put(endPoint, item).then((response: any) => {
     console.log("ffffff", response);
     apiSucessErrorHandling(response, (isSuccess: boolean) => {
@@ -70,8 +70,8 @@ export const putAPICall = async (item: any, endPoint: any, authToken = true, onR
 export const deleteAPICall = async (item: any, endPoint: any, authToken = true, onResponse: any) => {
 
   // let token = await getValue(AsyncStorageKeys.authToken)
-   const token = await getValue(AsyncStorageKeys.authToken)
-   console.log("token", token)
+  const token = await getValue(AsyncStorageKeys.authToken)
+  console.log("token", token)
   await axiosClient(authToken ? token : undefined).delete(endPoint, item).then((response: any) => {
     console.log("ffffff", response);
     apiSucessErrorHandling(response, (isSuccess: boolean) => {
