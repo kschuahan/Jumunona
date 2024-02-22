@@ -27,7 +27,8 @@ export const modules = {
   profile: "/app/profile/",
   cart: '/app/cart/',
   review: '/app/reviews/',
-  address: '/app/address/'
+  address: '/app/address/',
+  order:'/app/orders/'
 }
 
 export const otherModule = {
@@ -91,4 +92,10 @@ export const AddressAPIs = {
   addAddress: modules.address + 'addAddress',
   getAddressDetail: modules.address + 'getAddressDeatils?addressId=',
   deleteAddress: modules.address + "deleteAddress"
+}
+
+
+
+export const OrderAPI = {
+  placingOrder: modules.order + 'placingOrder'
 }

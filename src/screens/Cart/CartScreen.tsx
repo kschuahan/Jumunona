@@ -42,6 +42,7 @@ let row: Array<any> = [];
 let prevOpenedRow;
 let selectedShopIds: Array<string> = []
 let selectedProductIds: Array<string> = []
+let cartIds: Array<string> = []
 const CartScreen = ({ navigation }) => {
 
   const [isCheck, setIsCheck] = useState(false)
@@ -66,14 +67,14 @@ const CartScreen = ({ navigation }) => {
   useEffect(() => {
     //calculating price
     if (data && data?.isSuccess && data.data && data.data.data && data.data.data.cartDetails) {
-      setSum(data.data.data.cartDetails.reduce((accumulator:any, currentValue:any) => accumulator +
+      setSum(data.data.data.cartDetails.reduce((accumulator: any, currentValue: any) => accumulator +
         (getProdcutPrice(currentValue.products)), 0))
     }
-  }, [loading, refresh])
+  }, [mainLoading, refresh])
 
   function getProdcutPrice(items: any) {
 
-    return items.reduce((accumulator:any, currentValue:any) => accumulator + (currentValue.price), 0)
+    return items.reduce((accumulator: any, currentValue: any) => accumulator + (currentValue.price), 0)
   }
 
 
@@ -81,6 +82,7 @@ const CartScreen = ({ navigation }) => {
   const getCart = () => {
     setMainLoading(true)
     getAPICall(CartAPIs.getCart, (res: any) => {
+      cartIds = []
       setData(res)
       setMainLoading(false)
     }
@@ -101,6 +103,7 @@ const CartScreen = ({ navigation }) => {
             setLoading(false)
             selectedProductIds = []
             selectedShopIds = []
+
             setIsEditable(false)
             setIsCheck(false)
           }
@@ -372,7 +375,15 @@ const CartScreen = ({ navigation }) => {
                   onClick={() => {
                     // setBuyShow(true);
                     //navigation.navigate(RouteNames.myAddress)
-                    navigation.navigate(RouteNames.cartConfirmOrder)
+                    let ids = []
+                    if (selectedProductIds.length > 0) {
+                      ids = selectedProductIds
+                    } else {
+                      ids = cartIds
+                    }
+                    console.warn(ids);
+                    
+                    navigation.navigate(RouteNames.cartConfirmOrder, { ids: ids })
                   }}
                 />
               </View>
@@ -848,6 +859,13 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity, shouldRef
     const index = item.attr2.findIndex((element) => (element.isSelected))
     return item.attr2[index];
   }, [item]);
+
+  useEffect(() => {
+    if (!cartIds.includes(item.cartId)) {
+      cartIds.push(item.cartId)
+    }
+
+  }, [item])
 
   return <TouchableOpacity
     onPress={onClick}

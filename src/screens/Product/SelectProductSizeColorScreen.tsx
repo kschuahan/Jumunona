@@ -69,6 +69,9 @@ const SelectProductSizeColorScreen = ({ navigation,
       attr3_id: "078bb017-6bff-4462-b833-dee4db0e7f37",
     }
     hasSetSelectedColor = true
+    isCart = false
+    // console.warn(productDetail.productIncart);
+
   }, [])
 
 
@@ -289,8 +292,8 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
   useEffect(() => {
 
     const filter = colorOptions.data
-   // .filter(it => it.quantity > 0)
-   // console.log("Filter" + filter);
+    // .filter(it => it.quantity > 0)
+    // console.log("Filter" + filter);
 
     if (filter.length > 0) {
       const cartItemIndex = filter.findIndex((element) => (element.isItemInCart));
@@ -308,7 +311,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
         //   filter[0].attirbutedID));
         setSelectColorIndex(colorIndex != -1 ? colorIndex : -1)
 
-       // console.log("Index", index);
+        // console.log("Index", index);
       }
 
     }
@@ -483,12 +486,12 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
 
   useEffect(() => {
     const sizes = productDetail.data[selectedColorIndex != -1 ? selectedColorIndex : 0].att2.data
-   // const filter = sizes.filter(it => it.quantity > 0)
-   // console.log("Filter" + filter);
+    // const filter = sizes.filter(it => it.quantity > 0)
+    // console.log("Filter" + filter);
 
-     if (sizes.length > 0) {
+    if (sizes.length > 0) {
       const cartItemIndex = sizes.findIndex((element) => (element.isItemInCart));
-    //   console.log("Index", cartItemIndex);
+      //   console.log("Index", cartItemIndex);
 
       if (cartItemIndex != -1) {
         // const index = sizes.findIndex((element) => (element.attirbutedID ===
