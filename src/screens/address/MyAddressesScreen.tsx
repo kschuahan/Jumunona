@@ -40,12 +40,8 @@ export const MyAddressesScreen = ({ navigation }) => {
 
     useEffect(() => {
         setRefresh(!refresh)
-    }, [isFocused])
-
-    useEffect(() => {
         getAddresses()
-    }, [])
-
+    }, [isFocused])
     
     const getAddresses = () => {
         setLoading(true)
@@ -53,7 +49,7 @@ export const MyAddressesScreen = ({ navigation }) => {
             setData(res)
             if (res?.isSuccess && res.data && res.data.data) {
                 // console.warn(res.data.data)
-                setAddressList(res.data.data)
+                setAddressList(res.data.data ?? [])
             }
             setLoading(false)
             setActionLoading(false)
@@ -64,19 +60,25 @@ export const MyAddressesScreen = ({ navigation }) => {
         if (selectedAddress && !selectedAddress.defaultAddress) {
             setActionLoading(true)
             postAPICall({
-             selectedAddress
+                updateAdress: true,
+                city: selectedAddress.city,
+                state:selectedAddress.state,
+                country: selectedAddress.country,
+                address: selectedAddress.address,
+                defaultAddress: true,
+                name: selectedAddress.name,
+                phone: selectedAddress.phone,
+                addressId: selectedAddress._id
             },
             AddressAPIs.addAddress, 
             true,
             (res: any) => {
+                
               console.warn(res.data.data)
-              getAddresses()
+              getAddresses() 
             })
         }
-      
     }
-
-
 
     const deleteAddress = () => {
         setActionLoading(true)
@@ -93,7 +95,7 @@ export const MyAddressesScreen = ({ navigation }) => {
     return <View style={[styles.container, { padding: 0 }]} >
         <CustomHeader navigation={navigation} isEdited={isEdited} onRighButtonClick={() => {
             if (isEdited) {
-                navigation.goBack()
+                setDefaultAddress()
             }
             isEditedButton = !isEditedButton
             setisEdited(!isEdited)
@@ -115,12 +117,14 @@ export const MyAddressesScreen = ({ navigation }) => {
                           }]}>Нет сохраненного адреса</Text>
                     }
                     renderItem={({ item, index }) =>
-                        <AddressInflate item={item} onClick={(click: number) => {
+                        <AddressInflate item={item} defaultAdd= {selectedAddress != undefined ? selectedAddress : undefined} onClick={(click: number) => {
                             if (click == 1) {// edit address
-                                navigation.navigate(RouteNames.addAndEditpassword, { data: item, index: index })
-                            } else if (click == 2) {// Mark address as default
+                                navigation.navigate(RouteNames.addAndEditpassword, { address: item })
+                            } else if (click == 2) {
+                                // Mark address as default
                                 for (let i = 0; i < addressList.length; i++) {
-                                    addressList[i].defaultAddress = i == index
+                                   // addressList[i].defaultAddress = i == index
+                                    setSelectedAddress(addressList[index])
                                 }
                                 setRefresh(!refresh)
                             } else {
@@ -212,7 +216,7 @@ const CommonButton = ({
 };
 
 
-const AddressInflate = ({ item, onClick }) => {
+const AddressInflate = ({ item, defaultAdd, onClick }) => {
 
     return <View style={{
         padding: 10, borderRadius: 13, backgroundColor: 'white', marginBottom: 8
@@ -242,7 +246,7 @@ const AddressInflate = ({ item, onClick }) => {
                 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.textStyle, {
-                            color: colors.black121212,
+                             color: colors.black121212,
                             fontWeight: 'bold', fontSize: 17, textTransform: 'capitalize'
                         }]}>{item.name}</Text>
                         <Text style={[styles.textStyle, {
@@ -290,7 +294,7 @@ const AddressInflate = ({ item, onClick }) => {
                     flexDirection: 'row',
                     alignItems: 'center'
                 }}>
-                    <RadioButtons isCheck={item.isDefault} onClick={() => {
+                    <RadioButtons isCheck={defaultAdd ? item._id == defaultAdd._id : item.defaultAddress} onClick={() => {
                         onClick(2)
                     }}
                     />

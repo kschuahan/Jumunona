@@ -1,4 +1,4 @@
-import { Platform, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Alert, Platform, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { styles } from "../../utils/AppStyles"
 import { BackLogo, LogoTitle } from "../../components/Header";
 import { AppString } from "../../utils/AppStrings";
@@ -12,9 +12,10 @@ import ChevronFwdOutline from '../../../assets/Icons/chevronForwardOutline.svg';
 import DeleteAddressIcon from '../../../assets/Icons/DeleteAddress.svg';
 
 import LinearGradient from "react-native-linear-gradient";
-import { addressList } from "./MyAddressesScreen";
-import { DeleteAddress } from "../../components/Dialogs";
+import { AlertWithConirm, CenterProgressView, DeleteAddress } from "../../components/Dialogs";
 import { SelectResionalScreen } from "./SelectResionalScreen";
+import { postAPICall } from "../../Netowork/Apis";
+import { AddressAPIs } from "../../Netowork/Constants";
 
 
 
@@ -23,23 +24,91 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
 
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
-    const [resign, setResign] = useState('')
+    const [region, setRegion] = useState('')
     const [address, setAddress] = useState('')
     const [isDefault, setIsDefault] = useState(false)
     const [show, setShow] = useState(false)
-    const [showResion, setShowResion] = useState(false)
+    const [showRegion, setShowRegion] = useState(false)
+    const [addressId, setAddressId] = useState('')
+    const [loading, setLoading] = useState(false)
 
+    const [nameErr, setNameErr] = useState('')
+    const [addressErr, setAddressErr] = useState('')
+    const [phoneErr, setPhoneErr] = useState('')
+    const [regionErr, setRegionErr] = useState('')
+
+    
     useEffect(() => {
-        if (route.params) {
-            const data = route.params.data
+        if (route.params && route.params.address) {
+            const data = route.params.address
             setName(data.name)
-            setAddress(data.address)
-            setPhone(data.mobile)
-            setResign(data.reasion)
-
-            setIsDefault(data.isDefault)
+            setAddress(data.addressDetail)
+            console.warn(address)
+            setPhone(data.phone)
+            setRegion(data.state)
+            setIsDefault(data.defaultAddress)
+            setAddressId(data._id)
         }
     }, [])
+
+    const validate = () => {
+        let isValid = true
+        if (name.trim().length < 3) {
+            setNameErr("Enter valid name")
+            isValid = false
+        } else {
+            setNameErr("")
+        }
+        if (address.trim().length < 3) {
+            setAddressErr("Enter valid address")
+            isValid = false
+        } else {
+            setAddressErr("")
+        }
+        if (phone.trim().length < 8) {
+            setPhoneErr("Enter valid phone")
+            isValid = false
+        } else {
+            setPhoneErr("")
+        }
+        if (region.trim().length < 1) {
+            setRegionErr("Enter valid region")
+            isValid = false
+        } else {
+            setRegionErr("")
+        }
+        return isValid
+    }
+
+    const saveAddress = () => {
+
+        setLoading(true)
+        postAPICall({
+            updateAdress: addressId.length > 0,
+            city: "jaipur",
+            state: region,
+            country: "rajasthan",
+            address: address,
+            defaultAddress: isDefault,
+            name: name,
+            phone: phone,
+            addressId: addressId.length > 0 ? addressId : null
+        },
+            AddressAPIs.addAddress,
+            true,
+            (res: any) => {
+                setLoading(false)
+                if (res.isSuccess && res.data && res.data.message) {
+                    AlertWithConirm("", res.data.message, () => {
+                        navigation.goBack()
+                    })
+                } else {
+                    Alert.alert("", res.data.toString())
+                }
+                console.warn(res.data.data)
+               
+            })
+    }
 
     return (
     <View
@@ -51,18 +120,19 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
     
     <View style={{ paddingHorizontal: 16, paddingVertical: 13 }}>
 
-        <TextInputData value={name} onChangeText={(it: string) => {
+        <TextInputData value={name} errText={nameErr} onChangeText={(it: string) => {
             setName(it)
         }} />
-        <TextInputData placeholder="Номер телефона" value={phone} onChangeText={(it: string) => {
+        <TextInputData placeholder="Номер телефона" value={phone} errText={phoneErr} onChangeText={(it: string) => {
             setPhone(it)
         }} keybordType="numeric" />
-        <TextInputData placeholder="Регион" value={resign} onChangeText={(it: string) => {
-            setResign(it)
+        <TextInputData placeholder="Регион" value={region}  errText={regionErr} onChangeText={(it: string) => {
+            setRegion(it)
         }} isForward={true} OnClick={() => {
-            setShowResion(true)
+            console.warn("hello")
+            setShowRegion(true)
         }} />
-        <TextInputData ml={true} placeholder="Улица, дом, квартира" hight={75} value={address} onChangeText={(it: string) => {
+        <TextInputData ml={true} placeholder="Улица, дом, квартира" hight={75} value={address} errText={addressErr} onChangeText={(it: string) => {
             setAddress(it)
         }} />
 
@@ -80,27 +150,8 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
         </View>
 
         <CommonButton onClick={() => {
-            if (route.params) {
-                const index = route.params.index
-                addressList[index].address = address
-                addressList[index].mobile = phone
-                addressList[index].name = name
-                addressList[index].reasion = resign
-
-                addressList[index].isDefault = isDefault
-                navigation.goBack()
-            } else {
-                addressList.push({
-                    id: addressList.length + 1,
-                    type: 'work',
-                    name: name,
-                    mobile: phone,
-                    address: address,
-                    isDefault: isDefault,
-                    reasion: resign
-                })
-                navigation.goBack()
-
+            if (validate()) {
+                saveAddress()
             }
 
         }} />
@@ -113,14 +164,15 @@ export const EditAndAddAddressScreen = ({ navigation, route }) => {
             navigation.goBack()
 
         }} />
-        <SelectResionalScreen isShow={showResion} onClose={() => {
-            setShowResion(false)
+        <SelectResionalScreen isShow={showRegion} onClose={() => {
+            setShowRegion(false)
         }} onConfirm={(city: string) => {
-            setResign(city)
-            setShowResion(false)
+            setRegion(city)
+            setShowRegion(false)
 
         }} />
     </View>
+    <CenterProgressView isShow={loading} />
     </View>
     )
 }
@@ -159,10 +211,12 @@ const CommonButton = ({
 };
 
 
-const TextInputData = ({ placeholder = "Имя получателя", value = '',
+const TextInputData = ({ placeholder = "Имя получателя", value = '', errText = '',
     onChangeText, keybordType = "default", br = 23, mb = 13, ml = false, hight = 40, isForward = false, OnClick = () => { } }) => {
 
-    return <TouchableOpacity disabled={!isForward} onPress={OnClick}>
+    return <View style = {{marginBottom: mb}}>
+        
+        {!isForward ? 
         <TextInput
             value={value}
             placeholder={placeholder}
@@ -174,23 +228,59 @@ const TextInputData = ({ placeholder = "Имя получателя", value = ''
                 paddingHorizontal: 12,
                 paddingStart: keybordType == 'numeric' ? 50 : 12,
                 width: '100%', height: hight, borderRadius: br,
-                backgroundColor: 'white', marginBottom: mb,
+                backgroundColor: 'white',
                 fontSize: 16, color: colors.black,
                 textAlignVertical: ml ? 'top' : undefined,
                 paddingVertical: ml ? 10 : undefined
+                
             }}
             keyboardType={keybordType}
-        />
+        /> :
+        <TouchableOpacity  onPress={OnClick}  style = {{
+            paddingHorizontal: 12,
+            paddingStart:  12,
+            width: '100%', height: hight,
+            backgroundColor: 'white',
+            paddingVertical: ml ? 10 : undefined,
+            justifyContent: "center",
+            borderRadius: br,
+        }}>
+            <Text
+            style={{
+                fontSize: 16, color: (value.length > 0 ?  colors.black : "#979797"),               
+            }}
+            >
+                {value.length > 0 ? value : placeholder}
+            </Text>
+            </TouchableOpacity>
+        }
 
         {keybordType == 'numeric' ? <Text style={[styles.textStyle, {
             fontSize: 16, color: '#707070',
-            position: 'absolute', start: 10, top: 8
+            position: 'absolute', start: 10, top: 10
         }]}>+86</Text> : null}
         {isForward ? <ChevronFwdOutline width={10} height={10} style={{
             position: 'absolute', end: 10, top: 16
         }} /> : null}
+       
 
-    </TouchableOpacity>
+   
+    {
+              errText.length > 0
+               ? <Text
+              style={{
+                color: colors.lightRed,
+                fontSize: 14,
+                fontWeight: '400',
+                marginTop: 3,
+                marginStart: 10
+              }}>
+              {errText}
+            </Text>
+            : null
+
+            }
+    </View>
 }
 
 const CustomHeader = ({ navigation, route, onRighButtonClick }) => {
