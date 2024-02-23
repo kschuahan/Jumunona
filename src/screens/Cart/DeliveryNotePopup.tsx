@@ -9,7 +9,7 @@ import { useState } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import { AppString } from "../../utils/AppStrings";
 
-export const DeliveryNotePopup = ({ isShow = false, onClose }) => {
+export const DeliveryNotePopup = ({ isShow = false, onOKPress, onClose }) => {
 
     const [note, setNote] = useState("")
     return (
@@ -92,7 +92,7 @@ export const DeliveryNotePopup = ({ isShow = false, onClose }) => {
                             fontSize: 11, color: colors.grey
                             , position: 'absolute', bottom: 35, end: 12
                         }]}>{`${note.length}/200`}</Text></View>
-                    <OKButton onClick={onClose} />
+                    <OKButton onClick={() => {onOKPress(note)}} />
                 </Pressable>
             </Pressable >
         </Modal>

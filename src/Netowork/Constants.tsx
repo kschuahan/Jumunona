@@ -97,5 +97,7 @@ export const AddressAPIs = {
 
 
 export const OrderAPI = {
-  placingOrder: modules.order + 'placingOrder'
+  placingOrder: modules.order + 'placingOrder',
+  createOrder: modules.order + 'createOrders'
+  
 }

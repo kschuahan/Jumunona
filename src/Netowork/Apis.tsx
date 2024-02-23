@@ -43,6 +43,7 @@ export const postAPICall = async (item: any, endPoint: any, authToken = true, on
   }).catch((error: any) => {
     apiErrorHandling(error, ((message: any) => {
       console.log("suc error", error.message);
+      console.log("ererwerwerwe")
       onResponse({ success: false, data: message })
     }))
   })

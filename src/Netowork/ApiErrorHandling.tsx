@@ -73,25 +73,12 @@ export const apiSucessErrorHandling = (response: any, onSucess: any, isToast = t
     try {
         if (response.data != undefined) {
             if (response.data.data != undefined) {
-
                 onSucess(true)
-
-                // switch (response.data.status) {
-                //     case "ERROR": {
-                //         message = response.data.message
-                //         onSucess(false)
-                //         break
-                //     }
-                //     case "OK": {
-                //         if (isToast) {
-                //             // notifyMessage(response.data.message)
-                //         }
-                //         break
-                //     }
-                // }
             } else {
                 if (response.status == 200) {
-                    message = response.data.message
+                    if (response.data.message) {
+                     message = response.data.message
+                    }
                     onSucess(true)
                 } else {
                     message = response.statusText

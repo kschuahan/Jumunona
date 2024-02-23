@@ -25,7 +25,7 @@ import { AddressAPIs } from "../../Netowork/Constants";
 import { CommonModal } from "../HomeScreen";
 let isEditedButton = false
 
-export const MyAddressesScreen = ({ navigation }) => {
+export const MyAddressesScreen = ({ navigation, route }) => {
 
     const [isEdited, setisEdited] = useState(false)
     const [refresh, setRefresh] = useState(false)
@@ -37,7 +37,7 @@ export const MyAddressesScreen = ({ navigation }) => {
     const [data, setData] = useState<CommonModal>()
     const [deletingAddressId, setDeletingAddressId] = useState('')
     const [selectedAddress, setSelectedAddress] = useState<any>()
-
+    const isFromCart = route.params && route.params.isFromCart ? route.params.isFromCart : false
     useEffect(() => {
         setRefresh(!refresh)
         getAddresses()
@@ -117,7 +117,10 @@ export const MyAddressesScreen = ({ navigation }) => {
                           }]}>Нет сохраненного адреса</Text>
                     }
                     renderItem={({ item, index }) =>
-                        <AddressInflate item={item} defaultAdd= {selectedAddress != undefined ? selectedAddress : undefined} onClick={(click: number) => {
+                        <AddressInflate item={item} defaultAdd= {selectedAddress != undefined ? selectedAddress : undefined} isFromCart={isFromCart} onSelectAddress={() => {
+                            route.params.onChangeAddress(item)
+                            navigation.goBack()
+                        }} onClick={(click: number) => {
                             if (click == 1) {// edit address
                                 navigation.navigate(RouteNames.addAndEditpassword, { address: item })
                             } else if (click == 2) {
@@ -216,16 +219,19 @@ const CommonButton = ({
 };
 
 
-const AddressInflate = ({ item, defaultAdd, onClick }) => {
+const AddressInflate = ({ item, defaultAdd, isFromCart, onSelectAddress, onClick,  }) => {
 
+    console.warn(isFromCart)
     return <View style={{
         padding: 10, borderRadius: 13, backgroundColor: 'white', marginBottom: 8
     }}>
-        <TouchableOpacity disabled={true} style={{
+        <TouchableOpacity disabled={!isFromCart} style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-        }}>
+        }}
+        onPress={onSelectAddress}
+        >
             <View style={{
                 flexDirection: 'row',
                 alignItems: 'center',

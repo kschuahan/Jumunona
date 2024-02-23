@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { RouteNames } from "../../utils/RouteNames";
-import { TouchableOpacity, View, ScrollView, Text, Image, FlatList, Dimensions } from "react-native";
+import { TouchableOpacity, View, ScrollView, Text, Image, FlatList, Dimensions, Alert } from "react-native";
 import EllipsisHorizontal from '../../../assets/Icons/ellipsis-horizontal.svg';
 import ChevronBackOutline from '../../../assets/Icons/chevronBackOutline.svg';
 import PinDrop from '../../../assets/Icons/PinDrop.svg';
@@ -18,46 +18,18 @@ import PaymentIcon from '../../../assets/Icons/PaymentIcon.svg';
 import LinearGradient from "react-native-linear-gradient";
 import { DeliveryNotePopup } from "./DeliveryNotePopup";
 import { useIsFocused } from "@react-navigation/native";
-import { getAPICall } from "../../Netowork/Apis";
+import { getAPICall, postAPICall } from "../../Netowork/Apis";
 import { CartAPIs, OrderAPI } from "../../Netowork/Constants";
-import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs";
-interface CartItemData {
-    id: string;
-    storeName: string;
-    articleName: string;
-    articleColor: string;
-    articleSize: string;
-    imageURL: string;
-    price: number;
-    quantity: number;
-    radioButtonStore: boolean;
-    radioButtonItem: boolean;
-    products: Array<ProductItemData>
+import { CenterProgressView, ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs";
+import { PaymentWebView } from "./PaymentConfirmation";
+interface CartAPIModel {
+    cartId: string,
+    note: string,
+    byAir:boolean
+    byTrain: Boolean
 }
-
-
-interface ProductItemData {
-    id: number;
-    price: number;
-    radioButtonItem: boolean;
-}
-
-
-const cartItemData: CartItemData[] = [
-    {
-        id: '1',
-        storeName: '店铺名称',
-        articleName: '若过度长的话只显示第一行',
-        articleColor: 'White',
-        articleSize: 'M',
-        imageURL: appIcons.shoeImageURL,
-        price: 999,
-        quantity: 1,
-        radioButtonStore: true,
-        radioButtonItem: false,
-        products: [{ id: 1, price: 230, radioButtonItem: true }, { id: 2, price: 900, radioButtonItem: true }]
-    },
-];
+let cartAPIModel: CartAPIModel[] = []
+let addingNoteForCart: any[] = []
 
 export const CartConfirmOrderScreen = ({ navigation, route }) => {
     const [showNotePopup, setShowNotePopup] = useState(false)
@@ -66,31 +38,71 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
     const [loading, setLoading] = useState(false)
     const [mainLoading, setMainLoading] = useState(false)
     const isFocused = useIsFocused();
-
+    const [address, setAddress] = useState<any>()
+    const [showPaymentPopup, setShowPaymentPopup] = useState(false)
+    const [htmlData, setHtmlData] = useState('')
     useEffect(() => {
-        if (isFocused) {
-            callAPI()
-        }
+        callAPI()
+    }, [])
 
-    }, [isFocused])
-
-
-
+    const onChangeAddress = (data: any) => {
+        setAddress(data)
+      };
 
     // getting cart produccts
     const callAPI = () => {
         setMainLoading(true)
         const ids = route.params.ids
-        let json = JSON.stringify(ids);
-        getAPICall(OrderAPI.placingOrder, (res: any) => {
+
+        postAPICall({
+            cartIds: ids,
+        }, OrderAPI.placingOrder, true, (res: any) => {
+           
+            if (res.data && res.data.data && res.data.data.cartDetails) {
+                setAddress(res.data.data.defaultAddress)
+                let cartDetails = res.data.data.cartDetails
+                cartDetails.forEach((it: any) => {
+                    let array = it.products.map((it: any) => {
+                        return (
+                            {
+                                cartId: it.cartId,
+                                note: '',
+                                byAir: false,
+                                byTrain: true
+                            }
+                        )
+                    }
+                    )
+                    cartAPIModel = [...cartAPIModel, ...array]
+                })
+            }
             setData(res)
             setMainLoading(false)
         }
-            , {
-                cartIds: json,
-            })
+        )
     }
 
+    const createOrder = () => {
+        setLoading(true)
+        postAPICall({
+                addressId : address._id,
+                jCoinsUsed   :  0,
+                cartIds: cartAPIModel
+        },
+        OrderAPI.createOrder,
+        true,
+        (res: any) => {
+            setLoading(false)
+            // console.warn(res.data.data)
+            if (res.isSuccess && res.data.data) {
+                setHtmlData(res.data.data)
+                setShowPaymentPopup(true)
+
+            } else {
+                Alert.alert(res.data)
+            }
+        })
+    }
 
     return (
         <View style={[styles.container, { padding: 0 }]}>
@@ -99,8 +111,9 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                 <ScrollView
                     style={{ paddingHorizontal: 6 }}
                 >
-                    <AddressView data={data.data.data.defaultAddress} onClick={() => {
-                        navigation.navigate(RouteNames.myAddress)
+                    <AddressView data={address} onClick={() => {
+                        isSelectingAddress = true
+                        navigation.navigate(RouteNames.myAddress, {isFromCart: true, onChangeAddress: onChangeAddress})
                     }} />
                     <FlatList
                         data={data.data.data.cartDetails}
@@ -127,15 +140,31 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                     <TotalView data={data.data.data} />
                     <PaymentGateway />
                 </ScrollView>
-                <BottomView data={data.data.data} navigation={navigation} />
+                <BottomView data={data.data.data} onCreateOrder = { () => {
+                    createOrder()
+                }} />
             </View> : mainLoading ? <ProgressView /> :
                 <RetryWhenErrorOccur data={data} onClick={() => {
                     setData(undefined)
                     callAPI()
                 }} />}
-            <DeliveryNotePopup isShow={showNotePopup} onClose={() => {
+            <DeliveryNotePopup isShow={showNotePopup} onOKPress={(text: string) => {
+                cartAPIModel.forEach((it, index) => {
+                    if (addingNoteForCart.indexOf(it.cartId) > -1) {
+                        
+                        cartAPIModel[index].note = text
+                    }
+                })
+                setShowNotePopup(false)
+                console.warn(cartAPIModel)
+
+            }}  onClose={() => {
                 setShowNotePopup(false)
             }} />
+            <PaymentWebView isShow={showPaymentPopup} data={htmlData} onClick={() => {
+                setShowPaymentPopup(false)
+            }} />
+            <CenterProgressView isShow={loading} />
         </View>
     )
 }
@@ -273,7 +302,11 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
                                     alignItems: "center",
                                     gap: 6
                                 }}
-                                onPress={onShowNotePopup}
+                                onPress={ () => {
+                                    addingNoteForCart = items.products.map((it: any) => it.cartId)
+                                    console.warn(addingNoteForCart)
+                                    onShowNotePopup()
+                                }}
                             >
                                 <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, }} numberOfLines={2}>
                                     {AppString.no}
@@ -436,6 +469,12 @@ const CartItem = ({ item, check = false, onClick }) => {
                         <RadioButtons isCheck={deliveryByTrain} onClick={() => {
                             if (!deliveryByTrain) {
                                 setDeliveryByTrain(true)
+                               let index = cartAPIModel.findIndex(it => it.cartId == item.cartId)
+                                console.warn(index)
+                                if (index > -1) {
+                                    cartAPIModel[index].byAir = false
+                                    cartAPIModel[index].byTrain = true
+                                }
                             }
                         }} />
                     </View>
@@ -455,6 +494,11 @@ const CartItem = ({ item, check = false, onClick }) => {
                             onClick={() => {
                                 if (deliveryByTrain) {
                                     setDeliveryByTrain(false)
+                                    let index = cartAPIModel.findIndex(it => it.cartId == item.cartId)
+                                    if (index > -1) {
+                                        cartAPIModel[index].byAir = true
+                                        cartAPIModel[index].byTrain = false
+                                    }
                                 }
                             }} />
                     </View>
@@ -666,7 +710,7 @@ const PaymentGateway = () => {
     )
 }
 
-const BottomView = ({ data, navigation }) => {
+const BottomView = ({ data, onCreateOrder }) => {
     return <View
         style={{
             backgroundColor: colors.white,
@@ -706,7 +750,7 @@ const BottomView = ({ data, navigation }) => {
                     fontWeight: 'bold',
                     marginStart: 4,
                     marginBottom: 6
-                }}>{data.priceDetails.totalPrice+15}<Text
+                }}>{data.priceDetails.totalPrice + 15}<Text
                     style={{
                         fontSize: 24,
                         color: colors.lightOrange,
@@ -717,9 +761,7 @@ const BottomView = ({ data, navigation }) => {
         </View>
         <CommonButton
             text={AppString.confirm}
-            onClick={() => {
-                navigation.navigate(RouteNames.cartConfirmOrder)
-            }}
+            onClick={onCreateOrder}
         />
 
     </View>
