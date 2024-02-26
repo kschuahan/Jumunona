@@ -44,7 +44,7 @@ export const PaymentWebView = ({ isShow = false, data, onClick }) => {
     };
 
     const onStateChange = (state: any) => {
-        console.log(state);
+        console.log("dd",state);
         if (state.url.includes(cancelUrl)) {
             onClick()
             //Alert.alert("Payment Error...")
@@ -100,7 +100,11 @@ export const PaymentWebView = ({ isShow = false, data, onClick }) => {
                 
                 onNavigationStateChange={onStateChange}
                 startInLoadingState={true}
-
+                onMessage={event => {
+                    console.log(event.nativeEvent.data);
+                    
+                    //alert(event.nativeEvent.data);
+                  }}
                 renderLoading={() => <ActivityIndicator
                     style={{
                         position: 'absolute', left: diamentions.width * 0.12,
