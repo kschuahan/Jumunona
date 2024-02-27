@@ -25,31 +25,36 @@ const basicData = [
     {
         name: "Имя",
         value: "",
-        unit: ""
+        unit: "",
+        hint: 'Введите прозвище/отношение/имя роли'
     },
     {
         name: "Пол",
         value: AppString.male,
-        unit: ""
+        unit: "",
+        hint: 'Пожалуйста, выберите'
     },
     {
         name: "Возраст",
         value: "1995",
-        unit: ""
+        unit: "",
+        hint: 'Пожалуйста, выберите'
     },
     {
         name: "Рост",
         value: "",
-        unit: "CM"
+        unit: "CM",
+        hint: 'Пожалуйста, введите рост'
     },
     {
         name: "Вес",
         value: "",
-        unit: "КГ"
+        unit: "КГ",
+        hint: 'Пожалуйста, введите вес'
     },
 ]
 
-let selectedBodyData: { name: string; image: string; value: string; }[] = []
+let selectedBodyData: {type: string; name: string; image: string; value: string; }[] = []
 
 export const EditBodyDataScreen = ({ navigation }) => {
 
@@ -68,14 +73,15 @@ export const EditBodyDataScreen = ({ navigation }) => {
             (res: CommonModal) => {
                 if (res.isSuccess && res.data && res.data.data) {
                     setBodyData(res.data.data)
-                    selectedBodyData = res.data.data.map (it => { 
-                    return {
-                        name: it.type.toString() ?? '',
-                        image: '',
-                        value: ''
-                    }
-                        
-                    }) 
+                    selectedBodyData = res.data.data.map(it => {
+                        return {
+                            type:it.bodyMeasurement.toString() ?? '',
+                            name: it.type.toString() ?? '',
+                            image: '',
+                            value: ''
+                        }
+
+                    })
                 }
                 setData(res)
                 setLoading(false)
@@ -84,34 +90,28 @@ export const EditBodyDataScreen = ({ navigation }) => {
     }
 
     const validate = () => {
-        console.warn(basicData)
         let isValid = true
-        basicData.forEach( it => {
-          if (isValid) {
-            if (it.value.trim().length == 0) {
-                isValid = false
-                Alert.alert("", `Please enter ${it.name} value`)
-                return false
-            } else {
-                if ((it.name == "Рост" || it.name == "Вес" ) && !isNaN(it.value)) {
+        basicData.forEach(it => {
+            if (isValid) {
+                if (it.value.toString().trim().length == 0) {
                     isValid = false
                     Alert.alert("", `Please enter ${it.name} value`)
                     return false
                 }
             }
-        }
         })
-        selectedBodyData.forEach( it => {
-            if (it.image.length == 0  && isValid) {
-                isValid = false
-                Alert.alert("", `Please select image for ${it.name}`)
-                return false
-            }
-            if (!isNaN(it.value)   && isValid) {
-                isValid = false
-                Alert.alert("", `Please enter ${it.name} value`)
-                return false
-            
+        selectedBodyData.forEach(it => {
+            if (isValid) {
+                if (it.image.length == 0) {
+                    isValid = false
+                    Alert.alert("", `Please select image for ${it.type}`)
+                    return false
+                }
+                if (isNaN(it.value)) {
+                    isValid = false
+                    Alert.alert("", `Please enter ${it.type} value`)
+                    return false
+                }
             }
         })
         return isValid
@@ -125,8 +125,9 @@ export const EditBodyDataScreen = ({ navigation }) => {
             true,
             (res: any) => {
                 setOverlayLoading(false)
-
-
+                if (res.isSuccess) {
+                    navigation.goBack()
+                }
             }
         )
     }
@@ -135,9 +136,9 @@ export const EditBodyDataScreen = ({ navigation }) => {
         return {
             name: basicData[0].value,
             gender: basicData[1].value,
-            age:  basicData[2].value,
-            height:  basicData[3].value,
-            weight:  basicData[4].value,
+            age: basicData[2].value,
+            height: basicData[3].value,
+            weight: basicData[4].value,
             bodyMeasurment: selectedBodyData
         }
     }
@@ -163,13 +164,16 @@ export const EditBodyDataScreen = ({ navigation }) => {
                     >
                         {AppString.basic_data}
                     </Text>
-                    <BasicDataFlatList/>
+                    <BasicDataFlatList />
                     <Text
                         style={[styles.textStyle, { color: "#14100D", fontWeight: "500", fontSize: 17, marginHorizontal: 10, marginBottom: 6, marginTop: 22 }]}
                     >
                         {AppString.please_fill_body_info}
                     </Text>
-                    <BodyInforView bodyData={bodyData} onDetailClick={() => { setAddRoleShow(true) }} />
+                    <View style={{ paddingBottom: 100 }}>
+                        <BodyInforView bodyData={bodyData} onDetailClick={() => { setAddRoleShow(true) }} />
+
+                    </View>
                 </ScrollView>
                 :
                 loading ?
@@ -181,11 +185,13 @@ export const EditBodyDataScreen = ({ navigation }) => {
 
                     }} />
             }
-                {data?.isSuccess && data.data && data.data.data ?
-            <BottomButton onClick={() => { if (validate()) {
-                addBodyData()
-            }} } /> : null }
-         
+            {data?.isSuccess && data.data && data.data.data ?
+                <BottomButton onClick={() => {
+                    if (validate()) {
+                        addBodyData()
+                    }
+                }} /> : null}
+
             <AddRoleBottomSheet isShow={addRoleShow} onClose={() => {
                 setAddRoleShow(false)
             }} />
@@ -195,124 +201,132 @@ export const EditBodyDataScreen = ({ navigation }) => {
 }
 
 
-const BasicDataFlatList = ({  }) => {
+const BasicDataFlatList = ({ }) => {
 
     const [male, setMale] = useState(true)
-   const [refresh, setRefresh] = useState(false)
-   const [ageShow, setAgeShow] = useState(false)
+    const [refresh, setRefresh] = useState(false)
+    const [ageShow, setAgeShow] = useState(false)
 
     return (
         <View>
-        <FlatList
-            style={{
-                backgroundColor: colors.white,
-                paddingHorizontal: 12,
-                borderRadius: 13
-            }}
-            data={basicData}
-            renderItem={({ item, index }) =>
-                <View
-                    style={{
-                        marginVertical: 8,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignContent: "center",
-                        alignItems: "center"
-                    }}
-                >
-                    <Text
-                        style={[styles.textStyle, { color: "#333333", fontWeight: "500", fontSize: 15 }]}
+            <FlatList
+                style={{
+                    backgroundColor: colors.white,
+                    paddingHorizontal: 12,
+                    borderRadius: 13
+                }}
+                data={basicData}
+                renderItem={({ item, index }) =>
+                    <View
+                        style={{
+                            marginVertical: 8,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignContent: "center",
+                            alignItems: "center"
+                        }}
                     >
-                        {item.name}
-                    </Text>
-                    {
-                        item.name == "Пол" ?
-                            <View style={{ flexDirection: "row", gap: 10 }}>
-                                <TouchableOpacity style={{
-                                    flexDirection: "row",
-                                    gap: 4
-                                }}
-                                    onPress={() => {
-                                        let index = basicData.findIndex(it => it.name == "Пол")
-                                        if (index > -1) {
-                                            basicData[index].value = AppString.male
-                                            setRefresh(!refresh)
-                                        }
-                                        setMale(true)
+                        <Text
+                            style={[styles.textStyle, {
+                                color: "#333333", fontWeight: "500", fontSize: 15
+                            }]}
+                        >
+                            {item.name}
+                        </Text>
+                        {
+                            item.name == "Пол" ?
+                                <View style={{ flexDirection: "row", gap: 10 }}>
+                                    <TouchableOpacity style={{
+                                        flexDirection: "row",
+                                        gap: 4
                                     }}
-                                >
+                                        onPress={() => {
+                                            let index = basicData.findIndex(it => it.name == "Пол")
+                                            if (index > -1) {
+                                                basicData[index].value = AppString.male
+                                                setRefresh(!refresh)
+                                            }
+                                            setMale(true)
+                                        }}
+                                    >
 
-                                    {male ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
-                                    <Text
-                                        style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
-                                    >
-                                        {AppString.male}
-                                    </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    flexDirection: "row",
-                                    gap: 4
-                                }}
-                                    onPress={() => {
-                                        setMale(false)
-                                        let index = basicData.findIndex(it => it.name == "Пол")
-                                        if (index > -1) {
-                                            basicData[index].value = AppString.female
-                                            setRefresh(!refresh)
-                                        }
+                                        {male ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
+                                        <Text
+                                            style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
+                                        >
+                                            {AppString.male}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{
+                                        flexDirection: "row",
+                                        gap: 4
                                     }}
-                                >
+                                        onPress={() => {
+                                            setMale(false)
+                                            let index = basicData.findIndex(it => it.name == "Пол")
+                                            if (index > -1) {
+                                                basicData[index].value = AppString.female
+                                                setRefresh(!refresh)
+                                            }
+                                        }}
+                                    >
 
-                                    {!male ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
-                                    <Text
-                                        style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
-                                    >
-                                        {AppString.female}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                            : item.name == "Возраст" ?
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        if (item.name == "Возраст") {
-                                           setAgeShow(true)
-                                        }
-                                    }}
-                                >
-                                    <Text
-                                        style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
-                                    >
-                                        {item.value}
-                                    </Text>
-                                </TouchableOpacity>
-                                :
-                                <View style = {{flexDirection: "row", alignItems: "center", gap: 4}}>
-                                <TextInput
-                                    value={item.value}
-                                    style={[styles.textStyle, {
-                                        width: 100, height: 30, borderRadius: 10, borderColor: colors.grayAAAAAA, borderWidth: 1, paddingHorizontal: 8, textAlign: "right"
-                                    }]}
-                                    onChangeText={(text: string) => {
-                                        item.value = text
-                                        setRefresh(!refresh)
-                                    }}
-                                    keyboardType={item.name == "Имя" ? "ascii-capable" : "number-pad"}
-                                />
-                                {
-                                    item.unit.length > 0 ?
-                                    <Text
-                                    style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
-                                >
-                                    {item.unit}
-                                </Text> : null
-                                }
+                                        {!male ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
+                                        <Text
+                                            style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
+                                        >
+                                            {AppString.female}
+                                        </Text>
+                                    </TouchableOpacity>
                                 </View>
-                    }
-                </View>
-            }
-            scrollEnabled={false}
-        />
-           <AgeBottomSheet isShow={ageShow} onClose={(item: string) => {
+                                : item.name == "Возраст" ?
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            if (item.name == "Возраст") {
+                                                setAgeShow(true)
+                                            }
+                                        }}
+                                    >
+                                        <Text
+                                            style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
+                                        >
+                                            {item.value}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    :
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+
+                                        <TextInput
+                                            value={item.value}
+                                            style={[styles.textStyle, {
+                                                height: 30,
+                                                paddingHorizontal: 8, textAlign: "right", padding: 0
+                                                , fontSize: 13
+                                            }]}
+                                            placeholderTextColor={'#999999'}
+                                            numberOfLines={1}
+                                            placeholder={item.hint}
+                                            onChangeText={(text: string) => {
+                                                item.value = text
+                                                setRefresh(!refresh)
+                                            }}
+                                            keyboardType={item.name == "Имя" ? "ascii-capable" : "number-pad"}
+                                        />
+                                        {
+                                            item.unit.length > 0 ?
+                                                <Text
+                                                    style={[styles.textStyle, { color: "#111111", fontWeight: "400", fontSize: 15 }]}
+                                                >
+                                                    {item.unit}
+                                                </Text> : null
+                                        }
+                                    </View>
+                        }
+                    </View>
+                }
+                scrollEnabled={false}
+            />
+            <AgeBottomSheet isShow={ageShow} onClose={(item: string) => {
                 if (item) {
                     let index = basicData.findIndex(it => it.name == "Возраст")
                     if (index > -1) {
@@ -344,13 +358,17 @@ const BodyInforView = ({ bodyData, onDetailClick }) => {
                         style={{
                             marginVertical: 13,
                             flexDirection: "row",
-                            justifyContent: "space-between"
+                            justifyContent: "space-between",
                         }}
                     >
                         <Text
-                            style={[styles.textStyle, { color: "#333333", fontWeight: "500", fontSize: 15 }]}
+                            style={[styles.textStyle, {
+                                color: "#333333",
+                                fontWeight: "500", fontSize: 15,
+                                textTransform: 'capitalize',
+                            }]}
                         >
-                            {item.type}{" "}
+                            {item.bodyMeasurement}{" "}
                             <TouchableOpacity onPress={onDetailClick} >
                                 <CautionIcon width={15} height={15} />
                             </TouchableOpacity>
@@ -360,8 +378,14 @@ const BodyInforView = ({ bodyData, onDetailClick }) => {
                             <TextInput
                                 value={item.value}
                                 style={[styles.textStyle, {
-                                    width: 100, height: 30, borderRadius: 10, borderColor: colors.grayAAAAAA, borderWidth: 1, paddingHorizontal: 8, textAlign: "right"
+                                    height: 30,
+                                    paddingHorizontal: 8, textAlign: "right", padding: 0
+                                    , fontSize: 13
                                 }]}
+                                placeholderTextColor={'#999999'}
+                                keyboardType="number-pad"
+                                numberOfLines={1}
+                                placeholder="Пожалуйста, введите"
                                 onChangeText={(text: string) => {
                                     item.value = text
                                     selectedBodyData[index].value = text
@@ -393,11 +417,11 @@ const ImagesView = ({ images, parentIndex }) => {
         style={{ marginHorizontal: 7 }}
         numColumns={3}
         renderItem={({ item, index }) => {
-            return <Pressable style={{ flex: 1 / 3 }} onPress={() => { 
-            selectedBodyData[parentIndex].image = item 
-            setSeleced(index)
-            setRefresh(!refresh)
-             }}>
+            return <Pressable style={{ flex: 1 / 3 }} onPress={() => {
+                selectedBodyData[parentIndex].image = item
+                setSeleced(index)
+                setRefresh(!refresh)
+            }}>
                 <Image source={{ uri: item }} style={{ height: 105, width: "95%", marginEnd: 10, marginVertical: 10 }} resizeMode="stretch" />
                 {selectedItem == index ?
                     <View style={{ position: "absolute", height: 105, width: "95%", marginVertical: 10, backgroundColor: 'rgba(255, 118, 0, 0.08)', borderRadius: 13, borderColor: colors.lightOrange, borderWidth: 1, }} />

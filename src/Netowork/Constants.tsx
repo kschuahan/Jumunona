@@ -104,5 +104,6 @@ export const OrderAPI = {
 
 export const BodyDataAPI = {
   getBodyImages: modules.bodyData + 'getBodyDataImages',
-  addBodyData: modules.bodyData + "addBodyData"
+  addBodyData: modules.bodyData + "addBodyData",
+  getBodyData:modules.bodyData + "getBodyData",
 }

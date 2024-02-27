@@ -11,88 +11,110 @@ import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
 import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 
 import DeleteIcon from "../../../assets/Icons/DeleteWithWhiteBG.svg"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { RouteNames } from "../../utils/RouteNames"
+import { getAPICall } from "../../Netowork/Apis"
+import { CommonModal } from "../HomeScreen"
+import { BodyDataAPI } from "../../Netowork/Constants"
+import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
+import { useIsFocused } from "@react-navigation/native"
 
-const sizesDetail = [
-    {
-        name: "Height",
-        value: "178cm"
-    },
-    {
-        name: "Weight",
-        value: "71kg"
-    },
-    {
-        name: "Age",
-        value: "28"
-    },
-    {
-        name: "Shoulder",
-        value: "54cm"
-    },
-    {
-        name: "Chest",
-        value: "60cm"
-    },
-    {
-        name: "Waistline",
-        value: "70cm"
-    },
-]
 
 const sizeTypes = [
-    "Male", "Male", "Male", "Female", "Add New"
+    "Male", "Male", "Male", "Female"
 ]
 export const BodyDataScreen = ({ navigation }) => {
 
     const [isDeleting, setDelete] = useState(false)
+
+
+
+    const [data, setData] = useState<CommonModal>()
+    const [loading, setLoading] = useState(false)
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            callAPI()
+        }
+    }, [isFocused
+    ])
+
+    const callAPI = () => {
+        setLoading(true)
+        getAPICall(BodyDataAPI.getBodyData,
+            (res: CommonModal) => {
+                setData(res)
+                setLoading(false)
+            }
+        )
+    }
+
+
     return (
         <View style={[styles.container, { padding: 0 }]}>
             <CustomHeader navigation={navigation} title={AppString.body_data} />
 
-            <Text
-                style={[styles.textStyle, { color: "#000103", fontWeight: "600", margin: 17, }]}
-            >
-                Оптимальный размер будет выбран на основе ваших данных о теле
-            </Text>
+            {data?.isSuccess && data.data && data.data.data ? <View>
+                <Text
+                    style={[styles.textStyle, { color: "#000103", fontWeight: "600", margin: 17, }]}
+                >
+                    Оптимальный размер будет выбран на основе ваших данных о теле
+                </Text>
 
-            <FlatList
-                style={{ paddingHorizontal: 8 }}
-                showsVerticalScrollIndicator={false}
-                data={sizeTypes}
-                renderItem={({ item, index }) =>
-                    { 
+                <FlatList
+                    style={{ paddingHorizontal: 8, marginBottom:190 }}
+                    showsVerticalScrollIndicator={false}
+                    data={data.data.data}
+                    ListEmptyComponent={
+                        <Text style={[styles.textStyle, {
+                            color: colors.lightOrange,
+                            paddingVertical: 100,
+                            fontSize: 16, fontWeight: 'bold', textAlign: 'center'
+                        }]}>No body data found</Text>
+                    }
+                    renderItem={({ item, index }) => {
 
                         return (
-                            item !=  "Add New" ?
-                   <SizeDetailView type = {item} isDeleting = {isDeleting} onViewDetail={ () => {
-                        navigation.navigate(RouteNames.editBodyData)
-                   }}/> 
-                   : <AddSizeView /> 
+                            <SizeDetailView type={item} isDeleting={isDeleting} onViewDetail={() => {
+                                navigation.navigate(RouteNames.editBodyData)
+                            }} />
                         )
-                }
-                }
-            />
-            {
-                isDeleting ? 
+                    }
 
-                <DeleteButton onDelete={() => {}} onCancel={() => {
-                    setDelete(false)
-                }} /> 
+
+                    }
+                    ListFooterComponent={<AddSizeView onClick={() => {
+                        navigation.navigate(RouteNames.editBodyData)
+
+                    }} />}
+                />
+                {
+                    isDeleting ?
+
+                        <DeleteButton onDelete={() => { }} onCancel={() => {
+                            setDelete(false)
+                        }} />
+                        :
+                        <View style={{ marginBottom: 40, marginTop: 10, alignSelf: "center", flexDirection: "row" }} >
+                            <TouchableOpacity
+                                onPress={() => {
+                                    setDelete(true)
+                                }}
+                            >
+                                <DeleteIcon />
+
+                            </TouchableOpacity>
+                        </View>
+                }
+            </View> : loading ?
+                <ProgressView />
                 :
-                <View style = {{marginBottom: 40, marginTop: 10,  alignSelf: "center", flexDirection: "row"}} >
-                <TouchableOpacity
-                    onPress={() => {
-                        setDelete(true)
-                    }}
-                >
-                    <DeleteIcon />
+                <RetryWhenErrorOccur data={data} onClick={() => {
+                    setData(undefined)
+                    callAPI()
 
-                </TouchableOpacity>
-                </View>
-            }
-            
+                }} />}
         </View>
     )
 }
@@ -105,32 +127,33 @@ const SizeDetailView = ({ type, isDeleting, onViewDetail }) => {
     }
 
     return (<Pressable
-        onPress={onViewDetail}
         style={{ backgroundColor: colors.white, paddingHorizontal: 8, paddingTop: 20, paddingBottom: 6, borderRadius: 13, marginBottom: 15 }}
     >
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 4 }}>
 
-            {isDeleting ?
-                <TouchableOpacity
-                    onPress={() => {
-                        setIsSelected(!isSelected)
-                    }}
-                    style={{ alignSelf: "center" }}
-                >
-                    {isSelected ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
+                {isDeleting ?
+                    <TouchableOpacity
+                        onPress={() => {
+                            setIsSelected(!isSelected)
+                        }}
+                        style={{ alignSelf: "center" }}
+                    >
+                        {isSelected ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
 
-                </TouchableOpacity>
-                : null}
+                    </TouchableOpacity>
+                    : null}
                 <Text
-                    style={[styles.textStyle, { color: ( isSelected ? colors.lightOrange : "#000103" ), fontSize: 16, fontWeight: "bold", }]}
+                    style={[styles.textStyle, { color: (isSelected ? colors.lightOrange : "#000103"), fontSize: 16, fontWeight: "bold", }]}
                 >
-                   {type == "Male" ? "Я" : "Жена" }
+                    {type.name}
                 </Text>
-                {type == "Male" ? <MaleIcon /> :  <FemaleIcon />}
+                {type.gender == "Мужской" ? <MaleIcon /> : <FemaleIcon />}
             </View>
 
             <TouchableOpacity
+                onPress={onViewDetail}
+
                 style={{ paddingHorizontal: 10, borderColor: "#DCDCDC", borderWidth: 1, borderRadius: 12, height: 24, justifyContent: "center" }}
             >
                 <Text
@@ -141,18 +164,93 @@ const SizeDetailView = ({ type, isDeleting, onViewDetail }) => {
 
             </TouchableOpacity>
         </View>
-        <SizeDetailFlatList />
+        <SizeDetailFlatList item={type} />
     </Pressable>
     )
 }
 
-const SizeDetailFlatList = ({ }) => {
+const SizeDetailFlatList = ({ item }) => {
+
+    const sizeDetails = useMemo(() => {
+
+        let sholder = "0"
+        let chest = "0"
+        let foot = "0"
+        let waistline = "0"
+        let hip = "0"
+
+
+        item.bodyMeasurment.forEach((it: any, index: number) => {
+            console.log(it);
+            
+            const type = it.name.toString().toLowerCase()
+            if (type == 'shoulders'.toLowerCase()) {
+                sholder = it.value
+            } else if (type == 'chest'.toLowerCase()) {
+                chest = it.value
+            }
+            else if (type == 'Foot'.toLowerCase()) {
+                foot = it.value
+            }
+            else if (type == 'Hip'.toLowerCase()) {
+                hip = it.value
+            } else if (type == 'waistline'.toLowerCase()) {
+                waistline = it.value
+            }
+
+        })
+
+        const data = [
+            {
+                name: "Height",
+                value: `${item.height}CM`
+            },
+            {
+                name: "Weight",
+                value: `${item.weight}KG`
+            },
+            {
+                name: "Age",
+                value: item.age
+            },
+            {
+                name: "Shoulder",
+                value: `${sholder}CM`
+            },
+            {
+                name: "Chest",
+                value: `${chest}CM`
+            },
+            {
+                name: "Waistline",
+                value: `${waistline}CM`
+            },
+            {
+                name: "Foot",
+                value: `${foot}CM`
+            },
+            {
+                name: "Hip",
+                value: `${hip}CM`
+            },
+
+        ]
+
+        return data
+    }, [item])
+
+
+
     return (
         <FlatList
-            style={{ paddingHorizontal: 8, marginTop: 12, backgroundColor: "#EFEFEF", borderRadius: 8 }}
+            style={{
+                paddingHorizontal: 8, marginTop: 12,
+                backgroundColor: "#EFEFEF", borderRadius: 8
+            }}
             showsHorizontalScrollIndicator={false}
+            scrollEnabled
             horizontal
-            data={sizesDetail}
+            data={sizeDetails}
             renderItem={({ item, index }) =>
                 <View
                     style={{
@@ -193,35 +291,36 @@ const SizeDetailFlatList = ({ }) => {
     )
 }
 
-const AddSizeView = ({}) => {
+const AddSizeView = ({ onClick }) => {
     return (
-       <View
-            style={{ backgroundColor: colors.white, paddingHorizontal: 8, paddingTop: 20, paddingBottom: 6, borderRadius: 13, marginBottom: 15, height: 125 , justifyContent:"center"}}
+        <View
+            style={{ backgroundColor: colors.white, paddingHorizontal: 8, paddingTop: 20, paddingBottom: 6, borderRadius: 13, marginBottom: 15, height: 125, justifyContent: "center" }}
         >
 
             <TouchableOpacity
-                style = {{
+                onPress={onClick}
+                style={{
                     flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6
                 }}
             >
-                 <Text
-                            style={[styles.textStyle, { color: "#040404", fontSize: 16, fontWeight: "bold", }]}
-                        >
-                            Добавить новую роль
-                        </Text>
-                       <PlusIcon />
+                <Text
+                    style={[styles.textStyle, { color: "#040404", fontSize: 16, fontWeight: "bold", }]}
+                >
+                    Добавить новую роль
+                </Text>
+                <PlusIcon />
             </TouchableOpacity>
-            
+
         </View>
     )
 }
 
-const DeleteButton = ({onDelete, onCancel}) => {
+const DeleteButton = ({ onDelete, onCancel }) => {
     return (
 
 
-        <View style = {{marginBottom: 40, marginTop: 10,  alignSelf: "center", flexDirection: "row", gap: 13}} >
-        <TouchableOpacity
+        <View style={{ marginBottom: 40, marginTop: 10, alignSelf: "center", flexDirection: "row", gap: 13 }} >
+            <TouchableOpacity
                 style={{ paddingHorizontal: 30, height: 44, justifyContent: "center", borderRadius: 22, backgroundColor: colors.white }}
                 onPress={onDelete}
             >
