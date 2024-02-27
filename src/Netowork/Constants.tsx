@@ -28,7 +28,8 @@ export const modules = {
   cart: '/app/cart/',
   review: '/app/reviews/',
   address: '/app/address/',
-  order:'/app/orders/'
+  order:'/app/orders/',
+  bodyData: '/app/bodyData/'
 }
 
 export const otherModule = {
@@ -99,5 +100,9 @@ export const AddressAPIs = {
 export const OrderAPI = {
   placingOrder: modules.order + 'placingOrder',
   createOrder: modules.order + 'createOrders'
-  
+}
+
+export const BodyDataAPI = {
+  getBodyImages: modules.bodyData + 'getBodyDataImages',
+  addBodyData: modules.bodyData + "addBodyData"
 }

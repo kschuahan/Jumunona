@@ -71,7 +71,7 @@ export const AgeBottomSheet = ({ isShow = false, onClose }) => {
                             </View>
                         }
                     />
-                    <OKButton onClick={onClose} />
+                    <OKButton onClick={() => {onClose(data[select])}} />
                 </Pressable>
             </Pressable >
         </Modal >
