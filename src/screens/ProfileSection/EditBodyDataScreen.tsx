@@ -54,18 +54,35 @@ const basicData = [
     },
 ]
 
-let selectedBodyData: {type: string; name: string; image: string; value: string; }[] = []
+let selectedBodyData: { type: string; name: string; image: string; value: string; }[] = []
 
 export const EditBodyDataScreen = ({ navigation }) => {
 
     const [addRoleShow, setAddRoleShow] = useState(false)
     const [bodyData, setBodyData] = useState<any[]>()
     const [data, setData] = useState<CommonModal>()
+    const [bodyDataInfo, setBodyDataInfo] = useState<CommonModal>()
+
     const [loading, setLoading] = useState(false)
     const [overlayLoading, setOverlayLoading] = useState(false)
     useEffect(() => {
         getImages()
     }, [])
+
+    const callAPI = () => {
+        setOverlayLoading(true)
+        getAPICall(BodyDataAPI.getBodyMeasurementGuide,
+            (res: CommonModal) => {
+                setBodyDataInfo(res)
+                if (!res.isSuccess) {
+                    Alert.alert("", res.data.message ? res.data.message.toString() : res.data.toString())
+                } else {
+                    setAddRoleShow(true)
+                }
+                setOverlayLoading(false)
+            }
+        )
+    }
 
     const getImages = () => {
         setLoading(true)
@@ -75,7 +92,7 @@ export const EditBodyDataScreen = ({ navigation }) => {
                     setBodyData(res.data.data)
                     selectedBodyData = res.data.data.map(it => {
                         return {
-                            type:it.bodyMeasurement.toString() ?? '',
+                            type: it.bodyMeasurement.toString() ?? '',
                             name: it.type.toString() ?? '',
                             image: '',
                             value: ''
@@ -116,6 +133,8 @@ export const EditBodyDataScreen = ({ navigation }) => {
         })
         return isValid
     }
+
+
 
     const addBodyData = () => {
         setOverlayLoading(true)
@@ -171,7 +190,17 @@ export const EditBodyDataScreen = ({ navigation }) => {
                         {AppString.please_fill_body_info}
                     </Text>
                     <View style={{ paddingBottom: 100 }}>
-                        <BodyInforView bodyData={bodyData} onDetailClick={() => { setAddRoleShow(true) }} />
+                        <BodyInforView bodyData={bodyData}
+                            onDetailClick={() => {
+
+                                if (bodyDataInfo?.isSuccess) {
+                                    setAddRoleShow(true)
+
+                                } else {
+                                    callAPI()
+                                }
+
+                            }} />
 
                     </View>
                 </ScrollView>
@@ -192,9 +221,10 @@ export const EditBodyDataScreen = ({ navigation }) => {
                     }
                 }} /> : null}
 
-            <AddRoleBottomSheet isShow={addRoleShow} onClose={() => {
-                setAddRoleShow(false)
-            }} />
+            {bodyDataInfo && bodyDataInfo.data && bodyDataInfo.data.data ?
+                <AddRoleBottomSheet data={bodyDataInfo} isShow={addRoleShow} onClose={() => {
+                    setAddRoleShow(false)
+                }} /> : null}
             <CenterProgressView isShow={overlayLoading} />
         </View>
     )
@@ -379,9 +409,11 @@ const BodyInforView = ({ bodyData, onDetailClick }) => {
                                 value={item.value}
                                 style={[styles.textStyle, {
                                     height: 30,
-                                    paddingHorizontal: 8, textAlign: "right", padding: 0
+                                    paddingHorizontal: 8,
+                                    textAlign: "right", padding: 0
                                     , fontSize: 13
                                 }]}
+                                maxLength={3}
                                 placeholderTextColor={'#999999'}
                                 keyboardType="number-pad"
                                 numberOfLines={1}

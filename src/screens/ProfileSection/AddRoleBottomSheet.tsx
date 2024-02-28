@@ -1,11 +1,12 @@
-import { Image, Modal, Pressable, Text, TouchableOpacity, View, TextInput, FlatList } from "react-native"
+import { Image, Modal, Pressable, Text, TouchableOpacity, View,
+     TextInput, FlatList, Dimensions } from "react-native"
 import { colors } from "../../utils/AppColors"
 import { styles } from "../../utils/AppStyles"
 import CloseIcon from '../../../assets/Icons/closeIcon.svg';
 import { fontFamily } from "../../utils/Fonts";
 import { appIcons, imagesUrl } from "../../utils/AppIcons";
 import { } from "react-native-gesture-handler";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import { AppString } from "../../utils/AppStrings";
 import CheckmarkCircle from '../../../assets/Icons/CircleOrange.svg';
@@ -19,39 +20,14 @@ import Leg from '../../../assets/Icons/Leg.svg';
 import Foot from '../../../assets/Icons/Foot.svg';
 
 
-const data = [
-    {
-        title: 'Как измерить ширину плеч:',
-        subTitle: 'С поднятыми руками и опущенными плечами используйте рулетку для измерения расстояния между левым и правым плечом в самом широком месте.',
-        Image: Sholder
-    },
-    {
-        title: 'Как измерить обхват груди:',
-        subTitle: 'Измерьте обхват груди, поместив рулетку плоско на самую высокую точку груди, удерживая ее горизонтально с переди и сзади, при этом поддерживая двухпалечное расстояние.',
-        Image: Chest
-    },
-    {
-        title: 'Как измерить талию:',
-        subTitle: 'Расположите рулетку на самой узкой части талии и измерьте обхват талии параллельно земле.',
-        Image: West
-    },
-    {
-        title: 'Как измерить бедра:',
-        subTitle: 'Измерьте обхват бедер, положив рулетку плоско на самую полную часть бедер, убедившись, что она параллельна земле.',
-        Image: Leg
-    },
-    {
-        title: 'Как измерить стопу:',
-        subTitle: 'На листе бумаги нарисуйте контур стопы и, используя линейку, измерьте расстояние от кончика пятки до кончика пальца.',
-        Image: Foot
-    }
-]
 
 
-export const AddRoleBottomSheet = ({ isShow = false, onClose }) => {
+export const AddRoleBottomSheet = ({ data, isShow = false, onClose }) => {
 
     const [select, setSelect] = useState(0)
-    const Icon = data[select].Image
+    const bodyData = useMemo(() => {
+        return data.data.data
+    }, [data])
     return (
         <Modal
             transparent={true}
@@ -77,7 +53,7 @@ export const AddRoleBottomSheet = ({ isShow = false, onClose }) => {
                             justifyContent: 'space-between',
                             alignItems: "center"
                         }}>
-                        <FlatList data={["Бедро", "Грудь", "Талия", "Бедро", "Ступня"]}
+                        <FlatList data={bodyData}
                             horizontal
                             style={{ marginStart: 4 }}
                             showsHorizontalScrollIndicator={false}
@@ -89,7 +65,7 @@ export const AddRoleBottomSheet = ({ isShow = false, onClose }) => {
                                     {
                                         color: select == index ? colors.lightOrange : '#999999',
                                         fontSize: 15, fontWeight: '500'
-                                    }]}>{item}</Text>
+                                    }]}>{item.key}</Text>
                                 </TouchableOpacity>
                             } />
                         <View>
@@ -110,16 +86,20 @@ export const AddRoleBottomSheet = ({ isShow = false, onClose }) => {
                     {
                         color: '#333333',
                         fontSize: 16, fontWeight: '500', marginTop: 6
-                    }]}>{data[select].title}</Text>
+                    }]}>{bodyData[select].title}</Text>
                     <Text style={[styles.textStyle,
                     {
                         color: '#333333',
                         fontSize: 14
-                    }]}>{data[select].subTitle}</Text>
+                    }]}>{bodyData[select].description}</Text>
 
 
 
-                    <Icon style={{ marginTop: 15 }} />
+                    <Image source={{ uri: bodyData[select].image[0] }}
+                        style={{
+                            marginTop: 15, borderRadius: 13,
+                            height: 207, width: '100%',
+                        }}  resizeMode="contain"/>
 
                 </Pressable>
             </Pressable >

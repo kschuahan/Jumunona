@@ -1,4 +1,4 @@
-import { View, Text, FlatList, TouchableOpacity, Pressable } from "react-native"
+import { View, Text, FlatList, TouchableOpacity, Pressable, Alert, Dimensions } from "react-native"
 import { CustomHeader } from "../../components/Header"
 import { styles } from "../../utils/AppStyles"
 import { AppString } from "../../utils/AppStrings"
@@ -13,16 +13,17 @@ import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 import DeleteIcon from "../../../assets/Icons/DeleteWithWhiteBG.svg"
 import { useEffect, useMemo, useState } from "react"
 import { RouteNames } from "../../utils/RouteNames"
-import { getAPICall } from "../../Netowork/Apis"
+import { getAPICall, postAPICall } from "../../Netowork/Apis"
 import { CommonModal } from "../HomeScreen"
 import { BodyDataAPI } from "../../Netowork/Constants"
-import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
+import { CenterProgressView, ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
 import { useIsFocused } from "@react-navigation/native"
 
 
 const sizeTypes = [
     "Male", "Male", "Male", "Female"
 ]
+let ids: Array<String> = []
 export const BodyDataScreen = ({ navigation }) => {
 
     const [isDeleting, setDelete] = useState(false)
@@ -32,6 +33,7 @@ export const BodyDataScreen = ({ navigation }) => {
     const [data, setData] = useState<CommonModal>()
     const [loading, setLoading] = useState(false)
     const isFocused = useIsFocused()
+    const [mainLoading, setMainLoading] = useState(false)
 
     useEffect(() => {
         if (isFocused) {
@@ -51,11 +53,36 @@ export const BodyDataScreen = ({ navigation }) => {
     }
 
 
+    const callDeleteAPI = () => {
+        console.warn(ids);
+
+        if (ids.length != 0) {
+            setMainLoading(true)
+            postAPICall({ bodyDataId: ids }, BodyDataAPI.deleteBodyData, true,
+                (res: CommonModal) => {
+                    setMainLoading(false)
+                    if (res.isSuccess) {
+                        ids = []
+                        setDelete(false)
+                        setData(undefined)
+                        callAPI()
+                    }
+                    Alert.alert("", res.data.message.toString())
+
+                }
+            )
+        } else {
+            Alert.alert("", "Please select a body data")
+
+        }
+    }
+
+
     return (
         <View style={[styles.container, { padding: 0 }]}>
             <CustomHeader navigation={navigation} title={AppString.body_data} />
 
-            {data?.isSuccess && data.data && data.data.data ? <View>
+            {data?.isSuccess && data.data && data.data.data ? <View style={{ flex: 1 }}>
                 <Text
                     style={[styles.textStyle, { color: "#000103", fontWeight: "600", margin: 17, }]}
                 >
@@ -63,7 +90,8 @@ export const BodyDataScreen = ({ navigation }) => {
                 </Text>
 
                 <FlatList
-                    style={{ paddingHorizontal: 8, marginBottom:190 }}
+                    style={{ paddingHorizontal: 8 }}
+                    ListFooterComponentStyle={{ paddingBottom: 190 }}
                     showsVerticalScrollIndicator={false}
                     data={data.data.data}
                     ListEmptyComponent={
@@ -71,7 +99,7 @@ export const BodyDataScreen = ({ navigation }) => {
                             color: colors.lightOrange,
                             paddingVertical: 100,
                             fontSize: 16, fontWeight: 'bold', textAlign: 'center'
-                        }]}>No body data found</Text>
+                        }]}>No body data</Text>
                     }
                     renderItem={({ item, index }) => {
 
@@ -89,24 +117,33 @@ export const BodyDataScreen = ({ navigation }) => {
 
                     }} />}
                 />
-                {
-                    isDeleting ?
 
-                        <DeleteButton onDelete={() => { }} onCancel={() => {
-                            setDelete(false)
-                        }} />
-                        :
-                        <View style={{ marginBottom: 40, marginTop: 10, alignSelf: "center", flexDirection: "row" }} >
-                            <TouchableOpacity
-                                onPress={() => {
-                                    setDelete(true)
-                                }}
-                            >
-                                <DeleteIcon />
+                {data.data.data.length > 0 ? <View style={{
+                    position: 'absolute',
+                    width: Dimensions.get('window').width,
+                    bottom: 0
+                }}>{isDeleting ?
 
-                            </TouchableOpacity>
-                        </View>
-                }
+                    <DeleteButton onDelete={() => {
+                        callDeleteAPI()
+                    }} onCancel={() => {
+                        setDelete(false)
+                    }} />
+                    :
+                    <View style={{ marginBottom: 40, marginTop: 10, alignSelf: "center", flexDirection: "row" }} >
+                        <TouchableOpacity
+                            onPress={() => {
+                                setDelete(true)
+                            }}
+                        >
+                            <DeleteIcon />
+
+                        </TouchableOpacity>
+                    </View>
+
+                    }
+                </View> : null}
+
             </View> : loading ?
                 <ProgressView />
                 :
@@ -115,6 +152,9 @@ export const BodyDataScreen = ({ navigation }) => {
                     callAPI()
 
                 }} />}
+
+            <CenterProgressView isShow={mainLoading} />
+
         </View>
     )
 }
@@ -122,9 +162,9 @@ export const BodyDataScreen = ({ navigation }) => {
 const SizeDetailView = ({ type, isDeleting, onViewDetail }) => {
 
     const [isSelected, setIsSelected] = useState(false)
-    if (!isDeleting && isSelected) {
-        setIsSelected(false)
-    }
+    // if (!isDeleting && isSelected) {
+    //     setIsSelected(false)
+    // }
 
     return (<Pressable
         style={{ backgroundColor: colors.white, paddingHorizontal: 8, paddingTop: 20, paddingBottom: 6, borderRadius: 13, marginBottom: 15 }}
@@ -135,16 +175,21 @@ const SizeDetailView = ({ type, isDeleting, onViewDetail }) => {
                 {isDeleting ?
                     <TouchableOpacity
                         onPress={() => {
+                            if (!ids.includes(type._id)) {
+                                ids.push(type._id)
+                            } else {
+                                ids.splice(type._id, 1)
+                            }
                             setIsSelected(!isSelected)
                         }}
                         style={{ alignSelf: "center" }}
                     >
-                        {isSelected ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
+                        {ids.includes(type._id) ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />}
 
                     </TouchableOpacity>
                     : null}
                 <Text
-                    style={[styles.textStyle, { color: (isSelected ? colors.lightOrange : "#000103"), fontSize: 16, fontWeight: "bold", }]}
+                    style={[styles.textStyle, { color: (ids.includes(type._id) ? colors.lightOrange : "#000103"), fontSize: 16, fontWeight: "bold", }]}
                 >
                     {type.name}
                 </Text>
@@ -181,8 +226,7 @@ const SizeDetailFlatList = ({ item }) => {
 
 
         item.bodyMeasurment.forEach((it: any, index: number) => {
-            console.log(it);
-            
+
             const type = it.name.toString().toLowerCase()
             if (type == 'shoulders'.toLowerCase()) {
                 sholder = it.value

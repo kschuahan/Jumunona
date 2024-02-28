@@ -28,7 +28,7 @@ export const modules = {
   cart: '/app/cart/',
   review: '/app/reviews/',
   address: '/app/address/',
-  order:'/app/orders/',
+  order: '/app/orders/',
   bodyData: '/app/bodyData/'
 }
 
@@ -105,5 +105,8 @@ export const OrderAPI = {
 export const BodyDataAPI = {
   getBodyImages: modules.bodyData + 'getBodyDataImages',
   addBodyData: modules.bodyData + "addBodyData",
-  getBodyData:modules.bodyData + "getBodyData",
+  getBodyData: modules.bodyData + "getBodyData",
+  deleteBodyData: modules.bodyData + "deleteBodyData",
+  getBodyMeasurementGuide: modules.bodyData + 'getBodyMeasurementGuide'
+
 }
