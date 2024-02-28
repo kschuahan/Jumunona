@@ -107,6 +107,6 @@ export const BodyDataAPI = {
   addBodyData: modules.bodyData + "addBodyData",
   getBodyData: modules.bodyData + "getBodyData",
   deleteBodyData: modules.bodyData + "deleteBodyData",
-  getBodyMeasurementGuide: modules.bodyData + 'getBodyMeasurementGuide'
-
+  getBodyMeasurementGuide: modules.bodyData + 'getBodyMeasurementGuide',
+  upadateBodyData: modules.bodyData + 'upadateBodyData'
 }
