@@ -77,7 +77,7 @@ export const BodyDataScreen = ({ navigation }) => {
 
                         return (
                             <SizeDetailView type={item} isDeleting={isDeleting} onViewDetail={() => {
-                                navigation.navigate(RouteNames.editBodyData)
+                                navigation.navigate(RouteNames.editBodyData, {isUpdating: true, data: item})
                             }} />
                         )
                     }
@@ -85,7 +85,7 @@ export const BodyDataScreen = ({ navigation }) => {
 
                     }
                     ListFooterComponent={<AddSizeView onClick={() => {
-                        navigation.navigate(RouteNames.editBodyData)
+                        navigation.navigate(RouteNames.editBodyData, {isUpdating: false })
 
                     }} />}
                 />

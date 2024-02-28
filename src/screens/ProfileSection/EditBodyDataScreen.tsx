@@ -56,14 +56,33 @@ const basicData = [
 
 let selectedBodyData: {type: string; name: string; image: string; value: string; }[] = []
 
-export const EditBodyDataScreen = ({ navigation }) => {
+export const EditBodyDataScreen = ({ navigation, route }) => {
 
     const [addRoleShow, setAddRoleShow] = useState(false)
     const [bodyData, setBodyData] = useState<any[]>()
     const [data, setData] = useState<CommonModal>()
     const [loading, setLoading] = useState(false)
     const [overlayLoading, setOverlayLoading] = useState(false)
+    const [isUpdating, setIsUpdating] = useState(false)
+    const [updatingId, setUpdatingId] = useState('')
     useEffect(() => {
+        
+       setIsUpdating(route.params.isUpdating)
+        console.warn(isUpdating)
+        if (isUpdating ) {
+            if (route.params.data) {
+                let data =  route.params.data
+                setUpdatingId(data._id)
+
+                console.log("body data", data)
+                console.log(data.bodyMeasurment)
+                basicData[0].value = data.name
+                basicData[1].value = data.gender
+                basicData[2].value = data.age
+                basicData[3].value = data.height
+                basicData[4].value = data.weight
+            }
+        }
         getImages()
     }, [])
 
@@ -71,17 +90,53 @@ export const EditBodyDataScreen = ({ navigation }) => {
         setLoading(true)
         getAPICall(BodyDataAPI.getBodyImages,
             (res: CommonModal) => {
+                
                 if (res.isSuccess && res.data && res.data.data) {
-                    setBodyData(res.data.data)
+                   
+                    if (isUpdating) {
+                        let data =  route.params.data
+                        console.warn(data)
+                        let bodyData = data.bodyMeasurment
+                        selectedBodyData = res.data.data.map(it => {
+                            console.warn(bodyData)
+                            let index = bodyData.findIndex(item => it.type.toString().toLowerCase() == item.name.toString().toLowerCase())
+                            if (index > -1) {
+                                return {
+                                    type:it.bodyMeasurement,
+                                    name: it.type,
+                                    image: bodyData[index].image,
+                                    value: bodyData[index].value
+                                }
+                            }    else {
+                                return {
+                                    type:it.bodyMeasurement,
+                                    name: it.type,
+                                    image: '',
+                                    value: ''
+                                }
+                            }
+                        })
+
+                        res.data.data.forEach((it, index) => {
+                            let ind = bodyData.findIndex(item => it.type.toString().toLowerCase() == item.name.toString().toLowerCase())
+                            if (ind > -1) {
+                                res.data.data[index].value = bodyData[ind].value
+                            }
+                        })
+
+                        console.log("selected Body data", selectedBodyData)
+                    } else {
                     selectedBodyData = res.data.data.map(it => {
                         return {
-                            type:it.bodyMeasurement.toString() ?? '',
-                            name: it.type.toString() ?? '',
+                            type:it.bodyMeasurement,
+                            name: it.type,
                             image: '',
                             value: ''
                         }
 
                     })
+                }
+                setBodyData(res.data.data)
                 }
                 setData(res)
                 setLoading(false)
@@ -132,8 +187,34 @@ export const EditBodyDataScreen = ({ navigation }) => {
         )
     }
 
+    const updateBodyData = () => {
+        setOverlayLoading(true)
+        postAPICall(
+            createUpdateBodyDataRequest(),
+            BodyDataAPI.upadateBodyData,
+            true,
+            (res: any) => {
+                setOverlayLoading(false)
+                if (res.isSuccess) {
+                    navigation.goBack()
+                }
+            }
+        )
+    }
+
     const createAddBodyDataRequest = () => {
         return {
+            name: basicData[0].value,
+            gender: basicData[1].value,
+            age: basicData[2].value,
+            height: basicData[3].value,
+            weight: basicData[4].value,
+            bodyMeasurment: selectedBodyData
+        }
+    }
+    const createUpdateBodyDataRequest = () => {
+        return {
+            bodyDataId: updatingId,
             name: basicData[0].value,
             gender: basicData[1].value,
             age: basicData[2].value,
@@ -187,9 +268,17 @@ export const EditBodyDataScreen = ({ navigation }) => {
             }
             {data?.isSuccess && data.data && data.data.data ?
                 <BottomButton onClick={() => {
-                    if (validate()) {
-                        addBodyData()
-                    }
+
+                    console.warn(isUpdating)
+                    // if (validate()) {
+                        
+                    //     if (isUpdating) {
+                           
+                    //         updateBodyData()
+                    //     } else {
+                    //      addBodyData()
+                    //     }
+                    // }
                 }} /> : null}
 
             <AddRoleBottomSheet isShow={addRoleShow} onClose={() => {
@@ -341,6 +430,7 @@ const BasicDataFlatList = ({ }) => {
 }
 
 const BodyInforView = ({ bodyData, onDetailClick }) => {
+    const [refresh, setRefresh] = useState(false)
 
     return (
         <FlatList
@@ -389,6 +479,7 @@ const BodyInforView = ({ bodyData, onDetailClick }) => {
                                 onChangeText={(text: string) => {
                                     item.value = text
                                     selectedBodyData[index].value = text
+                                    setRefresh(!refresh)
                                 }}
                             />
                             <Text
@@ -422,8 +513,9 @@ const ImagesView = ({ images, parentIndex }) => {
                 setSeleced(index)
                 setRefresh(!refresh)
             }}>
+             
                 <Image source={{ uri: item }} style={{ height: 105, width: "95%", marginEnd: 10, marginVertical: 10 }} resizeMode="stretch" />
-                {selectedItem == index ?
+                {selectedBodyData[parentIndex].image == item ?
                     <View style={{ position: "absolute", height: 105, width: "95%", marginVertical: 10, backgroundColor: 'rgba(255, 118, 0, 0.08)', borderRadius: 13, borderColor: colors.lightOrange, borderWidth: 1, }} />
                     : null}
             </Pressable>

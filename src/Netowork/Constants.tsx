@@ -106,4 +106,5 @@ export const BodyDataAPI = {
   getBodyImages: modules.bodyData + 'getBodyDataImages',
   addBodyData: modules.bodyData + "addBodyData",
   getBodyData:modules.bodyData + "getBodyData",
+  upadateBodyData: modules.bodyData + 'upadateBodyData'
 }
