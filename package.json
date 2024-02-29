@@ -37,7 +37,8 @@
     "react-native-svg-transformer": "^1.2.0",
     "react-native-swipeable": "^0.6.0",
     "react-native-virtualized-view": "^1.0.0",
-    "react-native-webview": "^13.8.1"
+    "react-native-webview": "^13.8.1",
+    "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

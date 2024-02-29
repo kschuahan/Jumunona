@@ -18,6 +18,7 @@ export const appIcons = {
   shoulder1: require('../../assets/Images/shoulder-1.png'),
   shoulder2: require('../../assets/Images/shoulder-2.png'),
   shoulder3: require('../../assets/Images/shoulder-3.png'),
+  send: require('../../assets/Images/send.png'),
 };
 
 export const imagesUrl = {

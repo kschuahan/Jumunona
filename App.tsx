@@ -65,10 +65,14 @@ import { EditProfileDetailScreen } from './src/screens/ProfileSection/EditProfil
 
 const Stack = createNativeStackNavigator();
 
+
 const App: React.FC = () => {
+  
   useEffect(() => {
     recalculateDimensions();
+   
   }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />

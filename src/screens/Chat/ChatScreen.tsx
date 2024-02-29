@@ -12,7 +12,7 @@ import { styles } from '../../utils/AppStyles';
 import { colors } from '../../utils/AppColors';
 import { StyleSheet } from 'react-native';
 import { dimensions } from '../../utils/sizes';
-import { imagesUrl } from '../../utils/AppIcons';
+import { appIcons, imagesUrl } from '../../utils/AppIcons';
 import { AppString } from '../../utils/AppStrings';
 import LinearGradient from 'react-native-linear-gradient';
 import HappyOutlineIcon from '../../../assets/Icons/Emogy.svg';
@@ -32,13 +32,40 @@ import GalleryIcon from '../../../assets/Icons/Gallery.svg';
 import CloseIconChat from '../../../assets/Icons/CloseChat.svg';
 
 import VideoIcon from '../../../assets/Icons/Video.svg';
+import { UploadImage } from '../../components/Dialogs';
+import { FileModal, cameraLaunch, selectFile } from '../../utils/FileUpload';
+import { BASE_URL } from '../../Netowork/Constants';
+import { localEnum } from '../../Netowork/ApiEnum';
+import { io } from 'socket.io-client';
 
+const socket = io(BASE_URL(localEnum.development));
+socket.on("connect", () => {
+  console.log(`client $(socket.id)`)
+})
 
 export const ChatScreen = ({ navigation, route }) => {
+
+  const responseHandling = (success: boolean, response: any) => {
+    if (success) {
+
+      const fileModel = new FileModal(response.fileName,
+        "image",
+        response.uri)
+     
+      console.log(fileModel)
+    }
+  }
+
+
   console.log(route.params);
   const [isShow, setIsShow] = useState(false)
+  const [message, setMessage] = useState('')
   const isShop = route.params ? route.params.isShop : false
   useEffect(() => {
+    socket.on("connect", () => {
+
+      console.log(`Client`, socket.id)
+    })
     navigation.setOptions({
       headerTitle: 'Shop name',
       headerTitleAlign: 'left',
@@ -88,11 +115,12 @@ export const ChatScreen = ({ navigation, route }) => {
           },
         ]}>
         <FlatList
-          style={{ flex: 1 }}
+          style={{ flex: 1, paddingBottom: 500 }}
           data={[1, 2]}
           keyExtractor={item => {
             return item.toString();
           }}
+          scrollEnabled = {false}
           showsVerticalScrollIndicator={false}
           renderItem={({ item, index }) => (
             <View>
@@ -119,11 +147,28 @@ export const ChatScreen = ({ navigation, route }) => {
           )}
         />
 
-        {!isShop ? <ProfileProduct subTitle="" onClick={undefined} /> : null}
+        {/* {!isShop ? <ProfileProduct subTitle="" onClick={undefined} /> : null} */}
 
         <View style={[style.textInputWithSend, { paddingBottom: !isShop ? 42 : 10 }]}>
           <View style={[style.textInputWithSend1, { paddingBottom: 10 }]}>
-            <SearchView />
+          <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        backgroundColor: colors.white,
+        borderRadius: 19,
+      }}>
+      <TextInput
+        value={message}
+        placeholder={''}
+        style={style.searchTextInput}
+        placeholderTextColor={colors.grey}
+        onChangeText={text => {
+          setMessage(text);
+        }}
+      />
+    </View>
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <TouchableOpacity
                 onPress={() => {
@@ -133,24 +178,30 @@ export const ChatScreen = ({ navigation, route }) => {
                 <HappyOutlineIcon width={37} height={37} />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {
+                if (isShow) {
                 setIsShow(!isShow)
+                } else if (message.trim().length > 0) {
+                  setMessage('')
+                } else {
+                  setIsShow(!isShow)
+                }
               }} style={style.circleButton}>
-                {isShow ? <CloseIconChat width={37} height={37} /> : <AddOutlineIcon width={37} height={37} />}
+                {isShow ? <CloseIconChat width={37} height={37} /> : message.trim().length == 0 ? <AddOutlineIcon width={37} height={37} /> : <Image source={appIcons.send} style = {{width: 25, height: 25, marginStart: -5, marginBottom: -3  }}/>}
               </TouchableOpacity>
             </View>
           </View>
           {isShow ? <View style={{ flexDirection: 'row', }}>
             <IconWithText onClick={() => {
               setIsShow(!isShop)
-
+              cameraLaunch(true, responseHandling)
             }} marginEnd={20} />
             <IconWithText title={AppString.album} onClick={() => {
               setIsShow(!isShop)
-
+              selectFile(true, responseHandling)
             }} Icon={GalleryIcon} />
             <IconWithText title={AppString.video} onClick={() => {
               setIsShow(!isShop)
-
+              selectFile(false, responseHandling)
             }} Icon={VideoIcon} />
           </View> : null}
         </View>
@@ -303,31 +354,6 @@ const Profile = ({ image = imagesUrl.profile }) => {
         backgroundColor: colors.white,
       }}
     />
-  );
-};
-
-const SearchView = () => {
-  const [search, setSearch] = useState('');
-
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundColor: colors.white,
-        borderRadius: 19,
-      }}>
-      <TextInput
-        value={search}
-        placeholder={''}
-        style={style.searchTextInput}
-        placeholderTextColor={colors.grey}
-        onChangeText={text => {
-          setSearch(text);
-        }}
-      />
-    </View>
   );
 };
 
