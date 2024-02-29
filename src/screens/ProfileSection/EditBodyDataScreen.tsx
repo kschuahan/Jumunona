@@ -19,6 +19,7 @@ import { BodyDataAPI } from "../../Netowork/Constants";
 import { CommonModal } from "../HomeScreen";
 import { CenterProgressView, ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs";
 import { refresh } from "@react-native-community/netinfo";
+import { getAge } from "../../utils/DataManipulation";
 
 
 const basicData = [
@@ -36,7 +37,7 @@ const basicData = [
     },
     {
         name: "Возраст",
-        value: "1995",
+        value: "19",
         unit: "",
         hint: 'Пожалуйста, выберите'
     },
@@ -310,14 +311,14 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
             {data?.isSuccess && data.data && data.data.data ?
                 <BottomButton onClick={() => {
 
-                    // console.warn(isUpdating)
+                    console.warn(isUpdating)
                     if (validate()) {
-
+                        
                         if (isUpdating) {
-
+                           
                             updateBodyData()
                         } else {
-                            addBodyData()
+                         addBodyData()
                         }
                     }
                 }} /> : null}
@@ -334,7 +335,7 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
 
 const BasicDataFlatList = ({ }) => {
 
-    const [male, setMale] = useState(true)
+    const [male, setMale] = useState(basicData[1].value == AppString.male)
     const [refresh, setRefresh] = useState(false)
     const [ageShow, setAgeShow] = useState(false)
 
@@ -457,11 +458,11 @@ const BasicDataFlatList = ({ }) => {
                 }
                 scrollEnabled={false}
             />
-            <AgeBottomSheet isShow={ageShow} onClose={(item: string) => {
-                if (item) {
+            <AgeBottomSheet isShow={ageShow} onClose={(year: string) => {
+                if (year) {
                     let index = basicData.findIndex(it => it.name == "Возраст")
-                    if (index > -1) {
-                        basicData[index].value = item
+                    if (index > -1 && parseInt(year)) {
+                        basicData[index].value = getAge(parseInt(year)).toString()
                         setRefresh(!refresh)
                     }
                 }

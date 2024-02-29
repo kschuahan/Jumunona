@@ -8,3 +8,8 @@ export const getCharachterstics = (data: any) => {
 
     return filter.join(' • ')
 }
+
+export const getAge = (dobYear: number) => {
+    var today = new Date();
+    return today.getFullYear() - dobYear
+}
