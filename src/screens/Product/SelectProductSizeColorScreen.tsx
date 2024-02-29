@@ -634,9 +634,7 @@ const QuanityView = ({ quantity, onClick }) => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <TouchableOpacity
           onPress={() => {
-            if (quantiy > 1 &&
-              addToCartModel.attr2_id.length != 0
-              && addToCartModel.attr1_id.length != 0) {
+            if (quantiy > 1) {
               setQuantity(quantiy - 1);
               onClick(quantiy)
             }
@@ -657,9 +655,7 @@ const QuanityView = ({ quantity, onClick }) => {
         </Text>
         <TouchableOpacity
           onPress={() => {
-            if (quantiy < maxQuantity &&
-              addToCartModel.attr2_id.length != 0
-              && addToCartModel.attr1_id.length != 0) {
+            if (quantiy < maxQuantity) {
               setQuantity(quantiy + 1);
               onClick(quantiy)
             }
