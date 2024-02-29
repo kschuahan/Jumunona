@@ -68,12 +68,12 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
     const [isUpdating, setIsUpdating] = useState(false)
     const [updatingId, setUpdatingId] = useState('')
     useEffect(() => {
-        
-       setIsUpdating(route.params.isUpdating)
-        console.warn(isUpdating)
-        if (isUpdating ) {
+        selectedBodyData=[]
+        setIsUpdating(route.params.isUpdating)
+        console.warn(route.params)
+        if (route.params.isUpdating) {
             if (route.params.data) {
-                let data =  route.params.data
+                let data = route.params.data
                 setUpdatingId(data._id)
 
                 console.log("body data", data)
@@ -84,7 +84,13 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
                 basicData[3].value = data.height
                 basicData[4].value = data.weight
             }
-        }
+        }else{
+            basicData[0].value = ""
+            basicData[1].value = ""
+            basicData[2].value = "1995"
+            basicData[3].value = ""
+            basicData[4].value = ""
+        }    
         getImages()
     }, [])
 
@@ -107,29 +113,29 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
         setLoading(true)
         getAPICall(BodyDataAPI.getBodyImages,
             (res: CommonModal) => {
-                
+
                 if (res.isSuccess && res.data && res.data.data) {
-                   
-                    if (isUpdating) {
-                        let data =  route.params.data
-                        console.warn(data)
+
+                    if (route.params && route.params.isUpdating) {
+                        let data = route.params.data
+                        // console.warn(data)
                         let bodyData = data.bodyMeasurment
                         selectedBodyData = res.data.data.map(it => {
-                            console.warn(bodyData)
+                            // console.warn(bodyData)
                             let index = bodyData.findIndex(item => it.type.toString().toLowerCase() == item.name.toString().toLowerCase())
                             if (index > -1) {
                                 return {
-                                    type:it.bodyMeasurement,
-                                    name: it.type,
+                                    type: it.bodyMeasurement,
+                                    name: it.type.toString().toLowerCase(),
                                     image: bodyData[index].image,
                                     value: bodyData[index].value
-                                }
-                            }    else {
+                                } 
+                            } else {
                                 return {
-                                    type:it.bodyMeasurement,
-                                    name: it.type,
-                                    image: '',
-                                    value: ''
+                                    type: it.bodyMeasurement,
+                                    name: it.type.toString().toLowerCase(),
+                                    image: it.image,
+                                    value: it.value
                                 }
                             }
                         })
@@ -143,17 +149,17 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
 
                         console.log("selected Body data", selectedBodyData)
                     } else {
-                    selectedBodyData = res.data.data.map(it => {
-                        return {
-                            type:it.bodyMeasurement,
-                            name: it.type,
-                            image: '',
-                            value: ''
-                        }
+                        selectedBodyData = res.data.data.map(it => {
+                            return {
+                                type: it.bodyMeasurement,
+                                name: it.type,
+                                image: '',
+                                value: ''
+                            }
 
-                    })
-                }
-                setBodyData(res.data.data)
+                        })
+                    }
+                    setBodyData(res.data.data)
                 }
                 setData(res)
                 setLoading(false)
@@ -174,7 +180,7 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
         })
         selectedBodyData.forEach(it => {
             if (isValid) {
-                if (it.image.length == 0) {
+                if (it.image.toString().length == 0) {
                     isValid = false
                     Alert.alert("", `Please select image for ${it.type}`)
                     return false
@@ -201,13 +207,19 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
                 setOverlayLoading(false)
                 if (res.isSuccess) {
                     navigation.goBack()
+                } else {
+                    Alert.alert("", res.data && res.data.message ?
+                        res.data.message.toString() : res.data.toString())
+
                 }
             }
         )
-    }
+    } 
 
     const updateBodyData = () => {
         setOverlayLoading(true)
+        console.warn( createUpdateBodyDataRequest());
+        
         postAPICall(
             createUpdateBodyDataRequest(),
             BodyDataAPI.upadateBodyData,
@@ -298,16 +310,16 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
             {data?.isSuccess && data.data && data.data.data ?
                 <BottomButton onClick={() => {
 
-                    console.warn(isUpdating)
-                    // if (validate()) {
-                        
-                    //     if (isUpdating) {
-                           
-                    //         updateBodyData()
-                    //     } else {
-                    //      addBodyData()
-                    //     }
-                    // }
+                    // console.warn(isUpdating)
+                    if (validate()) {
+
+                        if (isUpdating) {
+
+                            updateBodyData()
+                        } else {
+                            addBodyData()
+                        }
+                    }
                 }} /> : null}
 
             {bodyDataInfo && bodyDataInfo.data && bodyDataInfo.data.data ?
@@ -506,7 +518,6 @@ const BodyInforView = ({ bodyData, onDetailClick }) => {
                                 maxLength={3}
                                 placeholderTextColor={'#999999'}
                                 keyboardType="number-pad"
-                                numberOfLines={1}
                                 placeholder="Пожалуйста, введите"
                                 onChangeText={(text: string) => {
                                     item.value = text
@@ -545,7 +556,7 @@ const ImagesView = ({ images, parentIndex }) => {
                 setSeleced(index)
                 setRefresh(!refresh)
             }}>
-             
+
                 <Image source={{ uri: item }} style={{ height: 105, width: "95%", marginEnd: 10, marginVertical: 10 }} resizeMode="stretch" />
                 {selectedBodyData[parentIndex].image == item ?
                     <View style={{ position: "absolute", height: 105, width: "95%", marginVertical: 10, backgroundColor: 'rgba(255, 118, 0, 0.08)', borderRadius: 13, borderColor: colors.lightOrange, borderWidth: 1, }} />
