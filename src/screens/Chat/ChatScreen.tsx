@@ -39,9 +39,7 @@ import { localEnum } from '../../Netowork/ApiEnum';
 import { io } from 'socket.io-client';
 
 const socket = io(BASE_URL(localEnum.development));
-socket.on("connect", () => {
-  console.log(`client $(socket.id)`)
-})
+
 
 export const ChatScreen = ({ navigation, route }) => {
 
