@@ -113,5 +113,6 @@ export const BodyDataAPI = {
 }
 
 export const ChatAPI = {
-  getChatMessages: modules.chatModule + 'getChats?'
+  getChatMessages: modules.chatModule + 'getChats?',
+  getAllUsers: '/app/users/getUsers?page='
 }

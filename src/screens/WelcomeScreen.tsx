@@ -2,7 +2,7 @@ import { StyleSheet, Image, View, Text } from 'react-native';
 import React, { useEffect } from 'react';
 import { RouteNames } from '../utils/RouteNames';
 import { appIcons } from '../utils/AppIcons';
-import { AsyncStorageKeys, getValue } from '../utils/AsyncStorage';
+import { AsyncStorageKeys, getValue, userData } from '../utils/AsyncStorage';
 
 interface Props {
   navigation: any;
@@ -11,6 +11,11 @@ interface Props {
 const WelcomeScreen: React.FC<Props> = ({ navigation: navigation }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
+      getValue(AsyncStorageKeys.userId).then(it => {
+        if (it) {
+          userData.userID = it
+        }
+      })
 
       getValue(AsyncStorageKeys.authToken).then(it => {
         if (it) {

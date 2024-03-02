@@ -37,7 +37,8 @@ import { FileModal, cameraLaunch, selectFile } from '../../utils/FileUpload';
 import { getAPICall } from '../../Netowork/Apis';
 import { ChatAPI } from '../../Netowork/Constants';
 import { CommonModal } from '../HomeScreen';
-import socket, { MessageModel, listenForNewMessage, sendMessage } from '../../utils/SocketHelper';
+import socket, { MessageModel, } from '../../utils/SocketHelper';
+import { userData } from '../../utils/AsyncStorage';
 
 
 interface ChatMeassage {
@@ -59,8 +60,12 @@ export const ChatScreen = ({ navigation, route }) => {
   }
 
 
-  console.log(route.params);
+  const [toId, setToID] = useState(route.params ? route.params.id : '65b8956628873a467127e7c5')
+  console.log(route.params, userData.userID);
+
   const [isShow, setIsShow] = useState(false)
+  const [refresh, setRefresh] = useState(false)
+
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -98,23 +103,36 @@ export const ChatScreen = ({ navigation, route }) => {
     });
   });
 
+
+  useEffect(() => {
+    if (message.trim() != '') {
+      setIsShow(false)
+    }
+  }, [message])
+
   useEffect(() => {
     getChatMessages()
     listenForNewMessage()
   }, [])
 
   const listenForNewMessage = () => {
-    if (socket) {
-    socket.on("msg-recieve", (message) => {
-      allMessages.push({message: message.msg, fromSelf: false })
+    socket.on("online-users", (data) => {
+      console.warn(data);
+
     })
+    // if (socket) {
+    socket.on("msg-recieve", (message) => {
+     allMessages.push({ message: message.msg, fromSelf: false })
+      setRefresh(!refresh)
+    })
+    // }
   }
-}
 
 
   const getChatMessages = () => {
     setLoading(true)
-    getAPICall(ChatAPI.getChatMessages + 'from=65ddc35c79e121e247b25d97&to=65b8956628873a467127e7c5',
+
+    getAPICall(ChatAPI.getChatMessages + `from=${userData.userID}&to=${toId}`,
       (res: CommonModal) => {
         if (res.isSuccess) {
           if (res.data && res.data.data && res.data.data.length > 0) {
@@ -130,15 +148,15 @@ export const ChatScreen = ({ navigation, route }) => {
 
   const sendMessage = async (msg: string) => {
     if (socket) {
-    let message = { from: '65ddc35c79e121e247b25d97', to: '65b8956628873a467127e7c5', msg: msg }
-    try {
-      const response = await socket.timeout(1000).emitWithAck("send-msg", message);
-      console.warn(response)
-     
-    } catch (err) {
-      // the server did not acknowledge the event in the given delay
+      let message = { from: userData.userID, to: toId, msg: msg }
+
+      try {
+        const response = await socket.timeout(1000).emitWithAck("send-msg", message);
+
+      } catch (err) {
+        // the server did not acknowledge the event in the given delay
+      }
     }
-  }
   }
 
   return (
@@ -163,7 +181,7 @@ export const ChatScreen = ({ navigation, route }) => {
           <FlatList
             style={{ flex: 1, paddingBottom: 500 }}
             data={allMessages}
-           
+
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) => (
               <View>
@@ -181,8 +199,8 @@ export const ChatScreen = ({ navigation, route }) => {
                     {'15:29'}
                   </Text>
                 ) : null}
-                {item.fromSelf == false ? 
-                  <LeftInflate item={item} /> : <RightInflate  item={item}/>
+                {item.fromSelf == false ?
+                  <LeftInflate item={item} /> : <RightInflate item={item} />
                 }
 
                 {/* // ) : (
@@ -206,8 +224,9 @@ export const ChatScreen = ({ navigation, route }) => {
                 }}>
                 <TextInput
                   value={message}
-                  placeholder={''}
-                  style={style.searchTextInput}
+                  placeholder={'Type something'}
+                  multiline={true}
+                  style={[style.searchTextInput, { maxHeight: 120 }]}
                   placeholderTextColor={colors.grey}
                   onChangeText={text => {
                     setMessage(text);
@@ -227,8 +246,8 @@ export const ChatScreen = ({ navigation, route }) => {
                     setIsShow(!isShow)
                   } else if (message.trim().length > 0) {
                     sendMessage(message)
-                    allMessages.push({message: message, fromSelf: false})
-                   
+                    allMessages.push({ message: message, fromSelf: true })
+
                     setMessage('')
                   } else {
                     setIsShow(!isShow)
@@ -256,7 +275,7 @@ export const ChatScreen = ({ navigation, route }) => {
         </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
           setData(undefined)
           getChatMessages()
-        }} /> }
+        }} />}
     </View>
 
   );
@@ -510,12 +529,11 @@ const style = StyleSheet.create({
 
   },
   searchTextInput: {
-    height: 33,
     width: '71%',
     marginStart: 11,
     fontFamily: fontFamily.regular,
     fontSize: 15,
-    paddingVertical: 0
+    paddingVertical: 5
   },
   circleButton: {
     backgroundColor: colors.white,

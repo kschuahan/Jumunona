@@ -1,5 +1,5 @@
 import { FlatList, Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { styles } from '../../utils/AppStyles'
 import ClearIcon from '../../../assets/Icons/Clear.svg';
 import AddIcon from '../../../assets/Icons/AddChat.svg';
@@ -18,14 +18,26 @@ import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler'
 import { appIcons, imagesUrl } from '../../utils/AppIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { RouteNames } from '../../utils/RouteNames';
+import { getAPICall } from '../../Netowork/Apis';
+import { ChatAPI } from '../../Netowork/Constants';
+import { CommonModal } from '../HomeScreen';
+import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
+import { useIsFocused } from '@react-navigation/native';
 
 let row: Array<any> = [];
 let prevOpenedRow;
+export interface ChatRooms {
+  _id: string
+  userName: string
+}
 const MessagesScreen = ({ navigation }) => {
 
 
-  const [chats, setChats] = useState([1, 2, 4, 5, 6, 7, 8, 23, 9, 0])
+  const [chats, setChats] = useState<Array<ChatRooms>>([])
+  const [data, setData] = useState<CommonModal>();
+  const [loading, setLoading] = useState(false);
 
+  const isFocused = useIsFocused()
   const RightButtons = ({ index = 0, onClick }) => {
 
     return <View style={[style.rowDirectionCenter, {
@@ -39,9 +51,9 @@ const MessagesScreen = ({ navigation }) => {
       }}><ChatSettingIcon /></TouchableOpacity>
       <TouchableOpacity><UploadIcon /></TouchableOpacity>
       <TouchableOpacity onPress={() => {
-        onClick()
-        const data = chats.filter((it, pos) => pos != index)
-        setChats(data)
+        //onClick()
+        // const data = chats.filter((it, pos) => pos != index)
+        //setChats(data)
       }}><DeleteIcon /></TouchableOpacity>
 
     </View>
@@ -54,8 +66,30 @@ const MessagesScreen = ({ navigation }) => {
     prevOpenedRow = row[index];
   }
 
+
+  useEffect(() => {
+    if (isFocused) {
+      setData(undefined)
+      callAPI()
+    }
+  }, [isFocused])
+
+  const callAPI = () => {
+    setLoading(true)
+    getAPICall(ChatAPI.getAllUsers+'1', (res: any) => {
+      if (res && res.isSuccess && res.data.data) {
+        const da=[...res.data.data.admin, ...res.data.data.user]
+        console.log("dd",da);
+        
+        setChats(da) 
+      }
+      setData(res)
+      setLoading(false)
+    });
+  };
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    data && data.isSuccess && data.data.data ? <GestureHandlerRootView style={{ flex: 1 }}>
 
       <View style={[styles.container, { padding: 0 }]}>
         <TopBar />
@@ -78,7 +112,7 @@ const MessagesScreen = ({ navigation }) => {
                 }>
                 <View>
                   <UserChatListItem item={item} onClick={() => {
-                    navigation.navigate(RouteNames.chat_screen)
+                    navigation.navigate(RouteNames.chat_screen, { id: item._id })
                   }} />
                   <View style={{ height: 0.8, backgroundColor: colors.whiteF0F0F0, marginStart: 68, marginTop: 14 }} />
                 </View>
@@ -111,6 +145,17 @@ const MessagesScreen = ({ navigation }) => {
 
       </View>
     </GestureHandlerRootView>
+      : loading ? (
+        <ProgressView />
+      ) : (
+        <RetryWhenErrorOccur
+          data={data}
+          onClick={() => {
+            setData(undefined);
+            callAPI();
+          }}
+        />
+      )
   )
 }
 
@@ -139,7 +184,7 @@ const UserChatListItem = ({ item, onClick }) => {
               marginTop: 5,
             }}
             resizeMode="cover"
-          />{' Поддержка'}
+          />{item.userName}
         </Text>
 
         <Text

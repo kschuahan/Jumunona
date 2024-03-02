@@ -18,7 +18,7 @@ import AboutUs from '../../../assets/Icons/AppLogo.svg';
 import { CenterProgressView } from '../../components/Dialogs';
 import { postAPICall } from '../../Netowork/Apis';
 import { AuthAPIs } from '../../Netowork/Constants';
-import { AsyncStorageKeys, saveValue } from '../../utils/AsyncStorage';
+import { AsyncStorageKeys, saveValue, userData } from '../../utils/AsyncStorage';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -48,7 +48,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     if (password.length < 8) {
       setPassErr("Enter valid password.")
       isValid = false
-    }  else {
+    } else {
       setPassErr('')
     }
     return isValid
@@ -61,24 +61,26 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         {
           phoneNumber: '91' + mobile,
           password: password,
-       
+
         },
         AuthAPIs.login,
         false,
         (res: any) => {
-        console.warn(res.data.accessToken)
-        setLoading(false)
+          console.warn(res.data.accessToken)
+          setLoading(false)
           if (res.isSuccess) {
             if (res.data.accessToken) {
-            saveValue(AsyncStorageKeys.authToken, res.data.accessToken)
-            navigation.replace("Main");
+              saveValue(AsyncStorageKeys.authToken, res.data.accessToken)
+              saveValue(AsyncStorageKeys.userId, res.data.userId)
+              userData.userID = res.data.userId
+              navigation.replace("Main");
             } else {
               Alert.alert(res.data)
             }
           } else {
             Alert.alert(res.data)
           }
-         
+
         }
       )
     }
@@ -143,25 +145,25 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
                   placeholder="Введите ваш номер телефона"
                   style={styles.mobileTextInput}
                 ></TextInput>
-               
+
               </View>
               {
-                  mobileErr.length > 0
-                    ? <Text
-                      style={{
-                        color: colors.lightRed,
-                        fontSize: 14,
-                        fontWeight: '400',
-                        paddingStart: 8
-                      }}>
-                      {mobileErr}
-                    </Text>
-                    : null
+                mobileErr.length > 0
+                  ? <Text
+                    style={{
+                      color: colors.lightRed,
+                      fontSize: 14,
+                      fontWeight: '400',
+                      paddingStart: 8
+                    }}>
+                    {mobileErr}
+                  </Text>
+                  : null
 
-                }
+              }
 
             </View>
-            <View style = {{ marginBottom: 13,}}>
+            <View style={{ marginBottom: 13, }}>
               <TextInput
                 placeholder="Введите свой пароль"
                 style={styles.passwordTextInput}
@@ -224,7 +226,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           </Text>
         </View>
       </ScrollView>
-      <CenterProgressView isShow={loading} /> 
+      <CenterProgressView isShow={loading} />
     </View>
   );
 };
@@ -284,7 +286,7 @@ const styles = StyleSheet.create({
     height: 34,
     borderRadius: 24,
     paddingLeft: 16,
-   
+
     fontFamily: "SegoeUI",
     fontSize: 14,
     paddingVertical: 0

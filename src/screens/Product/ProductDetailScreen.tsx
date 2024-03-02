@@ -500,7 +500,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
 
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(RouteNames.chat_screen);
+              navigation.navigate(RouteNames.chat_screen, { id: data.data.data.supplierUserId });
             }}
             style={{ alignItems: 'center', marginStart: -20 }}>
             <ChatbubbleEllipsisOutline width={24} height={24} />

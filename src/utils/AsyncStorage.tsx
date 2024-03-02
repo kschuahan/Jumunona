@@ -1,7 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export enum AsyncStorageKeys {
-     authToken = "authToken"
+    authToken = "authToken",
+    userId = "userId"
+}
+
+export const userData = {
+    userID: ''
 }
 
 
