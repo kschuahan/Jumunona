@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Dimensions, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {Dimensions, KeyboardAvoidingView, Platform, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {RouteNames} from './src/utils/RouteNames';
@@ -74,7 +74,11 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
+      <SafeAreaView   style={styles.container}>
       <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
       <NavigationContainer>
         <Stack.Navigator
@@ -377,7 +381,8 @@ const App: React.FC = () => {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -29,7 +29,8 @@ export const modules = {
   review: '/app/reviews/',
   address: '/app/address/',
   order: '/app/orders/',
-  bodyData: '/app/bodyData/'
+  bodyData: '/app/bodyData/',
+  chatModule: 'admin/chat/'
 }
 
 export const otherModule = {
@@ -109,4 +110,8 @@ export const BodyDataAPI = {
   deleteBodyData: modules.bodyData + "deleteBodyData",
   getBodyMeasurementGuide: modules.bodyData + 'getBodyMeasurementGuide',
   upadateBodyData: modules.bodyData + 'upadateBodyData'
+}
+
+export const ChatAPI = {
+  getChatMessages: modules.chatModule + 'getChats?'
 }
