@@ -32,14 +32,18 @@ import GalleryIcon from '../../../assets/Icons/Gallery.svg';
 import CloseIconChat from '../../../assets/Icons/CloseChat.svg';
 
 import VideoIcon from '../../../assets/Icons/Video.svg';
-import { UploadImage } from '../../components/Dialogs';
+import { ProgressView, RetryWhenErrorOccur, UploadImage } from '../../components/Dialogs';
 import { FileModal, cameraLaunch, selectFile } from '../../utils/FileUpload';
-import { BASE_URL } from '../../Netowork/Constants';
-import { localEnum } from '../../Netowork/ApiEnum';
-import { io } from 'socket.io-client';
+import { getAPICall } from '../../Netowork/Apis';
+import { ChatAPI } from '../../Netowork/Constants';
+import { CommonModal } from '../HomeScreen';
+import socket, { MessageModel, listenForNewMessage, sendMessage } from '../../utils/SocketHelper';
 
-const socket = io(BASE_URL(localEnum.development));
 
+interface ChatMeassage {
+  message: string,
+  fromSelf: boolean
+}
 
 export const ChatScreen = ({ navigation, route }) => {
 
@@ -49,7 +53,7 @@ export const ChatScreen = ({ navigation, route }) => {
       const fileModel = new FileModal(response.fileName,
         "image",
         response.uri)
-     
+
       console.log(fileModel)
     }
   }
@@ -58,12 +62,12 @@ export const ChatScreen = ({ navigation, route }) => {
   console.log(route.params);
   const [isShow, setIsShow] = useState(false)
   const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const [allMessages, setAllMessages] = useState<Array<ChatMeassage>>([])
+  const [data, setData] = useState<any>()
   const isShop = route.params ? route.params.isShop : false
   useEffect(() => {
-    socket.on("connect", () => {
-
-      console.log(`Client`, socket.id)
-    })
     navigation.setOptions({
       headerTitle: 'Shop name',
       headerTitleAlign: 'left',
@@ -94,6 +98,49 @@ export const ChatScreen = ({ navigation, route }) => {
     });
   });
 
+  useEffect(() => {
+    getChatMessages()
+    listenForNewMessage()
+  }, [])
+
+  const listenForNewMessage = () => {
+    if (socket) {
+    socket.on("msg-recieve", (message) => {
+      allMessages.push({message: message.msg, fromSelf: false })
+    })
+  }
+}
+
+
+  const getChatMessages = () => {
+    setLoading(true)
+    getAPICall(ChatAPI.getChatMessages + 'from=65ddc35c79e121e247b25d97&to=65b8956628873a467127e7c5',
+      (res: CommonModal) => {
+        if (res.isSuccess) {
+          if (res.data && res.data.data && res.data.data.length > 0) {
+            setAllMessages(res.data.data)
+            console.log(res.data.data)
+          }
+        }
+        setData(res)
+
+        setLoading(false)
+      })
+  }
+
+  const sendMessage = async (msg: string) => {
+    if (socket) {
+    let message = { from: '65ddc35c79e121e247b25d97', to: '65b8956628873a467127e7c5', msg: msg }
+    try {
+      const response = await socket.timeout(1000).emitWithAck("send-msg", message);
+      console.warn(response)
+     
+    } catch (err) {
+      // the server did not acknowledge the event in the given delay
+    }
+  }
+  }
+
   return (
     <View
       style={[
@@ -104,106 +151,112 @@ export const ChatScreen = ({ navigation, route }) => {
         },
       ]}>
       <ChatHeader navigation={navigation} isVisible={!isShop} />
-      <View
-        style={[
-          styles.container,
-          {
-            paddingBottom: 100,
-            backgroundColor: colors.whiteF2F2F2,
-          },
-        ]}>
-        <FlatList
-          style={{ flex: 1, paddingBottom: 500 }}
-          data={[1, 2]}
-          keyExtractor={item => {
-            return item.toString();
-          }}
-          scrollEnabled = {false}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => (
-            <View>
-              {index == 0 ? (
-                <Text
-                  style={[
-                    styles.textStyle,
-                    {
-                      color: colors.balck4F4F4D,
-                      textAlign: 'center',
-                      marginTop: 9.5,
-                      marginBottom: 6.5,
-                    },
-                  ]}>
-                  {'15:29'}
-                </Text>
-              ) : null}
-              {index % 2 == 0 ? (
-                <LeftInflate item={item} />
-              ) : (
-                !isShop ? <SendProductDetailsInflate item={item} /> : null
-              )}
-            </View>
-          )}
-        />
-
-        {/* {!isShop ? <ProfileProduct subTitle="" onClick={undefined} /> : null} */}
-
-        <View style={[style.textInputWithSend, { paddingBottom: !isShop ? 42 : 10 }]}>
-          <View style={[style.textInputWithSend1, { paddingBottom: 10 }]}>
-          <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundColor: colors.white,
-        borderRadius: 19,
-      }}>
-      <TextInput
-        value={message}
-        placeholder={''}
-        style={style.searchTextInput}
-        placeholderTextColor={colors.grey}
-        onChangeText={text => {
-          setMessage(text);
-        }}
-      />
-    </View>
-            <View style={{ flexDirection: 'row', gap: 10 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  // navigation.navigate(RouteNames.chat_screen)
-                }}
-                style={style.circleButton}>
-                <HappyOutlineIcon width={37} height={37} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => {
-                if (isShow) {
-                setIsShow(!isShow)
-                } else if (message.trim().length > 0) {
-                  setMessage('')
-                } else {
-                  setIsShow(!isShow)
+      {data && data.isSuccess && data.data.data ?
+        <View
+          style={[
+            styles.container,
+            {
+              paddingBottom: 100,
+              backgroundColor: colors.whiteF2F2F2,
+            },
+          ]}>
+          <FlatList
+            style={{ flex: 1, paddingBottom: 500 }}
+            data={allMessages}
+           
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => (
+              <View>
+                {index == 0 ? (
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        color: colors.balck4F4F4D,
+                        textAlign: 'center',
+                        marginTop: 9.5,
+                        marginBottom: 6.5,
+                      },
+                    ]}>
+                    {'15:29'}
+                  </Text>
+                ) : null}
+                {item.fromSelf == false ? 
+                  <LeftInflate item={item} /> : <RightInflate  item={item}/>
                 }
-              }} style={style.circleButton}>
-                {isShow ? <CloseIconChat width={37} height={37} /> : message.trim().length == 0 ? <AddOutlineIcon width={37} height={37} /> : <Image source={appIcons.send} style = {{width: 25, height: 25, marginStart: -5, marginBottom: -3  }}/>}
-              </TouchableOpacity>
+
+                {/* // ) : (
+                //   !isShop ? <SendProductDetailsInflate item={item} /> : null
+                // )} */}
+              </View>
+            )}
+          />
+
+          {/* {!isShop ? <ProfileProduct subTitle="" onClick={undefined} /> : null} */}
+
+          <View style={[style.textInputWithSend, { paddingBottom: !isShop ? 42 : 10 }]}>
+            <View style={[style.textInputWithSend1, { paddingBottom: 10 }]}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  backgroundColor: colors.white,
+                  borderRadius: 19,
+                }}>
+                <TextInput
+                  value={message}
+                  placeholder={''}
+                  style={style.searchTextInput}
+                  placeholderTextColor={colors.grey}
+                  onChangeText={text => {
+                    setMessage(text);
+                  }}
+                />
+              </View>
+              <View style={{ flexDirection: 'row', gap: 10 }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    // navigation.navigate(RouteNames.chat_screen)
+                  }}
+                  style={style.circleButton}>
+                  <HappyOutlineIcon width={37} height={37} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                  if (isShow) {
+                    setIsShow(!isShow)
+                  } else if (message.trim().length > 0) {
+                    sendMessage(message)
+                    allMessages.push({message: message, fromSelf: false})
+                   
+                    setMessage('')
+                  } else {
+                    setIsShow(!isShow)
+                  }
+                }} style={style.circleButton}>
+                  {isShow ? <CloseIconChat width={37} height={37} /> : message.trim().length == 0 ? <AddOutlineIcon width={37} height={37} /> : <Image source={appIcons.send} style={{ width: 25, height: 25, marginStart: -5, marginBottom: -3 }} />}
+                </TouchableOpacity>
+              </View>
             </View>
+            {isShow ? <View style={{ flexDirection: 'row', }}>
+              <IconWithText onClick={() => {
+                setIsShow(!isShop)
+                cameraLaunch(true, responseHandling)
+              }} marginEnd={20} />
+              <IconWithText title={AppString.album} onClick={() => {
+                setIsShow(!isShop)
+                selectFile(true, responseHandling)
+              }} Icon={GalleryIcon} />
+              <IconWithText title={AppString.video} onClick={() => {
+                setIsShow(!isShop)
+                selectFile(false, responseHandling)
+              }} Icon={VideoIcon} />
+            </View> : null}
           </View>
-          {isShow ? <View style={{ flexDirection: 'row', }}>
-            <IconWithText onClick={() => {
-              setIsShow(!isShop)
-              cameraLaunch(true, responseHandling)
-            }} marginEnd={20} />
-            <IconWithText title={AppString.album} onClick={() => {
-              setIsShow(!isShop)
-              selectFile(true, responseHandling)
-            }} Icon={GalleryIcon} />
-            <IconWithText title={AppString.video} onClick={() => {
-              setIsShow(!isShop)
-              selectFile(false, responseHandling)
-            }} Icon={VideoIcon} />
-          </View> : null}
-        </View>
-      </View>
+        </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+          setData(undefined)
+          getChatMessages()
+        }} /> }
     </View>
 
   );
@@ -223,7 +276,7 @@ const LeftInflate = ({ item }) => {
         }}>
         <Text
           style={[styles.textStyle, { fontSize: 17, color: colors.black121212 }]}>
-          {'Welcome \n\nText'}
+          {item.message}
         </Text>
       </View>
     </View>
@@ -260,7 +313,7 @@ const RightInflate = ({ item }) => {
         style={{ backgroundColor: colors.white, borderRadius: 13, padding: 10 }}>
         <Text
           style={[styles.textStyle, { fontSize: 17, color: colors.black121212 }]}>
-          {'Welcome \n\nText'}
+          {item.message}
         </Text>
       </View>
     </View>
