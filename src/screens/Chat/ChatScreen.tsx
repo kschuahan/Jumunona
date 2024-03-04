@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   TouchableOpacity,
   View,
@@ -35,11 +35,13 @@ import VideoIcon from '../../../assets/Icons/Video.svg';
 import { ProgressView, RetryWhenErrorOccur, UploadImage } from '../../components/Dialogs';
 import { FileModal, cameraLaunch, selectFile } from '../../utils/FileUpload';
 import { getAPICall } from '../../Netowork/Apis';
-import { ChatAPI } from '../../Netowork/Constants';
+import { BASE_URL, ChatAPI } from '../../Netowork/Constants';
 import { CommonModal } from '../HomeScreen';
 import socket, { MessageModel, } from '../../utils/SocketHelper';
 import { userData } from '../../utils/AsyncStorage';
 import getSocket from '../../utils/SocketHelper';
+import { localEnum } from '../../Netowork/ApiEnum';
+import { io } from 'socket.io-client';
 
 
 interface ChatMeassage {
@@ -48,6 +50,10 @@ interface ChatMeassage {
 }
 
 export const ChatScreen = ({ navigation, route }) => {
+
+  const socket = useMemo(() => {
+    return io(BASE_URL(localEnum.development))
+  }, [])
 
   const responseHandling = (success: boolean, response: any) => {
     if (success) {
@@ -75,11 +81,6 @@ export const ChatScreen = ({ navigation, route }) => {
   const isShop = route.params ? route.params.isShop : false
   useEffect(() => {
 
-    getSocket()?.emitWithAck("add-user", toId);
-
-    getSocket()?.on("add-user", (userId) => {
-      console.warn(userId);
-    });
 
     navigation.setOptions({
       headerTitle: 'Shop name',
@@ -120,13 +121,31 @@ export const ChatScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     getChatMessages()
-    listenForNewMessage()
   }, [])
+
+  useEffect(() => {
+
+    if (socket != null) {
+      socket.on('connect', () => {
+        console.warn(socket.id); // true
+        socket.emit("add-user", toId);
+      });
+
+      socket.on("add-user", (userId:any) => {
+        console.warn("add-user", userId);
+      });
+
+      listenForNewMessage()
+
+
+
+    }
+  }, [socket])
 
   const listenForNewMessage = () => {
 
     // if (socket) {
-      getSocket()?.on("msg-recieve", (message) => {
+    socket.on("msg-recieve", (message) => {
       allMessages.push({ message: message.msg, fromSelf: false })
       setRefresh(!refresh)
     })
@@ -152,15 +171,18 @@ export const ChatScreen = ({ navigation, route }) => {
   }
 
   const sendMessage = async (msg: string) => {
-      let message = { from: userData.userID, to: toId, msg: msg }
+    let message = { from: userData.userID, to: toId, msg: msg }
 
-      try {
-        const response = await getSocket()?.timeout(1000).emitWithAck("send-msg", message);
+    try {
+      const response = await socket.emitWithAck("send-msg", message);
+      listenForNewMessage()
 
-      } catch (err) {
-        // the server did not acknowledge the event in the given delay
-      }
-    
+    } catch (err) {
+      listenForNewMessage()
+
+      // the server did not acknowledge the event in the given delay
+    }
+
   }
 
   return (
