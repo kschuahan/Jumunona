@@ -73,6 +73,13 @@ export const ChatScreen = ({ navigation, route }) => {
   const [data, setData] = useState<any>()
   const isShop = route.params ? route.params.isShop : false
   useEffect(() => {
+
+    socket.emitWithAck("add-user", toId);
+
+    socket.on("add-user", (userId) => {
+      console.warn(userId);
+    });
+
     navigation.setOptions({
       headerTitle: 'Shop name',
       headerTitleAlign: 'left',
@@ -116,13 +123,10 @@ export const ChatScreen = ({ navigation, route }) => {
   }, [])
 
   const listenForNewMessage = () => {
-    socket.on("online-users", (data) => {
-      console.warn(data);
 
-    })
     // if (socket) {
     socket.on("msg-recieve", (message) => {
-     allMessages.push({ message: message.msg, fromSelf: false })
+      allMessages.push({ message: message.msg, fromSelf: false })
       setRefresh(!refresh)
     })
     // }
