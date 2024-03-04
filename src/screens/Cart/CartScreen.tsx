@@ -415,7 +415,7 @@ const CartScreen = ({ navigation }) => {
                   text={AppString.delete}
                   onClick={() => {
                     deleteItemFromCart()
-                  }}
+                  }} 
                 />
               </View>
             }

@@ -45,7 +45,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     } else {
       setMobileErr('')
     }
-    if (password.length < 8) {
+    if (password.length < 3) {
       setPassErr("Enter valid password.")
       isValid = false
     } else {
@@ -66,7 +66,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         AuthAPIs.login,
         false,
         (res: any) => {
-          console.warn(res.data.accessToken)
           setLoading(false)
           if (res.isSuccess) {
             if (res.data.accessToken) {

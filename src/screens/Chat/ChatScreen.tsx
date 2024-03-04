@@ -39,6 +39,7 @@ import { ChatAPI } from '../../Netowork/Constants';
 import { CommonModal } from '../HomeScreen';
 import socket, { MessageModel, } from '../../utils/SocketHelper';
 import { userData } from '../../utils/AsyncStorage';
+import getSocket from '../../utils/SocketHelper';
 
 
 interface ChatMeassage {
@@ -74,9 +75,9 @@ export const ChatScreen = ({ navigation, route }) => {
   const isShop = route.params ? route.params.isShop : false
   useEffect(() => {
 
-    socket.emitWithAck("add-user", toId);
+    getSocket()?.emitWithAck("add-user", toId);
 
-    socket.on("add-user", (userId) => {
+    getSocket()?.on("add-user", (userId) => {
       console.warn(userId);
     });
 
@@ -125,7 +126,7 @@ export const ChatScreen = ({ navigation, route }) => {
   const listenForNewMessage = () => {
 
     // if (socket) {
-    socket.on("msg-recieve", (message) => {
+      getSocket()?.on("msg-recieve", (message) => {
       allMessages.push({ message: message.msg, fromSelf: false })
       setRefresh(!refresh)
     })
@@ -151,16 +152,15 @@ export const ChatScreen = ({ navigation, route }) => {
   }
 
   const sendMessage = async (msg: string) => {
-    if (socket) {
       let message = { from: userData.userID, to: toId, msg: msg }
 
       try {
-        const response = await socket.timeout(1000).emitWithAck("send-msg", message);
+        const response = await getSocket()?.timeout(1000).emitWithAck("send-msg", message);
 
       } catch (err) {
         // the server did not acknowledge the event in the given delay
       }
-    }
+    
   }
 
   return (
