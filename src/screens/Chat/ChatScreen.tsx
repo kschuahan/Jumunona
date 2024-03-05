@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   TouchableOpacity,
   View,
@@ -35,10 +35,13 @@ import VideoIcon from '../../../assets/Icons/Video.svg';
 import { ProgressView, RetryWhenErrorOccur, UploadImage } from '../../components/Dialogs';
 import { FileModal, cameraLaunch, selectFile } from '../../utils/FileUpload';
 import { getAPICall } from '../../Netowork/Apis';
-import { ChatAPI } from '../../Netowork/Constants';
+import { BASE_URL, ChatAPI } from '../../Netowork/Constants';
 import { CommonModal } from '../HomeScreen';
-import socket, { MessageModel, } from '../../utils/SocketHelper';
 import { userData } from '../../utils/AsyncStorage';
+import getSocket from '../../utils/SocketHelper';
+import { localEnum } from '../../Netowork/ApiEnum';
+import { Socket, io } from 'socket.io-client';
+import { useKeyboardVisible } from '../../utils/Common';
 
 
 interface ChatMeassage {
@@ -46,7 +49,13 @@ interface ChatMeassage {
   fromSelf: boolean
 }
 
+let socket: Socket = null
+let chatList: Array<ChatMeassage> = []
 export const ChatScreen = ({ navigation, route }) => {
+
+
+
+  const flatListScroll = useRef<FlatList>()
 
   const responseHandling = (success: boolean, response: any) => {
     if (success) {
@@ -72,43 +81,8 @@ export const ChatScreen = ({ navigation, route }) => {
   const [allMessages, setAllMessages] = useState<Array<ChatMeassage>>([])
   const [data, setData] = useState<any>()
   const isShop = route.params ? route.params.isShop : false
-  useEffect(() => {
+  const name = route.params && route.params.name ? route.params.name : 'Shop name'
 
-    socket.emitWithAck("add-user", toId);
-
-    socket.on("add-user", (userId) => {
-      console.warn(userId);
-    });
-
-    navigation.setOptions({
-      headerTitle: 'Shop name',
-      headerTitleAlign: 'left',
-      headerStyle: {
-        backgroundColor: colors.whiteF6F6F6,
-      },
-      headerRight: () => (
-        <View style={{ flexDirection: 'row', gap: 30, alignItems: 'center' }}>
-          {!isShop ? <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
-            {/* <Ionicons name="gift-outline" size={24} /> */}
-            <ShopGrey />
-          </TouchableOpacity> : null}
-          <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
-            <EllipsisHosrizontalIcon />
-          </TouchableOpacity>
-        </View>
-      ),
-
-      headerLeft: () => (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-          style={{ marginStart: 4, marginEnd: 30 }}>
-          <ChevronBackOutlineIcon width={15} height={15} />
-        </TouchableOpacity>
-      ),
-    });
-  });
 
 
   useEffect(() => {
@@ -117,19 +91,43 @@ export const ChatScreen = ({ navigation, route }) => {
     }
   }, [message])
 
+
+
+
+  const initSocat = () => {
+    getSocket().then(it => {
+      socket = it
+
+      listenForNewMessage()
+    }).catch((error: any) => {
+      console.warn('Socket Error', error)
+      initSocat()
+    })
+  }
+
   useEffect(() => {
+    chatList = []
     getChatMessages()
-    listenForNewMessage()
+    initSocat()
+
   }, [])
+
+
 
   const listenForNewMessage = () => {
 
-    // if (socket) {
-    socket.on("msg-recieve", (message) => {
-      allMessages.push({ message: message.msg, fromSelf: false })
-      setRefresh(!refresh)
-    })
-    // }
+    if (socket) {
+      socket.on("msg-recieve", (message: any) => {
+        console.log("message rec 3", message, allMessages.length)
+        chatList.push({ message: message.msg, fromSelf: false })
+        setAllMessages(chatList)
+
+        setRefresh(!refresh)
+
+        flatListScroll.current?.scrollToIndex({ animated: false, index: chatList.length - 1 });
+
+      })
+    }
   }
 
 
@@ -138,29 +136,36 @@ export const ChatScreen = ({ navigation, route }) => {
 
     getAPICall(ChatAPI.getChatMessages + `from=${userData.userID}&to=${toId}`,
       (res: CommonModal) => {
+        setData(res)
+
         if (res.isSuccess) {
           if (res.data && res.data.data && res.data.data.length > 0) {
+            chatList = res.data.data
             setAllMessages(res.data.data)
-            console.log(res.data.data)
+
           }
         }
-        setData(res)
 
         setLoading(false)
       })
   }
 
   const sendMessage = async (msg: string) => {
+    flatListScroll.current?.scrollToIndex({ animated: false, index: chatList.length - 1 });
+
     if (socket) {
       let message = { from: userData.userID, to: toId, msg: msg }
+      console.warn("Send Message", message);
 
       try {
-        const response = await socket.timeout(1000).emitWithAck("send-msg", message);
+        const response = await socket.emitWithAck("send-msg", message);
 
       } catch (err) {
+
         // the server did not acknowledge the event in the given delay
       }
     }
+
   }
 
   return (
@@ -172,7 +177,7 @@ export const ChatScreen = ({ navigation, route }) => {
           backgroundColor: colors.whiteF2F2F2,
         },
       ]}>
-      <ChatHeader navigation={navigation} isVisible={!isShop} />
+      <ChatHeader title={name} navigation={navigation} isVisible={!isShop} />
       {data && data.isSuccess && data.data.data ?
         <View
           style={[
@@ -183,8 +188,10 @@ export const ChatScreen = ({ navigation, route }) => {
             },
           ]}>
           <FlatList
+            ref={flatListScroll}
             style={{ flex: 1, paddingBottom: 500 }}
             data={allMessages}
+            scrollToEnd={true}
 
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) => (
@@ -250,8 +257,8 @@ export const ChatScreen = ({ navigation, route }) => {
                     setIsShow(!isShow)
                   } else if (message.trim().length > 0) {
                     sendMessage(message)
-                    allMessages.push({ message: message, fromSelf: true })
-
+                    chatList.push({ message: message, fromSelf: true })
+                    setAllMessages(chatList)
                     setMessage('')
                   } else {
                     setIsShow(!isShow)

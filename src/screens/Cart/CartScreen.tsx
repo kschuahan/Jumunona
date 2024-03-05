@@ -159,7 +159,7 @@ const CartScreen = ({ navigation }) => {
 
   return (
 
-    data && data.isSuccess ?
+    data && data.isSuccess && data.data.data ?
       <GestureHandlerRootView style={{ flex: 1 }}>
 
         <View style={style.container}>
@@ -415,7 +415,7 @@ const CartScreen = ({ navigation }) => {
                   text={AppString.delete}
                   onClick={() => {
                     deleteItemFromCart()
-                  }}
+                  }} 
                 />
               </View>
             }
