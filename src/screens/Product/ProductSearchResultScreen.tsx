@@ -28,6 +28,10 @@ import {fontFamily} from '../../utils/Fonts';
 import {AppString} from '../../utils/AppStrings';
 import FilterBottomSheet from './FilterBottomSheet';
 import {useRoute} from '@react-navigation/native';
+import { getAPICall } from '../../Netowork/Apis';
+import { ProductAPIs } from '../../Netowork/Constants';
+import { CommonModal, PagingData } from '../HomeScreen';
+import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 
 const categoryData = [
   {id: 1, desc: 'Jackets'},
@@ -122,10 +126,55 @@ export const ProductSearchResultScreen = ({navigation, route}) => {
   ];
 
   const [selectedSortBy, setSortBy] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [dataArray, setArrayData] = useState<Array<any>>([]);
+  const [pagingData, setPagingData] = useState<PagingData>();
+  const [data, setData] = useState<CommonModal>();
+  const [searcText, setSearcText] = useState('');
+
+  const callAPI = (page = 1, searchstring = '') => {
+    setLoading(true)
+    getAPICall(ProductAPIs.getProducts + `${page}` + `&search=${searchstring}`, (res: any) => {
+      if (res.isSuccess) {
+        setPagingData(res.data.data.pages);
+        setArrayData([...dataArray, ...res.data.data.products]);
+      }
+      setData(res);
+      setLoading(false)
+    });
+  };
+
+
+  useEffect(() => {
+  
+    if (route.params) {
+      setSearcText(route.params.searchText)
+    }
+    callAPI(1, route.params.searchText)
+  }, [])
+  const featchMore = () => {
+    if (
+      data?.isSuccess &&
+      pagingData &&
+      pagingData?.pages > pagingData?.current && !loading
+    ) {
+      callAPI(pagingData.current + 1, searcText);
+    }
+  };
 
   return (
     <View style={[styles.container, {padding: 0}]}>
-      <CustomHeaderWithoutBackgroundSearch navigation={navigation} />
+      <CustomHeaderWithoutBackgroundSearch navigation={navigation} searchText={searcText} onChangeText= {(text: string) => {
+        setSearcText(text)
+        setTimeout(() => {
+          setArrayData([])
+          console.warn("werwe");
+          
+          callAPI(1, text)
+        }, 2000);
+      }} />
+
+      { dataArray && pagingData ?
       <View style={style.container}>
         {route.params && route.params.isRoute ? null : (
           <CategoriesList navigation={navigation} />
@@ -331,13 +380,35 @@ export const ProductSearchResultScreen = ({navigation, route}) => {
 
         <View style={[style.productsGrid]}>
           <MasonryList
-            data={data}
-            keyExtractor={item => {
-              return item.id;
-            }}
-            showsVerticalScrollIndicator={false}
+           data={dataArray}
+           keyExtractor={item => {
+             return item._id;
+           }}
+           ListFooterComponent={
+             loading ? (
+               <ProgressView ht={undefined} />
+             ) : data?.isSuccess ? null : (
+               <RetryWhenErrorOccur
+                 ht={120}
+                 data={data}
+                 onClick={() => {
+                   callAPI(pagingData.current + 1);
+                 }}
+               />
+             )
+           }
+           // ListEmptyComponent={
+           //   <RetryWhenErrorOccur
+           //     data={'No Products found'}
+           //     onClick={() => {
+ 
+           //     }} isRetry={false}/>
+           // }
+           onEndReached={featchMore}
+           onEndReachedThreshold={0.1}
+           showsVerticalScrollIndicator={false}
+           style={{ marginHorizontal: 4.5 }}
             numColumns={2}
-            style={{marginHorizontal: 4}}
             renderItem={({item, index}) => {
               return (
                 <TouchableOpacity
@@ -352,10 +423,16 @@ export const ProductSearchResultScreen = ({navigation, route}) => {
                     marginTop: 5,
                   }}
                   onPress={() => {
-                    navigation.navigate(RouteNames.product_detail);
+                    navigation.navigate(RouteNames.product_detail, {
+                      id: item._id,
+                    });
                   }}>
                   <Image
-                    source={appIcons.shoeImageURL}
+                    source={
+                      item.images !== ''
+                        ? { uri: item.images }
+                        : appIcons.shoeImageURL
+                    }
                     style={{
                       height: 265,
                       paddingHorizontal: 1,
@@ -385,7 +462,7 @@ export const ProductSearchResultScreen = ({navigation, route}) => {
                         color: colors.black,
                       }}
                       numberOfLines={1}>
-                      Футболка
+                      {item.name}
                     </Text>
                   </View>
                   <View
@@ -401,7 +478,7 @@ export const ProductSearchResultScreen = ({navigation, route}) => {
                           color: '#ff7600',
                           fontWeight: '500',
                         }}>
-                        999
+                         {item.price ? item.price : '58'}
                       </Text>
                       <Text
                         style={{
@@ -420,7 +497,7 @@ export const ProductSearchResultScreen = ({navigation, route}) => {
                         color: '#AAAAAA',
                         paddingTop: 3,
                       }}>
-                      {item.desc}
+                        {`${item.views}${AppString.views}`}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -428,7 +505,17 @@ export const ProductSearchResultScreen = ({navigation, route}) => {
             }}
           />
         </View>
-      </View>
+      </View> : loading ? (
+    <ProgressView />
+  ) : 
+    <RetryWhenErrorOccur
+      data={data}
+      onClick={() => {
+        setData(undefined);
+        callAPI();
+      }}
+    />
+        }
       <FilterBottomSheet
         isShow={showFilter}
         onClose={() => {

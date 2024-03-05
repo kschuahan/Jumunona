@@ -23,14 +23,15 @@ import { getAPICall } from '../Netowork/Apis';
 import { categoriesModule, ProductAPIs } from '../Netowork/Constants';
 import { ProgressView, RetryWhenErrorOccur } from '../components/Dialogs';
 import { AppString } from '../utils/AppStrings';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import HeartRed from '../../assets/Icons/heartRed.svg';
+import BrokenHeart from '../../assets/Icons/BrokenHeart.svg';
 
 export interface CommonModal {
   isSuccess: boolean;
   data: any;
 }
 
-interface PagingData {
+export interface PagingData {
   total: number;
   remaining: number;
   current: number;
@@ -38,14 +39,21 @@ interface PagingData {
 }
 const numColumns = 5;
 
-const HeaderItem = ({ onSearchClick }) => (
+const HeaderItem = ({ onSearchClick }) => {
+  const [searchText, setSearchText] = useState("")
+
+  return (
   <View style={styles.header}>
     <TextInput
       style={styles.searchBox}
       placeholder="Спортивная обувь"
       placeholderTextColor="#727272"
+      value={searchText}
+      onChangeText={(text) => {
+        setSearchText(text)
+      }}
     />
-    <TouchableOpacity style={styles.button} onPress={onSearchClick}>
+    <TouchableOpacity style={styles.button} onPress={() => {onSearchClick(searchText)}}>
       <LinearGradient
         colors={['#FF7600', '#FC4A1A']}
         start={{ x: 0.4, y: 0 }}
@@ -55,7 +63,8 @@ const HeaderItem = ({ onSearchClick }) => (
       </LinearGradient>
     </TouchableOpacity>
   </View>
-);
+)
+  };
 
 const MainCategoriesItem = ({ navigation, data }) => {
   return data && data.isSuccess ? (
@@ -127,7 +136,8 @@ const MainCategoriesItem = ({ navigation, data }) => {
         }}
       />
     </View>
-  ) : null;
+  )
+   : null;
 };
 
 const HomeScreen: React.FC = ({ navigation }) => {
@@ -179,9 +189,10 @@ const HomeScreen: React.FC = ({ navigation }) => {
   return dataArray && pagingData ? (
     <View style={styles.container}>
       <HeaderItem
-        onSearchClick={() => {
+        onSearchClick={(text: string) => {
           navigation.navigate(RouteNames.product_search_screen, {
             isRoute: true,
+            searchText: text
           });
         }}
       />
@@ -221,90 +232,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
           numColumns={2}
           renderItem={({ item, i }) => {
             return (
-              <Pressable
-                style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
-                onPress={() => {
-                  navigation.navigate(RouteNames.product_detail, {
-                    id: item._id,
-                  });
-                }}>
-                <Image
-                  source={
-                    item.images !== ''
-                      ? { uri: item.images }
-                      : appIcons.shoeImageURL
-                  }
-                  style={[
-                    styles.gridViewItemImage,
-                    { height: i % 3 !== 1 ? 240 : 277 },
-                  ]}
-                />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    paddingLeft: 7,
-                  }}>
-                  {/* <SvgUri style={{ borderRadius: 8, overflow: 'hidden' }}
-                    height={15} width={15} uri={item.country_flag} /> */}
-                  <Image
-                    source={appIcons.china}
-                    style={{ borderRadius: 8, height: 15, width: 15 }}
-                  />
-                  <Text
-                    style={{
-                      marginLeft: 4,
-                      fontSize: 13,
-                      paddingBottom: 1,
-                      fontWeight: '500',
-                      paddingEnd: 12,
-                      color: colors.black,
-                    }}
-                    numberOfLines={1}>
-                    {item.name}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    paddingLeft: 8,
-                    marginTop: 3,
-                    justifyContent: 'space-between',
-                  }}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Text
-                      style={{
-                        fontSize: 17,
-                        color: '#ff7600',
-                        fontFamily: fontFamily.bold,
-                      }}>
-                      {item.price ? item.price : '58'}
-                    </Text>
-                    <Text
-                      style={{
-                        paddingTop: 6,
-                        color: '#ff7600',
-                        fontSize: 12,
-                        fontFamily: fontFamily.bold,
-                      }}>
-                      c.
-                    </Text>
-                  </View>
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      color: '#AAAAAA',
-                      paddingTop: 3,
-                      marginTop: 4,
-                      fontSize: 10.5,
-                      marginEnd: 15,
-                      fontFamily: fontFamily.regular,
-                    }}>
-                    {`${item.views}${AppString.views}`}
-                  </Text>
-                </View>
-              </Pressable>
+              <ProductView item={item} i = {i} navigation={navigation} />
             );
           }}
         />
@@ -324,6 +252,174 @@ const HomeScreen: React.FC = ({ navigation }) => {
     />
   );
 };
+
+const ProductView = ({item, i, navigation}) => {
+
+  const [showLikeView, setShowLikeView] = useState(false)
+  return (
+    <View>
+      <TouchableOpacity
+        onLongPress={() => {
+        
+           setShowLikeView(!showLikeView)
+        }}
+        style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
+        onPress={() => {
+          navigation.navigate(RouteNames.product_detail, {
+            id: item._id,
+          });
+        }}>
+        <Image
+          source={
+            item.images !== ''
+              ? { uri: item.images }
+              : appIcons.shoeImageURL
+          }
+          style={[
+            styles.gridViewItemImage,
+            { height: i % 3 !== 1 ? 240 : 277 },
+          ]}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            paddingLeft: 7,
+          }}>
+          {/* <SvgUri style={{ borderRadius: 8, overflow: 'hidden' }}
+                    height={15} width={15} uri={item.country_flag} /> */}
+          <Image
+            source={appIcons.china}
+            style={{ borderRadius: 8, height: 15, width: 15 }}
+          />
+          <Text
+            style={{
+              marginLeft: 4,
+              fontSize: 13,
+              paddingBottom: 1,
+              fontWeight: '500',
+              paddingEnd: 12,
+              color: colors.black,
+            }}
+            numberOfLines={1}>
+            {item.name}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            paddingLeft: 8,
+            marginTop: 3,
+            justifyContent: 'space-between',
+          }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text
+              style={{
+                fontSize: 17,
+                color: '#ff7600',
+                fontFamily: fontFamily.bold,
+              }}>
+              {item.price ? item.price : '58'}
+            </Text>
+            <Text
+              style={{
+                paddingTop: 6,
+                color: '#ff7600',
+                fontSize: 12,
+                fontFamily: fontFamily.bold,
+              }}>
+              c.
+            </Text>
+          </View>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: '#AAAAAA',
+              paddingTop: 3,
+              marginTop: 4,
+              fontSize: 10.5,
+              marginEnd: 15,
+              fontFamily: fontFamily.regular,
+            }}>
+            {`${item.views}${AppString.views}`}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      {
+        showLikeView ? 
+          <View
+            style={[styles.gridViewItemStyle,
+            {
+              paddingBottom: 8,
+              position: "absolute",
+              flex: 1,
+              width: "95%",
+              height: "96%",
+              backgroundColor: 'rgba(0, 0,0, .34 )',
+              alignItems: 'center',
+              justifyContent: "center"
+            }]}
+          >
+            <Pressable
+              style={{
+                marginHorizontal: 13,
+                paddingVertical: 5,
+                flexDirection: 'row',
+                backgroundColor: colors.white,
+                width: "85%",
+                marginBottom: 51,
+                paddingHorizontal: 8,
+                borderRadius: 50,
+                alignItems: "center"
+              }}
+              onPress={() => {
+                setShowLikeView(false)
+              }}
+            >
+              <HeartRed width={24} height={24} />
+              <Text style={{
+                color: colors.black,
+                fontSize: 15,
+                fontWeight: '400',
+                marginStart: 13
+              }}>
+                Похожее
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={{
+                marginHorizontal: 13,
+                width: "85%",
+                paddingVertical: 5,
+                flexDirection: 'row',
+                backgroundColor: colors.white,
+                paddingHorizontal: 8,
+                borderRadius: 50,
+                alignItems: "center"
+              }}
+              onPress={() => {
+                setShowLikeView(false)
+              }}
+            >
+              <BrokenHeart width={24} height={24} />
+              <Text style={{
+                color: colors.black,
+                fontSize: 15,
+                fontWeight: '400',
+                marginStart: 13
+              }}>
+               Не нравится
+              </Text>
+            </Pressable>
+          </View>
+         
+        : null
+      }
+    </View>
+  )
+}
 
 export default HomeScreen;
 
@@ -403,7 +499,6 @@ const styles = StyleSheet.create({
     width: '100%',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    marginBottom: 8,
   },
   gridViewItemStyle: {
     borderRadius: 13,
