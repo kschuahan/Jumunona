@@ -44,9 +44,8 @@ export const MenuLogo = ({ onClick = () => { } }) => {
 
 
 
-export const SearchView = ({ placeholder = AppString.city_name }) => {
-    const [search, setSearch] = useState('');
-
+export const SearchView = ({ placeholder = AppString.city_name, searchText = '', onChangeText=(text:string)=>{} }) => {
+    
     return (
         <View
             style={{
@@ -65,14 +64,15 @@ export const SearchView = ({ placeholder = AppString.city_name }) => {
                 color={colors.grey}
             /> : null}
             <TextInput
-                value={search}
+                value={searchText}
                 placeholder={placeholder}
                 style={[style.searchTextInput, {
                     width: placeholder == AppString.city_name ? '80%' : '86%',
                 }]}
                 placeholderTextColor={colors.grey}
                 onChangeText={text => {
-                    setSearch(text);
+                    
+                    onChangeText(text)
                 }}
             />
         </View>
@@ -173,7 +173,7 @@ export const CustomHeaderWithSearch = ({ navigation }) => {
 }
 
 
-export const CustomHeaderWithoutBackgroundSearch = ({ navigation }) => {
+export const CustomHeaderWithoutBackgroundSearch = ({ navigation, searchText = '', onChangeText =(text:string)=>{}} ) => {
 
     return <Card
         style={{
@@ -190,7 +190,7 @@ export const CustomHeaderWithoutBackgroundSearch = ({ navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
                 <BackLogo navigation={navigation} />
-                <SearchView placeholder="Футболки" />
+                <SearchView placeholder="Футболки" searchText={searchText} onChangeText={onChangeText}/>
             </View>
             <MenuLogo />
         </View>
