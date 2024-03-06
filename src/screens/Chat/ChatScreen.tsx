@@ -7,6 +7,7 @@ import {
   TextInput,
   FlatList,
   Dimensions,
+  Alert,
 } from 'react-native';
 import { styles } from '../../utils/AppStyles';
 import { colors } from '../../utils/AppColors';
@@ -256,10 +257,15 @@ export const ChatScreen = ({ navigation, route }) => {
                   if (isShow) {
                     setIsShow(!isShow)
                   } else if (message.trim().length > 0) {
-                    sendMessage(message)
-                    chatList.push({ message: message, fromSelf: true })
-                    setAllMessages(chatList)
-                    setMessage('')
+                    if (socket) {
+                      sendMessage(message)
+                      chatList.push({ message: message, fromSelf: true })
+                      setAllMessages(chatList)
+                      setMessage('')
+                    } else {
+                      Alert.alert("", "Something went wrong please try again")
+                      initSocat()
+                    }
                   } else {
                     setIsShow(!isShow)
                   }
