@@ -7,7 +7,7 @@ import { appIcons, imagesUrl } from "../../utils/AppIcons"
 import { RatingView } from "../Product/ProductDetailScreen"
 
 import LightStarOrange from '../../../assets/Icons/LightStarOrange.svg';
-import CameraIcon from '../../../assets/Icons/CameraIcon.svg';
+import CameraPlus from '../../../assets/Icons/CameraPlus.svg';
 import HeartRed from '../../../assets/Icons/heartRed.svg';
 
 import QuesGrey from '../../../assets/Icons/QuesGrey.svg';
@@ -23,7 +23,7 @@ export const ProductReviewScreen = ({ navigation }) => {
 
 
     return <View style={[styles.container, { padding: 0 }]}>
-        <CustomHeader navigation={navigation} title={AppString.details} />
+        <CustomHeader navigation={navigation} title={AppString.review} />
 
         <ScrollView showsVerticalScrollIndicator={false}>
 
@@ -236,7 +236,7 @@ const RatingWithDesign = () => {
             justifyContent: 'center',
             alignItems: 'center'
         }}>
-            <CameraIcon />
+            <CameraPlus/>
 
             <Text style={[styles.textStyle,
             {

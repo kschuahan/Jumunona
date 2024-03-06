@@ -49,6 +49,8 @@ import { ProductAPIs, ReviewApis } from '../../Netowork/Constants';
 import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 import { getCharachterstics } from '../../utils/DataManipulation';
 import moment from 'moment';
+import { ShareJumu } from '../../utils/Share';
+import { BackLogo } from '../../components/Header';
 
 const shoeImageURL = appIcons.shoeImageURL;
 const china = appIcons.china;
@@ -208,59 +210,6 @@ export const ProductDetailScreen = ({ navigation, route }) => {
       setActiveIndex(changed[0].index);
     }
   });
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: '',
-
-      headerRight: () => (
-        <View style={{
-          flexDirection: 'row', gap: 34, alignItems: 'center', marginBottom: -2
-        }}>
-          <TouchableOpacity
-            onPress={() => {
-              onShare();
-            }}
-            style={{ alignItems: 'center', marginStart: -20 }}>
-            <Share />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => {
-            navigation.navigate(RouteNames.cartScreen)
-          }} style={{ alignItems: 'center', marginStart: -20 }}>
-            <CartIcon />
-          </TouchableOpacity>
-          <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
-            <EllipsisHorizontal width={24} height={24} />
-          </TouchableOpacity>
-        </View>
-      ),
-      headerLeft: () => (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            marginBottom: -2
-
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={{ alignItems: 'center', marginStart: -25, marginEnd: 5 }}>
-            <ChevronBackOutline width={15} height={15} />
-          </TouchableOpacity>
-
-          <SearchView />
-        </View>
-      ),
-      headerStyle: {
-        backgroundColor: colors.white,
-      },
-
-      headerShadowVisible: false,
-    });
-  }, []);
 
   const [currentPosition, setCurrentPosition] = useState(0);
   const [selectPosition, setSelectPosition] = useState(0);
@@ -302,6 +251,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
 
   return (
     data && data.data && data.isSuccess ? <View style={{ flex: 1 }}>
+      <CustomDetailHeader navigation={navigation} />
       <ScrollView
         ref={scrollRef}
         showsVerticalScrollIndicator={false}
@@ -1393,7 +1343,7 @@ const ProductDetails = ({ item }) => {
               styles.textStyle,
               { fontSize: 21, color: colors.lightOrange },
             ]}>
-            {item.price ? item.price : '178с.'}с.
+            {item.price ? item.price + 'с.' : ''}
           </Text>
           <Text
             style={[
@@ -1404,7 +1354,7 @@ const ProductDetails = ({ item }) => {
                 textDecorationLine: 'line-through',
               },
             ]}>
-            {item.strikePrice ? item.strikePrice : '178с.'}с.
+            {item.strikePrice ? item.strikePrice + 'c.': ''}
           </Text>
         </View>
         <RatingView rating={item.rating ? item.rating : 4} />
@@ -1485,7 +1435,7 @@ const SearchView = () => {
         justifyContent: 'flex-start',
         backgroundColor: colors.whiteF6F6F6,
         borderRadius: 19,
-        width: '90%'
+        width: '70%'
       }}>
 
       <SearchIcon width={15} height={15} style={{ marginStart: 15 }}
@@ -1503,5 +1453,32 @@ const SearchView = () => {
     </View>
   );
 };
+
+const CustomDetailHeader = ({navigation}) => {
+  return (
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between", backgroundColor: colors.white, padding: 8 }}>
+                <BackLogo navigation={navigation} />
+                <SearchView />
+        
+          <TouchableOpacity
+            onPress={() => {
+              ShareJumu()
+            }}
+          >
+            <Share />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => {
+            navigation.navigate(RouteNames.cartScreen)
+          }} style={{ alignItems: 'center',}}>
+            <CartIcon />
+          </TouchableOpacity>
+          <TouchableOpacity style={{ alignItems: 'center'}}>
+            <EllipsisHorizontal width={24} height={24} />
+          </TouchableOpacity>
+        </View>
+            
+  )
+}
 
 export default ProductDetailScreen;

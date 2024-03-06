@@ -229,6 +229,7 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.product_detail}
             component={ProductDetailScreen}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name={RouteNames.product_review_screen}

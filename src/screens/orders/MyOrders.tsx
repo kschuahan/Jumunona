@@ -1,4 +1,4 @@
-import { FlatList, Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { FlatList, Image, Platform, StyleSheet, Text, ScrollView, TextInput, TouchableOpacity, View } from "react-native"
 import { styles } from "../../utils/AppStyles"
 import { Card } from "react-native-paper"
 import { colors } from "../../utils/AppColors"
@@ -11,8 +11,10 @@ import { appIcons, imagesUrl } from "../../utils/AppIcons"
 import ChevronFwdOutline from '../../../assets/Icons/chevronForwardOutline.svg';
 import { RouteNames } from "../../utils/RouteNames"
 import { data } from "../Product/ProductDetailScreen"
-
-
+import { getAPICall } from "../../Netowork/Apis"
+import { OrderAPI } from "../../Netowork/Constants"
+import { CommonModal, PagingData } from "../HomeScreen"
+import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
 
 const categories = [
     'Все',
@@ -73,10 +75,40 @@ export let orders = notAll
 export const MyOrderScreen = ({ navigation, route }) => {
 
     const [type, setType] = useState(route.params.type)
-
+    const [data, setData] = useState<CommonModal>()
+    const [ordersList, setOrders] = useState<Array<any>>([]);
+    const [pageData, setPageData] = useState<PagingData>()
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
         orders = type == 'Все' ? all : notAll
+        getOrders()
     }, [])
+
+    const getOrders = (page = 1) => {
+        setLoading(true)
+        getAPICall(OrderAPI.getOrders + page, (res: any) => {
+            if (res.isSuccess) {
+                if (res.data && res.data.data) {
+                setOrders([...ordersList , ...res.data.data.orderDetails])
+                setPageData(res.data.data.pageData)
+                }
+            }
+            setData(res)
+            setLoading(false)
+        } )
+    }
+
+    const FetchMore =() => {
+        console.warn(   pageData?.remaingPages > pageData?.currentPage)
+        if (
+            data?.isSuccess &&
+            pageData &&
+            pageData?.remaingPages > pageData?.currentPage && !loading
+          ) {
+            console.warn("hello")
+            getOrders(pageData.currentPage + 1);
+          }
+    }
 
     return <View style={[styles.container, { padding: 0 }]}>
 
@@ -85,10 +117,13 @@ export const MyOrderScreen = ({ navigation, route }) => {
             setType(item)
 
         }} />
+        { data && data.isSuccess && data.data ?
+         <ScrollView>
         <FlatList
-            data={orders}
+            data={ordersList}
             style={{ paddingHorizontal: 6 }}
             showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
             renderItem={({ item, index }) =>
                 <OrderItem type={type} navigation={navigation} items={item} onClick={(click: number) => {
 
@@ -104,13 +139,39 @@ export const MyOrderScreen = ({ navigation, route }) => {
                 }} />
             }
             ListFooterComponent={
-                <RelatedProducts
-                    onclick={() => {
-                        navigation.push(RouteNames.product_detail);
-                    }}
-                />
+               <View>
+                { loading ? 
+                    <ProgressView ht={undefined} />
+                   : data?.isSuccess ? null : 
+                    <RetryWhenErrorOccur
+                      ht={120}
+                      data={data}
+                      onClick={() => {
+                       getOrders(1)
+                      }}
+                    />
+                 }
+               
+                </View>
             }
+            
+              onEndReached={FetchMore}
+        /> 
+        <RelatedProducts
+        onclick={() => {
+            navigation.push(RouteNames.product_detail);
+        }}
         />
+        </ScrollView>
+        : 
+        loading ? <ProgressView /> :
+         <RetryWhenErrorOccur data={data} onClick={() => {
+            setData(undefined)
+            setPageData(undefined)
+            setOrders([])
+            getOrders()
+        }} /> 
+}
     </View>
 }
 
@@ -312,7 +373,7 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                         color: colors.black, fontSize: 16, fontWeight: 'bold',
                     }}
                 >
-                    Store name
+                    {items.storeName}
                 </Text>
                 <ChevronFwdOutline
                     color={colors.extraGrey}
@@ -333,11 +394,11 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                 }
             </Text>
         </View>
-        <FlatList
+        {/* <FlatList
             data={items.products}
             scrollEnabled={false}
             style={{ marginTop: 10 }}
-            renderItem={({ item, index }) => (
+            renderItem={({ item, index }) => ( */}
                 <View>
                     <TouchableOpacity
                         disabled={true}
@@ -349,7 +410,7 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                         }}>
 
                         <Image
-                            source={appIcons.shoeImageURL}
+                            source={{uri: items.productImage}}
                             style={{ width: 90, height: 90, borderRadius: 11, }}
                         />
                         <View
@@ -368,10 +429,10 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                                     }}
                                 >
                                     <Text style={{ fontSize: 14, fontWeight: '600', color: colors.balc111111, width: "80%", maxHeight: 30 }} numberOfLines={1}>
-                                        若过度长的话只显示第一行
+                                       {items.productName}
                                     </Text>
                                     <Text style={{ fontSize: 14, fontWeight: '400', color: colors.balc111111 }} numberOfLines={2}>
-                                        368c.
+                                        {items.unitPrice}
                                     </Text>
                                 </View>
 
@@ -384,10 +445,10 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                                     }}
                                 >
                                     <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, width: "80%", maxHeight: 30 }} numberOfLines={2}>
-                                        light grey; XL
+                                       {items.attr1}, {items.attr2}
                                     </Text>
                                     <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA }} numberOfLines={2}>
-                                        x1
+                                        x{items.quantity}
                                     </Text>
                                 </View>
                             </View>
@@ -407,7 +468,7 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                         <View />
                         <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }} numberOfLines={1}>
                             {type == 'Все' ? items.status : type}  <Text style={{ fontSize: 17, fontWeight: '400', color: colors.balc111111 }} numberOfLines={1}>
-                                {"368с."}
+                                {items.totalPrice}c.
                             </Text>
                         </Text>
                     </View>
@@ -416,9 +477,9 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
 
                 </View>
 
-            )}
+            {/* )} */}
 
-        />
+        {/* /> */}
 
         <FlatList
             data={type == 'Все' ? items.actions : slectefListCal(type)}

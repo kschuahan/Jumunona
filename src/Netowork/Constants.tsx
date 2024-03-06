@@ -100,7 +100,8 @@ export const AddressAPIs = {
 
 export const OrderAPI = {
   placingOrder: modules.order + 'placingOrder',
-  createOrder: modules.order + 'createOrders'
+  createOrder: modules.order + 'createOrders',
+  getOrders: modules.order + 'getOrders?page='
 }
 
 export const BodyDataAPI = {
