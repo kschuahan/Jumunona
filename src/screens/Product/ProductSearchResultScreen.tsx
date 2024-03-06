@@ -168,8 +168,6 @@ export const ProductSearchResultScreen = ({navigation, route}) => {
         setSearcText(text)
         setTimeout(() => {
           setArrayData([])
-          console.warn("werwe");
-          
           callAPI(1, text)
         }, 2000);
       }} />
