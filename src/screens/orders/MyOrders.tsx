@@ -131,7 +131,7 @@ export const MyOrderScreen = ({ navigation, route }) => {
                         navigation.navigate(RouteNames.shopHomeScreen)
                     } else if (click == 2) {// Order Details
                         if (item.status != AppString.return_issue) {
-                            navigation.navigate(RouteNames.orderDetails, { index: index, type: type, status: type == 'Все' ? item.status : type })
+                            navigation.navigate(RouteNames.orderDetails, { orderId: item._id, index: index, type: type, status: type == 'Все' ? item.status : type })
                         } else {
                             navigation.navigate(RouteNames.refund_details)
                         }

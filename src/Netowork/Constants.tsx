@@ -101,7 +101,8 @@ export const AddressAPIs = {
 export const OrderAPI = {
   placingOrder: modules.order + 'placingOrder',
   createOrder: modules.order + 'createOrders',
-  getOrders: modules.order + 'getOrders?page='
+  getOrders: modules.order + 'getOrders?page=',
+  getOrderDetail:  modules.order + 'getOrderDetails?orderId=',
 }
 
 export const BodyDataAPI = {

@@ -2,7 +2,7 @@ import { Dimensions, FlatList, Image, Platform, Text, TouchableOpacity, View } f
 import { styles } from "../../utils/AppStyles"
 import { Card } from "react-native-paper"
 import { BackLogo, MenuLogo } from "../../components/Header"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { colors } from "../../utils/AppColors"
 import { AppString } from "../../utils/AppStrings"
 import App from "../../../App"
@@ -19,114 +19,147 @@ import CheckIcon from '../../../assets/Icons/CheckIcon.svg';
 
 import { RelatedProducts, buttonsClick, orders, slectefListCal } from "./MyOrders"
 import { RouteNames } from "../../utils/RouteNames"
+import { getAPICall } from "../../Netowork/Apis"
+import { OrderAPI } from "../../Netowork/Constants"
+import { CommonModal } from "../HomeScreen"
+import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
 
 
 export const OrderDetailsScreen = ({ navigation, route }) => {
     const [type, setType] = useState(route.params.type)
+    const [data, setData] = useState<CommonModal>()
+    const [products, setProducts] = useState<any>()
+    const [orderInfo, setOrderInfo] = useState<any>()
 
+    const [address, setAddress] = useState<any>()
+    const [loading, setLoading] = useState(false)
 
+    useEffect(() => {
+        getOrderDetail()
+    }, [])
+    const getOrderDetail = () => {
+        setLoading(true)
+        getAPICall(OrderAPI.getOrderDetail + route.params.orderId, (res: any) => {
+            if (res.isSuccess) {
+                if (res.data && res.data.data) {
+                    setAddress(res.data.data.defaultAddress)
+                    setProducts(res.data.data.products)
+                    setOrderInfo(res.data.data.orderInformation)
+                }
+            }
+            setData(res)
+            setLoading(false)
+        })
+    }
     return <View style={[styles.container, { padding: 0 }]}>
         <ToolbarHeader navigation={navigation} route={route} />
+        {data && data?.isSuccess && data?.data.data ?
+            <View>
+                <FlatList
 
-        <FlatList
+                    ListHeaderComponent={<View style={{ paddingHorizontal: 6 }}>
 
-            ListHeaderComponent={<View style={{ paddingHorizontal: 6 }}>
+                        <AddressView address={address} type={route.params.status} onClick={() => {
+                            navigation.navigate(RouteNames.changeAddress)
 
-                <AddressView type={route.params.status} onClick={() => {
-                    navigation.navigate(RouteNames.changeAddress)
+                        }} />
+                        <View style={{
+                            justifyContent: 'space-between', alignItems: 'center',
+                            flexDirection: 'row', backgroundColor: 'white', borderRadius: 13, padding: 10, marginTop: 9
+                        }}>
+                            <Text style={[styles.textStyle, { fontSize: 14, fontWeight: 'bold' }]}>{AppString.delivery}</Text>
+                            <Text style={[styles.textStyle, { fontSize: 14, color: '#656565' }]}>{AppString.will_ship_until + ' 25.12.2022'}</Text>
 
-                }} />
-                <View style={{
-                    justifyContent: 'space-between', alignItems: 'center',
-                    flexDirection: 'row', backgroundColor: 'white', borderRadius: 13, padding: 10, marginTop: 9
-                }}>
-                    <Text style={[styles.textStyle, { fontSize: 14, fontWeight: 'bold' }]}>{AppString.delivery}</Text>
-                    <Text style={[styles.textStyle, { fontSize: 14, color: '#656565' }]}>{AppString.will_ship_until + ' 25.12.2022'}</Text>
+                        </View>
+                    </View>}
+                    data={products}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item, index }) =>
+                        <OrderItem items={item} onClick={(click: number) => {
+                            if (click == 1) {
+                                navigation.navigate(RouteNames.shopHomeScreen)
+                            }
 
-                </View>
-            </View>}
-            data={[orders[route.params.index]]}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item, index }) =>
-                <OrderItem items={item} onClick={(click: number) => {
-                    if (click == 1) {
-                        navigation.navigate(RouteNames.shopHomeScreen)
+                        } } type={type} navigation={undefined} />
                     }
+                    ListFooterComponent={
+                        <View style={{ paddingHorizontal: 6 }}>
+                            <CoinWord  orderInfo={orderInfo}  />
+                            <InformationAboutOrder orderInfo={orderInfo} onClick={() => {
+                                navigation.push(RouteNames.chat_screen);
 
-                }} type={type} />
-            }
-            ListFooterComponent={
-                <View style={{ paddingHorizontal: 6 }}>
-                    <CoinWord />
-                    <InformationAboutOrder onClick={() => {
-                        navigation.push(RouteNames.chat_screen);
+                            }} />
+                            <RelatedProducts
+                                onclick={() => {
+                                    navigation.push(RouteNames.product_detail);
+                                }}
+                            />
+                        </View>
+                    }
+                />
 
-                    }} />
-                    <RelatedProducts
-                        onclick={() => {
-                            navigation.push(RouteNames.product_detail);
-                        }}
+
+                <View
+                    style={{
+                        backgroundColor: colors.white,
+                        position: 'absolute',
+                        bottom: 0,
+                        width: Dimensions.get('window').width,
+                        justifyContent: 'space-between',
+                        paddingVertical: 12,
+
+                        paddingEnd: 10,
+                        flexDirection: 'row',
+                        paddingTop: 8,
+                        borderTopStartRadius: 13,
+                        borderTopEndRadius: 13,
+                        shadowColor: colors.black,
+                        elevation: 10,
+                        borderBlockColor: colors.whiteF7F7F7,
+                        borderBottomWidth: 1,
+                        height: 78
+                    }}>
+
+                    <FlatList
+                        data={type == 'Все' ? orders[route.params.index].actions : slectefListCal(type)}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal
+                        inverted
+                        renderItem={({ item, index }) =>
+                            <TouchableOpacity
+                                style={{
+                                    marginStart: 10,
+                                    height: 34,
+                                    borderWidth: 1,
+                                    borderRadius: 17,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    paddingHorizontal: 10,
+                                    borderColor: 0 === index ? colors.lightOrange : colors.greyCCCCCC
+                                }} onPress={() => {
+                                    //setSelect(index)}
+                                    buttonsClick(navigation, item)
+                                }}>
+                                <Text
+                                    style={{
+                                        fontSize: 14,
+                                        color: 0 === index ? colors.lightOrange : colors.black,
+                                    }}>
+                                    {item}
+                                </Text>
+                            </TouchableOpacity>}
                     />
                 </View>
-            }
-        />
-
-        <View
-            style={{
-                backgroundColor: colors.white,
-                position: 'absolute',
-                bottom: 0,
-                width: Dimensions.get('window').width,
-                justifyContent: 'space-between',
-                paddingVertical: 12,
-
-                paddingEnd: 10,
-                flexDirection: 'row',
-                paddingTop: 8,
-                borderTopStartRadius: 13,
-                borderTopEndRadius: 13,
-                shadowColor: colors.black,
-                elevation: 10,
-                borderBlockColor: colors.whiteF7F7F7,
-                borderBottomWidth: 1,
-                height: 78
-            }}>
-
-            <FlatList
-                data={type == 'Все' ? orders[route.params.index].actions : slectefListCal(type)}
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                inverted
-                renderItem={({ item, index }) =>
-                    <TouchableOpacity
-                        style={{
-                            marginStart: 10,
-                            height: 34,
-                            borderWidth: 1,
-                            borderRadius: 17,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            paddingHorizontal: 10,
-                            borderColor: 0 === index ? colors.lightOrange : colors.greyCCCCCC
-                        }} onPress={() => {
-                            //setSelect(index)}
-                            buttonsClick(navigation, item)
-                        }}>
-                        <Text
-                            style={{
-                                fontSize: 14,
-                                color: 0 === index ? colors.lightOrange : colors.black,
-                            }}>
-                            {item}
-                        </Text>
-                    </TouchableOpacity>}
-            />
-        </View>
+            </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+                setData(undefined)
+                getOrderDetail()
+            }} />
+        }
 
     </View>
 }
 
-const InformationAboutOrder = ({ onClick }) => {
+const InformationAboutOrder = ({ orderInfo,  onClick }) => {
 
     const [show, setShow] = useState(true)
 
@@ -148,14 +181,14 @@ const InformationAboutOrder = ({ onClick }) => {
         </View>
         {show ? <View style={{ width: '100%' }}>
             <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
-                <TitleWithSubTitle />
+                <TitleWithSubTitle subTitle={orderInfo.orderId} />
                 <TouchableOpacity>
                     <CopyIcon />
                 </TouchableOpacity>
             </View>
-            <TitleWithSubTitle title={AppString.noteColon} subTitle="Хорошо упакуйте" marginStart={25} />
-            <TitleWithSubTitle title={'J Coin'} subTitle="Заработайте 39 coints" marginStart={70} />
-            <TitleWithSubTitle title={'Заказано в:'} subTitle="2022-02-02 15:43:02" marginStart={35} />
+            <TitleWithSubTitle title={AppString.noteColon} subTitle={orderInfo.note} marginStart={25} />
+            <TitleWithSubTitle title={'J Coin'} subTitle = {'Заработайте ' + orderInfo.jCoinsEarned + ' coins'}  marginStart={70} />
+            <TitleWithSubTitle title={'Заказано в:'} subTitle={orderInfo.orderDate ?? ''} marginStart={35} />
             <TitleWithSubTitle title={'Оплачено в:'} subTitle="2022-02-02 15:43:02" marginStart={35} />
 
             <TitleWithSubTitle title={'Доставлено в:'} subTitle="2022-02-02 15:43:02" marginStart={18} />
@@ -186,7 +219,7 @@ const TitleWithSubTitle = ({ title = AppString.orderId, subTitle = '123123123132
     </View>
 }
 
-const CoinWord = () => {
+const CoinWord = ({orderInfo}) => {
 
     return <View style={{
         alignItems: 'center',
@@ -207,7 +240,7 @@ const CoinWord = () => {
             {AppString.earn} <Text style={[styles.textStyle, {
                 fontSize: 16,
                 color: '#EB4B3A', fontWeight: 'bold'
-            }]}>{'39'}</Text> Coin
+            }]}>{orderInfo.jCoinsEarned.toString()}</Text> Coin
 
         </Text>
 
@@ -215,10 +248,10 @@ const CoinWord = () => {
 }
 
 
-const OrderItem = ({ items, onClick, type = AppString.processing }) => {
+const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) => {
     const [select, setSelect] = useState(0)
 
-    return <TouchableOpacity disabled={true} onPress={() => {
+    return <TouchableOpacity onPress={() => {
         onClick(2)
     }} style={{
         marginTop: 9,
@@ -227,7 +260,6 @@ const OrderItem = ({ items, onClick, type = AppString.processing }) => {
         paddingHorizontal: 12,
         backgroundColor: colors.white,
         borderRadius: 13,
-        marginHorizontal: 6
     }}>
 
         <View style={{
@@ -254,7 +286,7 @@ const OrderItem = ({ items, onClick, type = AppString.processing }) => {
                         color: colors.black, fontSize: 16, fontWeight: 'bold',
                     }}
                 >
-                    Store name
+                    {items.storeName}
                 </Text>
                 <ChevronFwdOutline
                     color={colors.extraGrey}
@@ -275,27 +307,11 @@ const OrderItem = ({ items, onClick, type = AppString.processing }) => {
                 }
             </Text> */}
         </View>
-        <FlatList
+        {/* <FlatList
             data={items.products}
             scrollEnabled={false}
-            ListFooterComponent={
-                <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignContent: "space-between",
-                        paddingTop: 2,
-                    }}
-                >
-                    <View />
-                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }} numberOfLines={1}>
-                        {type}  <Text style={{ fontSize: 15, fontWeight: '400', color: colors.lightOrange }} numberOfLines={1}>
-                            {"368с."}
-                        </Text>
-                    </Text>
-                </View>
-            }
-            renderItem={({ item, index }) => (
+            style={{ marginTop: 10 }}
+            renderItem={({ item, index }) => ( */}
                 <View>
                     <TouchableOpacity
                         disabled={true}
@@ -303,13 +319,11 @@ const OrderItem = ({ items, onClick, type = AppString.processing }) => {
                         style={{
                             flexDirection: 'row',
                             alignItems: 'center',
-                            width: '100%',
-                            marginTop: 10
-
+                            width: '100%'
                         }}>
 
                         <Image
-                            source={appIcons.shoeImageURL}
+                            source={{uri: items.productImage}}
                             style={{ width: 90, height: 90, borderRadius: 11, }}
                         />
                         <View
@@ -328,10 +342,10 @@ const OrderItem = ({ items, onClick, type = AppString.processing }) => {
                                     }}
                                 >
                                     <Text style={{ fontSize: 14, fontWeight: '600', color: colors.balc111111, width: "80%", maxHeight: 30 }} numberOfLines={1}>
-                                        若过度长的话只显示第一行
+                                       {items.productName}
                                     </Text>
                                     <Text style={{ fontSize: 14, fontWeight: '400', color: colors.balc111111 }} numberOfLines={2}>
-                                        368c.
+                                        {items.unitPrice}
                                     </Text>
                                 </View>
 
@@ -344,55 +358,44 @@ const OrderItem = ({ items, onClick, type = AppString.processing }) => {
                                     }}
                                 >
                                     <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, width: "80%", maxHeight: 30 }} numberOfLines={2}>
-                                        light grey; XL
+                                       {items.attr1}, {items.attr2}
                                     </Text>
                                     <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA }} numberOfLines={2}>
-                                        x1
+                                        x{items.quantity}
                                     </Text>
                                 </View>
                             </View>
 
 
                         </View>
-
-
                     </TouchableOpacity>
-
-
-
 
                     <View
                         style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
                             alignContent: "space-between",
-                            paddingTop: 10,
-                            paddingStart: 34
-
+                            paddingTop: 2
                         }}
                     >
-                        <Text style={{ fontSize: 13, fontWeight: '400', color: colors.balc111111 }} numberOfLines={1}>
-                            {AppString.delivery}  <Text style={{ fontSize: 13, fontWeight: '400', color: '#969696' }} numberOfLines={1}>
-                                {`${AppString.byTrain} (28-34 дней)`}
+                        <View />
+                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }} numberOfLines={1}>
+                            {type == 'Все' ? items.status : type}  <Text style={{ fontSize: 17, fontWeight: '400', color: colors.balc111111 }} numberOfLines={1}>
+                                {items.totalPrice}c.
                             </Text>
                         </Text>
-
-                        <Text style={{ fontSize: 12, fontWeight: '400', color: '#9C9C9C' }} numberOfLines={1}>
-                            {"с."}
-                        </Text>
                     </View>
+
+
+
                 </View>
-
-            )}
-
-        />
 
 
     </TouchableOpacity >
 
 }
 
-const AddressView = ({ type = '', onClick }) => {
+const AddressView = ({address, type = '', onClick }) => {
     return (
         <TouchableOpacity disabled={true} onPress={onClick}
             style={{
@@ -423,14 +426,14 @@ const AddressView = ({ type = '', onClick }) => {
                             fontSize: 17,
                             color: colors.black14100D
                         }}
-                    >
-                        {type == AppString.review ? 'Заказ завершен' : 'Valijon'}  {type != AppString.review ? <Text
+                    > {address.addressDetail} { }
+                       <Text
                             style={{
                                 fontSize: 12,
                                 fontWeight: '400',
                                 color: colors.grey9D9D9D
                             }}
-                        >86-18620791015</Text> : null}
+                        >{address.phone}</Text>
                     </Text>
                     <Text
                         style={{
@@ -441,7 +444,7 @@ const AddressView = ({ type = '', onClick }) => {
                         }}
                     >
                         {type != AppString.review ?
-                            ' Address of Xian Village Street, Tianhe, Guangzhou City, Guangdong Province' : 'Оставьте отзыв и получайте бонус!'}
+                            (address.addressDetail + ', ' + address.city + ', ' + address.state + ', ' + address.country) : 'Оставьте отзыв и получайте бонус!'}
                     </Text>
                 </View>
             </View>
@@ -455,7 +458,7 @@ const AddressView = ({ type = '', onClick }) => {
                 alignItems: 'center',
 
             }}
-            onPress={onClick}
+                onPress={onClick}
             >
                 <Text style={[styles.textStyle, { fontSize: 13 }]}>{AppString.change}</Text>
             </TouchableOpacity> : null}

@@ -165,7 +165,7 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={[styles.container, { padding: 0 }]}>
+    <View style={[styles.container, { padding: 0 }]}> ̰
       <CustomHeaderWithoutBackgroundSearch navigation={navigation} searchText={searcText} onChangeText={(text: string) => {
         setSearcText(text)
         // setTimeout(() => {

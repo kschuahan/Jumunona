@@ -21,16 +21,13 @@ import { HelpPopup, LeaveCommentPopup } from "../../components/Dialogs"
 
 export const ProductReviewScreen = ({ navigation }) => {
 
-
     return <View style={[styles.container, { padding: 0 }]}>
         <CustomHeader navigation={navigation} title={AppString.review} />
 
         <ScrollView showsVerticalScrollIndicator={false}>
-
             <LineWithText />
             <RatingWithDesign />
             <RatingSubmitDesign />
-
         </ScrollView>
         <BottomView navigation={navigation} />
     </View>
@@ -47,8 +44,6 @@ const RatingSubmitDesign = () => {
         backgroundColor: colors.white, borderRadius: 13, height: 39, paddingHorizontal: 10,
         flexDirection: 'row', alignItems: 'center',
     }}>
-
-
         <Text style={{
             fontSize: 15, fontWeight: '500',
             color: colors.balc111111
@@ -236,7 +231,7 @@ const RatingWithDesign = () => {
             justifyContent: 'center',
             alignItems: 'center'
         }}>
-            <CameraPlus/>
+            <CameraPlus />
 
             <Text style={[styles.textStyle,
             {
@@ -245,7 +240,7 @@ const RatingWithDesign = () => {
 
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setleaveComment(true)}  style={{
+        <TouchableOpacity onPress={() => setleaveComment(true)} style={{
             height: 29,
             borderRadius: 8,
             backgroundColor: '#FCF7F1',
@@ -293,7 +288,7 @@ const RatingWithDesign = () => {
         <HelpPopup isShow={helpShow} onCancel={() => {
             setHelpShow(false)
         }} />
-         <LeaveCommentPopup isShow={leaveCommentShow} onCancel={() => {
+        <LeaveCommentPopup isShow={leaveCommentShow} onCancel={() => {
             setleaveComment(false)
         }} />
     </View>
