@@ -170,7 +170,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
 
   const callAPI = () => {
     setLoading(true)
-    const id = route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
+     const id =  route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
     callShopsApi(id)
     callReviewApi(id)
     getAPICall(ProductAPIs.getProductDetails + `${id}`, (res: any) => {
@@ -365,6 +365,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
             paddingHorizontal: 4,
             elevation: 4,
             position: 'absolute',
+            top: 48
           }}>
           <FlatList
             data={postionsArray}
@@ -705,12 +706,12 @@ const ProductDesclamenation = ({ isGauranty = false, item, onGauranctCancle, onS
   const [showSizeChart, setShowSizeChart] = useState(false);
 
 
-  const [colorSize, setColorSize] = useState(`${item.attributes.attribute1.attr1.data.length} цветов на выбор`)
+  const [colorSize, setColorSize] = useState(`${item.attributes.attribute1.length} цветов на выбор`)
 
   useEffect(() => {
     //finding the colors and size from the list
-    const color = item.attributes.attribute1.attr1
-    const cartItemIndex = color.data.findIndex((element) => (element.isItemInCart));
+    const color = item.attributes.attribute1
+    const cartItemIndex = color.findIndex((element) => (element.isItemInCart));
     console.log("Index 11", cartItemIndex);
 
     if (cartItemIndex != -1) {

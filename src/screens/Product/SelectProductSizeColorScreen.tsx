@@ -153,7 +153,7 @@ const SelectProductSizeColorScreen = ({ navigation,
             />
             {productDetail ?
               <ColorOptions
-                colorOptions={productDetail.attributes.attribute1.attr1}
+                colorOptions={productDetail.attributes.attribute1}
                 onSelectColor={(selectedColor: any) => {
                   addToCartModel.attr1_id = selectedColor.attributeID
                 }}
@@ -322,7 +322,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
   return (
     <View>
       <Text style={[styles.textStyle, { fontSize: 14 }]}>
-        {colorOptions.attributeName} ({colorOptions.data.length})
+        {colorOptions.attributeName} ({colorOptions.length})
       </Text>
 
       <FlatList
@@ -468,7 +468,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
       <QuanityView onClick={(qunatity: number) => {
         onSelectQuantity(qunatity)
       }}
-        quantity={colorOptions.data[selectedColorIndex != -1 ? selectedColorIndex : 0].quantity} />
+        quantity={colorOptions[selectedColorIndex != -1 ? selectedColorIndex : 0].quantity} />
 
     </View>
   );
@@ -485,7 +485,7 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
   }, [selectedItem])
 
   useEffect(() => {
-    const sizes = productDetail.data[selectedColorIndex != -1 ? selectedColorIndex : 0].att2.data
+    const sizes = productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].att2
     // const filter = sizes.filter(it => it.quantity > 0)
     // console.log("Filter" + filter);
 

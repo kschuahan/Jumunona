@@ -39,8 +39,8 @@ export const otherModule = {
 };
 
 export const categoriesModule = {
-  getCategories: `${modules.categoryModule}getCategories`,
-  getSubCategories: `${modules.categoryModule}getSubCategories?categoryId=`,
+  getCategories: `${modules.categoryModule}getCategoriesV2`,
+  getSubCategories: `${modules.categoryModule}getSubCategoriesV2?categoryId=`,
 
   getHomePageCategories: `${modules.categoryModule}getHomePageCategories`,
   getCategoriesListForCategoriesScreen: `${modules.categoryModule}getCategoriesList`,
@@ -49,7 +49,7 @@ export const categoriesModule = {
 export const ProductAPIs = {
   getProducts: modules.productModule + 'getProducts?page=',
   getFavourite: modules.productModule + 'getFavoriteProducts?categoryId=',
-  getProductDetails: modules.productModule + 'getProductDetails?productId=',
+  getProductDetails: modules.productModule + 'getProductDetailsV2?productId=',
   favoriteProduct: modules.productModule + 'favoriteProduct',
   removeFavourite: modules.productModule + 'removeFavoriteProduct',
   getShopsProduct: modules.productModule + 'getShopsProduct?productId=',
