@@ -36,6 +36,8 @@ export interface PagingData {
   remaining: number;
   current: number;
   pages: number;
+  currentPage: number;
+
 }
 const numColumns = 5;
 
