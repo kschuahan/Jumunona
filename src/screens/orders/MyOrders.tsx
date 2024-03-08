@@ -15,6 +15,7 @@ import { getAPICall } from "../../Netowork/Apis"
 import { OrderAPI } from "../../Netowork/Constants"
 import { CommonModal, PagingData } from "../HomeScreen"
 import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
+import Hand from '../../../assets/Icons/Hand.svg';
 
 const categories = [
     'Все',
@@ -89,25 +90,24 @@ export const MyOrderScreen = ({ navigation, route }) => {
         getAPICall(OrderAPI.getOrders + page, (res: any) => {
             if (res.isSuccess) {
                 if (res.data && res.data.data) {
-                setOrders([...ordersList , ...res.data.data.orderDetails])
-                setPageData(res.data.data.pageData)
+                    setOrders([...ordersList, ...res.data.data.orderDetails])
+                    setPageData(res.data.data.pageData)
                 }
             }
             setData(res)
             setLoading(false)
-        } )
+        })
     }
 
-    const FetchMore =() => {
-        console.warn(   pageData?.remaingPages > pageData?.currentPage)
+    const FetchMore = () => {
         if (
             data?.isSuccess &&
             pageData &&
             pageData?.remaingPages > pageData?.currentPage && !loading
-          ) {
+        ) {
             console.warn("hello")
             getOrders(pageData.currentPage + 1);
-          }
+        }
     }
 
     return <View style={[styles.container, { padding: 0 }]}>
@@ -117,67 +117,88 @@ export const MyOrderScreen = ({ navigation, route }) => {
             setType(item)
 
         }} />
-        { data && data.isSuccess && data.data ?
-         <ScrollView>
-        <FlatList
-            data={ordersList}
-            style={{ paddingHorizontal: 6 }}
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={false}
-            renderItem={({ item, index }) =>
-                <OrderItem type={type} navigation={navigation} items={item} onClick={(click: number) => {
-
-                    if (click == 1) {//Shop Click
-                        navigation.navigate(RouteNames.shopHomeScreen)
-                    } else if (click == 2) {// Order Details
-                        if (item.status != AppString.return_issue) {
-                            navigation.navigate(RouteNames.orderDetails, { orderId: item._id, index: index, type: type, status: type == 'Все' ? item.status : type })
-                        } else {
-                            navigation.navigate(RouteNames.refund_details)
-                        }
+        {data && data.isSuccess && data.data.data ?
+            <ScrollView>
+                <FlatList
+                    ListEmptyComponent={
+                        <EmptyData />
                     }
+                    data={ordersList}
+                    style={{ paddingHorizontal: 6 }}
+                    showsVerticalScrollIndicator={false}
+                    scrollEnabled={false}
+                    renderItem={({ item, index }) =>
+                        <OrderItem type={type} navigation={navigation} items={item} onClick={(click: number) => {
+
+                            if (click == 1) {//Shop Click
+                                navigation.navigate(RouteNames.shopHomeScreen)
+                            } else if (click == 2) {// Order Details
+                                if (item.status != AppString.return_issue) {
+                                    navigation.navigate(RouteNames.orderDetails, { orderId: item._id, index: index, type: type, status: type == 'Все' ? item.status : type })
+                                } else {
+                                    navigation.navigate(RouteNames.refund_details)
+                                }
+                            }
+                        }} />
+                    }
+                    ListFooterComponent={
+                        <View>
+                            {loading ?
+                                <ProgressView ht={undefined} />
+                                : data?.isSuccess ? null :
+                                    <RetryWhenErrorOccur
+                                        ht={120}
+                                        data={data}
+                                        onClick={() => {
+                                            getOrders(1)
+                                        }}
+                                    />
+                            }
+
+                        </View>
+                    }
+
+                    onEndReached={FetchMore}
+                />
+                <RelatedProducts data={data.data.data.recommendedProducts}
+                    onclick={() => {
+                        navigation.push(RouteNames.product_detail);
+                    }}
+                />
+            </ScrollView>
+            :
+            loading ? <ProgressView /> :
+                <RetryWhenErrorOccur data={data} onClick={() => {
+                    setData(undefined)
+                    setPageData(undefined)
+                    setOrders([])
+                    getOrders()
                 }} />
-            }
-            ListFooterComponent={
-               <View>
-                { loading ? 
-                    <ProgressView ht={undefined} />
-                   : data?.isSuccess ? null : 
-                    <RetryWhenErrorOccur
-                      ht={120}
-                      data={data}
-                      onClick={() => {
-                       getOrders(1)
-                      }}
-                    />
-                 }
-               
-                </View>
-            }
-            
-              onEndReached={FetchMore}
-        /> 
-        <RelatedProducts
-        onclick={() => {
-            navigation.push(RouteNames.product_detail);
-        }}
-        />
-        </ScrollView>
-        : 
-        loading ? <ProgressView /> :
-         <RetryWhenErrorOccur data={data} onClick={() => {
-            setData(undefined)
-            setPageData(undefined)
-            setOrders([])
-            getOrders()
-        }} /> 
-}
+        }
     </View>
 }
 
+const EmptyData = () => {
+
+    return <View style={{
+        justifyContent: 'center',
+        alignItems: 'center', paddingVertical: 100, paddingHorizontal: 20
+    }}>
+        <Hand />
+        <Text style={[styles.textStyle, {
+            color: '#111111',
+            fontSize: 17, textAlign: 'center'
+        }]}>У вас ещё нет связанных заказов</Text>
+        <Text style={[styles.textStyle, {
+            color: '#A5A5A5',
+            fontSize: 15, textAlign: 'center'
+        }]}>Вы можете пойти и посмотреть, что хотите купить.</Text>
+    </View>
+
+}
 
 
-export const RelatedProducts = ({ onclick }) => {
+export const RelatedProducts = ({ data, onclick }) => {
     return (
         <View style={{ marginBottom: 100, paddingStart: 6, }}>
             <View
@@ -236,7 +257,7 @@ export const RelatedProducts = ({ onclick }) => {
             <FlatList
                 data={data}
                 keyExtractor={item => {
-                    return item.id.toString();
+                    return item._id.toString();
                 }}
                 scrollEnabled={false}
                 numColumns={2}
@@ -257,8 +278,11 @@ export const RelatedProducts = ({ onclick }) => {
                                 onclick();
                             }}>
                             <Image
-                                source={appIcons.shoeImageURL}
-                                style={{
+                                source={
+                                    item.images !== ''
+                                        ? { uri: item.images }
+                                        : appIcons.shoeImageURL
+                                } style={{
                                     height: 265,
                                     paddingHorizontal: 1,
                                     width: 'auto',
@@ -290,19 +314,22 @@ export const RelatedProducts = ({ onclick }) => {
                                         color: colors.black
                                     }}
                                     numberOfLines={1}>
-                                    Футболка
+                                    {item.name ? item.name : 'Футболка'}
                                 </Text>
                             </View>
                             <View
-                                style={{ flexDirection: 'row', paddingLeft: 8, paddingTop: 4 }}>
-                                <View style={{ flexDirection: 'row', width: '30%' }}>
+                                style={{
+                                    flexDirection: 'row', paddingLeft: 8, paddingTop: 4,
+                                    justifyContent: 'space-between',
+                                }}>
+                                <View style={{ flexDirection: 'row' }}>
                                     <Text
                                         style={{
                                             fontSize: 17,
                                             color: '#ff7600',
                                             fontWeight: 'bold',
                                         }}>
-                                        999
+                                        {item.price ? item.price : '58'}
                                     </Text>
                                     <Text
                                         style={{
@@ -318,12 +345,12 @@ export const RelatedProducts = ({ onclick }) => {
                                     numberOfLines={1}
                                     style={{
                                         fontSize: 11,
-                                        width: '70%',
                                         color: '#AAAAAA',
                                         paddingTop: 6,
+                                        marginEnd: 15,
                                         fontFamily: 'SegoeUI',
                                     }}>
-                                    {item.desc}
+                                    {`${item.views ? item.views : 4}${AppString.views}`}
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -399,85 +426,85 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
             scrollEnabled={false}
             style={{ marginTop: 10 }}
             renderItem={({ item, index }) => ( */}
-                <View>
-                    <TouchableOpacity
-                        disabled={true}
-                        onPress={onClick}
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            width: '100%'
-                        }}>
+        <View>
+            <TouchableOpacity
+                disabled={true}
+                onPress={onClick}
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: '100%'
+                }}>
 
-                        <Image
-                            source={{uri: items.productImage}}
-                            style={{ width: 90, height: 90, borderRadius: 11, }}
-                        />
+                <Image
+                    source={{ uri: items.productImage }}
+                    style={{ width: 90, height: 90, borderRadius: 11, }}
+                />
+                <View
+                    style={{
+                        justifyContent: 'space-between',
+                        height: 86,
+                        paddingStart: 9.5,
+                        width: "75%"
+                    }}>
+                    <View >
                         <View
                             style={{
-                                justifyContent: 'space-between',
-                                height: 86,
-                                paddingStart: 9.5,
-                                width: "75%"
-                            }}>
-                            <View >
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                        alignContent: "space-between"
-                                    }}
-                                >
-                                    <Text style={{ fontSize: 14, fontWeight: '600', color: colors.balc111111, width: "80%", maxHeight: 30 }} numberOfLines={1}>
-                                       {items.productName}
-                                    </Text>
-                                    <Text style={{ fontSize: 14, fontWeight: '400', color: colors.balc111111 }} numberOfLines={2}>
-                                        {items.unitPrice}
-                                    </Text>
-                                </View>
-
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                        alignContent: "space-between",
-                                        paddingTop: 6
-                                    }}
-                                >
-                                    <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, width: "80%", maxHeight: 30 }} numberOfLines={2}>
-                                       {items.attr1}, {items.attr2}
-                                    </Text>
-                                    <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA }} numberOfLines={2}>
-                                        x{items.quantity}
-                                    </Text>
-                                </View>
-                            </View>
-
-
-                        </View>
-                    </TouchableOpacity>
-
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignContent: "space-between",
-                            paddingTop: 2
-                        }}
-                    >
-                        <View />
-                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }} numberOfLines={1}>
-                            {type == 'Все' ? items.status : type}  <Text style={{ fontSize: 17, fontWeight: '400', color: colors.balc111111 }} numberOfLines={1}>
-                                {items.totalPrice}c.
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignContent: "space-between"
+                            }}
+                        >
+                            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.balc111111, width: "80%", maxHeight: 30 }} numberOfLines={1}>
+                                {items.productName}
                             </Text>
-                        </Text>
+                            <Text style={{ fontSize: 14, fontWeight: '400', color: colors.balc111111 }} numberOfLines={2}>
+                                {items.unitPrice}
+                            </Text>
+                        </View>
+
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignContent: "space-between",
+                                paddingTop: 6
+                            }}
+                        >
+                            <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, width: "80%", maxHeight: 30 }} numberOfLines={2}>
+                                {items.attr1}, {items.attr2}
+                            </Text>
+                            <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA }} numberOfLines={2}>
+                                x{items.quantity}
+                            </Text>
+                        </View>
                     </View>
 
 
-
                 </View>
+            </TouchableOpacity>
 
-            {/* )} */}
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignContent: "space-between",
+                    paddingTop: 2
+                }}
+            >
+                <View />
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }} numberOfLines={1}>
+                    {type == 'Все' ? items.status : type}  <Text style={{ fontSize: 17, fontWeight: '400', color: colors.balc111111 }} numberOfLines={1}>
+                        {items.totalPrice}c.
+                    </Text>
+                </Text>
+            </View>
+
+
+
+        </View>
+
+        {/* )} */}
 
         {/* /> */}
 
@@ -521,7 +548,7 @@ export const buttonsClick = (navigation, type) => {
     if (type == AppString.pay) {
         navigation.push(RouteNames.cartConfirmOrder)
     } else if (type == AppString.changeAddress) {
-         navigation.push(RouteNames.changeAddress)
+        navigation.push(RouteNames.changeAddress)
     }
     else if (type == AppString.cancel_the_order) {
         // navigation.push(RouteNames.cartConfirmOrder)
@@ -531,7 +558,7 @@ export const buttonsClick = (navigation, type) => {
 
     }
     else if (type == AppString.return_money) {
-         navigation.push(RouteNames.select_return_region)
+        navigation.push(RouteNames.select_return_region)
 
     }
     else if (type == AppString.recieved) {
@@ -543,7 +570,7 @@ export const buttonsClick = (navigation, type) => {
 
     }
     else if (type == AppString.estimate) {
-     navigation.push(RouteNames.review)
+        navigation.push(RouteNames.review)
 
     }
 

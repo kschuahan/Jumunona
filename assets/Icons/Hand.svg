@@ -1,0 +1,13 @@
+<svg id="Group_1054" data-name="Group 1054" xmlns="http://www.w3.org/2000/svg" width="89" height="89" viewBox="0 0 89 89">
+  <rect id="Rectangle_358" data-name="Rectangle 358" width="89" height="89" fill="rgba(255,255,255,0.01)"/>
+  <g id="Group_1053" data-name="Group 1053" transform="translate(14.765 9.228)">
+    <g id="Group_1052" data-name="Group 1052" transform="translate(12.919 12.919)">
+      <path id="Path_449" data-name="Path 449" d="M0,25.839V5.537a5.537,5.537,0,0,1,11.074,0v20.3" fill="none" stroke="#ff7600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
+      <path id="Path_450" data-name="Path 450" d="M44.295,13V25A21.225,21.225,0,0,1,23.07,46.221H21.225A21.225,21.225,0,0,1,0,25V13" transform="translate(0 10.993)" fill="none" stroke="#ff7600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
+      <path id="Path_451" data-name="Path 451" d="M6,23.765V14.537a5.537,5.537,0,0,1,11.074,0v9.228" transform="translate(5.074 7.611)" fill="none" stroke="#ff7600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
+      <path id="Path_452" data-name="Path 452" d="M12,23.765V14.537a5.537,5.537,0,0,1,11.074,0v9.228" transform="translate(10.147 7.611)" fill="none" stroke="#ff7600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
+      <path id="Path_453" data-name="Path 453" d="M18,23.765V14.537a5.537,5.537,0,1,1,11.074,0v9.228" transform="translate(15.221 7.611)" fill="none" stroke="#ff7600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" fill-rule="evenodd"/>
+    </g>
+    <path id="Path_454" data-name="Path 454" d="M36.912,18.456A18.456,18.456,0,1,0,0,18.456" transform="translate(0 0)" fill="none" stroke="#ff7600" stroke-linecap="round" stroke-width="2" fill-rule="evenodd"/>
+  </g>
+</svg>

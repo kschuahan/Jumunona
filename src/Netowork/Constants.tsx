@@ -47,7 +47,7 @@ export const categoriesModule = {
 };
 
 export const ProductAPIs = {
-  getProducts: modules.productModule + 'getProducts?page=',
+  getProducts: modules.productModule + 'getProductsV2?page=',
   getFavourite: modules.productModule + 'getFavoriteProducts?categoryId=',
   getProductDetails: modules.productModule + 'getProductDetails?productId=',
   favoriteProduct: modules.productModule + 'favoriteProduct',
