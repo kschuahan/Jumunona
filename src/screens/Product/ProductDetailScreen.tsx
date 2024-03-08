@@ -10,6 +10,7 @@ import {
   TextInput,
   Dimensions,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { AppString } from '../../utils/AppStrings';
@@ -51,6 +52,7 @@ import { getCharachterstics } from '../../utils/DataManipulation';
 import moment from 'moment';
 import { ShareJumu } from '../../utils/Share';
 import { BackLogo } from '../../components/Header';
+import { fontFamily } from '../../utils/Fonts';
 
 const shoeImageURL = appIcons.shoeImageURL;
 const china = appIcons.china;
@@ -365,7 +367,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
             paddingHorizontal: 4,
             elevation: 4,
             position: 'absolute',
-            top: 48
+            top: 52
           }}>
           <FlatList
             data={postionsArray}
@@ -1423,35 +1425,58 @@ const style = StyleSheet.create({
     borderWidth: 0.8,
     borderColor: colors.lightOrange,
   },
+
+  headerContainer: {
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    borderRadius: 24,
+    paddingTop: 12,
+    paddingBottom: 4,
+    width: Dimensions.get('window').width,
+    paddingHorizontal: 8,
+  },
+
+  searchIcon: {
+    color: '#999999',
+    marginLeft: 11.18,
+  },
+  searchInput: {
+    width: 'auto',
+    marginLeft: 11.13,
+    fontFamily: fontFamily.regular,
+    fontSize: 15,
+    textAlign: 'center',
+    color: colors.grayAAAAAA
+  },
 });
 
-const SearchView = () => {
+const SearchView = ({navigation}) => {
   const [search, setSearch] = useState('');
 
   return (
-    <View
+    <Pressable
       style={{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: colors.whiteF6F6F6,
         borderRadius: 19,
+        paddingVertical: 8,
         width: '70%'
-      }}>
-
+      }}
+      onPress={ () => { navigation.navigate(RouteNames.product_search_screen, {
+        isRoute: true,
+        searchText: ''
+      })}}
+      >
+      
       <SearchIcon width={15} height={15} style={{ marginStart: 15 }}
       />
 
-      <TextInput
-        value={search}
-        placeholder={'Футболки'}
-        style={style.searchTextInput}
-        placeholderTextColor={colors.grey}
-        onChangeText={text => {
-          setSearch(text);
-        }}
-      />
-    </View>
+
+       <Text style={style.searchInput}> Suggested Category </Text>
+       
+    </Pressable>
   );
 };
 
@@ -1459,7 +1484,7 @@ const CustomDetailHeader = ({navigation}) => {
   return (
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between", backgroundColor: colors.white, padding: 8 }}>
                 <BackLogo navigation={navigation} />
-                <SearchView />
+                <SearchView navigation = {navigation} />
         
           <TouchableOpacity
             onPress={() => {

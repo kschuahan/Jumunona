@@ -157,7 +157,10 @@ export const ShopCategoriesScreen = ({ navigation }) => {
                 <TextWithIcon
                   title={item.title}
                   onClick={() => {
-                    navigation.push(RouteNames.product_search_screen);
+                    navigation.navigate(RouteNames.product_search_screen, {
+                      isRoute: true,
+                      searchText: ''
+                    });
                   }}
                 />
                 <FlatList
@@ -178,6 +181,7 @@ export const ShopCategoriesScreen = ({ navigation }) => {
                       onPress={() => {
                         navigation.push(RouteNames.product_search_screen, {
                           isRoute: true,
+                          searchText: ''
                         });
                       }}>
                       <ImageIcon width={66} height={66} />

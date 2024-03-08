@@ -45,7 +45,8 @@ export const AllCategoriesScreen = ({navigation}) => {
         if (response.isSuccess) {
           setLeftCategoryList(response);
           // Assuming the first category is always available
-          setActiveItemPrimaryCategory(response?.data.data[0]._id);
+          setActiveItemPrimaryCategory(response?.data.categories[0]._id);
+          setActiveItemSubCategories(response?.data.categories[0].subCategory);
         }
         setLoading(false);
       },
@@ -67,7 +68,7 @@ export const AllCategoriesScreen = ({navigation}) => {
 
   useEffect(() => {
     callLeftCategoryListAPI();
-    callRightSideCategoryListAPI(activeItemPrimaryCategory);
+   callRightSideCategoryListAPI(activeItemPrimaryCategory);
   }, []);
 
   return leftCategoryList ? (
@@ -86,7 +87,7 @@ export const AllCategoriesScreen = ({navigation}) => {
           ]}>
           <FlatList
             style={{width: '22%', marginTop: -10}}
-            data={leftCategoryList.data?.data}
+            data={leftCategoryList.data?.categories}
             keyExtractor={item => {
               return item._id;
             }}
@@ -94,12 +95,14 @@ export const AllCategoriesScreen = ({navigation}) => {
               <TouchableOpacity
                 onPress={() => {
                   setPos(index);
+                  setActiveItemSubCategories(item.subCategory)
                 }}
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
                   marginBottom: 17.25,
                   marginTop: index == 0 ? 13 : 17.25,
+                  paddingEnd: 8
                 }}>
                 <Text
                   style={[
@@ -108,6 +111,7 @@ export const AllCategoriesScreen = ({navigation}) => {
                       fontSize: 16,
                       color:
                         pos == index ? colors.lightOrange : colors.black444444,
+                        textAlign: 'center'
                     },
                   ]}>
                   {item.categoryName}
@@ -118,11 +122,7 @@ export const AllCategoriesScreen = ({navigation}) => {
 
           <FlatList
             style={{width: '78%', marginTop: -14}}
-            data={[
-              {title: 'Jackets', product: products},
-              {title: 'Tops', product: products},
-              {title: 'Joggers', product: products},
-            ]}
+            data={activeItemSubCategories}
             showsVerticalScrollIndicator={false}
             renderItem={({item, index}) => (
               <View
@@ -133,13 +133,16 @@ export const AllCategoriesScreen = ({navigation}) => {
                   borderRadius: 11,
                 }}>
                 <TextWithIcon
-                  title={item.title}
+                  title={item.categoryName}
                   onClick={() => {
-                    navigation.push(RouteNames.product_search_screen);
+                    navigation.navigate(RouteNames.product_search_screen, {
+                      isRoute: true,
+                      searchText: ''
+                    });
                   }}
                 />
                 <FlatList
-                  data={products}
+                  data={item.subCategory}
                   keyExtractor={item => {
                     return item.toString();
                   }}
@@ -149,13 +152,14 @@ export const AllCategoriesScreen = ({navigation}) => {
                     <TouchableOpacity
                       style={{
                         flex: 1 / 3,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginTop: 11,
+                        // justifyContent: 'center',
+                         alignItems: 'center',
+                        marginTop: 11
                       }}
                       onPress={() => {
                         navigation.push(RouteNames.product_search_screen, {
                           isRoute: true,
+                          searchText: ''
                         });
                       }}>
                       <ImageIcon width={66} height={66} />
@@ -170,9 +174,10 @@ export const AllCategoriesScreen = ({navigation}) => {
                             fontSize: 13,
                             color: colors.balc111111,
                             marginTop: 2.5,
+                            textAlign: 'center'
                           },
                         ]}>
-                        {item.title}
+                        {item.categoryName}
                       </Text>
                     </TouchableOpacity>
                   )}

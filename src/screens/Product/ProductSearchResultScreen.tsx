@@ -105,11 +105,10 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
   const [selectUpdate, setSelectUpdate] = useState(-1);
   const [showFilter, setShowFilter] = useState(false);
 
-  const { categoryID, routeName } = route.params;
+ 
 
   useEffect(() => {
-    console.log('categoryID', categoryID);
-    console.log('routeName', routeName);
+   
   }, []);
 
   const sortBy = [
@@ -165,7 +164,7 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={[styles.container, { padding: 0 }]}> ̰
+    <View style={[styles.container, { padding: 0 }]}>
       <CustomHeaderWithoutBackgroundSearch navigation={navigation} searchText={searcText} onChangeText={(text: string) => {
         setSearcText(text)
         // setTimeout(() => {

@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   Dimensions,
+  Pressable,
 } from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
 import React, {useEffect, useState} from 'react';
@@ -39,12 +40,12 @@ interface PagingData {
   pages: number;
 }
 
-const HeaderCategoryScreen = () => (
+const HeaderCategoryScreen = ({navigation}) => (
   <View style={styles.headerContainer}>
-    <View style={styles.searchBarBG}>
+    <Pressable style={styles.searchBarBG} onPress={() => {navigation.navigate(RouteNames.product_search_screen, {searchText: ''})}}>
       <SearchIcon width={17} height={17} style={styles.searchIcon} />
-      <TextInput style={styles.searchInput} placeholder="Suggested Category" />
-    </View>
+      <Text style={styles.searchInput}> Suggested Category </Text>
+    </Pressable>
   </View>
 );
 
@@ -64,10 +65,12 @@ const CategoryScreen: React.FC = ({navigation}) => {
     getAPICall(
       categoriesModule.getCategoriesListForCategoriesScreen,
       (response: any) => {
+        console.warn("response", response)
         setHorizontalCategoryData(response);
         // Assuming the first category is always available
-        setActiveItemPrimaryCategory(response?.data.data[0]._id);
-        setActiveItemSubCategories(response?.data.data[0].subCategories);
+        setActiveItemPrimaryCategory(response?.data.categories[0]._id);
+       
+        setActiveItemSubCategories(response?.data.categories[0].subCategory);
         setLoading(false);
       },
     );
@@ -101,14 +104,12 @@ const CategoryScreen: React.FC = ({navigation}) => {
 
   return horizontalCategoryData ? (
     <View style={styles.container}>
-      <HeaderCategoryScreen />
-      {horizontalCategoryData ? (
+      <HeaderCategoryScreen navigation={navigation} />
+      {horizontalCategoryData && horizontalCategoryData.data ? (
         <View style={styles.primaryCategories}>
           <FlatList
             style={styles.primaryCategoriesContent}
-            data={horizontalCategoryData?.data.data.sort(
-              (a: any, b: any) => a.categoryListIndex - b.categoryListIndex,
-            )}
+            data={horizontalCategoryData?.data.categories}
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={item => {
@@ -121,7 +122,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
                   <TouchableOpacity
                     onPress={() => {
                       setActiveItemPrimaryCategory(item._id);
-                      setActiveItemSubCategories(item.subCategories);
+                      setActiveItemSubCategories(item.subCategory);
                     }}>
                     <Text
                       style={{
@@ -131,6 +132,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
                             ? '#ff7600'
                             : 'black',
                         fontWeight: '400',
+                        
                       }}>
                       {item.categoryName}
                     </Text>
@@ -199,6 +201,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
                             fontSize: 13,
                             color: colors.balc111111,
                             fontWeight: '400',
+                            textAlign: 'center'
                           }}>
                           Ещё
                         </Text>
@@ -209,6 +212,8 @@ const CategoryScreen: React.FC = ({navigation}) => {
                           navigation.navigate(
                             RouteNames.product_search_screen,
                             {
+                              
+                            searchText: '',
                               categoryID: item._id,
                               routeName: RouteNames.categoriesHome,
                             },
@@ -222,6 +227,7 @@ const CategoryScreen: React.FC = ({navigation}) => {
                             fontSize: 13,
                             color: colors.balc111111,
                             fontWeight: '400',
+                            textAlign: 'center'
                           }}>
                           {item.categoryName}
                         </Text>
@@ -412,12 +418,13 @@ const styles = StyleSheet.create({
     marginLeft: 11.18,
   },
   searchInput: {
-    height: 37,
     width: 'auto',
     marginLeft: 11.13,
     backgroundColor: '#ffffff',
     fontFamily: fontFamily.regular,
     fontSize: 15,
+    textAlign: 'center',
+    color: colors.grayAAAAAA
   },
 
   primaryCategories: {

@@ -74,7 +74,7 @@ const MainCategoriesItem = ({ navigation, data }) => {
       <FlatList
         style={styles.categories}
         scrollEnabled={false}
-        data={data.data.data
+        data={data.data.categories
           .slice(0, 10)
           .sort((a: any, b: any) => a.homeIndex - b.homeIndex)}
         keyExtractor={item => {
@@ -112,10 +112,11 @@ const MainCategoriesItem = ({ navigation, data }) => {
                       categoryID: item._id,
                       routeName: RouteNames.home,
                       index: index,
+                      searchText: ''
                     });
                   }}
                   style={{ alignItems: 'center' }}>
-                  {item.image === '' ? (
+                  {item.image == undefined ||  item.image === '' ? (
                     <ImageOutline width={50} height={38} />
                   ) : (
                     <Image source={{ uri: item.image }} height={38} width={50} />

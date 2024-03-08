@@ -155,7 +155,7 @@ const SelectProductSizeColorScreen = ({ navigation,
               <ColorOptions
                 colorOptions={productDetail.attributes.attribute1}
                 onSelectColor={(selectedColor: any) => {
-                  addToCartModel.attr1_id = selectedColor.attributeID
+                  addToCartModel.attr1_id = selectedColor._id
                 }}
                 onSelectSize={(id: string) => {
 
@@ -291,18 +291,18 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
 
   useEffect(() => {
 
-    const filter = colorOptions.data
+    const filter = colorOptions
     // .filter(it => it.quantity > 0)
     // console.log("Filter" + filter);
 
-    if (filter.length > 0) {
+    if (filter && filter.length > 0) {
       const cartItemIndex = filter.findIndex((element) => (element.isItemInCart));
       console.log("cartItemIndex", cartItemIndex);
 
       if (cartItemIndex != -1) {
         // const index = filter.findIndex((element) => (element.attirbutedID ===
         //   filter[cartItemIndex].attirbutedID));
-        addToCartModel.attr1_id = filter[cartItemIndex].attirbutedID
+        addToCartModel.attr1_id = filter[cartItemIndex]._id
 
         setSelectColorIndex(cartItemIndex)
         console.log("cartItemIndexIndex", cartItemIndex);
@@ -326,7 +326,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
       </Text>
 
       <FlatList
-        data={colorOptions.data}
+        data={colorOptions}
         renderItem={({ item, index }) => {
 
           // if (!hasSetSelectedColor && item.quantity > 0) {
@@ -337,10 +337,10 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
           return (
             <View style={{ marginEnd: 8 }}>
               <View style={{ height: 13 }} />
-              <TouchableOpacity disabled={item.quantity == 0}
+              <TouchableOpacity disabled={item.sku_quantity == 0}
                 onPress={() => {
                   colorIndex = index
-                  onSelectColor(colorOptions.data[index])
+                  onSelectColor(colorOptions[index])
                   setSelectColorIndex(index)
                 }}>
                 <View
@@ -351,7 +351,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
                     alignContent: 'center',
                   }}>
                   <Image
-                    source={{ uri: item.skuImageUrlPath }}
+                    source={{ uri: item.attr1Image }}
                     style={{
                       width: 109, height: 111, borderTopLeftRadius: 7,
                       borderTopRightRadius: 7
@@ -381,7 +381,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
                         },
                       ]}>
                       {' '}
-                      {item.attributeValue}
+                      {item.attr1Value}
                     </Text>
                   </View>
                   <View
@@ -413,7 +413,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
                   />
                 ) : null}
 
-                {item.quantity == 0 ? (
+                {item.sku_quantity == 0 ? (
                   <View
                     style={{
                       position: 'absolute',
@@ -468,7 +468,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
       <QuanityView onClick={(qunatity: number) => {
         onSelectQuantity(qunatity)
       }}
-        quantity={colorOptions[selectedColorIndex != -1 ? selectedColorIndex : 0].quantity} />
+        quantity={colorOptions[selectedColorIndex != -1 ? selectedColorIndex : 0].sku_quantity} />
 
     </View>
   );
@@ -485,25 +485,25 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
   }, [selectedItem])
 
   useEffect(() => {
-    const sizes = productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].att2
+    const sizes = productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2
     // const filter = sizes.filter(it => it.quantity > 0)
     // console.log("Filter" + filter);
-
-    if (sizes.length > 0) {
+    // console.warn("sizes", sizes)
+    if (sizes && sizes.length > 0) {
       const cartItemIndex = sizes.findIndex((element) => (element.isItemInCart));
       //   console.log("Index", cartItemIndex);
 
       if (cartItemIndex != -1) {
         // const index = sizes.findIndex((element) => (element.attirbutedID ===
         //   sizes[cartItemIndex].attirbutedID));
-        addToCartModel.attr2_id = sizes[cartItemIndex].attributeID
-        setSelecteItem(sizes[cartItemIndex].attributeID)
+        addToCartModel.attr2_id = sizes[cartItemIndex]._id
+        setSelecteItem(sizes[cartItemIndex]._id)
         console.log("Index", cartItemIndex);
       } else {
         // const index = sizes.findIndex((element) => (element.attirbutedID ===
         //   filter[0].attirbutedID));
 
-        setSelecteItem(sizeIndex != -1 ? sizes[sizeIndex].attirbutedID : "")
+        setSelecteItem(sizeIndex != -1 ? sizes[sizeIndex]._id : "")
 
         // console.log("Index", index);
       }
@@ -550,13 +550,13 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
       />
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
-        {(selectedSize == 1 ? productDetail.data[selectedColorIndex != -1 ? selectedColorIndex : 0].att2.data : users).map((item: any, index: number) =>
+        {(selectedSize == 1 ? productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2 : users).map((item: any, index: number) =>
           <View style={{ margin: 8 }}>
             <TouchableOpacity
               onPress={() => {
                 if (selectedSize == 1 && hasSetSelectedColor) {
                   sizeIndex = index
-                  setSelecteItem(item.attributeID)
+                  setSelecteItem(item._id)
                   //onSelectSize(item.attributeID)
                 } else {
                   setSelecteItem(item)
@@ -585,11 +585,11 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
                     },
                   ]}>
                   {' '}
-                  {selectedSize == 1 ? item.attributeValue : item}
+                  {selectedSize == 1 ? item.attr2Value : item}
                 </Text>
               </View>
             </TouchableOpacity>
-            {((selectedSize == 1 && selectedItem == item.attributeID) || (selectedSize == 0 && selectedItem == item)) ? (
+            {((selectedSize == 1 && selectedItem == item._id) || (selectedSize == 0 && selectedItem == item)) ? (
               <View
                 style={{
                   position: 'absolute',
@@ -614,6 +614,7 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
 const QuanityView = ({ quantity, onClick }) => {
   const [quantiy, setQuantity] = useState(1);
 
+  console.warn(quantity)
   const maxQuantity = quantity;
   return (
     <View

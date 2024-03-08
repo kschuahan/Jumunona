@@ -59,12 +59,13 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
       animationType={'slide'}
       visible={isShow}
       onRequestClose={onClose}>
-       <Pressable onPress={onClose}
+       <View
         style={[
           styles.botton_view,
-          { backgroundColor: 'rgba(0, 0,0, .7 )', justifyContent: 'flex-end' },
+          { backgroundColor: 'rgba(0, 0,0, .7 )'},
         ]}>
-        <Pressable
+        <Pressable style={{flex: 0.17, width: "100%"}} onPress={onClose} />
+        <View
           style={{
             paddingStart: 13,
             backgroundColor: colors.white,
@@ -72,7 +73,8 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
             borderTopRightRadius: 13,
             width: '100%',
             flex: 0.83,
-          }}>
+          }}
+          >
           <View
             style={{
               flexDirection: 'row',
@@ -106,6 +108,7 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
             </Text>
           </View>
           <FlatList
+            style = {{height: "70%"}}
             data={guarantees}
             renderItem={({ item }) => (
               <View style={{ marginVertical: 12, marginEnd: 22 }}>
@@ -155,8 +158,8 @@ const ProuductGuanteeScreen = ({ isShow = false, onClose }) => {
             endColor={colors.endOrange}
             onClick={onClose}
           />
-        </Pressable>
-      </Pressable>
+       </View>
+       </View>
     </Modal>
   );
 };

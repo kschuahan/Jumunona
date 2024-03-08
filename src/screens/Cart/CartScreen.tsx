@@ -749,7 +749,8 @@ const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, on
       backgroundColor: colors.whiteF6F6F6
     }]}>
       <TouchableOpacity onPress={() => {
-        navigation.navigate(RouteNames.product_search_screen, { isRoute: true })
+        navigation.navigate(RouteNames.product_search_screen, { isRoute: true,
+          searchText: '' })
       }}><SearchCart /></TouchableOpacity>
       <TouchableOpacity onPress={() => { }}><LikeCart /></TouchableOpacity>
       {loading ? <ActivityIndicatorView /> : <TouchableOpacity onPress={() => {

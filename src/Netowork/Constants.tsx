@@ -42,8 +42,8 @@ export const categoriesModule = {
   getCategories: `${modules.categoryModule}getCategoriesV2`,
   getSubCategories: `${modules.categoryModule}getSubCategoriesV2?categoryId=`,
 
-  getHomePageCategories: `${modules.categoryModule}getHomePageCategories`,
-  getCategoriesListForCategoriesScreen: `${modules.categoryModule}getCategoriesList`,
+  getHomePageCategories: `${modules.categoryModule}getCategoriesV2`,
+  getCategoriesListForCategoriesScreen: `${modules.categoryModule}getCategoriesV2`,
 };
 
 export const ProductAPIs = {
