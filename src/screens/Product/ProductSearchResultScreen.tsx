@@ -29,86 +29,26 @@ import { AppString } from '../../utils/AppStrings';
 import FilterBottomSheet from './FilterBottomSheet';
 import { useRoute } from '@react-navigation/native';
 import { getAPICall } from '../../Netowork/Apis';
-import { ProductAPIs } from '../../Netowork/Constants';
+import { ProductAPIs, categoriesModule } from '../../Netowork/Constants';
 import { CommonModal, PagingData } from '../HomeScreen';
 import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 
-const categoryData = [
-  { id: 1, desc: 'Jackets' },
-  { id: 2, desc: 'Tops' },
-  { id: 3, desc: 'Child' },
-  { id: 4, desc: 'Baby' },
-  { id: 5, desc: 'Home' },
-  { id: 6, desc: 'Electro' },
-  { id: 7, desc: 'Auto' },
-  { id: 8, desc: 'Home' },
-  { id: 9, desc: 'Beauty' },
-  { id: 10, desc: 'Suits' },
-  { id: 11, desc: 'Accesso' },
-  { id: 12, desc: 'Make-Up' },
-];
+import ImageOutline from '../../../assets/Icons/image-outline.svg';
 
-const data = [
-  {
-    id: 1,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 2,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 3,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 4,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 5,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 6,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 7,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 8,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 9,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-  {
-    id: 10,
-    imageURL: appIcons.shoeImageURL,
-    desc: '600+ просмотров Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-  },
-];
+
 export const ProductSearchResultScreen = ({ navigation, route }) => {
   const [select, setSelect] = useState(-1);
   const [selectUpdate, setSelectUpdate] = useState(-1);
   const [showFilter, setShowFilter] = useState(false);
 
- 
+
 
   useEffect(() => {
-   
+
+    if (route.params && route.params.isRoute) {
+
+      callhorizontalCategoryAPI()
+    }
   }, []);
 
   const sortBy = [
@@ -130,6 +70,8 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
   const [pagingData, setPagingData] = useState<PagingData>();
   const [data, setData] = useState<CommonModal>();
   const [searcText, setSearcText] = useState('');
+  const [horizontalCategoryData, setHorizontalCategoryData] =
+    useState<CommonModal>();
 
   const callAPI = (page = 1, searchstring = '') => {
     setLoading(true)
@@ -144,6 +86,19 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
   };
 
 
+
+  const callhorizontalCategoryAPI = () => {
+    getAPICall(
+      categoriesModule.getCategoriesListForCategoriesScreen,
+      (response: any) => {
+
+        setHorizontalCategoryData(response);
+
+      },
+    );
+  };
+
+
   useEffect(() => {
 
     if (route.params) {
@@ -152,7 +107,6 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
     callAPI(1, route.params.searchText)
   }, [])
   const featchMore = () => {
-    console.warn('kd');
 
     if (
       data?.isSuccess &&
@@ -165,22 +119,24 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
 
   return (
     <View style={[styles.container, { padding: 0 }]}>
-      <CustomHeaderWithoutBackgroundSearch navigation={navigation} searchText={searcText} onChangeText={(text: string) => {
-        setSearcText(text)
-        // setTimeout(() => {
-        if (text.trim() != '') {
-          setData(undefined)
-          setArrayData([])
-          callAPI(1, text)
-        }
-        // }, 1000);
-      }} />
+      <CustomHeaderWithoutBackgroundSearch
+        navigation={navigation} searchText={searcText} onChangeText={(text: string) => {
+          setSearcText(text)
+          // setTimeout(() => {
+          if (text.trim() != '') {
+            setData(undefined)
+            setArrayData([])
+            callAPI(1, text)
+          }
+          // }, 1000);
+        }} />
 
       {dataArray && pagingData ?
         <View style={style.container}>
-          {route.params && route.params.isRoute ? null : (
-            <CategoriesList navigation={navigation} />
-          )}
+          {route.params && route.params.isRoute ? (
+            <CategoriesList data={horizontalCategoryData}
+              navigation={navigation} />
+          ) : null}
 
           <View
             style={{
@@ -541,35 +497,47 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
   );
 };
 
-const CategoriesList = ({ navigation }) => {
-  const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] = useState(1);
+const CategoriesList = ({ data, navigation }) => {
 
+  const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] = useState(0);
+  const [activeItemSubCategories, setActiveItemSubCategories] = useState();
+
+  useEffect(() => {
+    if (data && data.data && data.data.categories) {
+      setActiveItemSubCategories(data?.data.categories[0].subCategory);
+    }
+
+  }, [data])
   return (
-    <View
-      style={{ height: 137, backgroundColor: colors.white, borderRadius: 13 }}>
+    data && data.data && data.data.categories ? <View
+      style={{ height: 144, backgroundColor: colors.white, borderRadius: 13 }}>
       <View style={styles.primaryCategories}>
         <FlatList
           style={styles.primaryCategoriesContent}
-          data={categoryData}
+          data={data.data.categories}
           horizontal
           showsHorizontalScrollIndicator={false}
           keyExtractor={item => {
-            return item.id.toString();
+            return item._id.toString();
           }}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return (
               <View style={{ flex: 1, marginRight: 22 }}>
                 <TouchableOpacity
-                  onPress={() => setActiveItemPrimaryCategory(item.id)}>
+                  onPress={() => {
+                    setActiveItemPrimaryCategory(index)
+                    setActiveItemSubCategories(item.subCategory);
+
+                  }}>
                   <Text
                     style={{
                       fontSize: 16,
                       color:
-                        activeItemPrimaryCategory === item.id
+                        activeItemPrimaryCategory === index
                           ? '#ff7600'
                           : 'black',
                     }}>
-                    {item.desc}
+                    {item.categoryName}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -599,31 +567,36 @@ const CategoriesList = ({ navigation }) => {
       </View>
 
       <FlatList
-        data={['3rd level', 'Thicken', 'Zipper', 'Zipper', 'Zipper']}
+        data={activeItemSubCategories}
         horizontal
         showsHorizontalScrollIndicator={false}
         style={{ marginStart: 8 }}
         keyExtractor={item => {
-          return item.toString();
+          return item._id.toString();
         }}
         renderItem={({ item }) => (
-          <TouchableOpacity style={{ marginEnd: 8, gap: 2 }}>
-            <Image
-              source={{ uri: imagesUrl.shoes }}
-              style={{ height: 70, width: 70, borderRadius: 18 }}
-            />
+          <TouchableOpacity style={{ marginEnd: 8, gap: 2, alignItems: 'center' }}>
+
+            {item.image == undefined || item.image === '' ? (
+              <ImageOutline width={70} height={70} />
+            ) : (
+              <Image source={{ uri: item.image }} height={70} width={70} />
+            )}
             <Text
+              numberOfLines={2}
               style={{
                 fontSize: 15,
                 color: colors.black,
-                alignSelf: 'center',
+                textAlign: 'center',
+                width: 90,
+
               }}>
-              {item}
+              {item.categoryName}
             </Text>
           </TouchableOpacity>
         )}
       />
-    </View>
+    </View> : null
   );
 };
 

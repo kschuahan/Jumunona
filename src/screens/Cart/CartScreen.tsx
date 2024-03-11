@@ -57,6 +57,7 @@ const CartScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (isFocused) {
+      setData(undefined)
       getCart()
     } else {
       setIsEditable(false)

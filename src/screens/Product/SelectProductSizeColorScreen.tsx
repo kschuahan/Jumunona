@@ -322,7 +322,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
   return (
     <View>
       <Text style={[styles.textStyle, { fontSize: 14 }]}>
-        {colorOptions.attributeName} ({colorOptions.length})
+        {"Цвет "} ({colorOptions.length})
       </Text>
 
       <FlatList

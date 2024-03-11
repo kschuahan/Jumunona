@@ -194,7 +194,7 @@ export const FavoriteScreen = ({ navigation }) => {
           {categoryData && categoryData.isSuccess ? (
             <FlatList
               style={{ width: '30%', backgroundColor: colors.whiteF7F7F7 }}
-              data={categoryData.data.data}
+              data={categoryData.data.categories}
               renderItem={({ item, index }) => (
                 <TouchableOpacity
                   onPress={() => {

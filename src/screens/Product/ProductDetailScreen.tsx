@@ -172,7 +172,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
 
   const callAPI = () => {
     setLoading(true)
-     const id =  route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
+    const id = route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'
     callShopsApi(id)
     callReviewApi(id)
     getAPICall(ProductAPIs.getProductDetails + `${id}`, (res: any) => {
@@ -251,9 +251,10 @@ export const ProductDetailScreen = ({ navigation, route }) => {
 
   const [showImages, setShowImages] = useState(-1);
 
-  return (
-    data && data.data && data.isSuccess ? <View style={{ flex: 1 }}>
-      <CustomDetailHeader navigation={navigation} />
+  return (<View style={{ flex: 1 }}>
+    <CustomDetailHeader navigation={navigation} />
+
+    {data && data.data && data.isSuccess ? <View style={{ flex: 1 }}>
       <ScrollView
         ref={scrollRef}
         showsVerticalScrollIndicator={false}
@@ -352,84 +353,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
           />
         </View>
       </ScrollView>
-      {currentPosition > 0 ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            backgroundColor: colors.white,
-            justifyContent: 'space-between',
-            paddingBottom: 4,
-            borderBottomLeftRadius: 13,
-            borderBottomRightRadius: 13,
-            shadowOpacity: 0.4,
-            shadowRadius: 5,
-            shadowOffset: { width: 5, height: 5 },
-            paddingHorizontal: 4,
-            elevation: 4,
-            position: 'absolute',
-            top: 52
-          }}>
-          <FlatList
-            data={postionsArray}
-            horizontal
-            keyExtractor={item => {
-              return item.y.toString();
-            }}
-            scrollEnabled={false}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) => {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectPosition(index)
 
-                    if (index == 0) {
-                      scrollRef.current?.scrollTo(0, 0, true)
-                      // setCurrentPosition(50)
-                    } else if (index == 1) {
-                      scrollRef.current?.scrollTo(552, 0, true)
-
-                      // setCurrentPosition(550)
-                    }
-                    else if (index == 2) {
-                      scrollRef.current?.scrollTo(1052, 0, true)
-                      // setCurrentPosition(1050)
-                    } else {
-                      scrollRef.current?.scrollTo(1702, 0, true)
-                      //setCurrentPosition(1700)
-                    }
-                  }}
-                  style={{
-                    flexDirection: 'column',
-                    width: Dimensions.get('window').width / postionsArray.length,
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color:
-                        currentPosition == item.y
-                          ? colors.lightOrange
-                          : colors.black333333,
-                      paddingBottom: 3,
-                    }}>
-                    {item.name}
-                  </Text>
-                  {currentPosition == item.y ? (
-                    <View
-                      style={{
-                        backgroundColor: colors.lightOrange,
-                        height: 2,
-                        width: 26,
-                      }}
-                    />
-                  ) : null}
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </View>
-      ) : null}
       <View
         style={{
           backgroundColor: colors.white,
@@ -534,7 +458,87 @@ export const ProductDetailScreen = ({ navigation, route }) => {
     </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
       setData(undefined)
       callAPI()
-    }} />
+    }} />}
+
+    {currentPosition > 0 ? (
+      <View
+        style={{
+          flexDirection: 'row',
+          backgroundColor: colors.white,
+          justifyContent: 'space-between',
+          paddingBottom: 4,
+          borderBottomLeftRadius: 13,
+          borderBottomRightRadius: 13,
+          shadowOpacity: 0.4,
+          shadowRadius: 5,
+          shadowOffset: { width: 5, height: 5 },
+          paddingHorizontal: 4,
+          elevation: 2,
+          position: 'absolute',
+          top: 50
+        }}>
+        <FlatList
+          data={postionsArray}
+          horizontal
+          keyExtractor={item => {
+            return item.y.toString();
+          }}
+          scrollEnabled={false}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectPosition(index)
+
+                  if (index == 0) {
+                    scrollRef.current?.scrollTo(0, 0, true)
+                    // setCurrentPosition(50)
+                  } else if (index == 1) {
+                    scrollRef.current?.scrollTo(552, 0, true)
+
+                    // setCurrentPosition(550)
+                  }
+                  else if (index == 2) {
+                    scrollRef.current?.scrollTo(1052, 0, true)
+                    // setCurrentPosition(1050)
+                  } else {
+                    scrollRef.current?.scrollTo(1702, 0, true)
+                    //setCurrentPosition(1700)
+                  }
+                }}
+                style={{
+                  flexDirection: 'column',
+                  width: Dimensions.get('window').width / postionsArray.length,
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color:
+                      currentPosition == item.y
+                        ? colors.lightOrange
+                        : colors.black333333,
+                    paddingBottom: 3,
+                  }}>
+                  {item.name}
+                </Text>
+                {currentPosition == item.y ? (
+                  <View
+                    style={{
+                      backgroundColor: colors.lightOrange,
+                      height: 2,
+                      width: 26,
+                    }}
+                  />
+                ) : null}
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
+    ) : null}
+  </View>
   );
 };
 // MARK: - Review Section
@@ -1357,7 +1361,7 @@ const ProductDetails = ({ item }) => {
                 textDecorationLine: 'line-through',
               },
             ]}>
-            {item.strikePrice ? item.strikePrice + 'c.': ''}
+            {item.strikePrice ? item.strikePrice + 'c.' : ''}
           </Text>
         </View>
         <RatingView rating={item.rating ? item.rating : 4} />
@@ -1443,14 +1447,14 @@ const style = StyleSheet.create({
   searchInput: {
     width: 'auto',
     marginLeft: 11.13,
-    fontFamily: fontFamily.regular,
+    fontWeight: '400',
     fontSize: 15,
     textAlign: 'center',
-    color: colors.grayAAAAAA
+    color: colors.grayAAAAAA,
   },
 });
 
-const SearchView = ({navigation}) => {
+const SearchView = ({ navigation }) => {
   const [search, setSearch] = useState('');
 
   return (
@@ -1464,46 +1468,52 @@ const SearchView = ({navigation}) => {
         paddingVertical: 8,
         width: '70%'
       }}
-      onPress={ () => { navigation.navigate(RouteNames.product_search_screen, {
-        isRoute: true,
-        searchText: ''
-      })}}
-      >
-      
+      onPress={() => {
+        navigation.navigate(RouteNames.product_search_screen, {
+          isRoute: true,
+          searchText: ''
+        })
+      }}
+    >
+
       <SearchIcon width={15} height={15} style={{ marginStart: 15 }}
       />
 
 
-       <Text style={style.searchInput}> Suggested Category </Text>
-       
+      <Text style={style.searchInput}> Suggested Category </Text>
+
     </Pressable>
   );
 };
 
-const CustomDetailHeader = ({navigation}) => {
+export const CustomDetailHeader = ({ navigation }) => {
   return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between", backgroundColor: colors.white, padding: 8 }}>
-                <BackLogo navigation={navigation} />
-                <SearchView navigation = {navigation} />
-        
-          <TouchableOpacity
-            onPress={() => {
-              ShareJumu()
-            }}
-          >
-            <Share />
-          </TouchableOpacity>
+    <View style={{
+      flexDirection: 'row', alignItems: 'center',
+      justifyContent: "space-between", backgroundColor: colors.white,
+      padding: 8, elevation: 2
+    }}>
+      <BackLogo navigation={navigation} />
+      <SearchView navigation={navigation} />
 
-          <TouchableOpacity onPress={() => {
-            navigation.navigate(RouteNames.cartScreen)
-          }} style={{ alignItems: 'center',}}>
-            <CartIcon />
-          </TouchableOpacity>
-          <TouchableOpacity style={{ alignItems: 'center'}}>
-            <EllipsisHorizontal width={24} height={24} />
-          </TouchableOpacity>
-        </View>
-            
+      <TouchableOpacity
+        onPress={() => {
+          ShareJumu()
+        }}
+      >
+        <Share />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => {
+        navigation.navigate(RouteNames.cartScreen)
+      }} style={{ alignItems: 'center', }}>
+        <CartIcon />
+      </TouchableOpacity>
+      <TouchableOpacity style={{ alignItems: 'center' }}>
+        <EllipsisHorizontal width={24} height={24} />
+      </TouchableOpacity>
+    </View>
+
   )
 }
 
