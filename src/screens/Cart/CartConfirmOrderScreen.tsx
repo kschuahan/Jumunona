@@ -25,7 +25,7 @@ import { PaymentWebView } from "./PaymentConfirmation";
 interface CartAPIModel {
     cartId: string,
     note: string,
-    byAir:boolean
+    byAir: boolean
     byTrain: Boolean
 }
 let cartAPIModel: CartAPIModel[] = []
@@ -47,7 +47,7 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
 
     const onChangeAddress = (data: any) => {
         setAddress(data)
-      };
+    };
 
     // getting cart produccts
     const callAPI = () => {
@@ -57,9 +57,9 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
         postAPICall({
             cartIds: ids,
         }, OrderAPI.placingOrder, true, (res: any) => {
-           
+
             if (res.data && res.data.data && res.data.data.cartDetails) {
-                setAddress(res.data.data.defaultAddress)
+                setAddress(res.data.data.defaultAddress ? res.data.data.defaultAddress : undefined)
                 let cartDetails = res.data.data.cartDetails
                 cartDetails.forEach((it: any) => {
                     let array = it.products.map((it: any) => {
@@ -85,23 +85,23 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
     const createOrder = () => {
         setLoading(true)
         postAPICall({
-                addressId : address._id,
-                jCoinsUsed   :  0,
-                cartIds: cartAPIModel
+            addressId: address._id,
+            jCoinsUsed: 0,
+            cartIds: cartAPIModel
         },
-        OrderAPI.createOrder,
-        true,
-        (res: any) => {
-            setLoading(false)
-            // console.warn(res.data.data)
-            if (res.isSuccess && res.data.data) {
-                setHtmlData(res.data.data)
-                setShowPaymentPopup(true)
+            OrderAPI.createOrder,
+            true,
+            (res: any) => {
+                setLoading(false)
+                // console.warn(res.data.data)
+                if (res.isSuccess && res.data.data) {
+                    setHtmlData(res.data.data)
+                    setShowPaymentPopup(true)
 
-            } else {
-                Alert.alert(res.data)
-            }
-        })
+                } else {
+                    Alert.alert(res.data)
+                }
+            })
     }
 
     return (
@@ -113,7 +113,8 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                 >
                     <AddressView data={address} onClick={() => {
                         isSelectingAddress = true
-                        navigation.navigate(RouteNames.myAddress, {isFromCart: true, onChangeAddress: onChangeAddress})
+                        navigation.navigate(RouteNames.myAddress,
+                            { isFromCart: true, onChangeAddress: onChangeAddress })
                     }} />
                     <FlatList
                         data={data.data.data.cartDetails}
@@ -140,7 +141,7 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                     <TotalView data={data.data.data} />
                     <PaymentGateway />
                 </ScrollView>
-                <BottomView data={data.data.data} onCreateOrder = { () => {
+                <BottomView data={data.data.data} onCreateOrder={() => {
                     createOrder()
                 }} />
             </View> : mainLoading ? <ProgressView /> :
@@ -151,14 +152,14 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
             <DeliveryNotePopup isShow={showNotePopup} onOKPress={(text: string) => {
                 cartAPIModel.forEach((it, index) => {
                     if (addingNoteForCart.indexOf(it.cartId) > -1) {
-                        
+
                         cartAPIModel[index].note = text
                     }
                 })
                 setShowNotePopup(false)
                 console.warn(cartAPIModel)
 
-            }}  onClose={() => {
+            }} onClose={() => {
                 setShowNotePopup(false)
             }} />
             <PaymentWebView isShow={showPaymentPopup} data={htmlData} onClick={() => {
@@ -185,7 +186,7 @@ const AddressView = ({ data, onClick }) => {
             }}
         >
             <PinDrop />
-            <View
+            {data ? <View
                 style={{
                     flexDirection: "column",
                     width: "85%"
@@ -213,7 +214,18 @@ const AddressView = ({ data, onClick }) => {
                 >
                     {data.name} {data.phone}
                 </Text>
-            </View>
+            </View> : <Text
+                style={{
+                    fontFamily: fontFamily.bold,
+                    fontWeight: 'bold',
+                    fontSize: 14,
+                    color: colors.black14100D,
+                    textTransform: 'capitalize'
+
+                }}
+            >
+                {"Add/Select your address"}
+            </Text>}
             <ChevronFwdOutline
                 color={colors.extraGrey}
                 width={12}
@@ -302,7 +314,7 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
                                     alignItems: "center",
                                     gap: 6
                                 }}
-                                onPress={ () => {
+                                onPress={() => {
                                     addingNoteForCart = items.products.map((it: any) => it.cartId)
                                     console.warn(addingNoteForCart)
                                     onShowNotePopup()
@@ -469,7 +481,7 @@ const CartItem = ({ item, check = false, onClick }) => {
                         <RadioButtons isCheck={deliveryByTrain} onClick={() => {
                             if (!deliveryByTrain) {
                                 setDeliveryByTrain(true)
-                               let index = cartAPIModel.findIndex(it => it.cartId == item.cartId)
+                                let index = cartAPIModel.findIndex(it => it.cartId == item.cartId)
                                 console.warn(index)
                                 if (index > -1) {
                                     cartAPIModel[index].byAir = false

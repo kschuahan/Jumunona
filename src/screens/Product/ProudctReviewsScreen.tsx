@@ -11,7 +11,7 @@ import {
 import { colors } from '../../utils/AppColors';
 import { useEffect, useState } from 'react';
 import { onShare } from '../../utils/Common';
-import { ReviewUser } from './ProductDetailScreen';
+import { CustomDetailHeader, ReviewUser } from './ProductDetailScreen';
 
 import ArrowRedoOutlineIcon from '../../../assets/Icons/arrowRedoOutline.svg';
 import CartOutlineIcon from '../../../assets/Icons/cartOutlineIcon.svg';
@@ -28,6 +28,7 @@ import { ReviewApis } from '../../Netowork/Constants';
 import { CommonModal } from '../HomeScreen';
 import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 import { styles } from '../../utils/AppStyles';
+import { ShareJumu } from '../../utils/Share';
 
 const filterOptions = [
   { id: 1, desc: 'Все', rating: 0 },
@@ -72,146 +73,100 @@ export const ProudctReviewsScreen = ({ navigation, route }) => {
     })
   }
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: '',
 
-      headerRight: () => (
-        <View style={{ flexDirection: 'row', gap: 34, alignItems: 'center' }}>
-          <TouchableOpacity
-            onPress={() => {
-              onShare();
+  return (<View style={{ flex: 1 }}>
+    <CustomDetailHeader navigation={navigation} />
+    {data && data.data && data.isSuccess ?
+      <View style={{ flex: 1 }}>
+        <View>
+          <FlatList
+            style={style.primaryCategoriesContent}
+            data={filterOptions}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={item => {
+              return item.id.toString();
             }}
-            style={{ alignItems: 'center', marginStart: -20 }}>
-            <Share />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => {
-            navigation.navigate(RouteNames.cartScreen)
-          }} style={{ alignItems: 'center', marginStart: -20 }}>
-            <CartIcon />
-          </TouchableOpacity>
-          <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
-            <EllipsisHorizontal width={24} height={24} />
-          </TouchableOpacity>
-        </View>
-      ),
-      headerLeft: () => (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={{ alignItems: 'center', marginStart: -25 }}>
-            <ChevronBackOutlineIcon height={15} width={15} />
-          </TouchableOpacity>
-
-          <SearchView />
-        </View>
-      ),
-      headerStyle: {
-        backgroundColor: colors.white,
-      },
-
-      headerShadowVisible: false,
-    });
-  });
-
-  return (data && data.data && data.isSuccess ?
-    <View style={{ flex: 1 }}>
-      <View>
-        <FlatList
-          style={style.primaryCategoriesContent}
-          data={filterOptions}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={item => {
-            return item.id.toString();
-          }}
-          renderItem={({ item, index }) => {
-            return (
-              <View style={{ paddingHorizontal: 4.5 }}>
-                <TouchableOpacity onPress={() => {
-                  setSelectedFactory(index)
-                  if (item.rating == -1) {
-                    const filter = data.data.data.filter((it: any) => it.images.length > 0)
-                    setReviewList(filter)
-                  } else if (item.rating == 0) {
-                    setReviewList(data.data.data)
-                  } else if (item.rating == 2) {
-                    const filter = data.data.data.filter((it: any) => it.rating <= item.rating)
-                    setReviewList(filter)
-                  } else {
-                    const filter = data.data.data.filter((it: any) => it.rating >= item.rating)
-                    setReviewList(filter)
-                  }
-                }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '400',
-                      color: selectedFactory === index ? '#ff7600' : 'black',
-                    }}>
-                    {item.desc}
+            renderItem={({ item, index }) => {
+              return (
+                <View style={{ paddingHorizontal: 4.5 }}>
+                  <TouchableOpacity onPress={() => {
+                    setSelectedFactory(index)
+                    if (item.rating == -1) {
+                      const filter = data.data.data.filter((it: any) => it.images.length > 0)
+                      setReviewList(filter)
+                    } else if (item.rating == 0) {
+                      setReviewList(data.data.data)
+                    } else if (item.rating == 2) {
+                      const filter = data.data.data.filter((it: any) => it.rating <= item.rating)
+                      setReviewList(filter)
+                    } else {
+                      const filter = data.data.data.filter((it: any) => it.rating >= item.rating)
+                      setReviewList(filter)
+                    }
+                  }}>
                     <Text
                       style={{
                         fontSize: 14,
                         fontWeight: '400',
-                        color:
-                          selectedFactory === index ? '#ff7600' : colors.grey,
+                        color: selectedFactory === index ? '#ff7600' : 'black',
                       }}>
-                      {item.id != 1 ? '(' + item.id + ')' : ''}
+                      {item.desc}
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: '400',
+                          color:
+                            selectedFactory === index ? '#ff7600' : colors.grey,
+                        }}>
+                        {item.id != 1 ? '(' + item.id + ')' : ''}
+                      </Text>
                     </Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+          <FlatList
+            data={data.data.mostlyUsedWords}
+            horizontal
+            keyExtractor={item => {
+              return item.word.toString();
+            }}
+            style={{ flexWrap: 'wrap', marginVertical: 9, marginStart: 9 }}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => { }}
+                  style={{
+                    backgroundColor: colors.white,
+                    marginEnd: 5,
+                    borderRadius: 20,
+                    height: 26,
+                    justifyContent: 'center'
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: colors.balc111111,
+                      paddingHorizontal: 12,
+                      textAlign: 'center',
+                      fontWeight: '400'
+                    }}>
+                    {item.word}{`(${item.count})`}
                   </Text>
                 </TouchableOpacity>
-              </View>
-            );
-          }}
-        />
-        <FlatList
-          data={data.data.mostlyUsedWords}
-          horizontal
-          keyExtractor={item => {
-            return item.word.toString();
-          }}
-          style={{ flexWrap: 'wrap', marginVertical: 9, marginStart: 9 }}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity
-                onPress={() => { }}
-                style={{
-                  backgroundColor: colors.white,
-                  marginEnd: 5,
-                  borderRadius: 20,
-                  height: 26,
-                  justifyContent: 'center'
-                }}>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    color: colors.balc111111,
-                    paddingHorizontal: 12,
-                    textAlign: 'center',
-                    fontWeight: '400'
-                  }}>
-                  {item.word}{`(${item.count})`}
-                </Text>
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </View>
-      <ReviewLay reviewList={reviewList} data={data.data.data} />
-    </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
-      setData(undefined)
-      callAPI()
-    }} />
+              );
+            }}
+          />
+        </View>
+        <ReviewLay reviewList={reviewList} data={data.data.data} />
+      </View> : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+        setData(undefined)
+        callAPI()
+      }} />}
+  </View>
   );
 };
 
@@ -268,6 +223,7 @@ const SearchView = () => {
         value={search}
         placeholder={'Футболки'}
         style={style.searchTextInput}
+        editable={false}
         placeholderTextColor={colors.grey}
         onChangeText={text => {
           setSearch(text);

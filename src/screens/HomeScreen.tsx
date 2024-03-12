@@ -55,7 +55,10 @@ const HeaderItem = ({ onSearchClick }) => {
         setSearchText(text)
       }}
     />
-    <TouchableOpacity style={styles.button} onPress={() => {onSearchClick(searchText)}}>
+    <TouchableOpacity style={styles.button} onPress={() => {
+      onSearchClick(searchText)
+      setSearchText('')
+      }}>
       <LinearGradient
         colors={['#FF7600', '#FC4A1A']}
         start={{ x: 0.4, y: 0 }}
@@ -109,7 +112,7 @@ const MainCategoriesItem = ({ navigation, data }) => {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate(RouteNames.product_search_screen, {
-                      categoryID: item._id,
+                      categoryID: item.categoryId,
                       routeName: RouteNames.home,
                       index: index,
                       searchText: ''

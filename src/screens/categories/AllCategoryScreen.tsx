@@ -1,39 +1,23 @@
-import {TouchableOpacity, View, FlatList, Text} from 'react-native';
-import {styles} from '../../utils/AppStyles';
-import React, {useEffect, useState} from 'react';
-import {RouteNames} from '../../utils/RouteNames';
-import {AppString} from '../../utils/AppStrings';
-import {colors} from '../../utils/AppColors';
+import { TouchableOpacity, View, FlatList, Text } from 'react-native';
+import { styles } from '../../utils/AppStyles';
+import React, { useEffect, useState } from 'react';
+import { RouteNames } from '../../utils/RouteNames';
+import { AppString } from '../../utils/AppStrings';
+import { colors } from '../../utils/AppColors';
 import ChevronFwdOutlineIcon from '../../../assets/Icons/ForwardBlack.svg';
 import ImageIcon from '../../../assets/Icons/image-outline.svg';
-import {CustomHeader} from '../../components/Header';
-import {getAPICall} from '../../Netowork/Apis';
-import {categoriesModule} from '../../Netowork/Constants';
-import {ProgressView, RetryWhenErrorOccur} from '../../components/Dialogs';
+import { CustomHeader } from '../../components/Header';
+import { getAPICall } from '../../Netowork/Apis';
+import { categoriesModule } from '../../Netowork/Constants';
+import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
+import { CommonModal } from '../HomeScreen';
 
-const products = [
-  {title: 'coat', isSelected: false},
-  {title: '3 category', isSelected: false},
-  {title: 'Jacket', isSelected: false},
-  {title: 'Cotton clothes', isSelected: false},
-  {title: 'down jacket', isSelected: false},
-  {title: 'leather coat', isSelected: false},
-  {title: '棒球服', isSelected: false},
-  {title: '西装', isSelected: false},
-  {title: 'PU皮衣', isSelected: false},
-];
 
-export interface CommonModal {
-  isSuccess: boolean;
-  data: any;
-}
 
-export const AllCategoriesScreen = ({navigation}) => {
+export const AllCategoriesScreen = ({ navigation }) => {
   const [pos, setPos] = useState(0);
   const [leftCategoryList, setLeftCategoryList] = useState<CommonModal>();
   const [loading, setLoading] = useState(false);
-  const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] =
-    useState<string>('');
   const [activeItemSubCategories, setActiveItemSubCategories] = useState();
   const [rightSideCategories, setRightSideCategories] = useState<CommonModal>();
 
@@ -43,39 +27,24 @@ export const AllCategoriesScreen = ({navigation}) => {
       categoriesModule.getCategoriesListForCategoriesScreen,
       (response: any) => {
         if (response.isSuccess) {
-          setLeftCategoryList(response);
-          // Assuming the first category is always available
-          setActiveItemPrimaryCategory(response?.data.categories[0]._id);
           setActiveItemSubCategories(response?.data.categories[0].subCategory);
         }
+        setLeftCategoryList(response);
         setLoading(false);
       },
     );
   };
 
-  const callRightSideCategoryListAPI = (id: string) => {
-    getAPICall(
-      categoriesModule.getSubCategories,
-      (response: any) => {
-        if (response.isSuccess) {
-          setRightSideCategories(response?.data);
-          console.log('bharat', response);
-        }
-      },
-      {categoryId: id},
-    );
-  };
 
   useEffect(() => {
     callLeftCategoryListAPI();
-   callRightSideCategoryListAPI(activeItemPrimaryCategory);
   }, []);
 
-  return leftCategoryList ? (
-    <View style={[styles.container, {padding: 0}]}>
+  return (
+    <View style={[styles.container, { padding: 0 }]}>
       <CustomHeader navigation={navigation} title={AppString.categories} />
-      <View
-        style={[styles.container, {paddingEnd: 6, backgroundColor: undefined}]}>
+      {leftCategoryList && leftCategoryList.isSuccess && leftCategoryList.data?.categories ? <View
+        style={[styles.container, { paddingEnd: 6, backgroundColor: undefined }]}>
         <View
           style={[
             styles.container,
@@ -86,12 +55,12 @@ export const AllCategoriesScreen = ({navigation}) => {
             },
           ]}>
           <FlatList
-            style={{width: '22%', marginTop: -10}}
+            style={{ width: '22%', marginTop: -10 }}
             data={leftCategoryList.data?.categories}
             keyExtractor={item => {
               return item._id;
             }}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <TouchableOpacity
                 onPress={() => {
                   setPos(index);
@@ -111,7 +80,7 @@ export const AllCategoriesScreen = ({navigation}) => {
                       fontSize: 16,
                       color:
                         pos == index ? colors.lightOrange : colors.black444444,
-                        textAlign: 'center'
+                      textAlign: 'center'
                     },
                   ]}>
                   {item.categoryName}
@@ -121,10 +90,13 @@ export const AllCategoriesScreen = ({navigation}) => {
           />
 
           <FlatList
-            style={{width: '78%', marginTop: -14}}
+            style={{ width: '78%', marginTop: -14 }}
             data={activeItemSubCategories}
+            keyExtractor={item => {
+              return item._id.toString();
+            }}
             showsVerticalScrollIndicator={false}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <View
                 style={{
                   backgroundColor: colors.white,
@@ -136,6 +108,7 @@ export const AllCategoriesScreen = ({navigation}) => {
                   title={item.categoryName}
                   onClick={() => {
                     navigation.navigate(RouteNames.product_search_screen, {
+                      categoryID: item.categoryId,
                       isRoute: true,
                       searchText: ''
                     });
@@ -144,20 +117,21 @@ export const AllCategoriesScreen = ({navigation}) => {
                 <FlatList
                   data={item.subCategory}
                   keyExtractor={item => {
-                    return item.toString();
+                    return item._id.toString();
                   }}
                   numColumns={3}
                   scrollEnabled={false}
-                  renderItem={({item, index}) => (
+                  renderItem={({ item, index }) => (
                     <TouchableOpacity
                       style={{
                         flex: 1 / 3,
                         // justifyContent: 'center',
-                         alignItems: 'center',
+                        alignItems: 'center',
                         marginTop: 11
                       }}
                       onPress={() => {
                         navigation.push(RouteNames.product_search_screen, {
+                          categoryID: item.categoryId,
                           isRoute: true,
                           searchText: ''
                         });
@@ -187,23 +161,23 @@ export const AllCategoriesScreen = ({navigation}) => {
           />
         </View>
       </View>
+        : loading ? (
+          <ProgressView />
+        ) : (
+          <RetryWhenErrorOccur
+            data={leftCategoryList}
+            onClick={() => {
+              setLeftCategoryList(undefined);
+              setActiveItemSubCategories(undefined);
+              callLeftCategoryListAPI();
+            }}
+          />
+        )}
     </View>
-  ) : loading ? (
-    <ProgressView />
-  ) : (
-    <RetryWhenErrorOccur
-      data={leftCategoryList}
-      onClick={() => {
-        setLeftCategoryList(undefined);
-        setActiveItemPrimaryCategory('');
-        setActiveItemSubCategories(undefined);
-        callLeftCategoryListAPI();
-      }}
-    />
-  );
+  )
 };
 
-const TextWithIcon = ({title = 'Jackets', padding = 10, onClick}) => {
+const TextWithIcon = ({ title = 'Jackets', padding = 10, onClick }) => {
   return (
     <TouchableOpacity
       onPress={onClick}

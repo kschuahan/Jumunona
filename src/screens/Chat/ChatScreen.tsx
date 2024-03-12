@@ -152,11 +152,10 @@ export const ChatScreen = ({ navigation, route }) => {
   }
 
   const sendMessage = async (msg: string) => {
-    flatListScroll.current?.scrollToIndex({ animated: false, index: chatList.length - 1 });
+   // flatListScroll.current?.scrollToIndex({ animated: false, index: chatList.length - 1 });
 
     if (socket) {
       let message = { from: userData.userID, to: toId, msg: msg }
-      console.warn("Send Message", message);
 
       try {
         const response = await socket.emitWithAck("send-msg", message);
@@ -257,7 +256,7 @@ export const ChatScreen = ({ navigation, route }) => {
                   if (isShow) {
                     setIsShow(!isShow)
                   } else if (message.trim().length > 0) {
-                    if (socket) {
+                    if (socket && socket.active) {
                       sendMessage(message)
                       chatList.push({ message: message, fromSelf: true })
                       setAllMessages(chatList)

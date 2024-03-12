@@ -234,6 +234,8 @@ const App: React.FC = () => {
           <Stack.Screen
             name={RouteNames.product_review_screen}
             component={ProudctReviewsScreen}
+            options={{headerShown: false}}
+
           />
 
           <Stack.Screen

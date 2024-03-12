@@ -13,7 +13,7 @@ export const getAPICall = async (endPoint: any, onResponse: any,
   item: any = undefined, authToken = true) => {
 
   const token = await getValue(AsyncStorageKeys.authToken)
-  // console.log("token", token)
+   console.log("token", item)
   await axiosClient(authToken ? token : undefined).get(endPoint, { params: item })
     .then((response: any) => {
 
