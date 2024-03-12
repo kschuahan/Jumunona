@@ -108,6 +108,7 @@ export const AllCategoriesScreen = ({ navigation }) => {
                   title={item.categoryName}
                   onClick={() => {
                     navigation.navigate(RouteNames.product_search_screen, {
+                      categoryID: item.categoryId,
                       isRoute: true,
                       searchText: ''
                     });
@@ -130,6 +131,7 @@ export const AllCategoriesScreen = ({ navigation }) => {
                       }}
                       onPress={() => {
                         navigation.push(RouteNames.product_search_screen, {
+                          categoryID: item.categoryId,
                           isRoute: true,
                           searchText: ''
                         });

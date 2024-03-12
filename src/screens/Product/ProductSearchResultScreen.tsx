@@ -40,6 +40,7 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
   const [select, setSelect] = useState(-1);
   const [selectUpdate, setSelectUpdate] = useState(-1);
   const [showFilter, setShowFilter] = useState(false);
+  const [categoryId, setCategoryID] = useState('');
 
 
 
@@ -74,15 +75,23 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
     useState<CommonModal>();
 
   const callAPI = (page = 1, searchstring = '') => {
+    let item = undefined
+    if (searcText.trim() != '') {
+      item = { search: searcText }
+    }
+    if (categoryId.trim() != '') {
+      item = { ...item, categoriesId: categoryId }
+    }
+
     setLoading(true)
-    getAPICall(ProductAPIs.getProducts + `${page}` + `&search=${searchstring}`, (res: any) => {
+    getAPICall(ProductAPIs.getProducts + `${page}`, (res: any) => {
       if (res.isSuccess) {
         setPagingData(res.data.data.pages);
         setArrayData([...dataArray, ...res.data.data.products]);
       }
       setData(res);
       setLoading(false)
-    });
+    }, item);
   };
 
 
@@ -101,11 +110,23 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
 
   useEffect(() => {
 
-    if (route.params) {
+    if (route.params && route.params.searchText) {
       setSearcText(route.params.searchText)
     }
-    callAPI(1, route.params.searchText)
+    if (route.params && route.params.categoryID) {
+      setCategoryID(route.params.categoryID)
+      console.warn("pareams",route.params.categoryID);
+      
+    }
   }, [])
+
+
+useEffect(()=>{
+  setArrayData([])
+  callAPI()
+},[searcText,categoryId])
+
+
   const featchMore = () => {
 
     if (
@@ -123,11 +144,10 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
         navigation={navigation} searchText={searcText} onChangeText={(text: string) => {
           setSearcText(text)
           // setTimeout(() => {
-          if (text.trim() != '') {
-            setData(undefined)
-            setArrayData([])
-            callAPI(1, text)
-          }
+          // if (text.trim() != '') {
+          //   setArrayData([])
+          //   callAPI(1, text)
+          // }
           // }, 1000);
         }} />
 
@@ -135,7 +155,12 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
         <View style={style.container}>
           {route.params && route.params.isRoute ? (
             <CategoriesList data={horizontalCategoryData}
-              navigation={navigation} />
+              navigation={navigation} onClick={(id: any) => {
+                if (id != categoryId) {
+                  setCategoryID(id)
+                 
+                }
+              }} />
           ) : null}
 
           <View
@@ -340,9 +365,9 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
           <View style={[style.productsGrid]}>
             <FlatList
               data={dataArray}
-              keyExtractor={item => {
-                return item._id;
-              }}
+              // keyExtractor={item => {
+              //   return item._id;
+              // }}
 
               ListEmptyComponent={
                 !loading ? <Text style={[styles.textStyle, {
@@ -497,7 +522,7 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
   );
 };
 
-const CategoriesList = ({ data, navigation }) => {
+const CategoriesList = ({ data, navigation, onClick }) => {
 
   const [activeItemPrimaryCategory, setActiveItemPrimaryCategory] = useState(0);
   const [activeItemSubCategories, setActiveItemSubCategories] = useState();
@@ -525,6 +550,7 @@ const CategoriesList = ({ data, navigation }) => {
               <View style={{ flex: 1, marginRight: 22 }}>
                 <TouchableOpacity
                   onPress={() => {
+                    onClick(item.categoryId)
                     setActiveItemPrimaryCategory(index)
                     setActiveItemSubCategories(item.subCategory);
 
@@ -575,7 +601,12 @@ const CategoriesList = ({ data, navigation }) => {
           return item._id.toString();
         }}
         renderItem={({ item }) => (
-          <TouchableOpacity style={{ marginEnd: 8, gap: 2, alignItems: 'center' }}>
+          <TouchableOpacity
+            onPress={() => {
+              onClick(item.categoryId)
+
+            }}
+            style={{ marginEnd: 8, gap: 2, alignItems: 'center' }}>
 
             {item.image == undefined || item.image === '' ? (
               <ImageOutline width={70} height={70} />
