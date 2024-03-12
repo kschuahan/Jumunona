@@ -90,8 +90,8 @@ export const ShopsScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         console.warn(route.params.productId)
-         callShopsApi(route.params && route.params.productId ? route.params.productId : '65b8c1a8b03f0c815947e1e7')
-        
+        callShopsApi(route.params && route.params.productId ? route.params.productId : '65b8c1a8b03f0c815947e1e7')
+
     }, [])
     const [shopData, setShopData] = useState<CommonModal>()
     const [loading, setLoading] = useState(false)
@@ -99,140 +99,140 @@ export const ShopsScreen = ({ navigation, route }) => {
     const callShopsApi = (id: string) => {
         setLoading(true)
         getAPICall(ProductAPIs.getShopsProduct + `${id}`, (res: any) => {
-          setShopData(res)
-          setLoading(true)
+            setShopData(res)
+            setLoading(true)
         })
-      }
+    }
 
     const [isShopShow, setIsShopShow] = useState(true);
     return (
-       
-         <View style={[styles.container, { padding: 0 }]}>
-        <ToolbarWithSearch 
-        selectedSortBy = {selectedSortBy}
-         shopData={shopData} 
-         navigation={navigation} 
-         sortBy = { (id: number) => {
-            setSortBy(id)
-            if (id == 2) {
-               shopData.data.data.shopData.shopProducts.sort((a, b) =>  parseInt(b.views) - parseInt(a.views)  )
-               console.warn( shopData.data.data.shopData.shopProducts)
-                setShopData(shopData)
-            } else if (id == 3) {
-                shopData.data.data.shopData.shopProducts.sort((a, b) =>  a.price -  b.price )
-                setShopData(shopData)
-            }
-        }}
-         onClick={() => { }}
-          isShow={isShopShow} />
-       { shopData && shopData.isSuccess ?  <FlatList
-            data={shopData.data.data.shopData.shopProducts}
-            showsVerticalScrollIndicator={false}
-            numColumns={2}
-            onScroll={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
-                // console.log(event.nativeEvent.contentOffset.y);
-                setIsShopShow(event.nativeEvent.contentOffset.y < 180)
-            }}
-            keyExtractor={item => {
-                return item._id.toString();
-            }}
-            style={{ marginHorizontal: 7.5 }}
-            renderItem={({ item, index }) =>
-                <TouchableOpacity
-                    style={{
-                        borderRadius: 12,
-                        backgroundColor: '#ffffff',
-                        marginHorizontal: 4.5,
-                        marginBottom: 10,
-                        flex: 0.5,
-                        borderColor: '#f1f1f1',
-                        marginTop: 5,
-                    }}
-                    onPress={() => {
-                        navigation.navigate(RouteNames.product_detail, {
-                            id: item._id,
-                          });
-                    }}>
-                    <Image
-                        source={item.images !== ''
-                        ? { uri: item.images }
-                        : appIcons.shoeImageURL}
-                        style={{
-                            height: 255,
-                            paddingHorizontal: 1,
-                            width: 'auto',
-                            borderRadius: 13,
-                            backgroundColor: '#f1f1f1',
 
-                            marginBottom: 8,
+        <View style={[styles.container, { padding: 0 }]}>
+            <ToolbarWithSearch
+                selectedSortBy={selectedSortBy}
+                shopData={shopData}
+                navigation={navigation}
+                sortBy={(id: number) => {
+                    setSortBy(id)
+                    if (id == 2) {
+                        shopData.data.data.shopData.shopProducts.sort((a, b) => parseInt(b.views) - parseInt(a.views))
+                        console.warn(shopData.data.data.shopData.shopProducts)
+                        setShopData(shopData)
+                    } else if (id == 3) {
+                        shopData.data.data.shopData.shopProducts.sort((a, b) => a.price - b.price)
+                        setShopData(shopData)
+                    }
+                }}
+                onClick={() => { }}
+                isShow={isShopShow} />
+            {shopData && shopData.isSuccess ? <FlatList
+                data={shopData.data.data.shopData.shopProducts}
+                showsVerticalScrollIndicator={false}
+                numColumns={2}
+                onScroll={(event: NativeSyntheticEvent<NativeScrollEvent>) => {
+                    // console.log(event.nativeEvent.contentOffset.y);
+                    setIsShopShow(event.nativeEvent.contentOffset.y < 180)
+                }}
+                keyExtractor={item => {
+                    return item._id.toString();
+                }}
+                style={{ marginHorizontal: 7.5 }}
+                renderItem={({ item, index }) =>
+                    <TouchableOpacity
+                        style={{
+                            borderRadius: 12,
+                            backgroundColor: '#ffffff',
+                            marginHorizontal: 4.5,
+                            marginBottom: 10,
+                            flex: 0.5,
+                            borderColor: '#f1f1f1',
+                            marginTop: 5,
                         }}
-                    />
-
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            paddingLeft: 7,
+                        onPress={() => {
+                            navigation.navigate(RouteNames.product_detail, {
+                                id: item._id,
+                            });
                         }}>
                         <Image
-                            source={appIcons.china}
-                            style={{ height: 15, width: 15, marginTop: 3 }}
-                        />
-                        <Text
+                            source={item.images !== ''
+                                ? { uri: item.images }
+                                : appIcons.shoeImageURL}
                             style={{
-                                marginLeft: 4,
-                                fontSize: 13,
-                                fontWeight: '500',
-                                color: colors.black
+                                height: 255,
+                                paddingHorizontal: 1,
+                                width: 'auto',
+                                borderRadius: 13,
+                                backgroundColor: '#f1f1f1',
+
+                                marginBottom: 8,
                             }}
-                            numberOfLines={1}>
-                            {item.name}
-                        </Text>
-                    </View>
-                    <View
-                        style={{ flexDirection: 'row', paddingLeft: 8, marginTop: 4 }}>
-                        <View style={{ flexDirection: 'row', width: '30%' }}>
+                        />
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'flex-start',
+                                paddingLeft: 7,
+                            }}>
+                            <Image
+                                source={appIcons.china}
+                                style={{ height: 15, width: 15, marginTop: 3 }}
+                            />
                             <Text
                                 style={{
-                                    fontSize: 17,
-                                    color: '#ff7600',
+                                    marginLeft: 4,
+                                    fontSize: 13,
                                     fontWeight: '500',
-                                }}>
-                               {item.price ? item.price : '58'}
-                            </Text>
-                            <Text
-                                style={{
-                                    paddingTop: 6,
-                                    color: '#ff7600',
-                                    fontSize: 12,
-                                    fontWeight: '500',
-                                }}>
-                                c.
+                                    color: colors.black
+                                }}
+                                numberOfLines={1}>
+                                {item.name}
                             </Text>
                         </View>
-                        <Text
-                            numberOfLines={1}
-                            style={{
-                                width: '70%',
-                                color: '#AAAAAA',
-                                paddingTop: 3,
-                            }}>
-                            {item.desc}
-                        </Text>
-                    </View>
-                </TouchableOpacity>}
-        /> :  loading ? <ProgressView /> :
-        <RetryWhenErrorOccur data={shopData} onClick={() => {
-           setShopData(undefined)
-           callShopsApi(route.params.productId) 
-       }}/> 
-       }
-    </View>   )
+                        <View
+                            style={{ flexDirection: 'row', paddingLeft: 8, marginTop: 4 }}>
+                            <View style={{ flexDirection: 'row', width: '30%' }}>
+                                <Text
+                                    style={{
+                                        fontSize: 17,
+                                        color: '#ff7600',
+                                        fontWeight: '500',
+                                    }}>
+                                    {item.price ? item.price : '58'}
+                                </Text>
+                                <Text
+                                    style={{
+                                        paddingTop: 6,
+                                        color: '#ff7600',
+                                        fontSize: 12,
+                                        fontWeight: '500',
+                                    }}>
+                                    c.
+                                </Text>
+                            </View>
+                            <Text
+                                numberOfLines={1}
+                                style={{
+                                    width: '70%',
+                                    color: '#AAAAAA',
+                                    paddingTop: 3,
+                                }}>
+                                {item.desc}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>}
+            /> : loading ? <ProgressView /> :
+                <RetryWhenErrorOccur data={shopData} onClick={() => {
+                    setShopData(undefined)
+                    callShopsApi(route.params.productId)
+                }} />
+            }
+        </View>)
 }
 
 
-const ToolbarWithSearch = ({ selectedSortBy, shopData, navigation, sortBy, onClick,  isShow = true }) => {
-    
+const ToolbarWithSearch = ({ selectedSortBy, shopData, navigation, sortBy, onClick, isShow = true }) => {
+
 
     return <Card
         style={{
@@ -290,7 +290,7 @@ const ToolbarWithSearch = ({ selectedSortBy, shopData, navigation, sortBy, onCli
             </View>
         </View>
 
-        { shopData && shopData.isSuccess && isShow ? <ShopView shopData={shopData} /> : null}
+        {shopData && shopData.isSuccess && isShow ? <ShopView shopData={shopData} /> : null}
         <FlatList
             style={{ marginTop: 6, marginStart: 15 }}
             showsHorizontalScrollIndicator={false}
@@ -302,12 +302,13 @@ const ToolbarWithSearch = ({ selectedSortBy, shopData, navigation, sortBy, onCli
             renderItem={({ item }) => {
                 return (
                     <View style={{ flex: 1, marginRight: 20 }}>
-                        <TouchableOpacity onPress={() => { 
-                       
-                        sortBy(item.id)
-                        }
-                }
-                >
+                        <TouchableOpacity onPress={() => {
+                            if (shopData && shopData.isSuccess) {
+                                sortBy(item.id)
+
+                            }
+                        }}
+                        >
                             <Text
                                 style={{
                                     fontWeight: '400',
@@ -325,7 +326,7 @@ const ToolbarWithSearch = ({ selectedSortBy, shopData, navigation, sortBy, onCli
 }
 
 
-const ShopView = ({shopData}) => {
+const ShopView = ({ shopData }) => {
 
 
     return <View
@@ -372,17 +373,17 @@ const ShopView = ({shopData}) => {
                 }}>
                 <Star style={{ marginEnd: 3.5 }} />
                 <Text style={[styles.textStyle, { fontSize: 11, marginEnd: 19.5 }]}>
-                {shopData.data.data.shopData.ratings}
+                    {shopData.data.data.shopData.ratings}
                 </Text>
 
                 <Cube style={{ marginEnd: 3.5 }} />
                 <Text style={[styles.textStyle, { fontSize: 11, marginEnd: 19.5 }]}>
-                {shopData.data.data.shopData.productShiped}
+                    {shopData.data.data.shopData.productShiped}
                 </Text>
 
                 <Profile style={{ marginEnd: 3.5 }} />
                 <Text style={[styles.textStyle, { fontSize: 11, marginEnd: 19.5 }]}>
-                {shopData.data.data.shopData.followers}
+                    {shopData.data.data.shopData.followers}
                 </Text>
             </View>
         </View>
