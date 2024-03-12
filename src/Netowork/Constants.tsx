@@ -1,8 +1,10 @@
 import { localEnum } from './ApiEnum';
 
 export const reloadData = {
-  profileRefresh: false
+  profileRefresh: false,
+  refreshBodyData: false
 }
+
 
 export const BASE_URL = (type = localEnum.development) => {
   if (type == localEnum.development) {

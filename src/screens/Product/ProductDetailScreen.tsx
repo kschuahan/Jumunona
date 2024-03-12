@@ -46,13 +46,14 @@ import Sizes from '../../../assets/Icons/Sizes.svg';
 import ColorIcon from '../../../assets/Icons/ColorIcon.svg';
 import { getAPICall, postAPICall } from '../../Netowork/Apis';
 import { CommonModal } from '../HomeScreen';
-import { ProductAPIs, ReviewApis } from '../../Netowork/Constants';
+import { BodyDataAPI, ProductAPIs, ReviewApis, reloadData } from '../../Netowork/Constants';
 import { ProgressView, RetryWhenErrorOccur } from '../../components/Dialogs';
 import { getCharachterstics } from '../../utils/DataManipulation';
 import moment from 'moment';
 import { ShareJumu } from '../../utils/Share';
 import { BackLogo } from '../../components/Header';
 import { fontFamily } from '../../utils/Fonts';
+import { useIsFocused } from '@react-navigation/native';
 
 const shoeImageURL = appIcons.shoeImageURL;
 const china = appIcons.china;
@@ -128,6 +129,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [guranty, setOnGauranty] = useState(false);
   const [data, setData] = useState<CommonModal>()
+  const [bodyData, setBodyData] = useState<CommonModal>()
   const [shopData, setShopData] = useState<CommonModal>()
   const [reviewData, setReviewData] = useState<CommonModal>()
 
@@ -145,11 +147,24 @@ export const ProductDetailScreen = ({ navigation, route }) => {
     data.data.data.discriptionPath.length > 0 ?
     data.data.data.discriptionPath : productImages)
   const [imagesType, setImageType] = useState(-1)
+  const isFocused = useIsFocused()
 
   useEffect(() => {
     callAPI()
+    getBodyData()
   }, [])
 
+
+
+  useEffect(() => {
+    if (reloadData.refreshBodyData) {
+      setBodyData(undefined)
+      reloadData.refreshBodyData = false
+      getBodyData()
+    }
+  }, [isFocused])
+
+  
   const addFav = () => {
     setFavLoading(true)
     postAPICall({ productId: [route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'] },
@@ -189,7 +204,6 @@ export const ProductDetailScreen = ({ navigation, route }) => {
     })
   }
 
-
   const callShopsApi = (id: string) => {
 
     getAPICall(ProductAPIs.getShopsProduct + `${id}`, (res: any) => {
@@ -197,6 +211,14 @@ export const ProductDetailScreen = ({ navigation, route }) => {
     })
   }
 
+
+  const getBodyData = () => {
+    getAPICall(BodyDataAPI.getBodyData,
+      (res: CommonModal) => {
+        setBodyData(res)
+      }
+    )
+  }
 
   const callReviewApi = (id: string) => {
     getAPICall(ReviewApis.getReviews + `${id}`, (res: any) => {
@@ -514,8 +536,10 @@ export const ProductDetailScreen = ({ navigation, route }) => {
         }}
       />
       <SelectProductSizeColorScreen
+      
         navigation={navigation}
         productDetail={data.data.data}
+        bodyData = {bodyData && bodyData.data && bodyData.data.data ? bodyData.data.data  : undefined}
         displayImage={images[0]}
         currentMode={sizeColorBottomSheetMode}
         isShow={showColorSize}

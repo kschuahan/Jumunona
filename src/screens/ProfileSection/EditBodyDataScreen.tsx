@@ -15,7 +15,7 @@ import { AddRoleBottomSheet } from './AddRoleBottomSheet';
 import LinearGradient from "react-native-linear-gradient";
 import { getAPICall, postAPICall } from "../../Netowork/Apis";
 import { RouteNames } from "../../utils/RouteNames";
-import { BodyDataAPI } from "../../Netowork/Constants";
+import { BodyDataAPI, reloadData } from "../../Netowork/Constants";
 import { CommonModal } from "../HomeScreen";
 import { CenterProgressView, ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs";
 import { refresh } from "@react-native-community/netinfo";
@@ -207,6 +207,7 @@ export const EditBodyDataScreen = ({ navigation, route }) => {
             (res: any) => {
                 setOverlayLoading(false)
                 if (res.isSuccess) {
+                    reloadData.refreshBodyData = true 
                     navigation.goBack()
                 } else {
                     Alert.alert("", res.data && res.data.message ?

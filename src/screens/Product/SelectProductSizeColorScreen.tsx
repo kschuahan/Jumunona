@@ -55,7 +55,8 @@ const SelectProductSizeColorScreen = ({ navigation,
   isShow = false,
   onClose,
   onGuranty,
-  onGoToCart }) => {
+  onGoToCart,
+bodyData = undefined }) => {
 
 
   useEffect(() => {
@@ -142,7 +143,7 @@ const SelectProductSizeColorScreen = ({ navigation,
             }} />
             <PhoneDataScreen onClick={() => {
               onClose()
-              navigation.navigate(RouteNames.bodyData)
+              navigation.navigate(RouteNames.bodyData, {})
             }} />
             <View
               style={{
@@ -154,6 +155,7 @@ const SelectProductSizeColorScreen = ({ navigation,
             {productDetail ?
               <ColorOptions
                 colorOptions={productDetail.attributes.attribute1}
+                bodyData={bodyData}
                 onSelectColor={(selectedColor: any) => {
                   addToCartModel.attr1_id = selectedColor._id
                 }}
@@ -164,6 +166,12 @@ const SelectProductSizeColorScreen = ({ navigation,
                 onSelectQuantity={(quantity: number) => {
                   addToCartModel.quantity = quantity
                 }}
+                onAddBodyData = {
+                  () => {
+                    navigation.navigate(RouteNames.editBodyData, {isUpdating: false})
+                    onClose()
+                  }
+                }
               />
               : null
             }
@@ -285,7 +293,7 @@ const PhoneDataScreen = ({ onClick }) => {
     </TouchableOpacity>
   );
 };
-const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuantity }) => {
+const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onSelectQuantity, onAddBodyData }) => {
   const [selectedColorIndex, setSelectColorIndex] = useState(-1)
 
 
@@ -318,6 +326,7 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
 
   }, [])
 
+  console.warn(bodyData)
 
   return (
     <View>
@@ -455,9 +464,9 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
           backgroundColor: colors.darkWhite,
         }}
       />
-
-      <SizeAndBuyingForView productDetail={colorOptions}
-        selectedColorIndex={selectedColorIndex} onSelectSize={onSelectSize} />
+      
+      <SizeAndBuyingForView productDetail={colorOptions} bodyData={bodyData}
+        selectedColorIndex={selectedColorIndex} onSelectSize={onSelectSize} onAddBodyData = {onAddBodyData}/>
       <View
         style={{
           height: 1,
@@ -474,9 +483,9 @@ const ColorOptions = ({ colorOptions, onSelectColor, onSelectSize, onSelectQuant
   );
 };
 
-const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize }) => {
+const SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedColorIndex, onSelectSize, onAddBodyData }) => {
   const [selectedSize, setSelecteSize] = useState(0);
-  const users = ['Vali', 'Name 2', '+ Add'];
+  const addBodyData = [ {_id: "-1", name: '+ Add'}];
   const sizes = ['24', '25', '26', '27', '28', '29', '30', '31', '32'];
   const [selectedItem, setSelecteItem] = useState('');
 
@@ -550,7 +559,7 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
       />
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
-        {(selectedSize == 1 ? productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2 : users).map((item: any, index: number) =>
+        {(selectedSize == 1 ? productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2 : [ ... bodyData ?? [], ...addBodyData]).map((item: any, index: number) =>
           <View style={{ margin: 8 }}>
             <TouchableOpacity
               onPress={() => {
@@ -559,7 +568,11 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
                   setSelecteItem(item._id)
                   //onSelectSize(item.attributeID)
                 } else {
-                  setSelecteItem(item)
+
+                  setSelecteItem(item._id)
+                  if (item._id == '-1') {
+                    onAddBodyData()
+                  }
                 }
               }}>
               <View
@@ -576,7 +589,7 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
                     styles.textStyle,
                     {
                       color:
-                        selectedItem == item
+                       selectedItem == item._id
                           ? colors.startOrange
                           : colors.black121212,
                       textAlign: 'center',
@@ -585,11 +598,11 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
                     },
                   ]}>
                   {' '}
-                  {selectedSize == 1 ? item.attr2Value : item}
+                  {selectedSize == 1 ? item.attr2Value : item.name}
                 </Text>
               </View>
             </TouchableOpacity>
-            {((selectedSize == 1 && selectedItem == item._id) || (selectedSize == 0 && selectedItem == item)) ? (
+            {(selectedItem == item._id) ? (
               <View
                 style={{
                   position: 'absolute',
@@ -614,7 +627,6 @@ const SizeAndBuyingForView = ({ productDetail, selectedColorIndex, onSelectSize 
 const QuanityView = ({ quantity, onClick }) => {
   const [quantiy, setQuantity] = useState(1);
 
-  console.warn(quantity)
   const maxQuantity = quantity;
   return (
     <View
