@@ -72,7 +72,8 @@ export const ProfileAPIs = {
   getprofile: modules.profile + 'getProfile',
   updateProfile: modules.profile + "updateProfile",
   deleteAccount: modules.profile + "delete",
-  changePhoneNumber: modules.profile + "changePhoneNumber"
+  changePhoneNumber: modules.profile + "changePhoneNumber",
+  getOrderCount: modules.profile + "getOrdersCount",
 }
 
 export const CartAPIs = {

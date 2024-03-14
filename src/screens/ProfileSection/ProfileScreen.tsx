@@ -43,6 +43,8 @@ const ProfileScreen = (props: any) => {
   const navigation = props.navigation
 
   const [data, setData] = useState<CommonModal>();
+  const [orderCount, setOrdersCount] = useState()
+
   const [loading, setLoading] = useState(false);
   const isFocused = useIsFocused()
 
@@ -53,12 +55,14 @@ const ProfileScreen = (props: any) => {
       reloadData.profileRefresh = false
       callAPI()
     }
+    getOrderCount()
   }, [isFocused])
 
 
 
   useEffect(() => {
     callAPI()
+    getOrderCount()
   }, [])
 
 
@@ -70,6 +74,14 @@ const ProfileScreen = (props: any) => {
     })
   }
 
+  const getOrderCount = () => {
+    getAPICall(ProfileAPIs.getOrderCount, (res: any) => {
+      if (res && res.data && res.data.data) {
+        setOrdersCount(res.data.data)
+      }
+    
+    })
+  }
 
   return (
     data && data.isSuccess ? <ScrollView
@@ -133,7 +145,7 @@ const ProfileScreen = (props: any) => {
           />
         </View>
 
-        <MyOrder navigation={navigation} />
+        <MyOrder navigation={navigation}  orderCounts = {orderCount}/>
         <View
           style={{
             backgroundColor: colors.white,
@@ -264,7 +276,7 @@ const ProfileScreen = (props: any) => {
   );
 };
 
-const MyOrder = ({ navigation }) => {
+const MyOrder = ({ navigation, orderCounts }) => {
   return (
     <View
       style={{
@@ -297,7 +309,7 @@ const MyOrder = ({ navigation }) => {
           <IconWithText
             SvgSource={NotPaid}
             end={12}
-            isVisible={true}
+            bedgeCount={orderCounts ? orderCounts.notPaid ?? 0 : 0}
             color={colors.balc111111}
             title={AppString.not_paid}
             onPress={() => {
@@ -310,7 +322,7 @@ const MyOrder = ({ navigation }) => {
           <IconWithText
             SvgSource={Treatment}
             end={12}
-            isVisible={true}
+            bedgeCount={orderCounts ? orderCounts.processing ?? 0 : 0}
             color={colors.balc111111}
             title={AppString.processing}
             onPress={() => {
@@ -326,7 +338,7 @@ const MyOrder = ({ navigation }) => {
             SvgSource={Sent}
             width={21}
             height={21}
-            isVisible={true}
+            bedgeCount={orderCounts ? orderCounts.sent ?? 0 : 0}
             color={colors.balc111111}
             title={AppString.sent}
             onPress={() => {
@@ -339,7 +351,7 @@ const MyOrder = ({ navigation }) => {
           <IconWithText
             SvgSource={Review}
             end={-2}
-            isVisible={true}
+            bedgeCount={orderCounts ? orderCounts.review ?? 0 : 0}
             color={colors.balc111111}
             title={AppString.review}
             onPress={() => {
@@ -494,7 +506,7 @@ const IconWithText = ({
   SvgSource = recycleIcon,
   width = 21,
   height = 21,
-  isVisible = false,
+  bedgeCount = 0,
   onPress,
   color = colors.black,
   end = 6,
@@ -505,7 +517,7 @@ const IconWithText = ({
       onPress={onPress}
       style={{ alignItems: 'center', gap: gap }}>
       <SvgSource height={height} width={width} color={color} />
-      {isVisible ? (
+      {bedgeCount > 0 ? (
         <LinearGradient
           colors={['#FF7600', '#FF7600']}
           start={{ x: 0.4, y: 0 }}
@@ -515,7 +527,6 @@ const IconWithText = ({
             borderRadius: 200,
             end: end,
             top: -5,
-
             justifyContent: 'center',
             alignItems: 'center',
 
@@ -531,7 +542,7 @@ const IconWithText = ({
                 fontFamily: fontFamily.regular,
               },
             ]}>
-            1
+            {bedgeCount}
           </Text>
         </LinearGradient>
       ) : null}

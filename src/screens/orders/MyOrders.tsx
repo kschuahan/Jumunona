@@ -80,14 +80,17 @@ export const MyOrderScreen = ({ navigation, route }) => {
     const [ordersList, setOrders] = useState<Array<any>>([]);
     const [pageData, setPageData] = useState<PagingData>()
     const [loading, setLoading] = useState(false)
+    const [searchText, setSearchText] = useState('')
+    let status = 'all'
     useEffect(() => {
         orders = type == 'Все' ? all : notAll
+        setupStatus(type)
         getOrders()
     }, [])
 
     const getOrders = (page = 1) => {
         setLoading(true)
-        getAPICall(OrderAPI.getOrders + page, (res: any) => {
+        getAPICall(OrderAPI.getOrders + page + `&search=${searchText}` + `&status=${status}`, (res: any) => {
             if (res.isSuccess) {
                 if (res.data && res.data.data) {
                     setOrders([...ordersList, ...res.data.data.orderDetails])
@@ -110,12 +113,40 @@ export const MyOrderScreen = ({ navigation, route }) => {
         }
     }
 
+    const setupStatus = (item: string) => {
+      
+        if(item == 'Все') {
+           status = 'all'
+        } else  if(item == AppString.not_paid) {
+            status = 'notPaid'
+        } else  if(item == AppString.sent) {
+            status =  'sent'
+        } else if(item == AppString.processing) {
+            status = 'processing'
+        } else if(item == AppString.review) {
+            status =  'review'
+        } 
+      
+    }
+
     return <View style={[styles.container, { padding: 0 }]}>
 
         <HeaderWithSearch navigation={navigation} type={type ? type : 'Все'} onClick={(item: string) => {
             orders = item == 'Все' ? all : notAll
+            setupStatus(item)
             setType(item)
-
+            setOrders([])
+            setPageData(undefined)
+            setData(undefined)
+            getOrders(1)
+            
+        }} onChangeText = {(text: string) => {
+            setTimeout(() => {
+                setOrders([])
+                setPageData(undefined)
+                setData(undefined)
+                getOrders(1)
+            }, 2000);
         }} />
         {data && data.isSuccess && data.data.data ?
             <ScrollView>
@@ -601,7 +632,7 @@ const getButtonType = (type: string) => {
 }
 
 
-const HeaderWithSearch = ({ navigation, type = 'Все', onClick }) => {
+const HeaderWithSearch = ({ navigation, type = 'Все', onClick, onChangeText }) => {
 
     const [select, setSelect] = useState(type)
 
@@ -622,7 +653,7 @@ const HeaderWithSearch = ({ navigation, type = 'Все', onClick }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <BackLogo navigation={navigation} />
-                <SearchView />
+                <SearchView onChangeText={onChangeText} />
             </View>
             <MenuLogo />
         </View>
@@ -651,8 +682,8 @@ const HeaderWithSearch = ({ navigation, type = 'Все', onClick }) => {
 }
 
 
-const SearchView = ({ placeholder = AppString.city_name }) => {
-    const [search, setSearch] = useState('');
+const SearchView = ({ placeholder = AppString.city_name, onChangeText }) => {
+   
 
     return (
         <View
@@ -672,15 +703,12 @@ const SearchView = ({ placeholder = AppString.city_name }) => {
                 color={colors.grey}
             />
             <TextInput
-                value={search}
                 placeholder={'Search'}
                 style={[style.searchTextInput, {
                     width: placeholder == AppString.city_name ? '80%' : '86%',
                 }]}
                 placeholderTextColor={colors.grey}
-                onChangeText={text => {
-                    setSearch(text);
-                }}
+                onChangeText={onChangeText}
             />
         </View>
     );

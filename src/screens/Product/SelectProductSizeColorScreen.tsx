@@ -42,7 +42,8 @@ var addToCartModel = {
   quantity: 1,
   attr1_id: "",
   attr2_id: "",
-  attr3_id: "",
+  bodyDataId: '',
+  attr3_id: ''
 }
 var hasSetSelectedColor = false
 var isCart = false;
@@ -68,6 +69,7 @@ bodyData = undefined }) => {
       attr1_id: "",
       attr2_id: "",
       attr3_id: "078bb017-6bff-4462-b833-dee4db0e7f37",
+      bodyDataId: "078bb017-6bff-4462-b833-dee4db0e7f37",
     }
     hasSetSelectedColor = true
     isCart = false
@@ -568,10 +570,12 @@ const SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedCol
                   setSelecteItem(item._id)
                   //onSelectSize(item.attributeID)
                 } else {
-
-                  setSelecteItem(item._id)
                   if (item._id == '-1') {
                     onAddBodyData()
+                    addToCartModel.bodyDataId = ''
+                  } else {
+                    setSelecteItem(item._id)
+                    addToCartModel.bodyDataId = item._id
                   }
                 }
               }}>

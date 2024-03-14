@@ -87,7 +87,9 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
         postAPICall({
             addressId: address._id,
             jCoinsUsed: 0,
-            cartIds: cartAPIModel
+            cartIds: cartAPIModel,
+            paymentMethod:"COD",
+            price: 15
         },
             OrderAPI.createOrder,
             true,
@@ -370,6 +372,7 @@ const CartItem = ({ item, check = false, onClick }) => {
         return item.attr2[index];
     }, [item]);
 
+    console.log(item)
     return (
         <View>
             <TouchableOpacity
@@ -499,7 +502,7 @@ const CartItem = ({ item, check = false, onClick }) => {
                         }}
                     >
                         <Text style={{ fontSize: 13, fontWeight: '400', color: colors.balc111111, textAlign: "right" }}>
-                            {item.byAirPrice}c.
+                            {item.priceByAir}c.
                         </Text>
                         <RadioButtons
                             isCheck={!deliveryByTrain}

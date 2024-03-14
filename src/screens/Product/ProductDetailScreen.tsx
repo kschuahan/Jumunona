@@ -157,6 +157,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
 
 
   useEffect(() => {
+    console.warn('reloadData.refreshBodyData', reloadData.refreshBodyData)
     if (reloadData.refreshBodyData) {
       setBodyData(undefined)
       reloadData.refreshBodyData = false
@@ -463,7 +464,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
       
         navigation={navigation}
         productDetail={data.data.data}
-        bodyData = {bodyData && bodyData.data && bodyData.data.data ? bodyData.data.data  : undefined}
+        bodyData = {bodyData && bodyData.data && bodyData.data.data ? bodyData.data.data  : []}
         displayImage={images[0]}
         currentMode={sizeColorBottomSheetMode}
         isShow={showColorSize}
