@@ -16,6 +16,11 @@ import EllipsisHorizontalNormal from '../../../assets/Icons/CircleGrey.svg';
 import LinearGradient from "react-native-linear-gradient";
 import { RouteNames } from "../../utils/RouteNames";
 import ChevronFwdOutline from '../../../assets/Icons/chevronForwardOutline.svg';
+import { useIsFocused } from "@react-navigation/native";
+import { getAPICall } from "../../Netowork/Apis";
+import { AddressAPIs } from "../../Netowork/Constants";
+import { CommonModal } from "../HomeScreen";
+import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs";
 
 interface AddreessModal {
     id: number;
@@ -52,62 +57,79 @@ export const addressList: AddreessModal[] = [
 ]
 export const ChangeAddressScreen = ({ navigation }) => {
 
+
+    const [refresh, setRefresh] = useState(false)
+    const [data, setData] = useState<CommonModal>()
+
+    const isFocused = useIsFocused();
+    const [loading, setLoading] = useState(false)
+    const [deletingAddressId, setDeletingAddressId] = useState('')
+    const [selectedAddress, setSelectedAddress] = useState<any>()
+    const [addressList, setAddressList] = useState()
+
     useEffect(() => {
+        setRefresh(!refresh)
+        getAddresses()
+    }, [isFocused])
 
-        navigation.setOptions({
-            headerTitle: AppString.changeAddress,
-            headerRight: () => (
-                <TouchableOpacity style={{ alignItems: 'center' }}>
-                    <EllipsisHorizontalIcon width={24} height={24} />
-                </TouchableOpacity>
-            ),
 
-            headerLeft: () => (
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                    style={{ alignItems: 'center' }}>
-                    <ChevronBackOutlineIcon width={15} height={15} />
-                </TouchableOpacity>
-            ),
-        });
-    });
+    const getAddresses = () => {
+        setLoading(true)
+        getAPICall(AddressAPIs.getAddresses, (res: any) => {
+            setData(res)
+            if (res?.isSuccess && res.data && res.data.data) {
+                // console.warn(res.data.data)
+                setAddressList(res.data.data ?? [])
+            }
+            setLoading(false)
+            //  setActionLoading(false)
+        })
+    }
+
     return (
         <View style={{
             flex: 1,
         }}>
 
+
             <CustomHeader navigation={navigation} title={AppString.changeAddress} />
-            <View
-                style={{
-                    flex: 1,
-                    paddingBottom: 72
-                }}
-            >
-                <ScrollView
+            {data?.isSuccess && data.data && data.data.data ?
+                <View
                     style={{
-
+                        flex: 1,
+                        paddingBottom: 72
                     }}
-                    showsVerticalScrollIndicator={false}>
-                    <CautionView />
-                    <SorceAddressView />
-                    <AddressesView onViewAllAddress={() => {
-                        navigation.navigate(RouteNames.myAddress)
-                    }} />
+                >
+                    <ScrollView
+                        style={{
 
-                </ScrollView>
-            </View>
+                        }}
+                        showsVerticalScrollIndicator={false}>
+                        <CautionView />
+                        <SorceAddressView data={addressList} />
+                        <AddressesView data={addressList} onViewAllAddress={() => {
+                            navigation.navigate(RouteNames.myAddress)
+                        }} />
+
+                    </ScrollView>
+                </View>
+                : loading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+                    setData(undefined)
+                    getAddresses()
+                }}
+                />}
             <CommonButton
                 text={AppString.confirm_changes}
                 startorange={colors.startOrange}
                 endColor={colors.endOrange}
-                onClick={() => { 
-                  navigation.goBack()  
+                onClick={() => {
+                    navigation.goBack()
                 }}
             />
 
         </View>
+
+
     )
 }
 
@@ -143,8 +165,8 @@ const CautionView = () => {
     )
 }
 
-const SorceAddressView = () => {
-    return (
+const SorceAddressView = ({ data }) => {
+    return (data && data.length > 0 ?
         <View
             style={{
                 margin: 15,
@@ -170,7 +192,7 @@ const SorceAddressView = () => {
 
                 }}
             >
-                Xiancun Street, Tianhe District,Guangzhou, Guangdong Building 550
+                {data[0].addressDetail}
             </Text>
             <Text
                 style={{
@@ -180,13 +202,14 @@ const SorceAddressView = () => {
 
                 }}
             >
-                Valijon 15050505000
+                Valijon {data[0].phone}
             </Text>
         </View>
+        : null
     )
 }
 
-const AddressesView = ({ onViewAllAddress }) => {
+const AddressesView = ({ data, onViewAllAddress }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     return (
         <View
@@ -213,13 +236,13 @@ const AddressesView = ({ onViewAllAddress }) => {
 
             <FlatList
                 showsVerticalScrollIndicator={false}
-                data={addressList}
+                data={data}
                 renderItem={({ item, index }) =>
                     <AddressInflate item={item} isSelected={index == selectedIndex} onClick={() => {
                         setSelectedIndex(index)
                     }} />}
             />
-            <TouchableOpacity
+            {data && data.length > 2 ? <TouchableOpacity
                 onPress={onViewAllAddress}
                 style={{
                     alignSelf: "center"
@@ -234,7 +257,7 @@ const AddressesView = ({ onViewAllAddress }) => {
 
                     }}
                 >
-                    {AppString.all_address}  
+                    {AppString.all_address}
                     <ChevronFwdOutline
                         color={colors.extraGrey}
                         width={10}
@@ -242,7 +265,7 @@ const AddressesView = ({ onViewAllAddress }) => {
                         style={{ marginTop: 4 }}
                     />
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> : null}
         </View>
     )
 }
@@ -265,7 +288,7 @@ const AddressInflate = ({ item, isSelected, onClick }) => {
                 }}>
                     <Text style={[styles.textStyle, {
                         color: colors.lightOrange,
-                        fontWeight: 'bold', fontSize: 17
+                        fontWeight: 'bold', fontSize: 17, textTransform: 'capitalize'
                     }]}>{item.name.charAt(0)}</Text>
                 </View>}
 
@@ -277,17 +300,17 @@ const AddressInflate = ({ item, isSelected, onClick }) => {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.textStyle, {
                             color: colors.black121212,
-                            fontWeight: 'bold', fontSize: 18
+                            fontWeight: 'bold', fontSize: 18, textTransform: 'capitalize'
                         }]}>{item.name}</Text>
                         <Text style={[styles.textStyle, {
                             color: '#8F8F8F',
                             fontSize: 13, marginStart: 4
-                        }]}>{item.mobile}</Text>
+                        }]}>{item.phone}</Text>
                     </View>
                     <Text style={[styles.textStyle, {
                         color: '#3F3F3F',
                         fontSize: 15
-                    }]}>{item.address}</Text>
+                    }]}>{item.addressDetail}</Text>
                 </View>
                 {
                     isSelected ? <CheckmarkCircle /> : <EllipsisHorizontalNormal />
@@ -336,7 +359,7 @@ const CommonButton = ({
                     <Text
                         style={[
                             styles.textStyle,
-                            { color: colors.white, fontWeight:'bold', fontSize: 14 },
+                            { color: colors.white, fontWeight: 'bold', fontSize: 14 },
                         ]}>
                         {text}
                     </Text>

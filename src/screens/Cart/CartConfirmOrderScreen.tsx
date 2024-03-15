@@ -22,6 +22,8 @@ import { getAPICall, postAPICall } from "../../Netowork/Apis";
 import { CartAPIs, OrderAPI } from "../../Netowork/Constants";
 import { CenterProgressView, ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs";
 import { PaymentWebView } from "./PaymentConfirmation";
+import { CommonModal } from "../HomeScreen";
+import { OkDialog } from "../../utils/Extentions";
 interface CartAPIModel {
     cartId: string,
     note: string,
@@ -59,7 +61,7 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                 cartIds: route.params.ids,
                 orderType: "CART"
             }
-        } else if (route.params.buyNowModel){
+        } else if (route.params.buyNowModel) {
             let buyNowModel = route.params.buyNowModel
             buyNowModel.orderType = "DIRECTBUY"
             requestModel = buyNowModel
@@ -73,7 +75,7 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                     let array = it.products.map((it: any) => {
                         return (
                             {
-                                cartId: it.cartId,
+                                cartId: it.cartId ? it.cartId : it._id,
                                 note: '',
                                 byAir: false,
                                 byTrain: true
@@ -96,7 +98,7 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
             addressId: address._id,
             jCoinsUsed: 0,
             cartIds: cartAPIModel,
-            paymentMethod:"COD",
+            paymentMethod: "COD",
             price: 15
         },
             OrderAPI.createOrder,
@@ -105,9 +107,11 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                 setLoading(false)
                 // console.warn(res.data.data)
                 if (res.isSuccess && res.data.data) {
-                    setHtmlData(res.data.data)
-                    setShowPaymentPopup(true)
-
+                    //  setHtmlData(res.data.data)
+                    //  setShowPaymentPopup(true)
+                    OkDialog("Your order is booked successfully", () => {
+                        navigation.goBack()
+                    })
                 } else {
                     Alert.alert(res.data)
                 }
@@ -122,7 +126,7 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                     style={{ paddingHorizontal: 6 }}
                 >
                     <AddressView data={address} onClick={() => {
-                        isSelectingAddress = true
+                        // isSelectingAddress = true
                         navigation.navigate(RouteNames.myAddress,
                             { isFromCart: true, onChangeAddress: onChangeAddress })
                     }} />
@@ -326,11 +330,12 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
                                 }}
                                 onPress={() => {
                                     addingNoteForCart = items.products.map((it: any) => it.cartId)
-                                    console.warn(addingNoteForCart)
+                                    // console.warn(addingNoteForCart)
                                     onShowNotePopup()
                                 }}
                             >
-                                <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, }} numberOfLines={2}>
+                                <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, }}
+                                    numberOfLines={2}>
                                     {AppString.no}
                                 </Text>
                                 <ChevronFwdOutline width={4} height={8} />
@@ -373,15 +378,15 @@ const CartItem = ({ item, check = false, onClick }) => {
 
     const selectedValue = useMemo(() => {
         if (item.attr1) {
-        const index = item.attr1.findIndex((element: any) => (element.isSelected))
-        return item.attr1[index];
+            const index = item.attr1.findIndex((element: any) => (element.isSelected))
+            return item.attr1[index];
         }
     }, [item]);
     const selectedSizes = useMemo(() => {
         if (item.attr2) {
-        const index = item.attr2.findIndex((element: any) => (element.isSelected))
-        return item.attr2[index];
-    }
+            const index = item.attr2.findIndex((element: any) => (element.isSelected))
+            return item.attr2[index];
+        }
     }, [item]);
 
     console.log(item)
@@ -438,7 +443,7 @@ const CartItem = ({ item, check = false, onClick }) => {
                                 {selectedSizes && selectedSizes.attributeValue ? selectedSizes.attributeValue : "M"}
                             </Text>
                             <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA }} numberOfLines={2}>
-                                x{item.quantity}
+                                x{item.quantity ? item.quantity : item.totalQuantity}
                             </Text>
                         </View>
                     </View>
@@ -482,7 +487,7 @@ const CartItem = ({ item, check = false, onClick }) => {
 
                     }}
                 >
-                    <View
+                    {item.byTrain ? <View
                         style={{
                             justifyContent: "flex-end",
                             flexDirection: "row",
@@ -497,15 +502,14 @@ const CartItem = ({ item, check = false, onClick }) => {
                             if (!deliveryByTrain) {
                                 setDeliveryByTrain(true)
                                 let index = cartAPIModel.findIndex(it => it.cartId == item.cartId)
-                                console.warn(index)
                                 if (index > -1) {
                                     cartAPIModel[index].byAir = false
                                     cartAPIModel[index].byTrain = true
                                 }
                             }
                         }} />
-                    </View>
-                    <View
+                    </View> : null}
+                    {item.byAir ? <View
                         style={{
                             justifyContent: "flex-end",
                             flexDirection: "row",
@@ -514,10 +518,10 @@ const CartItem = ({ item, check = false, onClick }) => {
                         }}
                     >
                         <Text style={{ fontSize: 13, fontWeight: '400', color: colors.balc111111, textAlign: "right" }}>
-                            {item.priceByAir}c.
+                            {item.priceByAir ? item.priceByAir : item.byAirPrice}c.
                         </Text>
                         <RadioButtons
-                            isCheck={!deliveryByTrain}
+                            isCheck={!deliveryByTrain || !item.byTrain}
                             onClick={() => {
                                 if (deliveryByTrain) {
                                     setDeliveryByTrain(false)
@@ -528,7 +532,7 @@ const CartItem = ({ item, check = false, onClick }) => {
                                     }
                                 }
                             }} />
-                    </View>
+                    </View> : null}
                 </View>
             </View>
         </View>

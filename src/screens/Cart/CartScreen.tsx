@@ -370,7 +370,7 @@ const CartScreen = ({ navigation }) => {
                       color: colors.lightOrange,
                       fontFamily: '400',
                       marginStart: 4
-                    }}>{sum}</Text>
+                    }}>{sum.toFixed(2)}</Text>
                 </Text>
                 <CommonButton
                   onClick={() => {

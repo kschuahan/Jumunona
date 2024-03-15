@@ -39,44 +39,44 @@ export const LogisticsScreen = ({ navigation, route }) => {
         getAPICall(ShippingAPI.getOrderLocation + orderId, (res: any) => {
             if (res.isSuccess) {
                 setData(res)
-                console.warn(res.data)
-            }   
+                console.log(res.data.data)
+            }
             setLoading(false)
         })
     }
-    
-    useEffect (() => {
+
+    useEffect(() => {
         getOrderStatus()
     }, [])
 
     return <View style={[styles.container, { padding: 0 }]}>
         <CustomHeader navigation={navigation} title={AppString.review} />
-        { data && data.data ? 
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <Feedback orderData = {route.params.orderData} orderAddress={data.data.orderAddress} showRating = {data.data.orderLocation.status == 'delivered'} onClick={() => {
-                navigation.navigate(RouteNames.review)
-            }} />
-            <TrackLogisstics trackSteps = {data.data.orderLocation.locationHistory}/>
-            <RelatedProducts onclick={() => {
-                navigation.navigate(RouteNames.product_detail)
-            }} />
-        </ScrollView> 
-        :
-         loading ?
-         <ProgressView /> 
-         : 
-         <RetryWhenErrorOccur
-          data={data} 
-          onClick={() => {
-            setData(undefined)
-            getOrderStatus()
-        }} 
-        /> }
+        {data && data.data ?
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <Feedback orderData={route.params.orderData} orderAddress={data.data.orderAddress} showRating={data.data.orderLocation.status == 'delivered'} onClick={() => {
+                    navigation.navigate(RouteNames.review)
+                }} />
+                <TrackLogisstics trackSteps={data.data.orderLocation.locationHistory} />
+                <RelatedProducts onclick={() => {
+                    navigation.navigate(RouteNames.product_detail)
+                }} />
+            </ScrollView>
+            :
+            loading ?
+                <ProgressView />
+                :
+                <RetryWhenErrorOccur
+                    data={data}
+                    onClick={() => {
+                        setData(undefined)
+                        getOrderStatus()
+                    }}
+                />}
     </View>
 }
 
 
-const TrackLogisstics = ({trackSteps = []}) => {
+const TrackLogisstics = ({ trackSteps }) => {
 
     const [show, setShow] = useState(false)
 
@@ -106,13 +106,24 @@ const TrackLogisstics = ({trackSteps = []}) => {
 
         </View>
         {
-            trackSteps.map((it) => 
-                <IconWithText  Icon={DeliveryGrey} title={it.location} subTitle={it.deliveryStatus} time={it.time}/>
+            trackSteps.firstArray.map((it: any) =>
+                <IconWithText Icon={DeliveryGrey} title={it.location} subTitle={it.deliveryStatus} time={it.time} />
             )
 
+
         }
-       
-{/* 
+        {
+            trackSteps.midArray.map((it: any) =>
+                <IconWithText Icon={DeliveryGrey} title={it.location} subTitle={it.deliveryStatus} time={it.time} />
+            )
+        }
+        {
+            trackSteps.lastArray.map((it: any) =>
+                <IconWithText Icon={DeliveryGrey} title={it.location} subTitle={it.deliveryStatus} time={it.time} />
+            )
+        }
+
+        {/* 
         <IconWithText Icon={ProfileIcon} title="Доставляется" time="02-27 15:44" lineHight={16} />
         {
             show ? <View>
@@ -185,7 +196,7 @@ const IconWithText = ({ isLine = true,
     </View>
 }
 
-const Feedback = ({orderData, orderAddress, showRating, onClick }) => {
+const Feedback = ({ orderData, orderAddress, showRating, onClick }) => {
 
     return <View style={{
         marginHorizontal: 6, marginTop: 5,
@@ -194,7 +205,7 @@ const Feedback = ({orderData, orderAddress, showRating, onClick }) => {
         <View style={{ flexDirection: 'row', alignItems: 'center', padding: 14 }}>
 
             <Image
-                source={{uri: orderData.productImage}}
+                source={{ uri: orderData.productImage }}
                 style={{ width: 24, height: 24, borderRadius: 2, }}
             />
             <Text style={[styles.textStyle,
@@ -208,7 +219,7 @@ const Feedback = ({orderData, orderAddress, showRating, onClick }) => {
             flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 16,
         }}>
 
-            { showRating ? <CheckIcon /> : <Truck /> }
+            {showRating ? <CheckIcon /> : <Truck />}
             <View style={{
                 paddingHorizontal: 6, width: '90%'
             }}>
@@ -217,24 +228,24 @@ const Feedback = ({orderData, orderAddress, showRating, onClick }) => {
                 { color: '#111111', fontSize: 16, marginStart: 10 }]}>{AppString.your_feedback_help_us_to_improve}</Text>
 
                 <Text style={[styles.textStyle,
-                { color: '#999999', fontSize: 13, marginStart: 10 }]}>{orderAddress.addressDetail + ', ' + orderAddress.city  + ', ' + orderAddress.state  + ', ' + orderAddress.phone}</Text>
+                { color: '#999999', fontSize: 13, marginStart: 10 }]}>{orderAddress.addressDetail + ', ' + orderAddress.city + ', ' + orderAddress.state + ', ' + orderAddress.phone}</Text>
 
                 {
-                 showRating ?  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6, gap: 10 }}>
-                    <RatingView rating={0} size={18} />
+                    showRating ? <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6, gap: 10 }}>
+                        <RatingView rating={0} size={18} />
 
 
-                    <TouchableOpacity onPress={onClick} style={{
-                        height: 18, width: 65, borderRadius: 3, backgroundColor: '#FDF1EC',
-                        justifyContent: 'center', alignItems: 'center'
-                    }}>
+                        <TouchableOpacity onPress={onClick} style={{
+                            height: 18, width: 65, borderRadius: 3, backgroundColor: '#FDF1EC',
+                            justifyContent: 'center', alignItems: 'center'
+                        }}>
 
-                        <Text style={[styles.textStyle,
-                        { color: colors.lightOrange, fontSize: 13 }]}>{AppString.estimate}</Text>
-                    </TouchableOpacity>
-                </View>
-                : null
-                 }
+                            <Text style={[styles.textStyle,
+                            { color: colors.lightOrange, fontSize: 13 }]}>{AppString.estimate}</Text>
+                        </TouchableOpacity>
+                    </View>
+                        : null
+                }
             </View>
 
 

@@ -334,7 +334,7 @@ const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onS
 
   }, [])
 
-  console.warn(bodyData)
+  // console.warn(bodyData)
 
   return (
     <View>
@@ -520,7 +520,7 @@ const SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedCol
         // const index = sizes.findIndex((element) => (element.attirbutedID ===
         //   filter[0].attirbutedID));
 
-        setSelecteItem(sizeIndex != -1 ? sizes[sizeIndex]._id : "")
+       // setSelecteItem(sizeIndex != -1 ? sizes[sizeIndex]._id : "")
 
         // console.log("Index", index);
       }

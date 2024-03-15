@@ -54,9 +54,9 @@ export const OrderDetailsScreen = ({ navigation, route }) => {
     return <View style={[styles.container, { padding: 0 }]}>
         <ToolbarHeader navigation={navigation} route={route} />
         {data && data?.isSuccess && data?.data.data ?
-            <View>
+            <View style={{ flex: 1 }}>
                 <FlatList
-
+                    style={{ flex: 1 }}
                     ListHeaderComponent={<View style={{ paddingHorizontal: 6 }}>
 
                         <AddressView address={address} type={route.params.status} onClick={() => {
@@ -80,20 +80,20 @@ export const OrderDetailsScreen = ({ navigation, route }) => {
                                 navigation.navigate(RouteNames.shopHomeScreen)
                             }
 
-                        } } type={type} navigation={undefined} />
+                        }} type={type} navigation={undefined} />
                     }
                     ListFooterComponent={
                         <View style={{ paddingHorizontal: 6 }}>
-                            <CoinWord  orderInfo={orderInfo}  />
+                            <CoinWord orderInfo={orderInfo} />
                             <InformationAboutOrder orderInfo={orderInfo} onClick={() => {
                                 navigation.push(RouteNames.chat_screen);
 
                             }} />
-                            <RelatedProducts
+                            {/* <RelatedProducts
                                 onclick={() => {
                                     navigation.push(RouteNames.product_detail);
                                 }}
-                            />
+                            /> */}
                         </View>
                     }
                 />
@@ -121,7 +121,7 @@ export const OrderDetailsScreen = ({ navigation, route }) => {
                     }}>
 
                     <FlatList
-                        data={type == 'Все' ? orders[route.params.index].actions : slectefListCal(type)}
+                        data={slectefListCal(products[0].status)}
                         showsHorizontalScrollIndicator={false}
                         horizontal
                         inverted
@@ -159,7 +159,7 @@ export const OrderDetailsScreen = ({ navigation, route }) => {
     </View>
 }
 
-const InformationAboutOrder = ({ orderInfo,  onClick }) => {
+const InformationAboutOrder = ({ orderInfo, onClick }) => {
 
     const [show, setShow] = useState(true)
 
@@ -187,12 +187,12 @@ const InformationAboutOrder = ({ orderInfo,  onClick }) => {
                 </TouchableOpacity>
             </View>
             <TitleWithSubTitle title={AppString.noteColon} subTitle={orderInfo.note} marginStart={25} />
-            <TitleWithSubTitle title={'J Coin'} subTitle = {'Заработайте ' + orderInfo.jCoinsEarned + ' coins'}  marginStart={70} />
+            <TitleWithSubTitle title={'J Coin'} subTitle={'Заработайте ' + orderInfo.jCoinsEarned + ' coins'} marginStart={70} />
             <TitleWithSubTitle title={'Заказано в:'} subTitle={orderInfo.orderDate ?? ''} marginStart={35} />
-            <TitleWithSubTitle title={'Оплачено в:'} subTitle="2022-02-02 15:43:02" marginStart={35} />
+            {/* <TitleWithSubTitle title={'Оплачено в:'} subTitle="2022-02-02 15:43:02" marginStart={35} /> */}
 
-            <TitleWithSubTitle title={'Доставлено в:'} subTitle="2022-02-02 15:43:02" marginStart={18} />
-
+            {<TitleWithSubTitle title={'Доставлено в:'} subTitle="2022-02-02 15:43:02" marginStart={18} />
+            }
 
         </View> : null}
 
@@ -219,7 +219,7 @@ const TitleWithSubTitle = ({ title = AppString.orderId, subTitle = '123123123132
     </View>
 }
 
-const CoinWord = ({orderInfo}) => {
+const CoinWord = ({ orderInfo }) => {
 
     return <View style={{
         alignItems: 'center',
@@ -273,7 +273,8 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                 }}
                 style={{
                     flexDirection: "row",
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    marginBottom: 6
                 }}
             >
                 <Image
@@ -312,90 +313,90 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
             scrollEnabled={false}
             style={{ marginTop: 10 }}
             renderItem={({ item, index }) => ( */}
-                <View>
-                    <TouchableOpacity
-                        disabled={true}
-                        onPress={onClick}
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            width: '100%'
-                        }}>
+        <View>
+            <TouchableOpacity
+                disabled={true}
+                onPress={onClick}
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    width: '100%'
+                }}>
 
-                        <Image
-                            source={{uri: items.productImage}}
-                            style={{ width: 90, height: 90, borderRadius: 11, }}
-                        />
+                <Image
+                    source={{ uri: items.productImage }}
+                    style={{ width: 90, height: 90, borderRadius: 11, }}
+                />
+                <View
+                    style={{
+                        justifyContent: 'space-between',
+                        height: 86,
+                        paddingStart: 9.5,
+                        width: "75%"
+                    }}>
+                    <View >
                         <View
                             style={{
-                                justifyContent: 'space-between',
-                                height: 86,
-                                paddingStart: 9.5,
-                                width: "75%"
-                            }}>
-                            <View >
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                        alignContent: "space-between"
-                                    }}
-                                >
-                                    <Text style={{ fontSize: 14, fontWeight: '600', color: colors.balc111111, width: "80%", maxHeight: 30 }} numberOfLines={1}>
-                                       {items.productName}
-                                    </Text>
-                                    <Text style={{ fontSize: 14, fontWeight: '400', color: colors.balc111111 }} numberOfLines={2}>
-                                        {items.unitPrice}
-                                    </Text>
-                                </View>
-
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                        alignContent: "space-between",
-                                        paddingTop: 6
-                                    }}
-                                >
-                                    <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, width: "80%", maxHeight: 30 }} numberOfLines={2}>
-                                       {items.attr1}, {items.attr2}
-                                    </Text>
-                                    <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA }} numberOfLines={2}>
-                                        x{items.quantity}
-                                    </Text>
-                                </View>
-                            </View>
-
-
-                        </View>
-                    </TouchableOpacity>
-
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignContent: "space-between",
-                            paddingTop: 2
-                        }}
-                    >
-                        <View />
-                        <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }} numberOfLines={1}>
-                            {type == 'Все' ? items.status : type}  <Text style={{ fontSize: 17, fontWeight: '400', color: colors.balc111111 }} numberOfLines={1}>
-                                {items.totalPrice}c.
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignContent: "space-between"
+                            }}
+                        >
+                            <Text style={{ fontSize: 14, fontWeight: '600', color: colors.balc111111, width: "80%", maxHeight: 30 }} numberOfLines={1}>
+                                {items.productName}
                             </Text>
-                        </Text>
+                            <Text style={{ fontSize: 14, fontWeight: '400', color: colors.balc111111 }} numberOfLines={2}>
+                                {items.unitPrice}
+                            </Text>
+                        </View>
+
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignContent: "space-between",
+                                paddingTop: 6
+                            }}
+                        >
+                            <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA, width: "80%", maxHeight: 30 }} numberOfLines={2}>
+                                {items.attr1}, {items.attr2}
+                            </Text>
+                            <Text style={{ fontSize: 14, fontWeight: '400', color: colors.grayAAAAAA }} numberOfLines={2}>
+                                x{items.quantity}
+                            </Text>
+                        </View>
                     </View>
 
 
-
                 </View>
+            </TouchableOpacity>
+
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignContent: "space-between",
+                    paddingTop: 2
+                }}
+            >
+                <View />
+                <Text style={{ fontSize: 14, fontWeight: 'bold', textTransform: 'capitalize', color: colors.black }} numberOfLines={1}>
+                    {items.status}  <Text style={{ fontSize: 17, fontWeight: '400', color: colors.balc111111 }} numberOfLines={1}>
+                        {items.totalPrice}c.
+                    </Text>
+                </Text>
+            </View>
+
+
+
+        </View>
 
 
     </TouchableOpacity >
 
 }
 
-const AddressView = ({address, type = '', onClick }) => {
+const AddressView = ({ address, type = '', onClick }) => {
     return (
         <TouchableOpacity disabled={true} onPress={onClick}
             style={{
@@ -427,7 +428,7 @@ const AddressView = ({address, type = '', onClick }) => {
                             color: colors.black14100D
                         }}
                     > {address.addressDetail} { }
-                       <Text
+                        <Text
                             style={{
                                 fontSize: 12,
                                 fontWeight: '400',

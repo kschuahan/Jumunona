@@ -157,7 +157,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
 
 
   useEffect(() => {
-    console.warn('reloadData.refreshBodyData', reloadData.refreshBodyData)
+    // console.warn('reloadData.refreshBodyData', reloadData.refreshBodyData)
     if (reloadData.refreshBodyData) {
       setBodyData(undefined)
       reloadData.refreshBodyData = false

@@ -113,19 +113,19 @@ export const MyOrderScreen = ({ navigation, route }) => {
     }
 
     const setupStatus = (item: string) => {
-      
-        if(item == 'Все') {
-           status = 'all'
-        } else  if(item == AppString.not_paid) {
+
+        if (item == 'Все') {
+            status = 'all'
+        } else if (item == AppString.not_paid) {
             status = 'notPaid'
-        } else  if(item == AppString.sent) {
-            status =  'sent'
-        } else if(item == AppString.processing) {
+        } else if (item == AppString.sent) {
+            status = 'sent'
+        } else if (item == AppString.processing) {
             status = 'processing'
-        } else if(item == AppString.review) {
-            status =  'review'
-        } 
-      
+        } else if (item == AppString.review) {
+            status = 'review'
+        }
+
     }
 
     return <View style={[styles.container, { padding: 0 }]}>
@@ -138,8 +138,8 @@ export const MyOrderScreen = ({ navigation, route }) => {
             setPageData(undefined)
             setData(undefined)
             getOrders(1)
-            
-        }} onChangeText = {(text: string) => {
+
+        }} onChangeText={(text: string) => {
             setTimeout(() => {
                 setOrders([])
                 setPageData(undefined)
@@ -443,7 +443,7 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
 
             <Text
                 style={{
-                    color: colors.lightOrange, fontSize: 17, fontWeight: '400',
+                    color: colors.lightOrange, fontSize: 17, fontWeight: '400', textTransform: 'capitalize'
                 }}
             >
                 {
@@ -463,7 +463,8 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    width: '100%'
+                    width: '100%',
+                    marginTop: 6
                 }}>
 
                 <Image
@@ -523,8 +524,14 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                 }}
             >
                 <View />
-                <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.black }} numberOfLines={1}>
-                    {type == 'Все' ? items.status : type}  <Text style={{ fontSize: 17, fontWeight: '400', color: colors.balc111111 }} numberOfLines={1}>
+                <Text style={{
+                    fontSize: 14, fontWeight: 'bold', textTransform: 'capitalize',
+                    color: colors.black
+                }} numberOfLines={1}>
+                    {items.status}  <Text style={{
+                        fontSize: 17, fontWeight: '400',
+                        color: colors.balc111111
+                    }} numberOfLines={1}>
                         {items.totalPrice}c.
                     </Text>
                 </Text>
@@ -576,7 +583,7 @@ export const buttonsClick = (navigation, type, orderData) => {
     console.warn("type", type);
 
     if (type == AppString.pay) {
-        navigation.push(RouteNames.cartConfirmOrder)
+        // navigation.push(RouteNames.cartConfirmOrder)
     } else if (type == AppString.changeAddress) {
         navigation.push(RouteNames.changeAddress)
     }
@@ -584,7 +591,7 @@ export const buttonsClick = (navigation, type, orderData) => {
         // navigation.push(RouteNames.cartConfirmOrder)
     }
     else if (type == AppString.logistics) {
-        navigation.push(RouteNames.logistic_screen, {orderData: orderData})
+        navigation.push(RouteNames.logistic_screen, { orderData: orderData })
 
     }
     else if (type == AppString.return_money) {
@@ -612,7 +619,7 @@ export const slectefListCal = (type: string) => {
     } else if (type == AppString.review || type == 'review') {
         return review
     }
-    else if (type == AppString.sent  || type == 'delivered') {
+    else if (type == AppString.sent || type == 'delivered') {
         return sent
     } else {
         return notPaid
@@ -682,7 +689,7 @@ const HeaderWithSearch = ({ navigation, type = 'Все', onClick, onChangeText }
 
 
 const SearchView = ({ placeholder = AppString.city_name, onChangeText }) => {
-   
+
 
     return (
         <View

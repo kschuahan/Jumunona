@@ -32,15 +32,16 @@ export const ConfirmationDialog = (onClick,
 
 
 export const OkDialog = (
-    message = "Are you sure you want to delete product from cart") => {
+    message = "Are you sure you want to delete product from cart", onClick = () => { }) => {
 
     Alert.alert(
-        AppString.alert,
+        "",
         message,
         [
             {
                 text: 'OK',
                 onPress: () => {
+                    onClick()
                 },
             },
         ],
