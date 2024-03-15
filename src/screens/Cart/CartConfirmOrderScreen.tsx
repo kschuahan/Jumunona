@@ -53,10 +53,18 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
     const callAPI = () => {
         setMainLoading(true)
         const ids = route.params.ids
-
-        postAPICall({
-            cartIds: ids,
-        }, OrderAPI.placingOrder, true, (res: any) => {
+        let requestModel = {}
+        if (route.params.ids) {
+            requestModel = {
+                cartIds: route.params.ids,
+                orderType: "CART"
+            }
+        } else if (route.params.buyNowModel){
+            let buyNowModel = route.params.buyNowModel
+            buyNowModel.orderType = "DIRECTBUY"
+            requestModel = buyNowModel
+        }
+        postAPICall(requestModel, OrderAPI.placingOrder, true, (res: any) => {
 
             if (res.data && res.data.data && res.data.data.cartDetails) {
                 setAddress(res.data.data.defaultAddress ? res.data.data.defaultAddress : undefined)
@@ -364,12 +372,16 @@ const CartItem = ({ item, check = false, onClick }) => {
     const [deliveryByTrain, setDeliveryByTrain] = useState(true)
 
     const selectedValue = useMemo(() => {
+        if (item.attr1) {
         const index = item.attr1.findIndex((element: any) => (element.isSelected))
         return item.attr1[index];
+        }
     }, [item]);
     const selectedSizes = useMemo(() => {
+        if (item.attr2) {
         const index = item.attr2.findIndex((element: any) => (element.isSelected))
         return item.attr2[index];
+    }
     }, [item]);
 
     console.log(item)

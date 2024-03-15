@@ -32,7 +32,8 @@ export const modules = {
   address: '/app/address/',
   order: '/app/orders/',
   bodyData: '/app/bodyData/',
-  chatModule: 'admin/chat/'
+  chatModule: 'admin/chat/',
+  shipping: '/app/shipping/'
 }
 
 export const otherModule = {
@@ -120,4 +121,8 @@ export const BodyDataAPI = {
 export const ChatAPI = {
   getChatMessages: modules.chatModule + 'getChats?',
   getAllUsers: '/app/users/getUsers?page='
+}
+
+export const ShippingAPI = {
+  getOrderLocation: modules.shipping + 'getOrderLocation?orderId='
 }

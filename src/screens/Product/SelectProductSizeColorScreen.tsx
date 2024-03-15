@@ -198,7 +198,10 @@ bodyData = undefined }) => {
                     onGoToCart()
                   }}
                 />
-                <CommonButton text={AppString.buy} onClick={() => { }} />
+                <CommonButton text={AppString.buy} onClick={() => { 
+                  navigation.navigate(RouteNames.cartConfirmOrder, {buyNowModel: addToCartModel})
+                  onClose()
+                }} />
               </View>
               : currentMode == ColorSizeBottomSheetMode.addToCart ?
 
@@ -218,7 +221,10 @@ bodyData = undefined }) => {
                   marginVertical: 35,
                   paddingBottom: 20,
                 }}>
-                  <CommonButton text={AppString.buy} onClick={() => { }} />
+                  <CommonButton text={AppString.buy} onClick={() => { 
+                      navigation.navigate(RouteNames.cartConfirmOrder, {buyNowModel: addToCartModel})
+                      onClose()
+                  }} />
                 </View>
 
           }
@@ -568,7 +574,7 @@ const SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedCol
                 if (selectedSize == 1 && hasSetSelectedColor) {
                   sizeIndex = index
                   setSelecteItem(item._id)
-                  //onSelectSize(item.attributeID)
+                  onSelectSize(item._id)
                 } else {
                   if (item._id == '-1') {
                     onAddBodyData()
@@ -736,7 +742,7 @@ const CommonButton = ({
         else if (validate()) {
           addToCart()
         }
-      } else {
+      } else if (validate()) {
         onClick()
       }
     }} style={{ flex: 0.5 }} disabled={loading}>

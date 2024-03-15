@@ -14,34 +14,69 @@ import MobileIcon from '../../../assets/Icons/MobileIcon.svg';
 import DropDownGrey from '../../../assets/Icons/DropDownGrey.svg';
 import DeliveryGrey from '../../../assets/Icons/DeliveryGrey.svg';
 import DeliveryOrnage from '../../../assets/Icons/DeliveryIcon.svg';
+import Truck from '../../../assets/Icons/Truck.svg';
+
 import FileIcons from '../../../assets/Icons/FilesIcons.svg';
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { RelatedProducts } from "./MyOrders"
 import { RouteNames } from "../../utils/RouteNames"
+import { getAPICall } from "../../Netowork/Apis"
+import { ShippingAPI } from "../../Netowork/Constants"
+import { CommonModal } from "../HomeScreen"
+import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
 
 
 
-export const LogisticsScreen = ({ navigation }) => {
+export const LogisticsScreen = ({ navigation, route }) => {
+
+    const [orderId, setOrderId] = useState(route.params ? route.params.orderData._id : "65f2959feaf9a3515d36a033")
+    const [data, setData] = useState<CommonModal>()
+    const [loading, setLoading] = useState(false)
+
+    const getOrderStatus = () => {
+        setLoading(true)
+        getAPICall(ShippingAPI.getOrderLocation + orderId, (res: any) => {
+            if (res.isSuccess) {
+                setData(res)
+                console.warn(res.data)
+            }   
+            setLoading(false)
+        })
+    }
+    
+    useEffect (() => {
+        getOrderStatus()
+    }, [])
 
     return <View style={[styles.container, { padding: 0 }]}>
         <CustomHeader navigation={navigation} title={AppString.review} />
-
+        { data && data.data ? 
         <ScrollView showsVerticalScrollIndicator={false}>
-            <Feedback onClick={() => {
+            <Feedback orderData = {route.params.orderData} orderAddress={data.data.orderAddress} showRating = {data.data.orderLocation.status == 'delivered'} onClick={() => {
                 navigation.navigate(RouteNames.review)
             }} />
-            <TrackLogisstics />
+            <TrackLogisstics trackSteps = {data.data.orderLocation.locationHistory}/>
             <RelatedProducts onclick={() => {
                 navigation.navigate(RouteNames.product_detail)
             }} />
-        </ScrollView>
-
+        </ScrollView> 
+        :
+         loading ?
+         <ProgressView /> 
+         : 
+         <RetryWhenErrorOccur
+          data={data} 
+          onClick={() => {
+            setData(undefined)
+            getOrderStatus()
+        }} 
+        /> }
     </View>
 }
 
 
-const TrackLogisstics = () => {
+const TrackLogisstics = ({trackSteps = []}) => {
 
     const [show, setShow] = useState(false)
 
@@ -70,8 +105,14 @@ const TrackLogisstics = () => {
 
 
         </View>
-        <IconWithText subTitle="Будем рады вам снова!" />
+        {
+            trackSteps.map((it) => 
+                <IconWithText  Icon={DeliveryGrey} title={it.location} subTitle={it.deliveryStatus} time={it.time}/>
+            )
 
+        }
+       
+{/* 
         <IconWithText Icon={ProfileIcon} title="Доставляется" time="02-27 15:44" lineHight={16} />
         {
             show ? <View>
@@ -96,7 +137,7 @@ const TrackLogisstics = () => {
                 <IconWithText Icon={FileIcons} title="Заказ размещен"
                     time="02-27 15:44" lineHight={22} isLine={false} />
             </View> : null
-        }
+        } */}
 
         <TouchableOpacity onPress={() => {
             setShow(!show)
@@ -144,7 +185,7 @@ const IconWithText = ({ isLine = true,
     </View>
 }
 
-const Feedback = ({ onClick }) => {
+const Feedback = ({orderData, orderAddress, showRating, onClick }) => {
 
     return <View style={{
         marginHorizontal: 6, marginTop: 5,
@@ -153,7 +194,7 @@ const Feedback = ({ onClick }) => {
         <View style={{ flexDirection: 'row', alignItems: 'center', padding: 14 }}>
 
             <Image
-                source={appIcons.shoeImageURL}
+                source={{uri: orderData.productImage}}
                 style={{ width: 24, height: 24, borderRadius: 2, }}
             />
             <Text style={[styles.textStyle,
@@ -167,7 +208,7 @@ const Feedback = ({ onClick }) => {
             flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 16,
         }}>
 
-            <CheckIcon />
+            { showRating ? <CheckIcon /> : <Truck /> }
             <View style={{
                 paddingHorizontal: 6, width: '90%'
             }}>
@@ -176,9 +217,10 @@ const Feedback = ({ onClick }) => {
                 { color: '#111111', fontSize: 16, marginStart: 10 }]}>{AppString.your_feedback_help_us_to_improve}</Text>
 
                 <Text style={[styles.textStyle,
-                { color: '#999999', fontSize: 13, marginStart: 10 }]}>{'Tianhe District, Guangzhou City, Guangdong Province Room 5450, District G1, Building 88, 186****1015'}</Text>
+                { color: '#999999', fontSize: 13, marginStart: 10 }]}>{orderAddress.addressDetail + ', ' + orderAddress.city  + ', ' + orderAddress.state  + ', ' + orderAddress.phone}</Text>
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6, gap: 10 }}>
+                {
+                 showRating ?  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6, gap: 10 }}>
                     <RatingView rating={0} size={18} />
 
 
@@ -191,6 +233,8 @@ const Feedback = ({ onClick }) => {
                         { color: colors.lightOrange, fontSize: 13 }]}>{AppString.estimate}</Text>
                     </TouchableOpacity>
                 </View>
+                : null
+                 }
             </View>
 
 

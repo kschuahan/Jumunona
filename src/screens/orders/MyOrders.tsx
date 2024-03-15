@@ -37,7 +37,6 @@ const treatment = [AppString.return_money, AppString.changeAddress]
 const review = [AppString.recieved, AppString.logistics]
 const sent = [AppString.estimate, AppString.logistics, AppString.delete]
 
-
 const all = [
     {
         price: 120,
@@ -395,7 +394,7 @@ export const RelatedProducts = ({ data, onclick }) => {
 
 const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) => {
     const [select, setSelect] = useState(0)
-
+    console.warn(items)
     return <TouchableOpacity onPress={() => {
         onClick(2)
     }} style={{
@@ -540,7 +539,7 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
         {/* /> */}
 
         <FlatList
-            data={type == 'Все' ? items.actions : slectefListCal(type)}
+            data={slectefListCal(items.status)}
             style={{ marginTop: 10 }}
             showsHorizontalScrollIndicator={false}
             horizontal
@@ -557,7 +556,7 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
                         paddingHorizontal: 10,
                         borderColor: select === index ? colors.lightOrange : colors.greyCCCCCC
                     }} onPress={() => {
-                        buttonsClick(navigation, item)
+                        buttonsClick(navigation, item, items)
                     }
                     }>
                     <Text
@@ -573,8 +572,8 @@ const OrderItem = ({ items, onClick, type = AppString.processing, navigation }) 
 
 }
 
-export const buttonsClick = (navigation, type) => {
-    console.log(type);
+export const buttonsClick = (navigation, type, orderData) => {
+    console.warn("type", type);
 
     if (type == AppString.pay) {
         navigation.push(RouteNames.cartConfirmOrder)
@@ -585,7 +584,7 @@ export const buttonsClick = (navigation, type) => {
         // navigation.push(RouteNames.cartConfirmOrder)
     }
     else if (type == AppString.logistics) {
-        navigation.push(RouteNames.logistic_screen)
+        navigation.push(RouteNames.logistic_screen, {orderData: orderData})
 
     }
     else if (type == AppString.return_money) {
@@ -608,12 +607,12 @@ export const buttonsClick = (navigation, type) => {
 }
 
 export const slectefListCal = (type: string) => {
-    if (type == AppString.processing) {
+    if (type == AppString.processing || type == 'processing') {
         return treatment
-    } else if (type == AppString.review) {
+    } else if (type == AppString.review || type == 'review') {
         return review
     }
-    else if (type == AppString.sent) {
+    else if (type == AppString.sent  || type == 'delivered') {
         return sent
     } else {
         return notPaid
