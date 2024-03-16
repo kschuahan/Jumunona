@@ -7,7 +7,7 @@ let socket: Socket = null;
 
 const getSocket = async () => {
 
-    socket = await io(BASE_URL(localEnum.development))
+    socket = await io(BASE_URL(localEnum.production))
     socket.on('connect', () => {
         console.warn(socket.id) // true
 

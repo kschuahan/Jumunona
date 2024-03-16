@@ -7,7 +7,7 @@ var instance: axios = null
 export const axiosClient = (authToken: string | undefined) => {
     if (instance == null) {
         instance = axios.create({
-            baseURL: BASE_URL(localEnum.development)
+            baseURL: BASE_URL(localEnum.production)
         });
     }
     instance.defaults.headers.post['Content-Type'] = 'application/json';

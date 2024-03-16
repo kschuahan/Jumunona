@@ -19,7 +19,7 @@ export const BASE_URL = (type = localEnum.development) => {
 export const apiUrls = {
   development: 'https://jumunona.onrender.com',
   testing: '',
-  production: '',
+  production: 'http://3.69.231.148:3000',
 };
 
 export const modules = {
@@ -106,7 +106,7 @@ export const OrderAPI = {
   placingOrder: modules.order + 'placingOrder',
   createOrder: modules.order + 'createOrders',
   getOrders: modules.order + 'getOrders?page=',
-  getOrderDetail:  modules.order + 'getOrderDetails?orderId=',
+  getOrderDetail: modules.order + 'getOrderDetails?orderId=',
 }
 
 export const BodyDataAPI = {
