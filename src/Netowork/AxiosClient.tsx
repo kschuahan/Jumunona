@@ -1,9 +1,8 @@
-import axios from "axios";
-import { BASE_URL } from "./Constants";
-import { localEnum } from "./ApiEnum";
+import axios from 'axios';
+import {BASE_URL} from './Constants';
+import {localEnum} from './ApiEnum';
 
-
-var instance: axios = null
+var instance: axios = null;
 export const axiosClient = (authToken: string | undefined) => {
     if (instance == null) {
         instance = axios.create({
@@ -15,8 +14,7 @@ export const axiosClient = (authToken: string | undefined) => {
         instance.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
     }
 
+  console.log('headers------------', instance.defaults.headers);
 
-    console.log("headers------------", instance.defaults.headers)
-
-    return instance
-}
+  return instance;
+};
