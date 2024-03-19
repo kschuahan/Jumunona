@@ -29,6 +29,7 @@ import { RouteNames } from '../../utils/RouteNames';
 import { ActivityIndicatorView } from '../../components/Dialogs';
 import { postAPICall } from '../../Netowork/Apis';
 import { CartAPIs } from '../../Netowork/Constants';
+import { max } from 'moment';
 
 export enum ColorSizeBottomSheetMode {
   selectSize = "selectSize",
@@ -162,7 +163,6 @@ bodyData = undefined }) => {
                   addToCartModel.attr1_id = selectedColor._id
                 }}
                 onSelectSize={(id: string) => {
-
                   addToCartModel.attr2_id = id
                 }}
                 onSelectQuantity={(quantity: number) => {
@@ -303,31 +303,23 @@ const PhoneDataScreen = ({ onClick }) => {
 };
 const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onSelectQuantity, onAddBodyData }) => {
   const [selectedColorIndex, setSelectColorIndex] = useState(-1)
-
+  const [maxQuantity, setMaxQuanity] = useState(1)
 
   useEffect(() => {
 
     const filter = colorOptions
-    // .filter(it => it.quantity > 0)
-    // console.log("Filter" + filter);
 
     if (filter && filter.length > 0) {
       const cartItemIndex = filter.findIndex((element) => (element.isItemInCart));
       console.log("cartItemIndex", cartItemIndex);
 
       if (cartItemIndex != -1) {
-        // const index = filter.findIndex((element) => (element.attirbutedID ===
-        //   filter[cartItemIndex].attirbutedID));
+      
         addToCartModel.attr1_id = filter[cartItemIndex]._id
-
         setSelectColorIndex(cartItemIndex)
         console.log("cartItemIndexIndex", cartItemIndex);
       } else {
-        // const index = colorOptions.data.findIndex((element) => (element.attirbutedID ===
-        //   filter[0].attirbutedID));
         setSelectColorIndex(colorIndex != -1 ? colorIndex : -1)
-
-        // console.log("Index", index);
       }
 
     }
@@ -345,12 +337,6 @@ const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onS
       <FlatList
         data={colorOptions}
         renderItem={({ item, index }) => {
-
-          // if (!hasSetSelectedColor && item.quantity > 0) {
-          //   // console.warn("fsdfdsf", selectedColorIndex)
-          //   setSelectColorIndex(index)
-          //   hasSetSelectedColor = true
-          // }
           return (
             <View style={{ marginEnd: 8 }}>
               <View style={{ height: 13 }} />
@@ -474,7 +460,16 @@ const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onS
       />
       
       <SizeAndBuyingForView productDetail={colorOptions} bodyData={bodyData}
-        selectedColorIndex={selectedColorIndex} onSelectSize={onSelectSize} onAddBodyData = {onAddBodyData}/>
+        selectedColorIndex={selectedColorIndex} onSelectSize={(id: string) => {
+       
+          let index = (colorOptions[selectedColorIndex].attr2 ?? []).findIndex((it) => 
+             it._id == id
+          )
+          if (index > -1) {
+            setMaxQuanity(colorOptions[selectedColorIndex].attr2[index].sku_quantity)
+          }
+          onSelectSize(id)
+        }} onAddBodyData = {onAddBodyData}/>
       <View
         style={{
           height: 1,
@@ -485,46 +480,32 @@ const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onS
       <QuanityView onClick={(qunatity: number) => {
         onSelectQuantity(qunatity)
       }}
-        quantity={colorOptions[selectedColorIndex != -1 ? selectedColorIndex : 0].sku_quantity} />
+        quantity={maxQuantity} />
 
     </View>
   );
 };
 
-const SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedColorIndex, onSelectSize, onAddBodyData }) => {
+const 
+SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedColorIndex, onSelectSize, onAddBodyData }) => {
   const [selectedSize, setSelecteSize] = useState(0);
   const addBodyData = [ {_id: "-1", name: '+ Add'}];
-  const sizes = ['24', '25', '26', '27', '28', '29', '30', '31', '32'];
   const [selectedItem, setSelecteItem] = useState('');
 
-  useEffect(() => {
-    onSelectSize(selectedItem)
-  }, [selectedItem])
+  // useEffect(() => {
+  //   onSelectSize(selectedItem)
+  // }, [selectedItem])
 
   useEffect(() => {
     const sizes = productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2
-    // const filter = sizes.filter(it => it.quantity > 0)
-    // console.log("Filter" + filter);
-    // console.warn("sizes", sizes)
     if (sizes && sizes.length > 0) {
       const cartItemIndex = sizes.findIndex((element) => (element.isItemInCart));
-      //   console.log("Index", cartItemIndex);
 
       if (cartItemIndex != -1) {
-        // const index = sizes.findIndex((element) => (element.attirbutedID ===
-        //   sizes[cartItemIndex].attirbutedID));
-        addToCartModel.attr2_id = sizes[cartItemIndex]._id
+   
         setSelecteItem(sizes[cartItemIndex]._id)
         console.log("Index", cartItemIndex);
-      } else {
-        // const index = sizes.findIndex((element) => (element.attirbutedID ===
-        //   filter[0].attirbutedID));
-
-       // setSelecteItem(sizeIndex != -1 ? sizes[sizeIndex]._id : "")
-
-        // console.log("Index", index);
-      }
-
+      } 
     }
 
   }, [selectedSize])
@@ -540,6 +521,11 @@ const SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedCol
           <TouchableOpacity
             onPress={() => {
               setSelecteSize(index);
+              if (index == 1) {
+                setSelecteItem(addToCartModel.attr2_id)
+              } else {
+                setSelecteItem(addToCartModel.bodyDataId)
+              }
             }}>
             <View style={{ flexDirection: 'column', justifyContent: 'flex-start', marginEnd: 20 }}>
               <Text
@@ -627,17 +613,19 @@ const SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedCol
             ) : null}
           </View>)}
       </View>
-      {/* )}
-        showsVerticalScrollIndicator={false}
-      /> */}
     </View>
   );
 };
 
 const QuanityView = ({ quantity, onClick }) => {
   const [quantiy, setQuantity] = useState(1);
-
   const maxQuantity = quantity;
+  useEffect(() => {
+    
+    if (quantity > maxQuantity) {
+      quantity = 1
+    }
+  }, [maxQuantity])
   return (
     <View
       style={{
@@ -678,6 +666,7 @@ const QuanityView = ({ quantity, onClick }) => {
         </Text>
         <TouchableOpacity
           onPress={() => {
+            console.warn(maxQuantity)
             if (quantiy < maxQuantity) {
               setQuantity(quantiy + 1);
               onClick(quantiy)

@@ -81,11 +81,16 @@ const CartScreen = ({ navigation }) => {
 
   // getting cart produccts
   const getCart = () => {
+    if (! data && data.isSuccess && data.data.data) {
     setMainLoading(true)
+    } else {
+      setLoading(true)
+    }
     getAPICall(CartAPIs.getCart, (res: any) => {
       cartIds = []
       setData(res)
       setMainLoading(false)
+      setLoading(false)
     }
     )
   }
@@ -159,10 +164,10 @@ const CartScreen = ({ navigation }) => {
   }
 
   return (
-
-    data && data.isSuccess && data.data.data ?
+    <View style = {{flex: 1}}>
+       { data && data.isSuccess && data.data.data ?
+    
       <GestureHandlerRootView style={{ flex: 1 }}>
-
         <View style={style.container}>
           <View style={style.header}>
             <View
@@ -217,6 +222,8 @@ const CartScreen = ({ navigation }) => {
 
                   <CartProduct
                     onQunatityUpdate={() => {
+                      setLoading(true)
+                      console.warn("rwerewrewr")
                       getCart()
                       // setRefresh(!refresh)
                     }}
@@ -429,13 +436,16 @@ const CartScreen = ({ navigation }) => {
 
 
         </View>
-        <CenterProgressView isShow={loading} />
-
+      
       </GestureHandlerRootView>
       : mainLoading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
         setData(undefined)
         getCart()
       }} />
+
+    }
+      <CenterProgressView isShow={loading} />
+      </View>
   );
 };
 
@@ -731,10 +741,10 @@ const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, on
 
   const updateQuantity = (item: any, quantity: number) => {
     const quntItem = { cartId: item.cartId, quantity: quantity, attr1_Id: '' }
-
+    setLoading(true)
     postAPICall(quntItem, CartAPIs.updateCart, true, (res: any) => {
-      //setLoading(false)
-      // OkDialog(res.data && res.data.message ? res.data.message : res.data.toString())
+      setLoading(false)
+    
       if (res.isSuccess) {
         onQunatityUpdate(item)
       }
@@ -763,7 +773,9 @@ const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, on
     </View>
   }
 
-  return <TouchableOpacity disabled={true}
+  return (
+  <View>
+  <TouchableOpacity disabled={true}
     onPress={onClick}
     style={{
       backgroundColor: colors.white,
@@ -843,6 +855,8 @@ const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, on
     />
 
   </TouchableOpacity>
+  <CenterProgressView isShow={ loading} />
+  </View>)
 }
 
 
@@ -946,7 +960,7 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity, shouldRef
             onPress={() => {
               if (count != 1) {
                 onUpdateQuantity(count - 1)
-                setCount(count - 1)
+               // setCount(count - 1)
               }
             }}
             style={{
@@ -969,7 +983,7 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity, shouldRef
             onPress={() => {
               if (item.totalQunatity > 0) {
                 onUpdateQuantity(count + 1)
-                setCount(count + 1)
+              //  setCount(count + 1)
               }
             }}
             style={{
