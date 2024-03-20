@@ -23,6 +23,7 @@ import { getAPICall } from "../../Netowork/Apis"
 import { OrderAPI } from "../../Netowork/Constants"
 import { CommonModal } from "../HomeScreen"
 import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
+import Clipboard from "@react-native-clipboard/clipboard"
 
 
 export const OrderDetailsScreen = ({ navigation, route }) => {
@@ -138,7 +139,7 @@ export const OrderDetailsScreen = ({ navigation, route }) => {
                                     borderColor: 0 === index ? colors.lightOrange : colors.greyCCCCCC
                                 }} onPress={() => {
                                     //setSelect(index)}
-                                    buttonsClick(navigation, item)
+                                    buttonsClick(navigation, item, products[0])
                                 }}>
                                 <Text
                                     style={{
@@ -182,7 +183,9 @@ const InformationAboutOrder = ({ orderInfo, onClick }) => {
         {show ? <View style={{ width: '100%' }}>
             <View style={{ justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
                 <TitleWithSubTitle subTitle={orderInfo.orderId} />
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    Clipboard.setString(orderInfo.orderId);
+                }}>
                     <CopyIcon />
                 </TouchableOpacity>
             </View>

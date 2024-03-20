@@ -165,7 +165,7 @@ export const ProductDetailScreen = ({ navigation, route }) => {
     }
   }, [isFocused])
 
-  
+
   const addFav = () => {
     setFavLoading(true)
     postAPICall({ productId: [route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7'] },
@@ -394,7 +394,12 @@ export const ProductDetailScreen = ({ navigation, route }) => {
           elevation: 10
         }}>
         <View style={{ flexDirection: 'row', marginStart: 36, gap: 40 }}>
-          <TouchableOpacity style={{ alignItems: 'center', marginStart: -20 }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(RouteNames.shopHomeScreen, { productId: route.params && route.params.id ? route.params.id : '65b8c1a8b03f0c815947e1e7' })
+
+            }}
+            style={{ alignItems: 'center', marginStart: -20 }}>
             <ArchiveOutline width={24} height={24} color={colors.startOrange} />
           </TouchableOpacity>
 
@@ -461,10 +466,10 @@ export const ProductDetailScreen = ({ navigation, route }) => {
         }}
       />
       <SelectProductSizeColorScreen
-      
+
         navigation={navigation}
         productDetail={data.data.data}
-        bodyData = {bodyData && bodyData.data && bodyData.data.data ? bodyData.data.data  : []}
+        bodyData={bodyData && bodyData.data && bodyData.data.data ? bodyData.data.data : []}
         displayImage={images[0]}
         currentMode={sizeColorBottomSheetMode}
         isShow={showColorSize}

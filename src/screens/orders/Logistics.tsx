@@ -1,4 +1,4 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native"
+import { Image, Linking, ScrollView, Text, TouchableOpacity, View } from "react-native"
 import { CustomHeader } from "../../components/Header"
 import { styles } from "../../utils/AppStyles"
 import { AppString } from "../../utils/AppStrings"
@@ -15,6 +15,7 @@ import DropDownGrey from '../../../assets/Icons/DropDownGrey.svg';
 import DeliveryGrey from '../../../assets/Icons/DeliveryGrey.svg';
 import DeliveryOrnage from '../../../assets/Icons/DeliveryIcon.svg';
 import Truck from '../../../assets/Icons/Truck.svg';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import FileIcons from '../../../assets/Icons/FilesIcons.svg';
 
@@ -25,6 +26,7 @@ import { getAPICall } from "../../Netowork/Apis"
 import { ShippingAPI } from "../../Netowork/Constants"
 import { CommonModal } from "../HomeScreen"
 import { ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
+import moment from "moment"
 
 
 
@@ -53,11 +55,12 @@ export const LogisticsScreen = ({ navigation, route }) => {
         <CustomHeader navigation={navigation} title={AppString.review} />
         {data && data.data ?
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Feedback orderData={route.params.orderData} orderAddress={data.data.orderAddress} showRating={data.data.orderLocation.status == 'delivered'} onClick={() => {
-                    navigation.navigate(RouteNames.review)
-                }} />
-                <TrackLogisstics trackSteps={data.data.orderLocation.locationHistory} />
-                <RelatedProducts onclick={() => {
+                <Feedback orderData={route.params.orderData} orderAddress={data.data.orderAddress}
+                    showRating={data.data.orderLocation.status == 'received'} onClick={() => {
+                        navigation.navigate(RouteNames.review, { id: orderId })
+                    }} />
+                <TrackLogisstics trackSteps={data.data.orderLocation} />
+                <RelatedProducts navigation={navigation} data={data.data.recommendedProduct} onclick={() => {
                     navigation.navigate(RouteNames.product_detail)
                 }} />
             </ScrollView>
@@ -91,14 +94,20 @@ const TrackLogisstics = ({ trackSteps }) => {
         }}>
 
             <Text style={[styles.textStyle,
-            { color: '#393939', fontSize: 14, marginStart: 10 }]}>{'YT865422354862'}</Text>
+            { color: '#393939', fontSize: 14, marginStart: 10 }]}>{trackSteps._id}</Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 20, paddingEnd: 10 }}>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    Clipboard.setString(trackSteps._id);
+
+                }}>
                     <CopyGrey />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                    Linking.openURL('tel:535');
+
+                }}>
                     <MobileIcon />
                 </TouchableOpacity>
             </View>
@@ -106,12 +115,23 @@ const TrackLogisstics = ({ trackSteps }) => {
 
         </View>
         {
-            trackSteps.firstArray.map((it: any) =>
-                <IconWithText Icon={DeliveryGrey} title={it.location} subTitle={it.deliveryStatus} time={it.time} />
+            trackSteps.locationHistory.map((it: any, index: number) => {
+                console.log(it);
+
+                return <IconWithText Icon={getIcon(it.enumStatus)} title={it.location == '' ? it.enumStatus : it.location}
+                    subTitle={it.deliveryStatus} time={it.time} isLine={index != trackSteps.length - 1} />
+            }
             )
 
 
         }
+        {<Text style={[styles.textStyle, {
+            color: colors.lightOrange, marginTop: 10,
+            fontSize: 13, textAlign: 'center', textTransform:'capitalize'
+        }]}>
+            {parseInt(trackSteps.estimatedTime.toString()) > 0 ? `Estimate arrival in ${trackSteps.estimatedTime} days` : "Your order is delivered"}
+        </Text>}
+        {/*
         {
             trackSteps.midArray.map((it: any) =>
                 <IconWithText Icon={DeliveryGrey} title={it.location} subTitle={it.deliveryStatus} time={it.time} />
@@ -121,7 +141,7 @@ const TrackLogisstics = ({ trackSteps }) => {
             trackSteps.lastArray.map((it: any) =>
                 <IconWithText Icon={DeliveryGrey} title={it.location} subTitle={it.deliveryStatus} time={it.time} />
             )
-        }
+        } */}
 
         {/* 
         <IconWithText Icon={ProfileIcon} title="Доставляется" time="02-27 15:44" lineHight={16} />
@@ -150,7 +170,7 @@ const TrackLogisstics = ({ trackSteps }) => {
             </View> : null
         } */}
 
-        <TouchableOpacity onPress={() => {
+        {/* <TouchableOpacity onPress={() => {
             setShow(!show)
         }} style={{
             alignSelf: 'center', flexDirection: 'row', gap: 4,
@@ -160,9 +180,23 @@ const TrackLogisstics = ({ trackSteps }) => {
                 {AppString.all_information}
             </Text>
             <DropDownGrey height={8} width={8} style={{ marginTop: 4 }} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
     </View>
 
+}
+
+
+function getIcon(status: string) {
+    switch (status) {
+        case "Processing":
+            return FileIcons
+        case "Received":
+            return CheckOrange
+        case "Shipped":
+            return Truck
+        default:
+            return DeliveryGrey
+    }
 }
 
 
@@ -172,6 +206,10 @@ const IconWithText = ({ isLine = true,
     time = '02-29 15:44',
     Icon = CheckOrange,
     lineHight = 35, isIcon = true, matop = undefined }) => {
+
+    const dateMoment = moment(time);
+    const formattedDate = dateMoment.format('DD-MM'); // Format for date
+    const formattedTime = dateMoment.format('HH:mm'); // Format for time
 
     return <View style={{ flexDirection: 'row', marginTop: !isIcon ? -10 : matop }}>
 
@@ -188,7 +226,7 @@ const IconWithText = ({ isLine = true,
         <View style={{ marginStart: 8 }}>
             <Text style={[styles.textStyle,
             { color: '#3F3F3F', fontSize: isIcon ? 15 : 13, fontWeight: isIcon ? 'bold' : '400' }]}>{title}  <Text style={[styles.textStyle,
-            { color: '#3F3F3F', fontSize: 13, }]}>{time}</Text>
+            { color: '#3F3F3F', fontSize: 13, }]}>{formattedDate} {formattedTime}</Text>
             </Text>
             <Text style={[styles.textStyle,
             { color: '#3F3F3F', fontSize: 13, }]}>{subTitle}</Text>

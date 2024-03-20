@@ -27,8 +27,10 @@ import { OkDialog } from "../../utils/Extentions";
 interface CartAPIModel {
     cartId: string,
     note: string,
-    byAir: boolean
-    byTrain: Boolean
+    byAir: boolean,
+    byTrain: boolean,
+    price: any,
+    airPrice?: number
 }
 let cartAPIModel: CartAPIModel[] = []
 let addingNoteForCart: any[] = []
@@ -43,6 +45,8 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
     const [address, setAddress] = useState<any>()
     const [showPaymentPopup, setShowPaymentPopup] = useState(false)
     const [htmlData, setHtmlData] = useState('')
+    const [sum, setSum] = useState(0)
+
     useEffect(() => {
         callAPI()
     }, [])
@@ -54,6 +58,7 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
     // getting cart produccts
     const callAPI = () => {
         setMainLoading(true)
+        cartAPIModel = []
         const ids = route.params.ids
         let requestModel = {}
         if (route.params.ids) {
@@ -78,7 +83,8 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                                 cartId: it.cartId ? it.cartId : it._id,
                                 note: '',
                                 byAir: false,
-                                byTrain: true
+                                byTrain: true,
+                                price: it.price
                             }
                         )
                     }
@@ -118,6 +124,15 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
             })
     }
 
+    const onPriceUpdate = () => {
+
+        const airPrices = cartAPIModel.reduce((accumulator: any, currentValue: any) =>
+            accumulator + currentValue.airPrice, 0)
+        console.log(airPrices, cartAPIModel);
+
+        setSum(airPrices)
+    }
+
     return (
         <View style={[styles.container, { padding: 0 }]}>
             <CustomHeader navigation={navigation} title={AppString.placing_an_order} />
@@ -140,7 +155,12 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                         renderItem={({ item, index }) => {
                             return (
 
-                                <CartItemListView check={item.radioButtonItem}
+                                <CartItemListView
+                                    onPriceUpdate={
+                                        onPriceUpdate
+                                    }
+
+                                    check={item.radioButtonItem}
                                     navigation={navigation}
                                     items={item} onClick={() => {
                                         navigation.push(RouteNames.product_detail)
@@ -152,10 +172,10 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
                             );
                         }}
                     />
-                    <TotalView data={data.data.data} />
+                    <TotalView sum={sum} data={data.data.data} />
                     <PaymentGateway />
                 </ScrollView>
-                <BottomView data={data.data.data} onCreateOrder={() => {
+                <BottomView sum={sum} data={data.data.data} onCreateOrder={() => {
                     createOrder()
                 }} />
             </View> : mainLoading ? <ProgressView /> :
@@ -253,7 +273,7 @@ const AddressView = ({ data, onClick }) => {
     )
 }
 
-const CartItemListView = ({ check = true, items, navigation, onClick, onShowNotePopup }) => {
+const CartItemListView = ({ check = true, items, navigation, onClick, onShowNotePopup, onPriceUpdate }) => {
 
     const totalPrice = useMemo(() => {
         const price = items.products.reduce((accumulator: any, currentValue: any) => accumulator + (currentValue.price), 0)
@@ -298,7 +318,7 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
             <FlatList
                 data={items.products}
                 renderItem={({ item, index }) => (
-                    <CartItem check={items.radioButtonStore} item={item} onClick={onClick} />
+                    <CartItem onPriceUpdate={onPriceUpdate} check={items.radioButtonStore} item={item} onClick={onClick} />
                 )}
 
                 ListFooterComponent={
@@ -372,7 +392,8 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
     )
 }
 
-const CartItem = ({ item, check = false, onClick }) => {
+const CartItem = ({ item, check = false, onClick, onPriceUpdate
+}) => {
 
     const [deliveryByTrain, setDeliveryByTrain] = useState(true)
 
@@ -487,7 +508,7 @@ const CartItem = ({ item, check = false, onClick }) => {
 
                     }}
                 >
-                    {item.byTrain ? <View
+                    <View
                         style={{
                             justifyContent: "flex-end",
                             flexDirection: "row",
@@ -505,11 +526,14 @@ const CartItem = ({ item, check = false, onClick }) => {
                                 if (index > -1) {
                                     cartAPIModel[index].byAir = false
                                     cartAPIModel[index].byTrain = true
+                                    cartAPIModel[index].airPrice = 0
+                                    onPriceUpdate()
+
                                 }
                             }
                         }} />
-                    </View> : null}
-                    {item.byAir ? <View
+                    </View>
+                    <View
                         style={{
                             justifyContent: "flex-end",
                             flexDirection: "row",
@@ -529,10 +553,12 @@ const CartItem = ({ item, check = false, onClick }) => {
                                     if (index > -1) {
                                         cartAPIModel[index].byAir = true
                                         cartAPIModel[index].byTrain = false
+                                        cartAPIModel[index].airPrice = item.priceByAir ? item.priceByAir : item.byAirPrice
+                                        onPriceUpdate()
                                     }
                                 }
                             }} />
-                    </View> : null}
+                    </View>
                 </View>
             </View>
         </View>
@@ -547,7 +573,7 @@ const RadioButtons = ({ isCheck = false, onClick }) => {
     )}</TouchableOpacity> : null
 }
 
-const TotalView = ({ data }) => {
+const TotalView = ({sum, data }) => {
     return (
         <View
             style={{
@@ -608,7 +634,7 @@ const TotalView = ({ data }) => {
                 </Text>
             </View>
             {/* Delivery Charges */}
-            <View
+            {/* <View
                 style={{
                     flexDirection: "row",
                     width: "100%",
@@ -631,7 +657,7 @@ const TotalView = ({ data }) => {
                 }}>
                     15с.
                 </Text>
-            </View>
+            </View> */}
 
             {/*  J Coin View */}
             <View
@@ -700,7 +726,7 @@ const TotalView = ({ data }) => {
                     fontWeight: 'bold',
                     color: colors.balc111111,
                 }}>
-                    {data.priceDetails.totalPrice + 15}с.
+                    {data.priceDetails.totalPrice + sum}с.
                 </Text>
             </View>
         </View>
@@ -741,7 +767,7 @@ const PaymentGateway = () => {
     )
 }
 
-const BottomView = ({ data, onCreateOrder }) => {
+const BottomView = ({ data, onCreateOrder, sum = 0 }) => {
     return <View
         style={{
             backgroundColor: colors.white,
@@ -772,7 +798,7 @@ const BottomView = ({ data, onCreateOrder }) => {
                     fontFamily: '400',
                     marginHorizontal: 4
                 }}>
-                {AppString.total + ` ${data.priceDetails.totalProductQuantity}шт:`}
+                {AppString.total + ` ${data.cartDetails.length}шт:`}
             </Text>
             <Text
                 style={{
@@ -781,7 +807,7 @@ const BottomView = ({ data, onCreateOrder }) => {
                     fontWeight: 'bold',
                     marginStart: 4,
                     marginBottom: 6
-                }}>{data.priceDetails.totalPrice + 15}<Text
+                }}>{data.priceDetails.totalPrice +  sum}<Text
                     style={{
                         fontSize: 24,
                         color: colors.lightOrange,

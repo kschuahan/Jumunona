@@ -81,12 +81,14 @@ const CartScreen = ({ navigation }) => {
 
   // getting cart produccts
   const getCart = () => {
-    if (! data && data.isSuccess && data.data.data) {
+    // if (data && data.isSuccess && data.data.data) {
     setMainLoading(true)
-    } else {
-      setLoading(true)
-    }
+    // } else {
+    //   setLoading(true)
+    // }
     getAPICall(CartAPIs.getCart, (res: any) => {
+      console.log(res.data.data.cartDetails[0]);
+
       cartIds = []
       setData(res)
       setMainLoading(false)
@@ -106,7 +108,7 @@ const CartScreen = ({ navigation }) => {
           true,
           (res: any) => {
             getCart()
-            setLoading(false)
+            //setLoading(false)
             selectedProductIds = []
             selectedShopIds = []
 
@@ -136,7 +138,7 @@ const CartScreen = ({ navigation }) => {
             getCart()
             selectedProductIds = []
             selectedShopIds = []
-            setLoading(false)
+            // setLoading(false)
             setIsEditable(false)
             setIsCheck(false)
           }
@@ -164,88 +166,88 @@ const CartScreen = ({ navigation }) => {
   }
 
   return (
-    <View style = {{flex: 1}}>
-       { data && data.isSuccess && data.data.data ?
-    
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <View style={style.container}>
-          <View style={style.header}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'stretch',
-                marginTop: 24,
-                marginLeft: 16,
-              }}>
-              <Text style={{ fontSize: 21, fontWeight: 'bold', color: colors.black }}>Cart</Text>
-              <Text
+    <View style={{ flex: 1 }}>
+      {data && data.isSuccess && data.data.data ?
+
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <View style={style.container}>
+            <View style={style.header}>
+              <View
                 style={{
-                  marginTop: 3,
-                  marginLeft: 4.5,
-                  fontSize: 14,
-                  fontWeight: '500',
-                  color: '#14100D',
+                  flexDirection: 'row',
+                  alignItems: 'stretch',
+                  marginTop: 24,
+                  marginLeft: 16,
                 }}>
-                {`(${data.data.data.cartDetails.length})`}
-              </Text>
+                <Text style={{ fontSize: 21, fontWeight: 'bold', color: colors.black }}>Cart</Text>
+                <Text
+                  style={{
+                    marginTop: 3,
+                    marginLeft: 4.5,
+                    fontSize: 14,
+                    fontWeight: '500',
+                    color: '#14100D',
+                  }}>
+                  {`(${data.data.data.cartDetails.length})`}
+                </Text>
+              </View>
+              {data.data.data.cartDetails.length > 0 ? <TouchableOpacity
+                onPress={() => {
+                  setIsEditable(!isEditable)
+                }}
+                style={{
+                  marginTop: 28, paddingEnd: 12
+                }}>
+                {isEditable ? <OrangeCheck /> : <EditIcon height={16} width={16} style={{ borderColor: '#666666' }} />}
+              </TouchableOpacity> : null}
             </View>
-            {data.data.data.cartDetails.length > 0 ? <TouchableOpacity
-              onPress={() => {
-                setIsEditable(!isEditable)
-              }}
-              style={{
-                marginTop: 28, paddingEnd: 12
-              }}>
-              {isEditable ? <OrangeCheck /> : <EditIcon height={16} width={16} style={{ borderColor: '#666666' }} />}
-            </TouchableOpacity> : null}
-          </View>
-          <ScrollView
-            style={style.scrollView}
-            showsVerticalScrollIndicator={false}>
-            <FlatList
-              style={{ marginHorizontal: 6 }}
-              data={data.data.data.cartDetails}
-              scrollEnabled={false}
-              ListEmptyComponent={
-                <Text style={[styles.textStyle, {
-                  color: colors.lightOrange,
-                  paddingVertical: 100,
-                  fontSize: 16, fontWeight: 'bold', textAlign: 'center'
-                }]}>No prodcut in cart</Text>
-              }
-              keyExtractor={item => {
-                return item.shopId;
-              }}
-              numColumns={1}
-              renderItem={({ item, index }) => {
-                return (
+            <ScrollView
+              style={style.scrollView}
+              showsVerticalScrollIndicator={false}>
+              <FlatList
+                style={{ marginHorizontal: 6 }}
+                data={data.data.data.cartDetails}
+                scrollEnabled={false}
+                ListEmptyComponent={
+                  <Text style={[styles.textStyle, {
+                    color: colors.lightOrange,
+                    paddingVertical: 100,
+                    fontSize: 16, fontWeight: 'bold', textAlign: 'center'
+                  }]}>No prodcut in cart</Text>
+                }
+                keyExtractor={item => {
+                  return item.shopId;
+                }}
+                numColumns={1}
+                renderItem={({ item, index }) => {
+                  return (
 
-                  <CartProduct
-                    onQunatityUpdate={() => {
-                      setLoading(true)
-                      console.warn("rwerewrewr")
-                      getCart()
-                      // setRefresh(!refresh)
-                    }}
-                    onDelete={(item: any) => {
-                      getCart()
-                    }}
-                    check={false}
-                    navigation={navigation}
-                    shopData={item} onClick={() => {
-                      navigation.push(RouteNames.product_detail, {
-                        id: item._id,
-                      })
-                    }}
-                    shouldRefresh={() => {
-                      setRefresh(!refresh)
-                    }}
-                  />
-                );
-              }}
-            />
+                    <CartProduct
+                      onQunatityUpdate={() => {
+                        setLoading(true)
+                        console.warn("rwerewrewr")
+                        getCart()
+                        // setRefresh(!refresh)
+                      }}
+                      onDelete={(item: any) => {
+                        getCart()
+                      }}
+                      check={false}
+                      navigation={navigation}
+                      shopData={item} onClick={(item:any) => {
+                        navigation.push(RouteNames.product_detail, {
+                          id: item._id,
+                        })
+                      }}
+                      shouldRefresh={() => {
+                        setRefresh(!refresh)
+                      }}
+                    />
+                  );
+                }}
+              />
 
-            {/* {<FlatList
+              {/* {<FlatList
               style={{
                 backgroundColor: colors.white,
                 borderRadius: 13,
@@ -280,16 +282,16 @@ const CartScreen = ({ navigation }) => {
                 }} />
               }
             />} */}
-            {data && data.data && data.data.data ? <RelatedProducts
-              data={data.data.data.recommendedProducts}
-              onclick={(item: any) => {
-                navigation.push(RouteNames.product_detail, {
-                  id: item._id,
-                });
-              }}
-            /> : null}
-          </ScrollView>
-          {/* <View
+              {data && data.data && data.data.data ? <RelatedProducts
+                data={data.data.data.recommendedProducts}
+                onclick={(item: any) => {
+                  navigation.push(RouteNames.product_detail, {
+                    id: item._id,
+                  });
+                }}
+              /> : null}
+            </ScrollView>
+            {/* <View
         style={{
           position: 'absolute',
           bottom: 0,
@@ -301,151 +303,151 @@ const CartScreen = ({ navigation }) => {
         }}
       /> */}
 
-          {sum > 0 && data && data.data && data.data.data && data.data.data.cartDetails ? <View
-            style={{
-              backgroundColor: colors.white,
-              position: 'absolute',
-              bottom: 0,
-              width: Dimensions.get('window').width,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingVertical: 12,
-              paddingHorizontal: 10,
-              flexDirection: 'row',
-              borderTopStartRadius: 13,
-              borderTopEndRadius: 13,
-              shadowColor: colors.black,
-              elevation: 10,
-              borderBlockColor: colors.whiteF7F7F7,
-              borderBottomWidth: 1,
-              marginBottom: -9,
-              paddingBottom: 18
-            }}>
+            {sum > 0 && data && data.data && data.data.data && data.data.data.cartDetails ? <View
+              style={{
+                backgroundColor: colors.white,
+                position: 'absolute',
+                bottom: 0,
+                width: Dimensions.get('window').width,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingVertical: 12,
+                paddingHorizontal: 10,
+                flexDirection: 'row',
+                borderTopStartRadius: 13,
+                borderTopEndRadius: 13,
+                shadowColor: colors.black,
+                elevation: 10,
+                borderBlockColor: colors.whiteF7F7F7,
+                borderBottomWidth: 1,
+                marginBottom: -9,
+                paddingBottom: 18
+              }}>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <RadioButtons isCheck={isCheck} onClick={() => {
-
-                if (isCheck) {
-                  selectedShopIds = []
-                  selectedProductIds = []
-                } else {
-                  selectedShopIds = []
-                  selectedProductIds = []
-                  selectedShopIds = data.data.data.cartDetails.map(it => it.shopId)
-                  data.data.data.cartDetails.forEach(element => {
-                    console.log("element", element)
-                    let productIdsArr = element.products.map(product => product.cartId)
-                    // console.warn(selectedProductIds) 
-                    selectedProductIds = [...selectedProductIds, ...productIdsArr]
-                  });
-                }
-                setIsCheck(!isCheck)
-
-              }} />
-              <Text
-                style={{
-                  fontSize: 13,
-                  color: '#8b8b8b',
-                  fontFamily: '400',
-                  marginStart: 4
-                }}>
-                {AppString.choose_all}
-              </Text>
-            </View>
-
-            {!isEditable ?
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <RadioButtons isCheck={isCheck} onClick={() => {
+
+                  if (isCheck) {
+                    selectedShopIds = []
+                    selectedProductIds = []
+                  } else {
+                    selectedShopIds = []
+                    selectedProductIds = []
+                    selectedShopIds = data.data.data.cartDetails.map(it => it.shopId)
+                    data.data.data.cartDetails.forEach(element => {
+                      console.log("element", element)
+                      let productIdsArr = element.products.map(product => product.cartId)
+                      // console.warn(selectedProductIds) 
+                      selectedProductIds = [...selectedProductIds, ...productIdsArr]
+                    });
+                  }
+                  setIsCheck(!isCheck)
+
+                }} />
                 <Text
                   style={{
                     fontSize: 13,
-                    color: '#333',
+                    color: '#8b8b8b',
                     fontFamily: '400',
                     marginStart: 4
                   }}>
-                  {AppString.total + ':'}
+                  {AppString.choose_all}
                 </Text>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: colors.lightOrange,
-                    fontFamily: '400',
-                    marginHorizontal: 4
-                  }}>
-                  {AppString.currency_symbol}<Text
+              </View>
+
+              {!isEditable ?
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                  <Text
                     style={{
-                      fontSize: 22,
-                      color: colors.lightOrange,
+                      fontSize: 13,
+                      color: '#333',
                       fontFamily: '400',
                       marginStart: 4
-                    }}>{sum.toFixed(2)}</Text>
-                </Text>
-                <CommonButton
-                  onClick={() => {
-                    // setBuyShow(true);
-                    //navigation.navigate(RouteNames.myAddress)
-                    let ids = []
-                    if (selectedProductIds.length > 0) {
-                      ids = selectedProductIds
-                    } else {
-                      ids = cartIds
-                    }
-                    console.warn(ids);
-                    
-                    navigation.navigate(RouteNames.cartConfirmOrder, { ids: ids })
-                  }}
-                />
-              </View>
-              :
-              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 7 }}>
-                <TouchableOpacity onPress={() => {
-                  moveToFav()
-                }} style={{
-                  borderRadius: 20,
-                  height: 40,
-                  paddingHorizontal: 12,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderColor: colors.orangeEC407AL,
-                  borderWidth: 1
-                }}>
-
-                  <Text
-                    style={[
-                      styles.textStyle,
-                      { color: "#EC407A", fontWeight: '400', fontSize: 16 },
-                    ]}>
-                    {AppString.to_Favourites}
+                    }}>
+                    {AppString.total + ':'}
                   </Text>
-                </TouchableOpacity>
-                <CommonButton
-                  startorange='#EC407A'
-                  endColor='#E93368'
-                  text={AppString.delete}
-                  onClick={() => {
-                    deleteItemFromCart()
-                  }} 
-                />
-              </View>
-            }
-          </View> : null}
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: colors.lightOrange,
+                      fontFamily: '400',
+                      marginHorizontal: 4
+                    }}>
+                    {AppString.currency_symbol}<Text
+                      style={{
+                        fontSize: 22,
+                        color: colors.lightOrange,
+                        fontFamily: '400',
+                        marginStart: 4
+                      }}>{sum.toFixed(2)}</Text>
+                  </Text>
+                  <CommonButton
+                    onClick={() => {
+                      // setBuyShow(true);
+                      //navigation.navigate(RouteNames.myAddress)
+                      let ids = []
+                      if (selectedProductIds.length > 0) {
+                        ids = selectedProductIds
+                      } else {
+                        ids = cartIds
+                      }
+                      console.warn(ids);
 
-          <View style={{
-            height: 0.5, width: '100%', backgroundColor: '#D9D9D9',
-            position: 'absolute', bottom: 0,
-          }} />
+                      navigation.navigate(RouteNames.cartConfirmOrder, { ids: ids })
+                    }}
+                  />
+                </View>
+                :
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 7 }}>
+                  <TouchableOpacity onPress={() => {
+                    moveToFav()
+                  }} style={{
+                    borderRadius: 20,
+                    height: 40,
+                    paddingHorizontal: 12,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderColor: colors.orangeEC407AL,
+                    borderWidth: 1
+                  }}>
+
+                    <Text
+                      style={[
+                        styles.textStyle,
+                        { color: "#EC407A", fontWeight: '400', fontSize: 16 },
+                      ]}>
+                      {AppString.to_Favourites}
+                    </Text>
+                  </TouchableOpacity>
+                  <CommonButton
+                    startorange='#EC407A'
+                    endColor='#E93368'
+                    text={AppString.delete}
+                    onClick={() => {
+                      deleteItemFromCart()
+                    }}
+                  />
+                </View>
+              }
+            </View> : null}
+
+            <View style={{
+              height: 0.5, width: '100%', backgroundColor: '#D9D9D9',
+              position: 'absolute', bottom: 0,
+            }} />
 
 
-        </View>
-      
-      </GestureHandlerRootView>
-      : mainLoading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
-        setData(undefined)
-        getCart()
-      }} />
+          </View>
 
-    }
+        </GestureHandlerRootView>
+        : mainLoading ? <ProgressView /> : <RetryWhenErrorOccur data={data} onClick={() => {
+          setData(undefined)
+          getCart()
+        }} />
+
+      }
       <CenterProgressView isShow={loading} />
-      </View>
+    </View>
   );
 };
 
@@ -710,7 +712,8 @@ export const RadioButtons = ({ isCheck = false, onClick, size = 22 }) => {
   )}</TouchableOpacity> : null
 }
 
-const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, onQunatityUpdate, shouldRefresh }) => {
+const CartProduct = ({ check = true, shopData, navigation,
+  onClick, onDelete, onQunatityUpdate, shouldRefresh }) => {
 
   const [isCheck, setIsCheck] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -744,7 +747,7 @@ const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, on
     setLoading(true)
     postAPICall(quntItem, CartAPIs.updateCart, true, (res: any) => {
       setLoading(false)
-    
+
       if (res.isSuccess) {
         onQunatityUpdate(item)
       }
@@ -760,8 +763,10 @@ const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, on
       backgroundColor: colors.whiteF6F6F6
     }]}>
       <TouchableOpacity onPress={() => {
-        navigation.navigate(RouteNames.product_search_screen, { isRoute: true,
-          searchText: '' })
+        navigation.navigate(RouteNames.product_search_screen, {
+          isRoute: true,
+          searchText: ''
+        })
       }}><SearchCart /></TouchableOpacity>
       <TouchableOpacity onPress={() => { }}><LikeCart /></TouchableOpacity>
       {loading ? <ActivityIndicatorView /> : <TouchableOpacity onPress={() => {
@@ -774,89 +779,91 @@ const CartProduct = ({ check = true, shopData, navigation, onClick, onDelete, on
   }
 
   return (
-  <View>
-  <TouchableOpacity disabled={true}
-    onPress={onClick}
-    style={{
-      backgroundColor: colors.white,
-      borderRadius: 13,
-      marginBottom: 9,
-      paddingTop: 10
-    }}>
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate(RouteNames.shopHomeScreen)
-      }}
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingStart: 10
-      }}>
-
-      <RadioButtons isCheck={selectedShopIds.indexOf(shopData.shopId) > -1} onClick={() => {
-
-        if (selectedShopIds.includes(shopData.shopId)) {
-          selectedShopIds.pop(shopData.shopId)
-          shopData.products.forEach(element => {
-
-            selectedProductIds.pop(element.cartId)
-          });
-        } else {
-          selectedShopIds.push(shopData.shopId)
-
-          let productIdsArr = shopData.products.map(product => product.cartId)
-          // console.warn(selectedProductIds) 
-          selectedProductIds = [...selectedProductIds, ...productIdsArr]
-
-        }
-        console.warn(selectedShopIds)
-        shouldRefresh()
-        setIsCheck(!isCheck)
-      }} />
-      <Image
-        source={appIcons.china}
-        style={{ width: 18, height: 18, marginStart: 10 }}
-      />
-      <Text style={{
-        paddingLeft: 9,
-        color: colors.black, fontSize: 16, fontWeight: 'bold', paddingBottom: 2
-      }}>{shopData.shopName}</Text>
-      <ChevronFwdOutlineIcon
-        width={8}
-        height={10}
+    <View>
+      <TouchableOpacity disabled={true}
+        onPress={onClick}
         style={{
-          borderColor: '#CDCDCD',
-          marginTop: 2,
-          marginLeft: 8,
-        }}
-      />
-    </TouchableOpacity>
-
-    <FlatList
-      style={{ marginTop: 14 }}
-      data={shopData.products}
-      scrollEnabled={false}
-      renderItem={({ item, index }) =>
-        <Swipeable
-          ref={ref => row[index] = ref}
-          onSwipeableOpen={() => closeRow(index)}
-          renderRightActions={() =>
-            <RightButtons index={index} item={item} />}>
-          <ProductItem onUpdateQuantity={(qut: number) => {
-            updateQuantity(item, qut)
+          backgroundColor: colors.white,
+          borderRadius: 13,
+          marginBottom: 9,
+          paddingTop: 10
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(RouteNames.shopHomeScreen)
           }}
-            check={shopData.radioButtonStore}
-            item={item} onClick={onClick}
-            shouldRefresh={shouldRefresh}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingStart: 10
+          }}>
+
+          <RadioButtons isCheck={selectedShopIds.indexOf(shopData.shopId) > -1} onClick={() => {
+
+            if (selectedShopIds.includes(shopData.shopId)) {
+              selectedShopIds.pop(shopData.shopId)
+              shopData.products.forEach(element => {
+
+                selectedProductIds.pop(element.cartId)
+              });
+            } else {
+              selectedShopIds.push(shopData.shopId)
+
+              let productIdsArr = shopData.products.map(product => product.cartId)
+              // console.warn(selectedProductIds) 
+              selectedProductIds = [...selectedProductIds, ...productIdsArr]
+
+            }
+            console.warn(selectedShopIds)
+            shouldRefresh()
+            setIsCheck(!isCheck)
+          }} />
+          <Image
+            source={appIcons.china}
+            style={{ width: 18, height: 18, marginStart: 10 }}
           />
-        </Swipeable>
-      }
+          <Text style={{
+            paddingLeft: 9,
+            color: colors.black, fontSize: 16, fontWeight: 'bold', paddingBottom: 2
+          }}>{shopData.shopName}</Text>
+          <ChevronFwdOutlineIcon
+            width={8}
+            height={10}
+            style={{
+              borderColor: '#CDCDCD',
+              marginTop: 2,
+              marginLeft: 8,
+            }}
+          />
+        </TouchableOpacity>
 
-    />
+        <FlatList
+          style={{ marginTop: 14 }}
+          data={shopData.products}
+          scrollEnabled={false}
+          renderItem={({ item, index }) =>
+            <Swipeable
+              ref={ref => row[index] = ref}
+              onSwipeableOpen={() => closeRow(index)}
+              renderRightActions={() =>
+                <RightButtons index={index} item={item} />}>
+              <ProductItem onUpdateQuantity={(qut: number) => {
+                updateQuantity(item, qut)
+              }}
+                check={shopData.radioButtonStore}
+                item={item} onClick={() => {
+                  onClick(item)
+                }}
+                shouldRefresh={shouldRefresh}
+              />
+            </Swipeable>
+          }
 
-  </TouchableOpacity>
-  <CenterProgressView isShow={ loading} />
-  </View>)
+        />
+
+      </TouchableOpacity>
+      <CenterProgressView isShow={loading} />
+    </View>)
 }
 
 
@@ -960,7 +967,7 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity, shouldRef
             onPress={() => {
               if (count != 1) {
                 onUpdateQuantity(count - 1)
-               // setCount(count - 1)
+                // setCount(count - 1)
               }
             }}
             style={{
@@ -983,7 +990,7 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity, shouldRef
             onPress={() => {
               if (item.totalQunatity > 0) {
                 onUpdateQuantity(count + 1)
-              //  setCount(count + 1)
+                //  setCount(count + 1)
               }
             }}
             style={{

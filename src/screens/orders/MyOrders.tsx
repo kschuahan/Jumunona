@@ -31,11 +31,12 @@ const notAll = [
         products: [1]
     }
 ]
-
-const notPaid = [AppString.pay, AppString.changeAddress, AppString.cancel_the_order]
-const treatment = [AppString.return_money, AppString.changeAddress]
-const review = [AppString.recieved, AppString.logistics]
-const sent = [AppString.estimate, AppString.logistics, AppString.delete]
+//AppString.pay,
+const notPaid = [AppString.logistics, AppString.changeAddress, AppString.cancel_the_order]
+//AppString.return_money, 
+const processing = [AppString.changeAddress,AppString.logistics]
+const review = [AppString.recieved, AppString.logistics, AppString.delete]
+const shipped = [AppString.logistics]
 
 const all = [
     {
@@ -48,7 +49,7 @@ const all = [
         price: 120,
         products: [1],
         status: AppString.processing,
-        actions: treatment
+        actions: processing
     },
     {
         price: 120,
@@ -66,7 +67,7 @@ const all = [
         price: 120,
         products: [1],
         status: AppString.review,
-        actions: sent
+        actions: shipped
     }
 ]
 
@@ -228,7 +229,7 @@ const EmptyData = () => {
 }
 
 
-export const RelatedProducts = ({ data, onclick }) => {
+export const RelatedProducts = ({ data, onclick, navigation }) => {
     return (
         <View style={{ marginBottom: 100, paddingStart: 6, }}>
             <View
@@ -305,7 +306,10 @@ export const RelatedProducts = ({ data, onclick }) => {
                                 marginTop: 8,
                             }}
                             onPress={() => {
-                                onclick();
+                                //onclick();
+                                navigation.navigate(RouteNames.product_detail, {
+                                    id: item._id,
+                                  });
                             }}>
                             <Image
                                 source={
@@ -615,12 +619,12 @@ export const buttonsClick = (navigation, type, orderData) => {
 
 export const slectefListCal = (type: string) => {
     if (type == AppString.processing || type == 'processing') {
-        return treatment
+        return processing
     } else if (type == AppString.review || type == 'review') {
         return review
     }
-    else if (type == AppString.sent || type == 'delivered') {
-        return sent
+    else if (type == AppString.sent || type == 'delivered' || type == 'shipped') {
+        return shipped
     } else {
         return notPaid
     }

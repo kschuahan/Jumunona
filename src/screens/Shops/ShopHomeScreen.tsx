@@ -67,7 +67,7 @@ const ShopHomeScreen: React.FC = ({route }) => {
       />
       <Tab.Screen
         name={RouteNames.shopcategoriesHome}
-        component={ShopCategoriesScreen}
+        component={AllCategoriesScreen}
         options={{
           tabBarIcon: ({ focused, color }) => {
             return focused ? (

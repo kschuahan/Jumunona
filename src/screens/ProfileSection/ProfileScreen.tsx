@@ -256,7 +256,7 @@ const ProfileScreen = (props: any) => {
             subTitle="Ожидает оценки"
             buttonText={AppString.write}
             onClick={() => {
-              navigation.navigate(RouteNames.review)
+             // navigation.navigate(RouteNames.review)
             }}
           />
         </View>
@@ -379,7 +379,7 @@ const MyOrder = ({ navigation, orderCounts }) => {
         </View>
         <View style={{ marginBottom: 8, marginHorizontal: 1 }}>
           <ProfileProduct onClick={() => {
-            navigation.navigate(RouteNames.cartConfirmOrder)
+            //navigation.navigate(RouteNames.cartConfirmOrder)
 
           }} />
         </View>

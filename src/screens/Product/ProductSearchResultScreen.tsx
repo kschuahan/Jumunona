@@ -115,16 +115,14 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
     }
     if (route.params && route.params.categoryID) {
       setCategoryID(route.params.categoryID)
-      console.warn("pareams",route.params.categoryID);
-      
     }
   }, [])
 
 
-useEffect(()=>{
-  setArrayData([])
-  callAPI()
-},[searcText,categoryId])
+  useEffect(() => {
+    setArrayData([])
+    callAPI()
+  }, [searcText, categoryId])
 
 
   const featchMore = () => {
@@ -158,7 +156,7 @@ useEffect(()=>{
               navigation={navigation} onClick={(id: any) => {
                 if (id != categoryId) {
                   setCategoryID(id)
-                 
+
                 }
               }} />
           ) : null}
@@ -365,12 +363,8 @@ useEffect(()=>{
           <View style={[style.productsGrid]}>
             <FlatList
               data={dataArray}
-              // keyExtractor={item => {
-              //   return item._id;
-              // }}
-
               ListEmptyComponent={
-                !loading ? <Text style={[styles.textStyle, {
+                !loading && data && data?.isSuccess ? <Text style={[styles.textStyle, {
                   color: colors.lightOrange,
                   paddingVertical: 100,
                   fontSize: 16, fontWeight: 'bold', textAlign: 'center'

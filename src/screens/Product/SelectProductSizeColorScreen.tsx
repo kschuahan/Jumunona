@@ -58,7 +58,7 @@ const SelectProductSizeColorScreen = ({ navigation,
   onClose,
   onGuranty,
   onGoToCart,
-bodyData = undefined }) => {
+  bodyData = undefined }) => {
 
 
   useEffect(() => {
@@ -168,9 +168,9 @@ bodyData = undefined }) => {
                 onSelectQuantity={(quantity: number) => {
                   addToCartModel.quantity = quantity
                 }}
-                onAddBodyData = {
+                onAddBodyData={
                   () => {
-                    navigation.navigate(RouteNames.editBodyData, {isUpdating: false})
+                    navigation.navigate(RouteNames.editBodyData, { isUpdating: false })
                     onClose()
                   }
                 }
@@ -198,8 +198,8 @@ bodyData = undefined }) => {
                     onGoToCart()
                   }}
                 />
-                <CommonButton text={AppString.buy} onClick={() => { 
-                  navigation.navigate(RouteNames.cartConfirmOrder, {buyNowModel: addToCartModel})
+                <CommonButton text={AppString.buy} onClick={() => {
+                  navigation.navigate(RouteNames.cartConfirmOrder, { buyNowModel: addToCartModel })
                   onClose()
                 }} />
               </View>
@@ -221,9 +221,9 @@ bodyData = undefined }) => {
                   marginVertical: 35,
                   paddingBottom: 20,
                 }}>
-                  <CommonButton text={AppString.buy} onClick={() => { 
-                      navigation.navigate(RouteNames.cartConfirmOrder, {buyNowModel: addToCartModel})
-                      onClose()
+                  <CommonButton text={AppString.buy} onClick={() => {
+                    navigation.navigate(RouteNames.cartConfirmOrder, { buyNowModel: addToCartModel })
+                    onClose()
                   }} />
                 </View>
 
@@ -304,17 +304,17 @@ const PhoneDataScreen = ({ onClick }) => {
 const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onSelectQuantity, onAddBodyData }) => {
   const [selectedColorIndex, setSelectColorIndex] = useState(-1)
   const [maxQuantity, setMaxQuanity] = useState(1)
-
+  const [colorss, setColors] = useState(colorOptions.filter((it: any) => it.attr1Value != ''))
   useEffect(() => {
 
-    const filter = colorOptions
+    const filter = colorss
 
     if (filter && filter.length > 0) {
       const cartItemIndex = filter.findIndex((element) => (element.isItemInCart));
       console.log("cartItemIndex", cartItemIndex);
 
       if (cartItemIndex != -1) {
-      
+
         addToCartModel.attr1_id = filter[cartItemIndex]._id
         setSelectColorIndex(cartItemIndex)
         console.log("cartItemIndexIndex", cartItemIndex);
@@ -331,11 +331,11 @@ const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onS
   return (
     <View>
       <Text style={[styles.textStyle, { fontSize: 14 }]}>
-        {"Цвет "} ({colorOptions.length})
+        {"Цвет "} ({colorss.length})
       </Text>
 
       <FlatList
-        data={colorOptions}
+        data={colorss}
         renderItem={({ item, index }) => {
           return (
             <View style={{ marginEnd: 8 }}>
@@ -458,18 +458,18 @@ const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onS
           backgroundColor: colors.darkWhite,
         }}
       />
-      
-      <SizeAndBuyingForView productDetail={colorOptions} bodyData={bodyData}
+
+      <SizeAndBuyingForView productDetail={colorss} bodyData={bodyData}
         selectedColorIndex={selectedColorIndex} onSelectSize={(id: string) => {
-       
-          let index = (colorOptions[selectedColorIndex].attr2 ?? []).findIndex((it) => 
-             it._id == id
+
+          let index = (colorOptions[selectedColorIndex].attr2 ?? []).findIndex((it) =>
+            it._id == id
           )
           if (index > -1) {
             setMaxQuanity(colorOptions[selectedColorIndex].attr2[index].sku_quantity)
           }
           onSelectSize(id)
-        }} onAddBodyData = {onAddBodyData}/>
+        }} onAddBodyData={onAddBodyData} />
       <View
         style={{
           height: 1,
@@ -486,142 +486,142 @@ const ColorOptions = ({ colorOptions, bodyData, onSelectColor, onSelectSize, onS
   );
 };
 
-const 
-SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedColorIndex, onSelectSize, onAddBodyData }) => {
-  const [selectedSize, setSelecteSize] = useState(0);
-  const addBodyData = [ {_id: "-1", name: '+ Add'}];
-  const [selectedItem, setSelecteItem] = useState('');
+const
+  SizeAndBuyingForView = ({ productDetail, bodyData = undefined, selectedColorIndex, onSelectSize, onAddBodyData }) => {
+    const [selectedSize, setSelecteSize] = useState(0);
+    const addBodyData = [{ _id: "-1", name: '+ Add' }];
+    const [selectedItem, setSelecteItem] = useState('');
 
-  // useEffect(() => {
-  //   onSelectSize(selectedItem)
-  // }, [selectedItem])
+    // useEffect(() => {
+    //   onSelectSize(selectedItem)
+    // }, [selectedItem])
 
-  useEffect(() => {
-    const sizes = productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2
-    if (sizes && sizes.length > 0) {
-      const cartItemIndex = sizes.findIndex((element) => (element.isItemInCart));
+    useEffect(() => {
+      const sizes = productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2
+      if (sizes && sizes.length > 0) {
+        const cartItemIndex = sizes.findIndex((element) => (element.isItemInCart));
 
-      if (cartItemIndex != -1) {
-   
-        setSelecteItem(sizes[cartItemIndex]._id)
-        console.log("Index", cartItemIndex);
-      } 
-    }
+        if (cartItemIndex != -1) {
 
-  }, [selectedSize])
+          setSelecteItem(sizes[cartItemIndex]._id)
+          console.log("Index", cartItemIndex);
+        }
+      }
+
+    }, [selectedSize])
 
 
-  return (
-    <View style={{ width: '100%' }}>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={['Для', 'Размер']}
-        renderItem={({ item, index }) =>
-          <TouchableOpacity
-            onPress={() => {
-              setSelecteSize(index);
-              if (index == 1) {
-                setSelecteItem(addToCartModel.attr2_id)
-              } else {
-                setSelecteItem(addToCartModel.bodyDataId)
-              }
-            }}>
-            <View style={{ flexDirection: 'column', justifyContent: 'flex-start', marginEnd: 20 }}>
-              <Text
-                style={[
-                  styles.textStyle,
-                  {
-                    fontSize: 14,
-                    color: index == selectedSize ? colors.startOrange : colors.black,
-                  },
-                ]}>
-                {item}
-              </Text>
-              {index == selectedSize ? (
-                <View
-                  style={{
-                    height: 2,
-                    backgroundColor: colors.startOrange,
-                    width: 30,
-                    marginTop: 2
-                  }}
-                />
-              ) : null}
-            </View>
-          </TouchableOpacity>}
-      />
-
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
-        {(selectedSize == 1 ? productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2 : [ ... bodyData ?? [], ...addBodyData]).map((item: any, index: number) =>
-          <View style={{ margin: 8 }}>
+    return (
+      <View style={{ width: '100%' }}>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={['Для', 'Размер']}
+          renderItem={({ item, index }) =>
             <TouchableOpacity
               onPress={() => {
-                if (selectedSize == 1 && hasSetSelectedColor) {
-                  sizeIndex = index
-                  setSelecteItem(item._id)
-                  onSelectSize(item._id)
+                setSelecteSize(index);
+                if (index == 1) {
+                  setSelecteItem(addToCartModel.attr2_id)
                 } else {
-                  if (item._id == '-1') {
-                    onAddBodyData()
-                    addToCartModel.bodyDataId = ''
-                  } else {
-                    setSelecteItem(item._id)
-                    addToCartModel.bodyDataId = item._id
-                  }
+                  setSelecteItem(addToCartModel.bodyDataId)
                 }
               }}>
-              <View
-                style={{
-                  paddingHorizontal: selectedSize == 0 ? 16 : undefined,
-                  justifyContent: 'center',
-                  backgroundColor: '#F6F6F6',
-                  borderRadius: selectedSize == 1 ? 5 : 15,
-                  height: 28,
-                  width: selectedSize == 1 ? 56 : undefined
-                }}>
+              <View style={{ flexDirection: 'column', justifyContent: 'flex-start', marginEnd: 20 }}>
                 <Text
                   style={[
                     styles.textStyle,
                     {
-                      color:
-                       selectedItem == item._id
-                          ? colors.startOrange
-                          : colors.black121212,
-                      textAlign: 'center',
-                      alignSelf: 'center',
-                      fontSize: selectedSize == 1 ? 12 : 14,
+                      fontSize: 14,
+                      color: index == selectedSize ? colors.startOrange : colors.black,
                     },
                   ]}>
-                  {' '}
-                  {selectedSize == 1 ? item.attr2Value : item.name}
+                  {item}
                 </Text>
+                {index == selectedSize ? (
+                  <View
+                    style={{
+                      height: 2,
+                      backgroundColor: colors.startOrange,
+                      width: 30,
+                      marginTop: 2
+                    }}
+                  />
+                ) : null}
               </View>
-            </TouchableOpacity>
-            {(selectedItem == item._id) ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  backgroundColor: 'rgba(255, 118, 0, 0.08)',
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: selectedSize == 1 ? 5 : 15,
-                  borderColor: colors.startOrange,
-                  borderWidth: 1,
-                }}
-              />
-            ) : null}
-          </View>)}
+            </TouchableOpacity>}
+        />
+
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
+          {(selectedSize == 1 ? productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2 : [...bodyData ?? [], ...addBodyData]).map((item: any, index: number) =>
+            <View style={{ margin: 8 }}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (selectedSize == 1 && hasSetSelectedColor) {
+                    sizeIndex = index
+                    setSelecteItem(item._id)
+                    onSelectSize(item._id)
+                  } else {
+                    if (item._id == '-1') {
+                      onAddBodyData()
+                      addToCartModel.bodyDataId = ''
+                    } else {
+                      setSelecteItem(item._id)
+                      addToCartModel.bodyDataId = item._id
+                    }
+                  }
+                }}>
+                <View
+                  style={{
+                    paddingHorizontal: selectedSize == 0 ? 16 : undefined,
+                    justifyContent: 'center',
+                    backgroundColor: '#F6F6F6',
+                    borderRadius: selectedSize == 1 ? 5 : 15,
+                    height: 28,
+                    width: selectedSize == 1 ? 56 : undefined
+                  }}>
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        color:
+                          selectedItem == item._id
+                            ? colors.startOrange
+                            : colors.black121212,
+                        textAlign: 'center',
+                        alignSelf: 'center',
+                        fontSize: selectedSize == 1 ? 12 : 14,
+                      },
+                    ]}>
+                    {' '}
+                    {selectedSize == 1 ? item.attr2Value : item.name}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              {(selectedItem == item._id) ? (
+                <View
+                  style={{
+                    position: 'absolute',
+                    backgroundColor: 'rgba(255, 118, 0, 0.08)',
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: selectedSize == 1 ? 5 : 15,
+                    borderColor: colors.startOrange,
+                    borderWidth: 1,
+                  }}
+                />
+              ) : null}
+            </View>)}
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  };
 
 const QuanityView = ({ quantity, onClick }) => {
   const [quantiy, setQuantity] = useState(1);
   const maxQuantity = quantity;
   useEffect(() => {
-    
+
     if (quantity > maxQuantity) {
       quantity = 1
     }
@@ -670,6 +670,8 @@ const QuanityView = ({ quantity, onClick }) => {
             if (quantiy < maxQuantity) {
               setQuantity(quantiy + 1);
               onClick(quantiy)
+            } else {
+              Alert.alert("", "Пожалуйста, сначала выберите цвет и размер")
             }
           }}>
           <AddCircleOutline
