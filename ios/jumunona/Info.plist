@@ -70,5 +70,11 @@
 	<string>$(PRODUCT_NAME) would like to use your camera to upload your profile picture</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like access to your photo gallery to upload your profile picture</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+	<!--Include to allow all connections (DANGER)-->
+	<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

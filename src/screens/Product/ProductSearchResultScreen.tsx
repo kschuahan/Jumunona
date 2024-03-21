@@ -87,10 +87,13 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
     getAPICall(ProductAPIs.getProducts + `${page}`, (res: any) => {
       if (res.isSuccess) {
         setPagingData(res.data.data.pages);
-        setArrayData([...dataArray, ...res.data.data.products]);
+        let array = [...dataArray, ...res.data.data.products]
+       setArrayData(array)
+       console.warn("productslength", res.data.data.product.length)
       }
-      setData(res);
-      setLoading(false)
+        setData(res);
+        setLoading(false)
+    
     }, item);
   };
 
@@ -361,15 +364,16 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
           </View>
 
           <View style={[style.productsGrid]}>
-            <FlatList
-              data={dataArray}
-              ListEmptyComponent={
-                !loading && data && data?.isSuccess ? <Text style={[styles.textStyle, {
+           {
+                !loading && data && data?.isSuccess && dataArray.length == 0 ? <Text style={[styles.textStyle, {
                   color: colors.lightOrange,
                   paddingVertical: 100,
                   fontSize: 16, fontWeight: 'bold', textAlign: 'center'
-                }]}>No prodcut found</Text> : null
-              }
+                }]}>No prodcut found</Text> :
+              
+            <FlatList
+              data={dataArray}
+              
               ListFooterComponent={
                 loading ? (
                   <ProgressView ht={undefined} />
@@ -494,6 +498,7 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
                 );
               }}
             />
+}
           </View>
         </View> : loading ? (
           <ProgressView />
