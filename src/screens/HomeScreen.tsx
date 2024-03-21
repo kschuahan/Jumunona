@@ -45,31 +45,31 @@ const HeaderItem = ({ onSearchClick }) => {
   const [searchText, setSearchText] = useState("")
 
   return (
-  <View style={styles.header}>
-    <TextInput
-      style={styles.searchBox}
-      placeholder="Спортивная обувь"
-      placeholderTextColor="#727272"
-      value={searchText}
-      onChangeText={(text) => {
-        setSearchText(text)
-      }}
-    />
-    <TouchableOpacity style={styles.button} onPress={() => {
-      onSearchClick(searchText)
-      setSearchText('')
+    <View style={styles.header}>
+      <TextInput
+        style={styles.searchBox}
+        placeholder="Спортивная обувь"
+        placeholderTextColor="#727272"
+        value={searchText}
+        onChangeText={(text) => {
+          setSearchText(text)
+        }}
+      />
+      <TouchableOpacity style={styles.button} onPress={() => {
+        onSearchClick(searchText)
+        setSearchText('')
       }}>
-      <LinearGradient
-        colors={['#FF7600', '#FC4A1A']}
-        start={{ x: 0.4, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.linearGradient}>
-        <Text style={styles.searchButtonText}>Поиск</Text>
-      </LinearGradient>
-    </TouchableOpacity>
-  </View>
-)
-  };
+        <LinearGradient
+          colors={['#FF7600', '#FC4A1A']}
+          start={{ x: 0.4, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.linearGradient}>
+          <Text style={styles.searchButtonText}>Поиск</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    </View>
+  )
+};
 
 const MainCategoriesItem = ({ navigation, data }) => {
   return data && data.isSuccess ? (
@@ -119,10 +119,11 @@ const MainCategoriesItem = ({ navigation, data }) => {
                     });
                   }}
                   style={{ alignItems: 'center' }}>
-                  {item.image == undefined ||  item.image === '' ? (
+                  {item.details == undefined || item.details.categoryImage === '' ? (
                     <ImageOutline width={50} height={38} />
                   ) : (
-                    <Image source={{ uri: item.image }} height={38} width={50} />
+                    <Image source={{ uri: item.details.categoryImage }}
+                      style={{ borderRadius: 4 }} height={38} width={50} />
                   )}
                   <Text
                     numberOfLines={2}
@@ -143,7 +144,7 @@ const MainCategoriesItem = ({ navigation, data }) => {
       />
     </View>
   )
-   : null;
+    : null;
 };
 
 const HomeScreen: React.FC = ({ navigation }) => {
@@ -238,7 +239,7 @@ const HomeScreen: React.FC = ({ navigation }) => {
           numColumns={2}
           renderItem={({ item, i }) => {
             return (
-              <ProductView item={item} i = {i} navigation={navigation} />
+              <ProductView item={item} i={i} navigation={navigation} />
             );
           }}
         />
@@ -259,15 +260,15 @@ const HomeScreen: React.FC = ({ navigation }) => {
   );
 };
 
-const ProductView = ({item, i, navigation}) => {
+const ProductView = ({ item, i, navigation }) => {
 
   const [showLikeView, setShowLikeView] = useState(false)
   return (
     <View>
       <TouchableOpacity
         onLongPress={() => {
-        
-           setShowLikeView(!showLikeView)
+
+          setShowLikeView(!showLikeView)
         }}
         style={[styles.gridViewItemStyle, { paddingBottom: 8 }]}
         onPress={() => {
@@ -353,7 +354,7 @@ const ProductView = ({item, i, navigation}) => {
         </View>
       </TouchableOpacity>
       {
-        showLikeView ? 
+        showLikeView ?
           <View
             style={[styles.gridViewItemStyle,
             {
@@ -416,12 +417,12 @@ const ProductView = ({item, i, navigation}) => {
                 fontWeight: '400',
                 marginStart: 13
               }}>
-               Не нравится
+                Не нравится
               </Text>
             </Pressable>
           </View>
-         
-        : null
+
+          : null
       }
     </View>
   )

@@ -199,7 +199,8 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                 return (
                   <View
                     style={{
-                      flex: 0.5,
+                      flex: 1 / 5,
+
                       marginTop: 8,
                     }}>
                     {index === 9 ? (
@@ -233,7 +234,13 @@ const CategoryScreen: React.FC = ({ navigation }) => {
                           );
                         }}
                         style={{ alignItems: 'center' }}>
-                        <ImageIcon width={50} height={50} />
+                        {item.details == undefined || item.details.categoryImage === '' ? (
+                          <ImageIcon width={50} height={50} />
+                        ) : (
+                          <Image source={{ uri: item.details.categoryImage }}
+                            height={50} width={50}
+                            style={{ borderRadius: 4 }} />
+                        )}
                         <Text
                           numberOfLines={2}
                           style={{

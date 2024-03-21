@@ -1,4 +1,4 @@
-import { TouchableOpacity, View, FlatList, Text } from 'react-native';
+import { TouchableOpacity, View, FlatList, Text, Image } from 'react-native';
 import { styles } from '../../utils/AppStyles';
 import React, { useEffect, useState } from 'react';
 import { RouteNames } from '../../utils/RouteNames';
@@ -136,11 +136,18 @@ export const AllCategoriesScreen = ({ navigation }) => {
                           searchText: ''
                         });
                       }}>
-                      <ImageIcon width={66} height={66} />
+                      {/* <ImageIcon width={66} height={66} /> */}
                       {/* <Image
                       source={{uri: imagesUrl.jacket}}
                       style={{height: 66, width: 66}}
                     /> */}
+                      {item.details == undefined || item.details.categoryImage === '' ? (
+                        <ImageIcon width={66} height={66} />
+                      ) : (
+                        <Image source={{ uri: item.details.categoryImage }}
+                          height={66} width={66}
+                          style={{ borderRadius: 4 }} />
+                      )}
                       <Text
                         style={[
                           styles.textStyle,

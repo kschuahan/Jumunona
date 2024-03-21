@@ -1,4 +1,4 @@
-import {localEnum} from './ApiEnum';
+import { localEnum } from './ApiEnum';
 
 export const reloadData = {
   profileRefresh: false,
@@ -17,7 +17,7 @@ export const BASE_URL = (type = localEnum.development) => {
 
 export const apiUrls = {
   development: 'https://jumunona.onrender.com',
-  testing: ' https://jumunona-c3eq.onrender.com',
+  testing: 'https://jumunona-c3eq.onrender.com',
   production: 'http://3.69.231.148:3000',
 };
 

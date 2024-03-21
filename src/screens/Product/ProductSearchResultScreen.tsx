@@ -88,12 +88,12 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
       if (res.isSuccess) {
         setPagingData(res.data.data.pages);
         let array = [...dataArray, ...res.data.data.products]
-       setArrayData(array)
-       console.warn("productslength", res.data.data.product.length)
+        setArrayData(array)
+        console.warn("productslength", res.data.data.product.length)
       }
-        setData(res);
-        setLoading(false)
-    
+      setData(res);
+      setLoading(false)
+
     }, item);
   };
 
@@ -364,141 +364,141 @@ export const ProductSearchResultScreen = ({ navigation, route }) => {
           </View>
 
           <View style={[style.productsGrid]}>
-           {
-                !loading && data && data?.isSuccess && dataArray.length == 0 ? <Text style={[styles.textStyle, {
-                  color: colors.lightOrange,
-                  paddingVertical: 100,
-                  fontSize: 16, fontWeight: 'bold', textAlign: 'center'
-                }]}>No prodcut found</Text> :
-              
-            <FlatList
-              data={dataArray}
-              
-              ListFooterComponent={
-                loading ? (
-                  <ProgressView ht={undefined} />
-                ) : data?.isSuccess ? null : (
-                  <RetryWhenErrorOccur
-                    ht={120}
-                    data={data}
-                    onClick={() => {
-                      callAPI(pagingData.current + 1);
-                    }}
-                  />
-                )
-              }
-              // ListEmptyComponent={
-              //   <RetryWhenErrorOccur
-              //     data={'No Products found'}
-              //     onClick={() => {
+            {
+              !loading && data && data?.isSuccess && dataArray.length == 0 ? <Text style={[styles.textStyle, {
+                color: colors.lightOrange,
+                paddingVertical: 100,
+                fontSize: 16, fontWeight: 'bold', textAlign: 'center'
+              }]}>No prodcut found</Text> :
 
-              //     }} isRetry={false}/>
-              // }
-              onEndReached={() => {
-                if (dataArray.length > 0) {
-                  featchMore()
-                }
-              }}
-              onEndReachedThreshold={0.3}
-              showsVerticalScrollIndicator={false}
-              style={{ marginHorizontal: 4.5 }}
-              numColumns={2}
-              renderItem={({ item, index }) => {
-                return (
-                  <TouchableOpacity
-                    style={{
-                      borderRadius: 12,
-                      backgroundColor: '#ffffff',
-                      marginHorizontal: 4.5,
-                      marginBottom: 20,
-                      width: 'auto',
-                      flex: 0.5,
-                      borderColor: '#f1f1f1',
-                      marginTop: 5,
-                    }}
-                    onPress={() => {
-                      navigation.navigate(RouteNames.product_detail, {
-                        id: item._id,
-                      });
-                    }}>
-                    <Image
-                      source={
-                        item.images !== ''
-                          ? { uri: item.images }
-                          : appIcons.shoeImageURL
-                      }
-                      style={{
-                        height: 265,
-                        paddingHorizontal: 1,
-                        width: 'auto',
-                        borderRadius: 13,
-                        backgroundColor: '#f1f1f1',
+                <FlatList
+                  data={dataArray}
 
-                        marginBottom: 8,
-                      }}
-                    />
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        paddingLeft: 7,
-                      }}>
-                      <Image
-                        source={appIcons.china}
-                        style={{ height: 15, width: 15, marginTop: 3 }}
-                      />
-                      <Text
-                        style={{
-                          marginLeft: 4,
-                          fontSize: 13,
-                          fontWeight: '500',
-                          color: colors.black,
+                  ListFooterComponent={
+                    loading ? (
+                      <ProgressView ht={undefined} />
+                    ) : data?.isSuccess ? null : (
+                      <RetryWhenErrorOccur
+                        ht={120}
+                        data={data}
+                        onClick={() => {
+                          callAPI(pagingData.current + 1);
                         }}
-                        numberOfLines={1}>
-                        {item.name}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        paddingLeft: 8,
-                        marginTop: 4,
-                      }}>
-                      <View style={{ flexDirection: 'row', width: '30%' }}>
-                        <Text
-                          style={{
-                            fontSize: 17,
-                            color: '#ff7600',
-                            fontWeight: '500',
-                          }}>
-                          {item.price ? item.price : '58'}
-                        </Text>
-                        <Text
-                          style={{
-                            paddingTop: 6,
-                            color: '#ff7600',
-                            fontSize: 12,
-                            fontWeight: '500',
-                          }}>
-                          c.
-                        </Text>
-                      </View>
-                      <Text
-                        numberOfLines={1}
+                      />
+                    )
+                  }
+                  // ListEmptyComponent={
+                  //   <RetryWhenErrorOccur
+                  //     data={'No Products found'}
+                  //     onClick={() => {
+
+                  //     }} isRetry={false}/>
+                  // }
+                  onEndReached={() => {
+                    if (dataArray.length > 0) {
+                      featchMore()
+                    }
+                  }}
+                  onEndReachedThreshold={0.3}
+                  showsVerticalScrollIndicator={false}
+                  style={{ marginHorizontal: 4.5 }}
+                  numColumns={2}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <TouchableOpacity
                         style={{
-                          width: '70%',
-                          color: '#AAAAAA',
-                          paddingTop: 3,
+                          borderRadius: 12,
+                          backgroundColor: '#ffffff',
+                          marginHorizontal: 4.5,
+                          marginBottom: 20,
+                          width: 'auto',
+                          flex: 0.5,
+                          borderColor: '#f1f1f1',
+                          marginTop: 5,
+                        }}
+                        onPress={() => {
+                          navigation.navigate(RouteNames.product_detail, {
+                            id: item._id,
+                          });
                         }}>
-                        {`${item.views}${AppString.views}`}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-}
+                        <Image
+                          source={
+                            item.images !== ''
+                              ? { uri: item.images }
+                              : appIcons.shoeImageURL
+                          }
+                          style={{
+                            height: 265,
+                            paddingHorizontal: 1,
+                            width: 'auto',
+                            borderRadius: 13,
+                            backgroundColor: '#f1f1f1',
+
+                            marginBottom: 8,
+                          }}
+                        />
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            paddingLeft: 7,
+                          }}>
+                          <Image
+                            source={appIcons.china}
+                            style={{ height: 15, width: 15, marginTop: 3 }}
+                          />
+                          <Text
+                            style={{
+                              marginLeft: 4,
+                              fontSize: 13,
+                              fontWeight: '500',
+                              color: colors.black,
+                            }}
+                            numberOfLines={1}>
+                            {item.name}
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            paddingLeft: 8,
+                            marginTop: 4,
+                          }}>
+                          <View style={{ flexDirection: 'row', width: '30%' }}>
+                            <Text
+                              style={{
+                                fontSize: 17,
+                                color: '#ff7600',
+                                fontWeight: '500',
+                              }}>
+                              {item.price ? item.price : '58'}
+                            </Text>
+                            <Text
+                              style={{
+                                paddingTop: 6,
+                                color: '#ff7600',
+                                fontSize: 12,
+                                fontWeight: '500',
+                              }}>
+                              c.
+                            </Text>
+                          </View>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              width: '70%',
+                              color: '#AAAAAA',
+                              paddingTop: 3,
+                            }}>
+                            {`${item.views}${AppString.views}`}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+            }
           </View>
         </View> : loading ? (
           <ProgressView />
@@ -607,10 +607,13 @@ const CategoriesList = ({ data, navigation, onClick }) => {
             }}
             style={{ marginEnd: 8, gap: 2, alignItems: 'center' }}>
 
-            {item.image == undefined || item.image === '' ? (
+
+            {item.details == undefined || item.details.categoryImage === '' ? (
               <ImageOutline width={70} height={70} />
             ) : (
-              <Image source={{ uri: item.image }} height={70} width={70} />
+              <Image source={{ uri: item.details.categoryImage }}
+                height={70} width={70}
+                style={{ borderRadius: 4 }} />
             )}
             <Text
               numberOfLines={2}
