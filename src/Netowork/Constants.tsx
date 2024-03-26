@@ -18,7 +18,7 @@ export const BASE_URL = (type = localEnum.development) => {
 export const apiUrls = {
   development: 'https://jumunona.onrender.com',
   testing: 'https://jumunona-c3eq.onrender.com',
-  production: 'http://3.69.231.148:3000',
+  production: 'https://api.jumunona.com',
 };
 
 export const modules = {
