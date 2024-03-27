@@ -191,10 +191,9 @@ export const MyOrderScreen = ({ navigation, route }) => {
 
                     onEndReached={FetchMore}
                 />
-                <RelatedProducts data={data.data.data.recommendedProducts}
-                    onclick={() => {
-                        navigation.push(RouteNames.product_detail);
-                    }}
+                <RelatedProducts
+                    data={data.data.data.recommendedProducts}
+                    navigation={navigation}
                 />
             </ScrollView>
             :
@@ -229,7 +228,7 @@ const EmptyData = () => {
 }
 
 
-export const RelatedProducts = ({ data, onclick, navigation }) => {
+export const RelatedProducts = ({ data, navigation }) => {
     return (
         <View style={{ marginBottom: 100, paddingStart: 6, }}>
             <View
@@ -306,7 +305,6 @@ export const RelatedProducts = ({ data, onclick, navigation }) => {
                                 marginTop: 8,
                             }}
                             onPress={() => {
-                                //onclick();
                                 navigation.navigate(RouteNames.product_detail, {
                                     id: item._id,
                                   });

@@ -847,9 +847,9 @@ const CartProduct = ({ check = true, shopData, navigation,
               onSwipeableOpen={() => closeRow(index)}
               renderRightActions={() =>
                 <RightButtons index={index} item={item} />}>
-              <ProductItem onUpdateQuantity={(qut: number) => {
-                updateQuantity(item, qut)
-              }}
+                <ProductItem onUpdateQuantity={(qut: number) => {
+                  updateQuantity(item, qut)
+                }}
                 check={shopData.radioButtonStore}
                 item={item} onClick={() => {
                   onClick(item)
@@ -897,7 +897,8 @@ const ProductItem = ({ item, check = false, onClick, onUpdateQuantity, shouldRef
       alignItems: 'center',
       paddingBottom: 14,
       paddingHorizontal: 10,
-      flex: 1
+      flex: 1,
+      backgroundColor: colors.white
     }}>
     <RadioButtons isCheck={selectedProductIds.includes(item.cartId)} onClick={() => {
       setIsCheck(!isCheck)

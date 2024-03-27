@@ -110,7 +110,7 @@ const MessagesScreen = ({ navigation }) => {
 
                   }} />
                 }>
-                <View>
+                <View style = {{backgroundColor: colors.white}}>
                   <UserChatListItem item={item} onClick={() => {
                     navigation.navigate(RouteNames.chat_screen, { id: item._id, name:item.userName })
                   }} />

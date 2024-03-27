@@ -162,9 +162,7 @@ export const CartConfirmOrderScreen = ({ navigation, route }) => {
 
                                     check={item.radioButtonItem}
                                     navigation={navigation}
-                                    items={item} onClick={() => {
-                                        navigation.push(RouteNames.product_detail)
-                                    }}
+                                    items={item} 
                                     onShowNotePopup={() => {
                                         setShowNotePopup(true)
                                     }}
@@ -273,7 +271,7 @@ const AddressView = ({ data, onClick }) => {
     )
 }
 
-const CartItemListView = ({ check = true, items, navigation, onClick, onShowNotePopup, onPriceUpdate }) => {
+const CartItemListView = ({ check = true, items, navigation, onShowNotePopup, onPriceUpdate }) => {
 
     const totalPrice = useMemo(() => {
         const price = items.products.reduce((accumulator: any, currentValue: any) => accumulator + (currentValue.price), 0)
@@ -318,7 +316,12 @@ const CartItemListView = ({ check = true, items, navigation, onClick, onShowNote
             <FlatList
                 data={items.products}
                 renderItem={({ item, index }) => (
-                    <CartItem onPriceUpdate={onPriceUpdate} check={items.radioButtonStore} item={item} onClick={onClick} />
+                    <CartItem onPriceUpdate={onPriceUpdate} check={items.radioButtonStore} item={item} onClick={() => {
+                        navigation.push(RouteNames.product_detail, {
+                            id: item._id,
+                          });
+
+                    }} />
                 )}
 
                 ListFooterComponent={

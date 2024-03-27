@@ -497,7 +497,7 @@ const
     // }, [selectedItem])
 
     useEffect(() => {
-      const sizes = productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2
+      const sizes =  productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2
       if (sizes && sizes.length > 0) {
         const cartItemIndex = sizes.findIndex((element) => (element.isItemInCart));
 
@@ -553,7 +553,7 @@ const
         />
 
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', }}>
-          {(selectedSize == 1 ? productDetail[selectedColorIndex != -1 ? selectedColorIndex : 0].attr2 : [...bodyData ?? [], ...addBodyData]).map((item: any, index: number) =>
+          {(selectedSize == 1 ?  selectedColorIndex != -1  ? productDetail[selectedColorIndex].attr2 : [] : [...bodyData ?? [], ...addBodyData]).map((item: any, index: number) =>
             <View style={{ margin: 8 }}>
               <TouchableOpacity
                 onPress={() => {
