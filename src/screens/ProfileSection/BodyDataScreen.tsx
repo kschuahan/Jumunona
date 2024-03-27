@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from "react"
 import { RouteNames } from "../../utils/RouteNames"
 import { getAPICall, postAPICall } from "../../Netowork/Apis"
 import { CommonModal } from "../HomeScreen"
-import { BodyDataAPI } from "../../Netowork/Constants"
+import { BodyDataAPI, reloadData } from "../../Netowork/Constants"
 import { CenterProgressView, ProgressView, RetryWhenErrorOccur } from "../../components/Dialogs"
 import { useIsFocused } from "@react-navigation/native"
 
@@ -63,6 +63,7 @@ export const BodyDataScreen = ({ navigation }) => {
                     setMainLoading(false)
                     if (res.isSuccess) {
                         ids = []
+                        reloadData.refreshBodyData = true
                         setDelete(false)
                         setData(undefined)
                         callAPI()
@@ -105,7 +106,7 @@ export const BodyDataScreen = ({ navigation }) => {
 
                         return (
                             <SizeDetailView type={item} isDeleting={isDeleting} onViewDetail={() => {
-                                navigation.navigate(RouteNames.editBodyData, {isUpdating: true, data: item})
+                                navigation.navigate(RouteNames.editBodyData, { isUpdating: true, data: item })
                             }} />
                         )
                     }
@@ -113,7 +114,7 @@ export const BodyDataScreen = ({ navigation }) => {
 
                     }
                     ListFooterComponent={<AddSizeView onClick={() => {
-                        navigation.navigate(RouteNames.editBodyData, {isUpdating: false })
+                        navigation.navigate(RouteNames.editBodyData, { isUpdating: false })
 
                     }} />}
                 />

@@ -155,13 +155,11 @@ const HomeScreen: React.FC = ({ navigation }) => {
   const [categoryData, setCategoryData] = useState<CommonModal>();
 
   const fetchData = () => {
-    setLoading(true); // Set loading to true before starting API calls
     callCategoryAPI();
     callAPI();
   };
   const checkLoadingStatus = () => {
     // Assuming both functions have completed execution
-    setLoading(false); // Set loading to false after both API calls are complete
   };
   useEffect(() => {
     fetchData();
@@ -173,6 +171,8 @@ const HomeScreen: React.FC = ({ navigation }) => {
     });
   };
   const callAPI = (page = 1) => {
+    setLoading(true); // Set loading to true before starting API calls
+
     getAPICall(ProductAPIs.getProducts + `${page}`, (res: any) => {
       if (res.isSuccess) {
         setPagingData(res.data.data.pages);
@@ -180,10 +180,14 @@ const HomeScreen: React.FC = ({ navigation }) => {
       }
       checkLoadingStatus();
       setData(res);
+      setLoading(false); // Set loading to false after both API calls are complete
+
     });
   };
 
   const featchMore = () => {
+    console.warn(pagingData);
+    
     if (
       data?.isSuccess &&
       pagingData &&

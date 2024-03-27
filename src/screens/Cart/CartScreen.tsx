@@ -225,16 +225,15 @@ const CartScreen = ({ navigation }) => {
                     <CartProduct
                       onQunatityUpdate={() => {
                         setLoading(true)
-                        console.warn("rwerewrewr")
                         getCart()
-                        // setRefresh(!refresh)
                       }}
                       onDelete={(item: any) => {
+                        setLoading(true)
                         getCart()
                       }}
                       check={false}
                       navigation={navigation}
-                      shopData={item} onClick={(item:any) => {
+                      shopData={item} onClick={(item: any) => {
                         navigation.push(RouteNames.product_detail, {
                           id: item._id,
                         })
